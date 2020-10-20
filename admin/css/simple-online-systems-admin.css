@@ -1,0 +1,12 @@
+.created-filters {
+    /*margin-left: 5%;*/
+    display: inline-block;
+}
+
+.showed-filter {
+    /*margin-right: 5%;*/
+}
+
+.wrapper-filter {
+    padding: 2%;
+}
