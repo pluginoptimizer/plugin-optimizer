@@ -8,11 +8,12 @@
         <p>Add Permalinks</p>
         <input type="text" value="<?= get_home_url() . '/'; ?>" placeholder="Enter permalinks" name="pages">
         <p>Add post type</p>
-        <select name="post_type">
+        <select name="post_type" multiple>
             <?php
             $post_types           = get_post_types( [ 'publicly_queryable' => 1 ] );
             $post_types[ 'page' ] = 'page';       // встроенный тип не имеет publicly_queryable
             unset( $post_types[ 'attachment' ] );
+            unset( $post_types[ 'sos_filter' ] );
 
             foreach ( $post_types as $post_type ) {
                 ?>
@@ -23,7 +24,7 @@
             ?>
         </select>
         <p>Select block plugins</p>
-        <select name="block_plugins">
+        <select name="block_plugins" multiple>
             <?php
             $plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
             foreach ( $plugins as $plugin => $value ): ?>
@@ -58,7 +59,6 @@
                             <a class="next-page button" href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;paged=0"><span class="screen-reader-text">Next page</span><span aria-hidden="true">›</span></a>
                             <a class="last-page button" href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;paged=0"><span class="screen-reader-text">Last page</span><span aria-hidden="true">»</span></a></span>
                     </div>
-                    <!-- TODO: / ... Всюди юзай відносний шлях! -->
                     <br class="clear">
                 </div>
                 <h2 class="screen-reader-text">Categories list</h2>
@@ -83,20 +83,29 @@
                         ?>
                         <tr id="tag-7" class="level-0">
                             <th scope="row" class="check-column"><label class="screen-reader-text" for="cb-select-7">Select <?= $post->post_title; ?></label><input type="checkbox" name="delete_tags[]" value="7" id="cb-select-7"></th>
-                            <td class="name column-name has-row-actions column-primary" data-colname="Name"><strong><a class="row-title" href="<?= get_edit_post_link(); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)"><?= $post->post_title; ?></a></strong><br>
+                            <td class="name column-name has-row-actions column-primary" data-colname="Name"><strong><a class="row-title" href="<?= get_edit_post_link($post->ID); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)"><?= $post->post_title; ?></a></strong><br>
                                 <div class="hidden" id="inline_7">
                                     <div class="name"><?= $post->post_title; ?></div>
                                     <div class="slug"><?= $post->post_title; ?></div>
                                     <div class="parent">0</div>
                                 </div>
-                                <div class="row-actions"><span class="edit"><a href="<?= get_edit_post_link(); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= get_delete_post_link(); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
+                                <div class="row-actions"><span class="edit"><a href="<?= get_edit_post_link($post->ID); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= get_delete_post_link($post->ID); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
                                 </div>
                                 <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span>
                                 </button>
                             </td>
-                            <td class="description column-description" data-colname="Selected pages"><span aria-hidden="true"><?= implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ); ?></span><span class="screen-reader-text">No description</span></td>
-                            <td class="slug column-slug" data-colname="Block plugins"><?= implode( get_metadata( 'post', $post->ID, 'block_plugins' )); ?></td>
-                            <td class="posts column-posts" data-colname="Count"><?= wp_count_posts()->publish; ?></td>
+                            <td class="description column-description" data-colname="Selected pages"><span aria-hidden="true"><?= implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ) . ', '  . implode( get_metadata( 'post', $post->ID, 'selected_page' )); ?></span><span class="screen-reader-text">No description</span></td>
+                            <td class="slug column-slug" data-colname="Block plugins"><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )); ?></td>
+                            <td class="posts column-posts" data-colname="Count">
+                                <?php
+                                $selected_post_types = explode(', ', implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ));
+                                $count_posts = 0;
+
+                                foreach( $selected_post_types as $selected_post_type ):
+	                                $count_posts += wp_count_posts($selected_post_type)->publish;
+                                endforeach;
+                                echo $count_posts + count(explode(", ", implode( get_metadata( 'post', $post->ID, 'selected_page' )))); ?>
+                            </td>
                         </tr>
                     <?php
                     }
@@ -138,3 +147,7 @@
         </div>
     </div>
 </div>
+
+<?php
+//var_dump( $post );
+//echo wp_count_posts() -> publish;

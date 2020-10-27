@@ -146,6 +146,8 @@ class Simple_Online_Systems {
 
 		$this->loader->add_action( 'init', $plugin_admin, 'register_post_types' );
 		$this->loader->add_action( 'init', $plugin_admin, 'register_taxonomies' );
+		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'register_meta_boxes' );
+		$this->loader->add_action( 'save_post', $plugin_admin, 'save_filter_options' );
 
 		$this->loader->add_action( 'wp_ajax_add_plugin_to_filter', $plugin_admin, 'ajax_add_plugin_to_filter' );
 

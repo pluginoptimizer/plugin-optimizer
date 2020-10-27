@@ -11,8 +11,8 @@
                 type: 'POST',
                 data: {
                     action: 'add_plugin_to_filter',
-                    'block_plugins': $('select[name="block_plugins"] option:selected').text(),
-                    'post_type': $('select[name="post_type"] option:selected').text(),
+                    'block_plugins': $('select[name="block_plugins"] option:selected').toArray().map(item => item.text).join(', '),
+                    'post_type': $('select[name="post_type"] option:selected').toArray().map(item => item.text).join(', '),
                     'pages': $('input[name="pages"]').val(),
                     'title_filter': $('input[name="title_filter"]').val(),
                     'type_filter': $('input[name="type_filter"]').val(),

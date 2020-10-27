@@ -3,8 +3,8 @@
     <pre>
         <?php
 
-        //        print_r(Simple_Online_Systems_Helper::get_plugins_with_status());
-        //        print_r(get_plugins());
+//                print_r(Simple_Online_Systems_Helper::get_plugins_with_status());
+//                print_r(get_plugins());
         //        echo plugins_url();
 
         ?>
