@@ -219,8 +219,6 @@ class Simple_Online_Systems_Admin {
 
 		wp_nonce_field( plugin_basename( __FILE__ ), 'nonce_sos_filter_options' );
 
-
-		//TODO: В тебе ж спеціально meta є...
 		$value_block_plugins      = get_post_meta( $post->ID, 'block_plugins', 1 );
 		$value_selected_post_type = get_post_meta( $post->ID, 'selected_post_type', 1 );
 		$value_selected_page      = get_post_meta( $post->ID, 'selected_page', 1 );
@@ -279,6 +277,34 @@ class Simple_Online_Systems_Admin {
 		update_post_meta( $post_id, 'selected_page', $selected_page );
 		update_post_meta( $post_id, 'type_filter', $type_filter );
 	}
+
+	public function ajax_search_pages() {
+		ob_start();
+
+		$the_query = new WP_Query( array( 'posts_per_page' => -1, 's' => esc_attr( $_POST['keyword'] ), 'post_type' => 'page' ) );
+		if( $the_query->have_posts() ) :
+			while( $the_query->have_posts() ):
+				$the_query->the_post();
+			?>
+                <h2>
+					<a href="<?= esc_url( get_post_permalink() ); ?>" class="link_search_page">
+						<?= the_title(); ?>
+					</a>
+				</h2>
+			<?php
+			endwhile;
+			wp_reset_postdata();
+		else:
+			?>
+			<h2>
+				Not Found
+			</h2>
+			<?php
+		endif;
+
+
+		wp_send_json_success( ob_get_clean() );
+    }
 
 }
 

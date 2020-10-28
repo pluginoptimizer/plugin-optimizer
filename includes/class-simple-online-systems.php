@@ -150,6 +150,7 @@ class Simple_Online_Systems {
 		$this->loader->add_action( 'save_post', $plugin_admin, 'save_filter_options' );
 
 		$this->loader->add_action( 'wp_ajax_add_plugin_to_filter', $plugin_admin, 'ajax_add_plugin_to_filter' );
+		$this->loader->add_action( 'wp_ajax_search_pages', $plugin_admin, 'ajax_search_pages' );
 
 	}
 

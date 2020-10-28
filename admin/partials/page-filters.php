@@ -6,7 +6,14 @@
         <p>Set Type</p>
         <input type="text" placeholder="Enter type" name="type_filter">
         <p>Add Permalinks</p>
-        <input type="text" value="<?= get_home_url() . '/'; ?>" placeholder="Enter permalinks" name="pages">
+<!--        <input type="text" value="--><?//= get_home_url() . '/'; ?><!--" placeholder="Enter permalinks" name="pages">-->
+        <input type="text" id="search_pages" placeholder="Enter name page" name="pages">
+
+        <div id="result">
+            <p class="popup-close">×</p>
+            <div id="result_search"></div>
+        </div>
+
         <p>Add post type</p>
         <select name="post_type" multiple>
             <?php
@@ -148,6 +155,6 @@
     </div>
 </div>
 
-<?php
-//var_dump( $post );
-//echo wp_count_posts() -> publish;
+
+
+
