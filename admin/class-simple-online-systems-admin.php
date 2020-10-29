@@ -64,17 +64,32 @@ class Simple_Online_Systems_Admin {
 	public function add_menu_pages() {
 
 		add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'simple_online_systems_settings', array( $this, 'render_settings_page' ), 'dashicons-sos' );
-		add_submenu_page( 'simple_online_systems_settings', 'General Settings', 'General Settings', 'manage_options', 'simple_online_systems_settings' );
+		add_submenu_page( 'simple_online_systems_settings', 'Overview', 'Overview', 'manage_options', 'simple_online_systems_overview', array( $this, 'render_overview_page' ) );
 		add_submenu_page( 'simple_online_systems_settings', 'Filters', 'Filters', 'manage_options', 'simple_online_systems_filters', array( $this, 'render_filters_page' ) );
+		add_submenu_page( 'simple_online_systems_settings', 'Settings', 'Settings', 'manage_options', 'simple_online_systems_settings', array( $this, 'render_settings_page' ) );
+		add_submenu_page( 'simple_online_systems_settings', 'Worklist', 'Worklist', 'manage_options', 'simple_online_systems_worklist', array( $this, 'render_worklist_page' ) );
+		add_submenu_page( 'simple_online_systems_settings', 'Support', 'Support', 'manage_options', 'simple_online_systems_support', array( $this, 'render_support_page' ) );
 
+	}
+
+	public function render_overview_page() {
+		include 'partials/page-overview.php';
+	}
+
+	public function render_filters_page() {
+		include 'partials/page-filters.php';
 	}
 
 	public function render_settings_page() {
 		include 'partials/page-settings-template.php';
 	}
 
-	public function render_filters_page() {
-		include 'partials/page-filters.php';
+	public function render_worklist_page() {
+		include 'partials/page-worklist.php';
+	}
+
+	public function render_support_page() {
+		include 'partials/page-support.php';
 	}
 
 	/**
@@ -113,6 +128,37 @@ class Simple_Online_Systems_Admin {
 			'rewrite'       => true,
 			'query_var'     => true,
 		) );
+		register_post_type( 'sos_group', array(
+			'label'         => null,
+			'labels'        => array(
+				'name'               => 'Groups plugins',
+				'singular_name'      => 'Group plugins',
+				'add_new'            => 'Add Group plugins',
+				'add_new_item'       => 'Added Group plugins',
+				'edit_item'          => 'Edit Group plugins',
+				'new_item'           => 'New Group plugins',
+				'view_item'          => 'View Group plugins',
+				'search_items'       => 'Search Group plugins',
+				'not_found'          => 'Not found',
+				'not_found_in_trash' => 'Not found in trash',
+				'parent_item_colon'  => '',
+				'menu_name'          => 'Groups plugins',
+			),
+			'description'   => 'Group plugins for your customers',
+			'public'        => true,
+			'show_in_menu'  => true,
+			// 'show_in_admin_bar'   => null,
+			'show_in_rest'  => null,
+			'rest_base'     => null,
+			'menu_position' => 6,
+			'menu_icon'     => 'dashicons-editor-help',
+			'hierarchical'  => false,
+			'supports'      => [ 'title' ],
+			'taxonomies'    => [],
+			'has_archive'   => false,
+			'rewrite'       => true,
+			'query_var'     => true,
+		) );
 
 	}
 
@@ -121,20 +167,20 @@ class Simple_Online_Systems_Admin {
 	 */
 	public function register_taxonomies() {
 
-		register_taxonomy( 'Group', array( 'sos_filter' ), array(
+		register_taxonomy( 'Category', array( 'sos_filter' ), array(
 			'hierarchical' => true,
 			'labels'       => array(
-				'name'              => _x( 'Groups', 'taxonomy general name' ),
-				'singular_name'     => _x( 'Group', 'taxonomy singular name' ),
-				'search_items'      => __( 'Search Groups' ),
-				'all_items'         => __( 'All Groups' ),
-				'parent_item'       => __( 'Parent Group' ),
-				'parent_item_colon' => __( 'Parent Group:' ),
-				'edit_item'         => __( 'Edit Group' ),
-				'update_item'       => __( 'Update Group' ),
-				'add_new_item'      => __( 'Add New Group' ),
-				'new_item_name'     => __( 'New Group Name' ),
-				'menu_name'         => __( 'Group' ),
+				'name'              => _x( 'Categories', 'taxonomy general name' ),
+				'singular_name'     => _x( 'Category', 'taxonomy singular name' ),
+				'search_items'      => __( 'Search Categories' ),
+				'all_items'         => __( 'All Categories' ),
+				'parent_item'       => __( 'Parent Category' ),
+				'parent_item_colon' => __( 'Parent Category:' ),
+				'edit_item'         => __( 'Edit Category' ),
+				'update_item'       => __( 'Update Category' ),
+				'add_new_item'      => __( 'Add New Category' ),
+				'new_item_name'     => __( 'New Category Name' ),
+				'menu_name'         => __( 'Category' ),
 			),
 			'show_ui'      => true,
 			'query_var'    => true,
