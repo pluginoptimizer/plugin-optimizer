@@ -167,7 +167,7 @@ class Simple_Online_Systems_Admin {
 	 */
 	public function register_taxonomies() {
 
-		register_taxonomy( 'Category', array( 'sos_filter' ), array(
+		register_taxonomy( 'Category filters', array( 'sos_filter' ), array(
 			'hierarchical' => true,
 			'labels'       => array(
 				'name'              => _x( 'Categories', 'taxonomy general name' ),
@@ -180,7 +180,7 @@ class Simple_Online_Systems_Admin {
 				'update_item'       => __( 'Update Category' ),
 				'add_new_item'      => __( 'Add New Category' ),
 				'new_item_name'     => __( 'New Category Name' ),
-				'menu_name'         => __( 'Category' ),
+				'menu_name'         => __( 'Categories' ),
 			),
 			'show_ui'      => true,
 			'query_var'    => true,
@@ -327,30 +327,75 @@ class Simple_Online_Systems_Admin {
 	public function ajax_search_pages() {
 		ob_start();
 
-		$the_query = new WP_Query( array( 'posts_per_page' => -1, 's' => esc_attr( $_POST['keyword'] ), 'post_type' => 'page' ) );
-		if( $the_query->have_posts() ) :
-			while( $the_query->have_posts() ):
-				$the_query->the_post();
-			?>
-                <h2>
-					<a href="<?= esc_url( get_post_permalink() ); ?>" class="link_search_page">
-						<?= the_title(); ?>
-					</a>
-				</h2>
-			<?php
-			endwhile;
-			wp_reset_postdata();
+		$posts = get_posts( array(
+			'numberposts' => - 1,
+			's' => esc_attr( $_POST['keyword'] ),
+            'post_type' => 'page'
+		) );
+
+		if( $posts ) :
+			foreach ( $posts as $post ) : ?>
+	            <h2>
+	                <a href="<?= esc_url( $post->guid ); ?>" class="link_search_page">
+						<?= $post->post_title; ?>
+	                </a>
+	            </h2>
+		<?php
+			endforeach;
 		else:
 			?>
-			<h2>
-				Not Found
-			</h2>
-			<?php
+            <h2>
+                Not Found
+            </h2>
+		<?php
 		endif;
-
 
 		wp_send_json_success( ob_get_clean() );
     }
+
+
+	public function ajax_search_filters(){
+
+		ob_start();
+
+		$posts = get_posts( array(
+			'post_type'   => 'sos_filter',
+			'numberposts' => - 1,
+			's' => esc_attr( $_POST['keyword'] ),
+		) );
+
+		foreach ( $posts as $post ) : ?>
+            <tr id="tag-7" class="level-0">
+                <th scope="row" class="check-column"><label class="screen-reader-text" for="cb-select-7">Select <?= $post->post_title; ?></label><input type="checkbox" name="delete_tags[]" value="7" id="cb-select-7"></th>
+                <td class="name column-name has-row-actions column-primary" data-colname="Name"><strong><a class="row-title" href="<?= get_edit_post_link($post->ID); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)"><?= $post->post_title; ?></a></strong><br>
+                    <div class="hidden" id="inline_7">
+                        <div class="name"><?= $post->post_title; ?></div>
+                        <div class="slug"><?= $post->post_title; ?></div>
+                        <div class="parent">0</div>
+                    </div>
+                    <div class="row-actions"><span class="edit"><a href="<?= get_edit_post_link($post->ID); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= get_delete_post_link($post->ID); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
+                    </div>
+                    <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span>
+                    </button>
+                </td>
+                <td class="description column-description" data-colname="Selected pages"><span aria-hidden="true"><?= implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ) . ', '  . implode( get_metadata( 'post', $post->ID, 'selected_page' )); ?></span><span class="screen-reader-text">No description</span></td>
+                <td class="slug column-slug" data-colname="Block plugins"><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )); ?></td>
+                <td class="posts column-posts" data-colname="Count">
+					<?php
+					$selected_post_types = explode(', ', implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ));
+					$count_posts = 0;
+
+					foreach( $selected_post_types as $selected_post_type ):
+						$count_posts += wp_count_posts($selected_post_type)->publish;
+					endforeach;
+					echo $count_posts + count(explode(", ", implode( get_metadata( 'post', $post->ID, 'selected_page' )))); ?>
+                </td>
+            </tr>
+		<?php endforeach;
+
+		wp_send_json_success( ob_get_clean() );
+
+	}
 
 }
 

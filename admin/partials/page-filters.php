@@ -44,6 +44,11 @@
 
 
     <div id="col-right">
+        <form class="search-form wp-clearfix" method="get">
+            <p class="search-box">
+                <input type="search" id="search_filters" name="s" value="" placeholder="Search filters">
+            </p>
+        </form>
         <div class="col-wrap">
             <form id="posts-filter" method="post" class="showed-filter">
                 <input type="hidden" name="taxonomy" value="Group">
@@ -154,6 +159,7 @@
         </div>
     </div>
 </div>
+
 
 
 

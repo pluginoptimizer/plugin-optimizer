@@ -10,7 +10,7 @@
                 url: "/wp-admin/admin-ajax.php",
                 type: 'POST',
                 data: {
-                    action: 'add_plugin_to_filter',
+                    action: 'sos_add_plugin_to_filter',
                     'block_plugins': $('select[name="block_plugins"] option:selected').toArray().map(item => item.text).join(', '),
                     'post_type': $('select[name="post_type"] option:selected').toArray().map(item => item.text).join(', '),
                     'pages': $('input[name="pages"]').val(),
@@ -19,7 +19,6 @@
                 },
                 success: function (data) {
                     $('#the-list').html(data.data);
-                    console.log(data.data);
                 }
             })
         });
@@ -33,7 +32,7 @@
                 url: "/wp-admin/admin-ajax.php",
                 type: 'POST',
                 data: {
-                    action: 'search_pages',
+                    action: 'sos_search_pages',
                     keyword: $('#search_pages').val()
                 },
                 success: function(response) {
@@ -54,6 +53,19 @@
                         }
 
                     })
+                }
+            });
+        })
+        $('#search_filters').keyup(function () {
+            $.ajax({
+                url: "/wp-admin/admin-ajax.php",
+                type: 'POST',
+                data: {
+                    action: 'sos_search_filters',
+                    keyword: $('#search_filters').val()
+                },
+                success: function (response) {
+                    $('#the-list').html(response.data);
                 }
             });
         })
