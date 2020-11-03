@@ -52,9 +52,12 @@ class Simple_Online_Systems_Admin {
 	 */
 	public function enqueue_scripts() {
 
+		/*wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/simple-online-systems-admin.js', array( 'jquery' ), $this->version, false );
+		wp_localize_script( $this->plugin_name, 'simple_online_systems_groups', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+		wp_enqueue_script( $this->plugin_name );*/
+
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/simple-online-systems-admin.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name, 'filter_ajax', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
-		wp_enqueue_script( $this->plugin_name );
+		wp_localize_script( $this->plugin_name, 'simple_online_systems_groups', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 
 	}
 
@@ -66,6 +69,7 @@ class Simple_Online_Systems_Admin {
 		add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'simple_online_systems_settings', array( $this, 'render_settings_page' ), 'dashicons-sos' );
 		add_submenu_page( 'simple_online_systems_settings', 'Overview', 'Overview', 'manage_options', 'simple_online_systems_overview', array( $this, 'render_overview_page' ) );
 		add_submenu_page( 'simple_online_systems_settings', 'Filters', 'Filters', 'manage_options', 'simple_online_systems_filters', array( $this, 'render_filters_page' ) );
+		add_submenu_page( 'simple_online_systems_settings', 'Groups plugin', 'Groups plugin', 'manage_options', 'simple_online_systems_groups', array( $this, 'render_groups_page' ) );
 		add_submenu_page( 'simple_online_systems_settings', 'Settings', 'Settings', 'manage_options', 'simple_online_systems_settings', array( $this, 'render_settings_page' ) );
 		add_submenu_page( 'simple_online_systems_settings', 'Worklist', 'Worklist', 'manage_options', 'simple_online_systems_worklist', array( $this, 'render_worklist_page' ) );
 		add_submenu_page( 'simple_online_systems_settings', 'Support', 'Support', 'manage_options', 'simple_online_systems_support', array( $this, 'render_support_page' ) );
@@ -78,6 +82,10 @@ class Simple_Online_Systems_Admin {
 
 	public function render_filters_page() {
 		include 'partials/page-filters.php';
+	}
+
+	public function render_groups_page() {
+		include 'partials/page-groups.php';
 	}
 
 	public function render_settings_page() {
@@ -191,10 +199,24 @@ class Simple_Online_Systems_Admin {
 	public  function register_meta_boxes() {
 
 		add_meta_box( 'sos_filter_options', 'Filter Options', array( $this, 'render_filter_options' ), array( 'sos_filter' ) );
+		add_meta_box( 'sos_group_options', 'Group Options', array( $this, 'render_group_options' ), array( 'sos_group' ) );
 
 	}
 
-	public function ajax_add_plugin_to_filter() {
+	public function ajax_add_plugin_to_filter( $block_group_plugins_value ) {
+		$block_group_plugins_get = explode(',',  htmlspecialchars( $_POST[ 'block_group_plugins' ] ));
+		$block_group_plugins = '';
+		foreach( $block_group_plugins_get as $block_group_plugin ){
+			$posts = get_posts( array(
+				'post_type' => 'sos_group',
+				's' => $block_group_plugin,
+				'numberposts' => -1,
+			) );
+			foreach( $posts as $post ){
+				$block_group_plugins .= implode( ",", get_metadata( 'post', $post->ID, 'group_plugins' ) ) . ', ';
+			}
+		}
+		$block_group_plugins = substr($block_group_plugins, 0, -2);
 
 		$block_plugins = htmlspecialchars( $_POST[ 'block_plugins' ] );
 		$post_type     = htmlspecialchars( $_POST[ 'post_type' ] );
@@ -216,6 +238,7 @@ class Simple_Online_Systems_Admin {
 		}
 
 		add_post_meta( $post_id, 'block_plugins', $block_plugins );
+		add_post_meta( $post_id, 'block_group_plugins', $block_group_plugins );
 		add_post_meta( $post_id, 'selected_post_type', $post_type );
 		add_post_meta( $post_id, 'selected_page', $pages );
 		add_post_meta( $post_id, 'type_filter', $type_filter );
@@ -242,7 +265,7 @@ class Simple_Online_Systems_Admin {
 					</button>
 				</td>
 				<td class="description column-description" data-colname="Selected pages"><span aria-hidden="true"><?= implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ) . ', '  . implode( get_metadata( 'post', $post->ID, 'selected_page' )); ?></span><span class="screen-reader-text">No description</span></td>
-				<td class="slug column-slug" data-colname="Block plugins"><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )); ?></td>
+				<td class="slug column-slug" data-colname="Block plugins"><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( get_metadata( 'post', $post->ID, 'block_group_plugins' )); ?></td>
 				<td class="posts column-posts" data-colname="Count">
 					<?php
 					$selected_post_types = explode(', ', implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ));
@@ -266,6 +289,7 @@ class Simple_Online_Systems_Admin {
 		wp_nonce_field( plugin_basename( __FILE__ ), 'nonce_sos_filter_options' );
 
 		$value_block_plugins      = get_post_meta( $post->ID, 'block_plugins', 1 );
+		$value_block_group_plugins      = get_post_meta( $post->ID, 'block_group_plugins', 1 );
 		$value_selected_post_type = get_post_meta( $post->ID, 'selected_post_type', 1 );
 		$value_selected_page      = get_post_meta( $post->ID, 'selected_page', 1 );
 		$value_type_filter        = get_post_meta( $post->ID, 'type_filter', 1 );
@@ -273,6 +297,11 @@ class Simple_Online_Systems_Admin {
 		?>
 		<label for="block_plugins"> <?= "Select block plugins" ?> </label>
 		<input type="text" id="block_plugins" name="block_plugins" value=" <?= $value_block_plugins ?>" size="25" />
+		<br>
+		<br>
+
+        <label for="block_plugins"> <?= "Select block group plugins" ?> </label>
+		<input type="text" id="block_plugins" name="block_plugins" value=" <?= $value_block_group_plugins ?>" size="25" />
 		<br>
 		<br>
 
@@ -297,7 +326,7 @@ class Simple_Online_Systems_Admin {
 
 	public function save_filter_options( $post_id ) {
 
-		if ( ! isset( $_POST[ 'block_plugins' ] ) && ! isset( $_POST[ 'selected_post_type' ] ) && ! isset( $_POST[ 'selected_page' ] ) && ! isset( $_POST[ 'type_filter' ] ) ) {
+		if ( ! isset( $_POST[ 'block_plugins' ] ) && ! isset( $_POST[ 'block_group_plugins' ] ) && ! isset( $_POST[ 'selected_post_type' ] ) && ! isset( $_POST[ 'selected_page' ] ) && ! isset( $_POST[ 'type_filter' ] ) ) {
 			return;
 		}
 
@@ -314,11 +343,13 @@ class Simple_Online_Systems_Admin {
 		}
 
 		$block_plugins      = sanitize_text_field( $_POST[ 'block_plugins' ] );
+		$block_group_plugins      = sanitize_text_field( $_POST[ 'block_group_plugins' ] );
 		$selected_post_type = sanitize_text_field( $_POST[ 'selected_post_type' ] );
 		$selected_page      = sanitize_text_field( $_POST[ 'selected_page' ] );
 		$type_filter        = sanitize_text_field( $_POST[ 'type_filter' ] );
 
 		update_post_meta( $post_id, 'block_plugins', $block_plugins );
+		update_post_meta( $post_id, 'block_group_plugins', $block_group_plugins );
 		update_post_meta( $post_id, 'selected_post_type', $selected_post_type );
 		update_post_meta( $post_id, 'selected_page', $selected_page );
 		update_post_meta( $post_id, 'type_filter', $type_filter );
@@ -395,6 +426,108 @@ class Simple_Online_Systems_Admin {
 
 		wp_send_json_success( ob_get_clean() );
 
+	}
+
+	//	groups
+	public function ajax_add_group_plugins() {
+
+		$title_group  = htmlspecialchars( $_POST[ 'title_group' ] );
+		$type_group   = htmlspecialchars( $_POST[ 'type_group' ] );
+		$group_plugins = htmlspecialchars( $_POST[ 'group_plugins' ] );
+
+		$post_data = array(
+			'post_title'  => $title_group,
+			'post_type'   => 'sos_group',
+			'post_status' => 'publish',
+			'post_author' => 1,
+		);
+
+		$post_id = wp_insert_post( $post_data, true );
+
+		if ( is_wp_error( $post_id ) ) {
+			wp_send_json_error( $post_id->get_error_message() );
+		}
+
+		add_post_meta( $post_id, 'type_group', $type_group );
+		add_post_meta( $post_id, 'group_plugins', $group_plugins );
+
+		ob_start();
+
+		$posts = get_posts( array(
+			'post_type'   => 'sos_group',
+			'numberposts' => - 1,
+		) );
+
+		foreach ( $posts as $post ) : ?>
+            <tr id="tag-7" class="level-0">
+                <th scope="row" class="check-column"><label class="screen-reader-text" for="cb-select-7">Select <?= $post->post_title; ?></label><input type="checkbox" name="delete_tags[]" value="7" id="cb-select-7"></th>
+                <td class="name column-name has-row-actions column-primary" data-colname="Name"><strong><a class="row-title" href="<?= get_edit_post_link($post->ID); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)"><?= $post->post_title; ?></a></strong><br>
+                    <div class="hidden" id="inline_7">
+                        <div class="name"><?= $post->post_title; ?></div>
+                        <div class="slug"><?= $post->post_title; ?></div>
+                        <div class="parent">0</div>
+                    </div>
+                    <div class="row-actions"><span class="edit"><a href="<?= get_edit_post_link($post->ID); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= get_delete_post_link($post->ID); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
+                    </div>
+                    <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span>
+                    </button>
+                </td>
+                <td class="description column-description" data-colname="Type groups"><span aria-hidden="true"><?= implode( ",", get_metadata( 'post', $post->ID, 'type_group' ) ); ?></span><span class="screen-reader-text">No description</span></td>
+                <td class="slug column-slug" data-colname="Group plugins"><?= implode( ', ', get_metadata( 'post', $post->ID, 'group_plugins' )); ?></td>
+                <td class="posts column-posts" data-colname="Count">
+					<?= count(explode(", ", implode( get_metadata( 'post', $post->ID, 'group_plugins' )))); ?>
+                </td>
+            </tr>
+		<?php endforeach;
+
+		wp_send_json_success( ob_get_clean() );
+
+	}
+
+	public function render_group_options( $post ) {
+
+		wp_nonce_field( plugin_basename( __FILE__ ), 'nonce_sos_group_options' );
+
+		$value_type_group       = get_post_meta( $post->ID, 'type_group', 1 );
+		$value_group_plugins     = get_post_meta( $post->ID, 'group_plugins', 1 );
+
+		?>
+		<label for="type_filter"> <?= "Set Type" ?></label>
+		<input type="text" id="type_filter" name="type_filter" value=" <?= $value_type_group ?>" size="25" />
+		<br>
+		<br>
+
+		<label for="block_plugins"> <?= "Select group plugins" ?> </label>
+		<input type="text" id="block_plugins" name="block_plugins" value=" <?= $value_group_plugins  ?>" size="25" />
+		<br>
+		<br>
+
+		<?php
+	}
+
+	public function save_group_options( $post_id ) {
+
+		if ( ! isset( $_POST[ 'type_group' ] ) && ! isset( $_POST[ 'group_plugins' ] ) ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST[ 'nonce_sos_group_options' ], plugin_basename( __FILE__ ) ) ) {
+			return;
+		}
+
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		$type_group        = sanitize_text_field( $_POST[ 'type_group' ] );
+		$group_plugins      = sanitize_text_field( $_POST[ 'group_plugins' ] );
+
+		update_post_meta( $post_id, '$type_group', $type_group );
+		update_post_meta( $post_id, 'group_plugins', $group_plugins );
 	}
 
 }

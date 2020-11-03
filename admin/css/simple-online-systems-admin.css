@@ -3,6 +3,11 @@
     display: inline-block;
 }
 
+.created-groups {
+    /*margin-left: 5%;*/
+    display: inline-block;
+}
+
 .showed-filter {
     /*margin-right: 5%;*/
 }

@@ -7,18 +7,19 @@
 
             $.ajax({
                 // url: filter_ajax.ajaxurl,
-                url: "/wp-admin/admin-ajax.php",
+                url: simple_online_systems_groups.ajax_url,
                 type: 'POST',
                 data: {
                     action: 'sos_add_plugin_to_filter',
                     'block_plugins': $('select[name="block_plugins"] option:selected').toArray().map(item => item.text).join(', '),
+                    'block_group_plugins': $('select[name="block_group_plugins"] option:selected').toArray().map(item => item.text).join(', '),
                     'post_type': $('select[name="post_type"] option:selected').toArray().map(item => item.text).join(', '),
                     'pages': $('input[name="pages"]').val(),
                     'title_filter': $('input[name="title_filter"]').val(),
                     'type_filter': $('input[name="type_filter"]').val(),
                 },
-                success: function (data) {
-                    $('#the-list').html(data.data);
+                success: function (response) {
+                    $('#the-list').html(response.data);
                 }
             })
         });
@@ -29,7 +30,7 @@
         });
         $('#search_pages').keyup(function () {
             $.ajax({
-                url: "/wp-admin/admin-ajax.php",
+                url: simple_online_systems_groups.ajax_url,
                 type: 'POST',
                 data: {
                     action: 'sos_search_pages',
@@ -55,10 +56,11 @@
                     })
                 }
             });
-        })
+        });
+
         $('#search_filters').keyup(function () {
             $.ajax({
-                url: "/wp-admin/admin-ajax.php",
+                url: simple_online_systems_groups.ajax_url,
                 type: 'POST',
                 data: {
                     action: 'sos_search_filters',
@@ -68,7 +70,27 @@
                     $('#the-list').html(response.data);
                 }
             });
-        })
+        });
+
+        // create plugins
+        $('.created-groups input[type="submit"]').click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: simple_online_systems_groups.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'sos_add_group_plugins',
+                    'title_group': $('input[name="title_group"]').val(),
+                    'type_group': $('input[name="type_group"]').val(),
+                    'group_plugins': $('select[name="group_plugins"] option:selected').toArray().map(item => item.text).join(', '),
+                },
+                success: function (response) {
+                    console.log(response);
+                    $('#the-list').html(response.data);
+                }
+            })
+        });
 
     });
 

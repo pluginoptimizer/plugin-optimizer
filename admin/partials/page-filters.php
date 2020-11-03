@@ -18,9 +18,8 @@
         <select name="post_type" multiple>
             <?php
             $post_types           = get_post_types( [ 'publicly_queryable' => 1 ] );
-            $post_types[ 'page' ] = 'page';       // встроенный тип не имеет publicly_queryable
-            unset( $post_types[ 'attachment' ] );
-            unset( $post_types[ 'sos_filter' ] );
+            $post_types[ 'page' ] = 'page';
+            unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ] );
 
             foreach ( $post_types as $post_type ) {
                 ?>
@@ -37,6 +36,20 @@
             foreach ( $plugins as $plugin => $value ): ?>
                 <option value="<?= str_replace( ' ', "_", $value[ 'name' ] ); ?>"><?= $value[ 'name' ]; ?></option>
             <?php endforeach; ?>
+        </select>
+        <p>Select block group plugins</p>
+        <select name="block_group_plugins" multiple>
+            <?php
+            $posts = get_posts( array(
+	            'post_type' => 'sos_group',
+	            'numberposts' => -1,
+            ) );
+            foreach( $posts as $post ){
+	            ?>
+                <option value="<?= str_replace( ' ', "_", $post->post_title ); ?>"><?= $post->post_title; ?></option>
+	            <?php
+            }
+            ?>
         </select>
         <br><br>
         <input type="submit" value="Create new filter">
@@ -107,7 +120,7 @@
                                 </button>
                             </td>
                             <td class="description column-description" data-colname="Selected pages"><span aria-hidden="true"><?= implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ) . ', '  . implode( get_metadata( 'post', $post->ID, 'selected_page' )); ?></span><span class="screen-reader-text">No description</span></td>
-                            <td class="slug column-slug" data-colname="Block plugins"><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )); ?></td>
+                            <td class="slug column-slug" data-colname="Block plugins"><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( get_metadata( 'post', $post->ID, 'block_group_plugins' )); ?></td>
                             <td class="posts column-posts" data-colname="Count">
                                 <?php
                                 $selected_post_types = explode(', ', implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ));
@@ -159,8 +172,5 @@
         </div>
     </div>
 </div>
-
-
-
 
 
