@@ -72,6 +72,20 @@
             });
         });
 
+        $('#search_works').keyup(function () {
+            $.ajax({
+                url: simple_online_systems_groups.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'sos_search_works',
+                    keyword: $('#search_works').val()
+                },
+                success: function (response) {
+                    $('#the-list').html(response.data);
+                }
+            });
+        });
+
         // create plugins
         $('.created-groups input[type="submit"]').click(function (e) {
             e.preventDefault();

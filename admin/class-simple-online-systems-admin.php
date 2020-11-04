@@ -76,6 +76,7 @@ class Simple_Online_Systems_Admin {
 
 	}
 
+
 	public function render_overview_page() {
 		include 'partials/page-overview.php';
 	}
@@ -128,7 +129,7 @@ class Simple_Online_Systems_Admin {
 			'show_in_rest'  => null,
 			'rest_base'     => null,
 			'menu_position' => 6,
-			'menu_icon'     => 'dashicons-editor-help',
+			'menu_icon'     => 'dashicons-forms',
 			'hierarchical'  => false,
 			'supports'      => [ 'title' ],
 			'taxonomies'    => [],
@@ -159,7 +160,38 @@ class Simple_Online_Systems_Admin {
 			'show_in_rest'  => null,
 			'rest_base'     => null,
 			'menu_position' => 6,
-			'menu_icon'     => 'dashicons-editor-help',
+			'menu_icon'     => 'dashicons-tickets',
+			'hierarchical'  => false,
+			'supports'      => [ 'title' ],
+			'taxonomies'    => [],
+			'has_archive'   => false,
+			'rewrite'       => true,
+			'query_var'     => true,
+		) );
+		register_post_type( 'sos_work', array(
+			'label'         => null,
+			'labels'        => array(
+				'name'               => 'Works',
+				'singular_name'      => 'Work',
+				'add_new'            => 'Add Work',
+				'add_new_item'       => 'Added Work',
+				'edit_item'          => 'Edit Work',
+				'new_item'           => 'New Work',
+				'view_item'          => 'View Work',
+				'search_items'       => 'Search Work',
+				'not_found'          => 'Not found',
+				'not_found_in_trash' => 'Not found in trash',
+				'parent_item_colon'  => '',
+				'menu_name'          => 'Works',
+			),
+			'description'   => 'Work for your customers',
+			'public'        => true,
+			'show_in_menu'  => true,
+			// 'show_in_admin_bar'   => null,
+			'show_in_rest'  => null,
+			'rest_base'     => null,
+			'menu_position' => 6,
+			'menu_icon'     => 'dashicons-editor-paste-word',
 			'hierarchical'  => false,
 			'supports'      => [ 'title' ],
 			'taxonomies'    => [],
@@ -528,6 +560,80 @@ class Simple_Online_Systems_Admin {
 
 		update_post_meta( $post_id, '$type_group', $type_group );
 		update_post_meta( $post_id, 'group_plugins', $group_plugins );
+	}
+
+	function add_item_to_worklist( $post_id ) {
+
+		if ( wp_is_post_revision( $post_id ) ){
+			return;
+		}
+
+		if ( get_post($post_id)->post_status != 'publish' ){
+			return;
+		}
+
+		$title_work  = 'Add filter to ' . get_post($post_id)->post_title;
+
+		$post_data = array(
+			'post_title'  => $title_work,
+			'post_type'   => 'sos_work',
+			'post_status' => 'publish',
+			'post_author' => 1,
+		);
+
+		$post_id = wp_insert_post( $post_data, true );
+
+		if ( is_wp_error( $post_id ) ) {
+			wp_send_json_error( $post_id->get_error_message() );
+		}
+	}
+
+	public function ajax_search_works(){
+
+		ob_start();
+
+		$posts = get_posts( array(
+			'post_type'   => 'sos_work',
+			'numberposts' => - 1,
+			's' => esc_attr( $_POST['keyword'] ),
+		) );
+
+		foreach ( $posts as $post ) : ?>
+            <tr id="post-205" class="iedit author-self level-0 post-205 type-sos_filter status-publish hentry pmpro-has-access">
+                <th scope="row" class="check-column"> <label class="screen-reader-text" for="cb-select-205">
+                        Select = $post->post_title; ?> </label>
+                    <input id="cb-select-205" type="checkbox" name="post[]" value="205">
+                    <div class="locked-indicator">
+                        <span class="locked-indicator-icon" aria-hidden="true"></span>
+                        <span class="screen-reader-text">
+                                “<?= $post->post_title; ?>” is locked </span>
+                    </div>
+                </th>
+                <td class="title column-title has-row-actions column-primary page-title" data-colname="Title">
+                    <div class="locked-info"><span class="locked-avatar"></span> <span class="locked-text"></span></div>
+                    <strong>
+                        <a class="row-title" href="<?= get_edit_post_link($post->ID); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)">
+							<?= $post->post_title; ?>
+                        </a>
+                    </strong>
+
+                    <div class="row-actions">
+						<span class="edit">
+							<a href="<?= get_edit_post_link($post->ID); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> |
+						</span>
+                        <span class="trash">
+							<a href="<?= get_delete_post_link($post->ID); ?>" class="submitdelete" aria-label="Move “<?= $post->post_title; ?>” to the Trash">
+								Trash
+							</a>
+						</span>
+                        <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+                </td>
+                <td class="date column-date" data-colname="Date">Published<br><?= substr(str_replace( '-', '/', str_replace(" ", " at ", $post->post_date)), 0 , -3) . ' pm'; ?></td>
+            </tr>
+		<?php endforeach;
+
+		wp_send_json_success( ob_get_clean() );
+
 	}
 
 }

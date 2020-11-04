@@ -66,7 +66,7 @@
 						'post_type' => 'sos_group',
 						'numberposts' => -1,
 					) );
-					foreach( $posts as $post ){
+					foreach( $posts as $post ):
 						?>
 						<tr id="tag-7" class="level-0">
 							<th scope="row" class="check-column"><label class="screen-reader-text" for="cb-select-7">Select <?= $post->post_title; ?></label><input type="checkbox" name="delete_tags[]" value="7" id="cb-select-7"></th>
@@ -88,7 +88,7 @@
 							</td>
 						</tr>
 						<?php
-					}
+					endforeach;
 					?>
 					</tbody>
 
