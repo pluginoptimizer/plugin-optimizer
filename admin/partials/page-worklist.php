@@ -11,9 +11,9 @@ $posts = get_posts( array(
 
 	<h2 class="screen-reader-text">Filter posts list</h2>
 	<ul class="subsubsub">
-		<li class="all"><a href="edit.php?post_type=sos_filter" class="current" aria-current="page">All <span class="count">(<?= count($posts); ?>)</span></a> |</li>
-		<li class="publish"><a href="edit.php?post_status=publish&amp;post_type=sos_filter">Published <span class="count">(<?= wp_count_posts('sos_work')->publish; ?>)</span></a> |</li>
-		<li class="trash"><a href="edit.php?post_status=trash&amp;post_type=sos_filter">Trash <span class="count">(<?= wp_count_posts('sos_work')->trash; ?>)</span></a></li>
+		<li class="all"><a href="edit.php?post_type=sos_work" class="current" aria-current="page">All <span class="count">(<?= count($posts); ?>)</span></a> |</li>
+		<li class="publish"><a href="edit.php?post_status=publish&amp;post_type=sos_work">Published <span class="count">(<?= wp_count_posts('sos_work')->publish; ?>)</span></a> |</li>
+		<li class="trash"><a href="edit.php?post_status=trash&amp;post_type=sos_work">Trash <span class="count">(<?= wp_count_posts('sos_work')->trash; ?>)</span></a></li>
 	</ul>
 	<form id="posts-filter" method="get">
 
@@ -26,7 +26,7 @@ $posts = get_posts( array(
 
 
 
-		<input type="hidden" id="_wpnonce" name="_wpnonce" value="1107e74268"><input type="hidden" name="_wp_http_referer" value="/wp-admin/edit.php?post_type=sos_filter">
+		<input type="hidden" id="_wpnonce" name="_wpnonce" value="1107e74268"><input type="hidden" name="_wp_http_referer" value="/wp-admin/edit.php?post_type=sos_work">
 		<div class="tablenav top">
 
 			<div class="alignleft actions bulkactions">
@@ -51,8 +51,8 @@ $posts = get_posts( array(
 			<thead>
 			<tr>
 				<td id="cb" class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-1">Select All</label><input id="cb-select-all-1" type="checkbox"></td>
-				<th scope="col" id="title" class="manage-column column-title column-primary sortable desc"><a href="/wp-admin/edit.php?post_type=sos_filter&amp;orderby=title&amp;order=asc"><span>Title</span><span class="sorting-indicator"></span></a></th>
-				<th scope="col" id="date" class="manage-column column-date sortable asc"><a href="/wp-admin/edit.php?post_type=sos_filter&amp;orderby=date&amp;order=desc"><span>Date</span><span class="sorting-indicator"></span></a></th>
+				<th scope="col" id="title" class="manage-column column-title column-primary sortable desc"><a href="/wp-admin/edit.php?post_type=sos_work&amp;orderby=title&amp;order=asc"><span>Title</span><span class="sorting-indicator"></span></a></th>
+				<th scope="col" id="date" class="manage-column column-date sortable asc"><a href="/wp-admin/edit.php?post_type=sos_work&amp;orderby=date&amp;order=desc"><span>Date</span><span class="sorting-indicator"></span></a></th>
 			</tr>
 			</thead>
 
@@ -62,7 +62,7 @@ $posts = get_posts( array(
 			<?php
 			foreach( $posts as $post ):
 			?>
-			<tr id="post-205" class="iedit author-self level-0 post-205 type-sos_filter status-publish hentry pmpro-has-access">
+			<tr id="post-205" class="iedit author-self level-0 post-205 type-sos_work status-publish hentry pmpro-has-access">
 				<th scope="row" class="check-column"> <label class="screen-reader-text" for="cb-select-205">
 						Select = $post->post_title; ?> </label>
 					<input id="cb-select-205" type="checkbox" name="post[]" value="205">
@@ -75,7 +75,7 @@ $posts = get_posts( array(
 				<td class="title column-title has-row-actions column-primary page-title" data-colname="Title">
 					<div class="locked-info"><span class="locked-avatar"></span> <span class="locked-text"></span></div>
 					<strong>
-						<a class="row-title" href="<?= get_edit_post_link($post->ID); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)">
+						<a class="row-title" href="<?= get_admin_url(null, 'admin.php?page=simple_online_systems_filters&work=' . str_replace(' ', '_', str_replace('Add filter to ', '', $post->post_title))) ?>" aria-label="“<?= $post->post_title; ?>” (Edit)">
 							<?= $post->post_title; ?>
 						</a>
 					</strong>
@@ -104,8 +104,8 @@ $posts = get_posts( array(
 			<tfoot>
 			<tr>
 				<td class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-2">Select All</label><input id="cb-select-all-2" type="checkbox"></td>
-				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="/wp-admin/edit.php?post_type=sos_filter&amp;orderby=title&amp;order=asc"><span>Title</span><span class="sorting-indicator"></span></a></th>
-				<th scope="col" class="manage-column column-date sortable asc"><a href="/wp-admin/edit.php?post_type=sos_filter&amp;orderby=date&amp;order=desc"><span>Date</span><span class="sorting-indicator"></span></a></th>
+				<th scope="col" class="manage-column column-title column-primary sortable desc"><a href="/wp-admin/edit.php?post_type=sos_work&amp;orderby=title&amp;order=asc"><span>Title</span><span class="sorting-indicator"></span></a></th>
+				<th scope="col" class="manage-column column-date sortable asc"><a href="/wp-admin/edit.php?post_type=sos_work&amp;orderby=date&amp;order=desc"><span>Date</span><span class="sorting-indicator"></span></a></th>
 			</tr>
 			</tfoot>
 

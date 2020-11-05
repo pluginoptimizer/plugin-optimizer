@@ -150,6 +150,7 @@ class Simple_Online_Systems {
 		$this->loader->add_action( 'save_post', $plugin_admin, 'save_filter_options' );
 		$this->loader->add_action( 'save_post', $plugin_admin, 'save_group_options' );
 		$this->loader->add_action( 'save_post', $plugin_admin, 'add_item_to_worklist' );
+		$this->loader->add_action( 'admin_bar_menu', $plugin_admin, 'add_plugin_in_admin_bar', 100 );
 
 
 		$this->loader->add_action( 'wp_ajax_sos_add_plugin_to_filter', $plugin_admin, 'ajax_add_plugin_to_filter' );

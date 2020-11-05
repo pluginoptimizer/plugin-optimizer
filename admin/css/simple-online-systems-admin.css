@@ -57,3 +57,16 @@
 .popup-close:hover {
     color: #0073aa;
 }
+
+.sos-icon:before {
+    font-family: "dashicons";
+    content: "\f468";
+    display: inline-block;
+    line-height: 1;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    vertical-align: top;
+    margin-top: 6px;
+    color: #fff;
+}

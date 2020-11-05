@@ -102,6 +102,60 @@ class Simple_Online_Systems_Admin {
 	}
 
 	/**
+	 * Add Admin-Bar Pages
+	 */
+	public function add_plugin_in_admin_bar($wp_admin_bar){
+		$wp_admin_bar->add_menu( array(
+			'id'    => 'plugin_optimizer',
+			'title' => '<span class="sos-icon"></span> Plugin Optimizer',
+			'href'  => get_admin_url(null, 'admin.php?page=simple_online_systems_settings'),
+		) );
+
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'plugin_optimizer',
+			'id'     => 'plugin_optimizer_overview',
+			'title'  => 'Overview',
+			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_overview'),
+		) );
+
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'plugin_optimizer',
+			'id'     => 'plugin_optimizer_filters',
+			'title'  => 'Filters',
+			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_filters'),
+		) );
+
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'plugin_optimizer',
+			'id'     => 'plugin_optimizer_groups',
+			'title'  => 'Groups',
+			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_groups'),
+		) );
+
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'plugin_optimizer',
+			'id'     => 'plugin_optimizer_settings',
+			'title'  => 'Settings',
+			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_settings'),
+		) );
+
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'plugin_optimizer',
+			'id'     => 'plugin_optimizer_worklist',
+			'title'  => 'Worklist',
+			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_worklist'),
+		) );
+
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'plugin_optimizer',
+			'id'     => 'plugin_optimizer_support',
+			'title'  => 'Support',
+			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_support'),
+		) );
+
+	}
+
+	/**
 	 * Register all post types
 	 */
 	public function register_post_types() {
