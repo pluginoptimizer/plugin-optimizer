@@ -309,6 +309,7 @@ class Simple_Online_Systems_Admin {
 		$pages         = htmlspecialchars( $_POST[ 'pages' ] );
 		$title_filter  = htmlspecialchars( $_POST[ 'title_filter' ] );
 		$type_filter   = htmlspecialchars( $_POST[ 'type_filter' ] );
+		$category_filter   = htmlspecialchars( $_POST[ 'category_filter' ] );
 
 		$post_data = array(
 			'post_title'  => $title_filter,
@@ -328,6 +329,7 @@ class Simple_Online_Systems_Admin {
 		add_post_meta( $post_id, 'selected_post_type', $post_type );
 		add_post_meta( $post_id, 'selected_page', $pages );
 		add_post_meta( $post_id, 'type_filter', $type_filter );
+		add_post_meta( $post_id, 'category_filter', $category_filter );
 
 		ob_start();
 
@@ -337,32 +339,37 @@ class Simple_Online_Systems_Admin {
 		) );
 
 		foreach ( $posts as $post ) : ?>
-			<tr id="tag-7" class="level-0">
-				<th scope="row" class="check-column"><label class="screen-reader-text" for="cb-select-7">Select <?= $post->post_title; ?></label><input type="checkbox" name="delete_tags[]" value="7" id="cb-select-7"></th>
-				<td class="name column-name has-row-actions column-primary" data-colname="Name"><strong><a class="row-title" href="<?= get_edit_post_link($post->ID); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)"><?= $post->post_title; ?></a></strong><br>
-					<div class="hidden" id="inline_7">
-						<div class="name"><?= $post->post_title; ?></div>
-						<div class="slug"><?= $post->post_title; ?></div>
-						<div class="parent">0</div>
-					</div>
-					<div class="row-actions"><span class="edit"><a href="<?= get_edit_post_link($post->ID); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= get_delete_post_link($post->ID); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
-					</div>
-					<button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span>
-					</button>
-				</td>
-				<td class="description column-description" data-colname="Selected pages"><span aria-hidden="true"><?= implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ) . ', '  . implode( get_metadata( 'post', $post->ID, 'selected_page' )); ?></span><span class="screen-reader-text">No description</span></td>
-				<td class="slug column-slug" data-colname="Block plugins"><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( get_metadata( 'post', $post->ID, 'block_group_plugins' )); ?></td>
-				<td class="posts column-posts" data-colname="Count">
-					<?php
-					$selected_post_types = explode(', ', implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ));
-					$count_posts = 0;
+            <tr id="post-205" class="iedit author-self level-0 post-205 type-sos_work status-publish hentry pmpro-has-access">
+                <th scope="row" class="check-column"> <label class="screen-reader-text" for="cb-select-205">
+                        Select <?= $post->post_title; ?> </label>
+                    <input id="cb-select-205" type="checkbox" name="post[]" value="205">
+                    <div class="locked-indicator">
+                        <span class="locked-indicator-icon" aria-hidden="true"></span>
+                        <span class="screen-reader-text">
+                                “<?= $post->post_title; ?>” is locked </span>
+                    </div>
+                </th>
+                <td class="title column-title has-row-actions column-primary page-title" data-colname="Title">
+                    <div class="locked-info"><span class="locked-avatar"></span> <span class="locked-text"></span></div>
+                    <strong>
+                        <a class="row-title" href="<?= get_admin_url(null, 'admin.php?page=simple_online_systems_filters&work_title=' . urlencode(str_replace(' ', '_', str_replace('Add filter to ', '', $post->post_title))) . '&work_link=' . urlencode(implode( '', get_metadata( 'post', $post->ID, 'post_link' )))); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)">
+							<?= $post->post_title; ?>
+                        </a>
+                    </strong>
 
-					foreach( $selected_post_types as $selected_post_type ):
-						$count_posts += wp_count_posts($selected_post_type)->publish;
-					endforeach;
-					echo $count_posts + count(explode(", ", implode( get_metadata( 'post', $post->ID, 'selected_page' )))); ?>
-				</td>
-			</tr>
+                    <div class="row-actions">
+						<span class="edit">
+							<a href="<?= get_edit_post_link($post->ID); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> |
+						</span>
+                        <span class="trash">
+							<a href="<?= get_delete_post_link($post->ID); ?>" class="submitdelete" aria-label="Move “<?= $post->post_title; ?>” to the Trash">
+								Trash
+							</a>
+						</span>
+                        <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
+                </td>
+                <td class="date column-date" data-colname="Date">Published<br><?= substr(str_replace( '-', '/', str_replace(" ", " at ", $post->post_date)), 0 , -3) . ' pm'; ?></td>
+            </tr>
 		<?php endforeach;
 
 		wp_send_json_success( ob_get_clean() );
@@ -379,6 +386,7 @@ class Simple_Online_Systems_Admin {
 		$value_selected_post_type = get_post_meta( $post->ID, 'selected_post_type', 1 );
 		$value_selected_page      = get_post_meta( $post->ID, 'selected_page', 1 );
 		$value_type_filter        = get_post_meta( $post->ID, 'type_filter', 1 );
+		$value_category_filter        = get_post_meta( $post->ID, 'category_filter', 1 );
 
 		?>
 		<label for="block_plugins"> <?= "Select block plugins" ?> </label>
@@ -403,6 +411,11 @@ class Simple_Online_Systems_Admin {
 
 		<label for="type_filter"> <?= "Set Type" ?></label>
 		<input type="text" id="type_filter" name="type_filter" value=" <?= $value_type_filter ?>" size="25" />
+		<br>
+		<br>
+
+        <label for="type_filter"> <?= "Category Type" ?></label>
+		<input type="text" id="type_filter" name="category_filter" value=" <?= $value_category_filter ?>" size="25" />
 		<br>
 		<br>
 
@@ -433,12 +446,14 @@ class Simple_Online_Systems_Admin {
 		$selected_post_type = sanitize_text_field( $_POST[ 'selected_post_type' ] );
 		$selected_page      = sanitize_text_field( $_POST[ 'selected_page' ] );
 		$type_filter        = sanitize_text_field( $_POST[ 'type_filter' ] );
+		$category_filter        = sanitize_text_field( $_POST[ 'category_filter' ] );
 
 		update_post_meta( $post_id, 'block_plugins', $block_plugins );
 		update_post_meta( $post_id, 'block_group_plugins', $block_group_plugins );
 		update_post_meta( $post_id, 'selected_post_type', $selected_post_type );
 		update_post_meta( $post_id, 'selected_page', $selected_page );
 		update_post_meta( $post_id, 'type_filter', $type_filter );
+		update_post_meta( $post_id, 'category_filter', $category_filter );
 	}
 
 	public function ajax_search_pages() {
@@ -627,6 +642,7 @@ class Simple_Online_Systems_Admin {
 		}
 
 		$title_work  = 'Add filter to ' . get_post($post_id)->post_title;
+		$post_link  = get_post_permalink(get_post($post_id));
 
 		$post_data = array(
 			'post_title'  => $title_work,
@@ -636,10 +652,10 @@ class Simple_Online_Systems_Admin {
 		);
 
 		$post_id = wp_insert_post( $post_data, true );
-
 		if ( is_wp_error( $post_id ) ) {
 			wp_send_json_error( $post_id->get_error_message() );
 		}
+		add_post_meta( $post_id, 'post_link', $post_link );
 	}
 
 	public function ajax_search_works(){
@@ -653,9 +669,9 @@ class Simple_Online_Systems_Admin {
 		) );
 
 		foreach ( $posts as $post ) : ?>
-            <tr id="post-205" class="iedit author-self level-0 post-205 type-sos_filter status-publish hentry pmpro-has-access">
+            <tr id="post-205" class="iedit author-self level-0 post-205 type-sos_work status-publish hentry pmpro-has-access">
                 <th scope="row" class="check-column"> <label class="screen-reader-text" for="cb-select-205">
-                        Select = $post->post_title; ?> </label>
+                        Select <?= $post->post_title; ?> </label>
                     <input id="cb-select-205" type="checkbox" name="post[]" value="205">
                     <div class="locked-indicator">
                         <span class="locked-indicator-icon" aria-hidden="true"></span>
@@ -666,7 +682,7 @@ class Simple_Online_Systems_Admin {
                 <td class="title column-title has-row-actions column-primary page-title" data-colname="Title">
                     <div class="locked-info"><span class="locked-avatar"></span> <span class="locked-text"></span></div>
                     <strong>
-                        <a class="row-title" href="<?= get_edit_post_link($post->ID); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)">
+                        <a value="<?= implode( '', get_metadata( 'post', $post->ID, 'post_link' )); ?>" class="row-title" href="<?= get_admin_url(null, 'admin.php?page=simple_online_systems_filters&work=' . str_replace(' ', '_', str_replace('Add filter to ', '', $post->post_title))) ?>" aria-label="“<?= $post->post_title; ?>” (Edit)">
 							<?= $post->post_title; ?>
                         </a>
                     </strong>

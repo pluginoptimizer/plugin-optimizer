@@ -149,7 +149,8 @@ class Simple_Online_Systems {
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'register_meta_boxes' );
 		$this->loader->add_action( 'save_post', $plugin_admin, 'save_filter_options' );
 		$this->loader->add_action( 'save_post', $plugin_admin, 'save_group_options' );
-		$this->loader->add_action( 'save_post', $plugin_admin, 'add_item_to_worklist' );
+		$this->loader->add_action( 'save_post_page', $plugin_admin, 'add_item_to_worklist' );
+		$this->loader->add_action( 'save_post_post', $plugin_admin, 'add_item_to_worklist' );
 		$this->loader->add_action( 'admin_bar_menu', $plugin_admin, 'add_plugin_in_admin_bar', 100 );
 
 

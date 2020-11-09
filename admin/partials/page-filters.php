@@ -5,6 +5,8 @@
         <input type="text" placeholder="Enter filter title" name="title_filter">
         <p>Set Type</p>
         <input type="text" placeholder="Enter type" name="type_filter">
+        <p>Select category</p>
+        <input type="text" placeholder="Enter category" name="category_filter">
         <p>Add Permalinks</p>
 <!--        <input type="text" value="--><?//= get_home_url() . '/'; ?><!--" placeholder="Enter permalinks" name="pages">-->
         <input type="text" id="search_pages" placeholder="Enter name page" name="pages">
@@ -92,6 +94,8 @@
                     <tr>
                         <td id="cb" class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-1">Select All</label><input id="cb-select-all-1" type="checkbox"></td>
                         <th scope="col" id="name" class="manage-column column-name column-primary sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=name&amp;order=asc"><span>Name</span><span class="sorting-indicator"></span></a></th>
+                        <th scope="col" id="description" class="manage-column column-description sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=description&amp;order=asc"><span>Category</span><span class="sorting-indicator"></span></a></th>
+                        <th scope="col" id="description" class="manage-column column-description sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=description&amp;order=asc"><span>Type</span><span class="sorting-indicator"></span></a></th>
                         <th scope="col" id="description" class="manage-column column-description sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=description&amp;order=asc"><span>Selected pages</span><span class="sorting-indicator"></span></a></th>
                         <th scope="col" id="slug" class="manage-column column-slug sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=slug&amp;order=asc"><span>Block plugins</span><span class="sorting-indicator"></span></a></th>
                         <th scope="col" id="posts" class="manage-column column-posts num sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=count&amp;order=asc"><span>Count</span><span class="sorting-indicator"></span></a></th>
@@ -119,6 +123,8 @@
                                 <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span>
                                 </button>
                             </td>
+                            <td class="description column-description" data-colname="Category"><span aria-hidden="true"><?= implode( ",", get_metadata( 'post', $post->ID, 'category_filter' ) ); ?></span><span class="screen-reader-text">No description</span></td>
+                            <td class="description column-description" data-colname="Type"><span aria-hidden="true"><?= implode( ",", get_metadata( 'post', $post->ID, 'type_filter' ) ); ?></span><span class="screen-reader-text">No description</span></td>
                             <td class="description column-description" data-colname="Selected pages"><span aria-hidden="true"><?= implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ) . ', '  . implode( get_metadata( 'post', $post->ID, 'selected_page' )); ?></span><span class="screen-reader-text">No description</span></td>
                             <td class="slug column-slug" data-colname="Block plugins"><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( get_metadata( 'post', $post->ID, 'block_group_plugins' )); ?></td>
                             <td class="posts column-posts" data-colname="Count">
@@ -141,6 +147,8 @@
                     <tr>
                         <td class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-2">Select All</label><input id="cb-select-all-2" type="checkbox"></td>
                         <th scope="col" class="manage-column column-name column-primary sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=name&amp;order=asc"><span>Name</span><span class="sorting-indicator"></span></a></th>
+                        <th scope="col" class="manage-column column-description sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=description&amp;order=asc"><span>Category</span><span class="sorting-indicator"></span></a></th>
+                        <th scope="col" class="manage-column column-description sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=description&amp;order=asc"><span>Type</span><span class="sorting-indicator"></span></a></th>
                         <th scope="col" class="manage-column column-description sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=description&amp;order=asc"><span>Selected pages</span><span class="sorting-indicator"></span></a></th>
                         <th scope="col" class="manage-column column-slug sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=slug&amp;order=asc"><span>Block plugins</span><span class="sorting-indicator"></span></a></th>
                         <th scope="col" class="manage-column column-posts num sortable desc"><a href="/wp-admin/edit-tags.php?taxonomy=Group&amp;post_type=filters&amp;orderby=count&amp;order=asc"><span>Count</span><span class="sorting-indicator"></span></a></th>

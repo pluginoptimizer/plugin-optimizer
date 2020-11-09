@@ -64,7 +64,7 @@ $posts = get_posts( array(
 			?>
 			<tr id="post-205" class="iedit author-self level-0 post-205 type-sos_work status-publish hentry pmpro-has-access">
 				<th scope="row" class="check-column"> <label class="screen-reader-text" for="cb-select-205">
-						Select = $post->post_title; ?> </label>
+						Select <?= $post->post_title; ?> </label>
 					<input id="cb-select-205" type="checkbox" name="post[]" value="205">
 					<div class="locked-indicator">
 						<span class="locked-indicator-icon" aria-hidden="true"></span>
@@ -75,7 +75,7 @@ $posts = get_posts( array(
 				<td class="title column-title has-row-actions column-primary page-title" data-colname="Title">
 					<div class="locked-info"><span class="locked-avatar"></span> <span class="locked-text"></span></div>
 					<strong>
-						<a class="row-title" href="<?= get_admin_url(null, 'admin.php?page=simple_online_systems_filters&work=' . str_replace(' ', '_', str_replace('Add filter to ', '', $post->post_title))) ?>" aria-label="“<?= $post->post_title; ?>” (Edit)">
+						<a class="row-title" href="<?= get_admin_url(null, 'admin.php?page=simple_online_systems_filters&work_title=' . urlencode(str_replace(' ', '_', str_replace('Add filter to ', '', $post->post_title))) . '&work_link=' . urlencode(implode( '', get_metadata( 'post', $post->ID, 'post_link' )))); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)">
 							<?= $post->post_title; ?>
 						</a>
 					</strong>
