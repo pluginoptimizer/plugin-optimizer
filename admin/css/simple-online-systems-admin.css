@@ -70,3 +70,147 @@
     margin-top: 6px;
     color: #fff;
 }
+
+
+
+/*New design*/
+
+.sos-wrap * {
+    text-transform: uppercase;
+}
+
+.sos-wrap h1 {
+    color: #000000;
+    font-family: "Gilroy";
+    font-size: 36px;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 48px;
+    text-align: left;
+    text-transform: uppercase;
+    /* Text style for "plugin opt" */
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: normal;
+}
+
+.sos-wrap h2 {
+    color: #000000;
+    font-family: Gilroy;
+    font-size: 30px;
+    font-weight: 300;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: 48px;
+    text-align: left;
+    text-transform: uppercase;
+    /* Text style for "worklist" */
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: normal;
+}
+
+
+.sos-wrap .tabs {
+    background-color: #1e4d7d;
+    background-image: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.2) 100%);
+
+    /* Style for "filters" */
+    color: #ffffff;
+    font-family: Gilroy;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 48px;
+    text-align: center;
+    margin-right: 1%;
+}
+
+.sos-wrap .search {
+    /* Style for "tab" */
+    float: right;
+    padding: 5%;
+    background-color: #a6a6a6;
+    background-image: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.2) 100%);
+    color: #fefefe;
+    font-family: Gilroy;
+    font-size: 20px;
+    font-weight: 300;
+    margin-right: -45px;
+}
+
+.sos-wrap .quantity {
+    text-align: right;
+}
+
+.sos-wrap table {
+    width: 100%;
+    text-align: center;
+}
+
+.sos-wrap table *:not(span):not(a) {
+    padding: 10px;
+}
+
+.sos-wrap thead th {
+    color: #285483;
+    font-family: Gilroy;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.sos-wrap tbody {
+    background-color: #f1f1f1;
+}
+
+.sos-wrap tbody td {
+    text-transform: none;
+}
+
+.sos-wrap table button {
+    padding: 5px;
+    text-transform: uppercase;
+    box-shadow: -1px 1px 0 rgba(255, 255, 255, 0.55), inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+    border: 1px solid #689530;
+    background-color: #369451;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 100%);
+    color: white;
+    cursor: pointer;
+}
+
+.sos-wrap .pluse {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    /* padding: 5px; */
+    margin-top: 2px;
+    text-align: center;
+    box-shadow: -2px 1px 3px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.09) 0%, rgba(255, 255, 255, 0.09) 100%);
+    color: #8fba51;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    line-height: 15px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.sos-wrap .row {
+    margin-bottom: 10px;
+}
+
+#wpcontent{
+    background-color: #f1f1f1;
+}
+.sos-wrap .sos-content{
+    background-color: #fff !important;
+}
+
+.wrap-tabs{
+    margin-bottom: 0 !important;
+}
+.wrap-tabs > *{
+    margin-bottom: 0 !important;
+    padding: 0!important;
+}

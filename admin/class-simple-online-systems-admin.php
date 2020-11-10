@@ -44,6 +44,7 @@ class Simple_Online_Systems_Admin {
 	public function enqueue_styles() {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/simple-online-systems-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name .'-bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css', array(), $this->version, 'all' );
 
 	}
 
@@ -108,49 +109,49 @@ class Simple_Online_Systems_Admin {
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'plugin_optimizer',
 			'title' => '<span class="sos-icon"></span> Plugin Optimizer',
-			'href'  => get_admin_url(null, 'admin.php?page=simple_online_systems_settings'),
+			'href'  => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_settings')),
 		) );
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_overview',
 			'title'  => 'Overview',
-			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_overview'),
+			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_overview')),
 		) );
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_filters',
 			'title'  => 'Filters',
-			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_filters'),
+			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters')),
 		) );
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_groups',
 			'title'  => 'Groups',
-			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_groups'),
+			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_groups')),
 		) );
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_settings',
 			'title'  => 'Settings',
-			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_settings'),
+			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_settings')),
 		) );
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_worklist',
 			'title'  => 'Worklist',
-			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_worklist'),
+			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_worklist')),
 		) );
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_support',
 			'title'  => 'Support',
-			'href'   => get_admin_url(null, 'admin.php?page=simple_online_systems_support'),
+			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_support')),
 		) );
 
 	}
@@ -294,9 +295,9 @@ class Simple_Online_Systems_Admin {
 		$block_group_plugins = '';
 		foreach( $block_group_plugins_get as $block_group_plugin ){
 			$posts = get_posts( array(
-				'post_type' => 'sos_group',
-				's' => $block_group_plugin,
-				'numberposts' => -1,
+				'post_type'     => 'sos_group',
+				's'             => $block_group_plugin,
+				'numberposts'   => -1,
 			) );
 			foreach( $posts as $post ){
 				$block_group_plugins .= implode( ",", get_metadata( 'post', $post->ID, 'group_plugins' ) ) . ', ';
@@ -304,12 +305,12 @@ class Simple_Online_Systems_Admin {
 		}
 		$block_group_plugins = substr($block_group_plugins, 0, -2);
 
-		$block_plugins = htmlspecialchars( $_POST[ 'block_plugins' ] );
-		$post_type     = htmlspecialchars( $_POST[ 'post_type' ] );
-		$pages         = htmlspecialchars( $_POST[ 'pages' ] );
-		$title_filter  = htmlspecialchars( $_POST[ 'title_filter' ] );
-		$type_filter   = htmlspecialchars( $_POST[ 'type_filter' ] );
-		$category_filter   = htmlspecialchars( $_POST[ 'category_filter' ] );
+		$block_plugins      = htmlspecialchars( $_POST[ 'block_plugins' ] );
+		$post_type          = htmlspecialchars( $_POST[ 'post_type' ] );
+		$pages              = htmlspecialchars( $_POST[ 'pages' ] );
+		$title_filter       = htmlspecialchars( $_POST[ 'title_filter' ] );
+		$type_filter        = htmlspecialchars( $_POST[ 'type_filter' ] );
+		$category_filter    = htmlspecialchars( $_POST[ 'category_filter' ] );
 
 		$post_data = array(
 			'post_title'  => $title_filter,
@@ -352,17 +353,17 @@ class Simple_Online_Systems_Admin {
                 <td class="title column-title has-row-actions column-primary page-title" data-colname="Title">
                     <div class="locked-info"><span class="locked-avatar"></span> <span class="locked-text"></span></div>
                     <strong>
-                        <a class="row-title" href="<?= get_admin_url(null, 'admin.php?page=simple_online_systems_filters&work_title=' . urlencode(str_replace(' ', '_', str_replace('Add filter to ', '', $post->post_title))) . '&work_link=' . urlencode(implode( '', get_metadata( 'post', $post->ID, 'post_link' )))); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)">
+                        <a class="row-title" href="<?= esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters&work_title=' . urlencode(str_replace(' ', '_', str_replace('Add filter to ', '', $post->post_title))) . '&work_link=' . urlencode(implode( '', get_metadata( 'post', $post->ID, 'post_link' ))))); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)">
 							<?= $post->post_title; ?>
                         </a>
                     </strong>
 
                     <div class="row-actions">
 						<span class="edit">
-							<a href="<?= get_edit_post_link($post->ID); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> |
+							<a href="<?= esc_url(get_edit_post_link($post->ID)); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> |
 						</span>
                         <span class="trash">
-							<a href="<?= get_delete_post_link($post->ID); ?>" class="submitdelete" aria-label="Move “<?= $post->post_title; ?>” to the Trash">
+							<a href="<?= esc_url(get_delete_post_link($post->ID)); ?>" class="submitdelete" aria-label="Move “<?= $post->post_title; ?>” to the Trash">
 								Trash
 							</a>
 						</span>
@@ -381,11 +382,11 @@ class Simple_Online_Systems_Admin {
 
 		wp_nonce_field( plugin_basename( __FILE__ ), 'nonce_sos_filter_options' );
 
-		$value_block_plugins      = get_post_meta( $post->ID, 'block_plugins', 1 );
-		$value_block_group_plugins      = get_post_meta( $post->ID, 'block_group_plugins', 1 );
-		$value_selected_post_type = get_post_meta( $post->ID, 'selected_post_type', 1 );
-		$value_selected_page      = get_post_meta( $post->ID, 'selected_page', 1 );
-		$value_type_filter        = get_post_meta( $post->ID, 'type_filter', 1 );
+		$value_block_plugins          = get_post_meta( $post->ID, 'block_plugins', 1 );
+		$value_block_group_plugins    = get_post_meta( $post->ID, 'block_group_plugins', 1 );
+		$value_selected_post_type     = get_post_meta( $post->ID, 'selected_post_type', 1 );
+		$value_selected_page          = get_post_meta( $post->ID, 'selected_page', 1 );
+		$value_type_filter            = get_post_meta( $post->ID, 'type_filter', 1 );
 		$value_category_filter        = get_post_meta( $post->ID, 'category_filter', 1 );
 
 		?>
@@ -441,11 +442,11 @@ class Simple_Online_Systems_Admin {
 			return;
 		}
 
-		$block_plugins      = sanitize_text_field( $_POST[ 'block_plugins' ] );
-		$block_group_plugins      = sanitize_text_field( $_POST[ 'block_group_plugins' ] );
-		$selected_post_type = sanitize_text_field( $_POST[ 'selected_post_type' ] );
-		$selected_page      = sanitize_text_field( $_POST[ 'selected_page' ] );
-		$type_filter        = sanitize_text_field( $_POST[ 'type_filter' ] );
+		$block_plugins          = sanitize_text_field( $_POST[ 'block_plugins' ] );
+		$block_group_plugins    = sanitize_text_field( $_POST[ 'block_group_plugins' ] );
+		$selected_post_type     = sanitize_text_field( $_POST[ 'selected_post_type' ] );
+		$selected_page          = sanitize_text_field( $_POST[ 'selected_page' ] );
+		$type_filter            = sanitize_text_field( $_POST[ 'type_filter' ] );
 		$category_filter        = sanitize_text_field( $_POST[ 'category_filter' ] );
 
 		update_post_meta( $post_id, 'block_plugins', $block_plugins );
@@ -461,8 +462,8 @@ class Simple_Online_Systems_Admin {
 
 		$posts = get_posts( array(
 			'numberposts' => - 1,
-			's' => esc_attr( $_POST['keyword'] ),
-            'post_type' => 'page'
+			's'           => esc_attr( $_POST['keyword'] ),
+            'post_type'   => 'page',
 		) );
 
 		if( $posts ) :
@@ -493,19 +494,19 @@ class Simple_Online_Systems_Admin {
 		$posts = get_posts( array(
 			'post_type'   => 'sos_filter',
 			'numberposts' => - 1,
-			's' => esc_attr( $_POST['keyword'] ),
+			's'           => esc_attr( $_POST['keyword'] ),
 		) );
 
 		foreach ( $posts as $post ) : ?>
             <tr id="tag-7" class="level-0">
                 <th scope="row" class="check-column"><label class="screen-reader-text" for="cb-select-7">Select <?= $post->post_title; ?></label><input type="checkbox" name="delete_tags[]" value="7" id="cb-select-7"></th>
-                <td class="name column-name has-row-actions column-primary" data-colname="Name"><strong><a class="row-title" href="<?= get_edit_post_link($post->ID); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)"><?= $post->post_title; ?></a></strong><br>
+                <td class="name column-name has-row-actions column-primary" data-colname="Name"><strong><a class="row-title" href="<?= esc_url(get_edit_post_link($post->ID)); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)"><?= $post->post_title; ?></a></strong><br>
                     <div class="hidden" id="inline_7">
                         <div class="name"><?= $post->post_title; ?></div>
                         <div class="slug"><?= $post->post_title; ?></div>
                         <div class="parent">0</div>
                     </div>
-                    <div class="row-actions"><span class="edit"><a href="<?= get_edit_post_link($post->ID); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= get_delete_post_link($post->ID); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
+                    <div class="row-actions"><span class="edit"><a href="<?= esc_url(get_edit_post_link($post->ID)); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= esc_url(get_delete_post_link($post->ID)); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
                     </div>
                     <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span>
                     </button>
@@ -532,8 +533,8 @@ class Simple_Online_Systems_Admin {
 	//	groups
 	public function ajax_add_group_plugins() {
 
-		$title_group  = htmlspecialchars( $_POST[ 'title_group' ] );
-		$type_group   = htmlspecialchars( $_POST[ 'type_group' ] );
+		$title_group   = htmlspecialchars( $_POST[ 'title_group' ] );
+		$type_group    = htmlspecialchars( $_POST[ 'type_group' ] );
 		$group_plugins = htmlspecialchars( $_POST[ 'group_plugins' ] );
 
 		$post_data = array(
@@ -568,7 +569,7 @@ class Simple_Online_Systems_Admin {
                         <div class="slug"><?= $post->post_title; ?></div>
                         <div class="parent">0</div>
                     </div>
-                    <div class="row-actions"><span class="edit"><a href="<?= get_edit_post_link($post->ID); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= get_delete_post_link($post->ID); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
+                    <div class="row-actions"><span class="edit"><a href="<?= esc_url(get_edit_post_link($post->ID)); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= esc_url(get_delete_post_link($post->ID)); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
                     </div>
                     <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span>
                     </button>
@@ -589,7 +590,7 @@ class Simple_Online_Systems_Admin {
 
 		wp_nonce_field( plugin_basename( __FILE__ ), 'nonce_sos_group_options' );
 
-		$value_type_group       = get_post_meta( $post->ID, 'type_group', 1 );
+		$value_type_group        = get_post_meta( $post->ID, 'type_group', 1 );
 		$value_group_plugins     = get_post_meta( $post->ID, 'group_plugins', 1 );
 
 		?>
@@ -624,7 +625,7 @@ class Simple_Online_Systems_Admin {
 			return;
 		}
 
-		$type_group        = sanitize_text_field( $_POST[ 'type_group' ] );
+		$type_group         = sanitize_text_field( $_POST[ 'type_group' ] );
 		$group_plugins      = sanitize_text_field( $_POST[ 'group_plugins' ] );
 
 		update_post_meta( $post_id, '$type_group', $type_group );
@@ -642,7 +643,7 @@ class Simple_Online_Systems_Admin {
 		}
 
 		$title_work  = 'Add filter to ' . get_post($post_id)->post_title;
-		$post_link  = get_post_permalink(get_post($post_id));
+		$post_link   = get_post_permalink(get_post($post_id));
 
 		$post_data = array(
 			'post_title'  => $title_work,
@@ -689,10 +690,10 @@ class Simple_Online_Systems_Admin {
 
                     <div class="row-actions">
 						<span class="edit">
-							<a href="<?= get_edit_post_link($post->ID); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> |
+							<a href="<?= esc_url(get_edit_post_link($post->ID)); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> |
 						</span>
                         <span class="trash">
-							<a href="<?= get_delete_post_link($post->ID); ?>" class="submitdelete" aria-label="Move “<?= $post->post_title; ?>” to the Trash">
+							<a href="<?= esc_url(get_delete_post_link($post->ID)); ?>" class="submitdelete" aria-label="Move “<?= $post->post_title; ?>” to the Trash">
 								Trash
 							</a>
 						</span>

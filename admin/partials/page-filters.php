@@ -43,7 +43,7 @@
         <select name="block_group_plugins" multiple>
             <?php
             $posts = get_posts( array(
-	            'post_type' => 'sos_group',
+	            'post_type'   => 'sos_group',
 	            'numberposts' => -1,
             ) );
             foreach( $posts as $post ){
@@ -105,20 +105,20 @@
                     <tbody id="the-list" data-wp-lists="list:tag">
                     <?php
                     $posts = get_posts( array(
-                        'post_type' => 'sos_filter',
+                        'post_type'   => 'sos_filter',
                         'numberposts' => -1,
                     ) );
                     foreach( $posts as $post ){
                         ?>
                         <tr id="tag-7" class="level-0">
                             <th scope="row" class="check-column"><label class="screen-reader-text" for="cb-select-7">Select <?= $post->post_title; ?></label><input type="checkbox" name="delete_tags[]" value="7" id="cb-select-7"></th>
-                            <td class="name column-name has-row-actions column-primary" data-colname="Name"><strong><a class="row-title" href="<?= get_edit_post_link($post->ID); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)"><?= $post->post_title; ?></a></strong><br>
+                            <td class="name column-name has-row-actions column-primary" data-colname="Name"><strong><a class="row-title" href="<?= esc_url(get_edit_post_link($post->ID)); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)"><?= $post->post_title; ?></a></strong><br>
                                 <div class="hidden" id="inline_7">
                                     <div class="name"><?= $post->post_title; ?></div>
                                     <div class="slug"><?= $post->post_title; ?></div>
                                     <div class="parent">0</div>
                                 </div>
-                                <div class="row-actions"><span class="edit"><a href="<?= get_edit_post_link($post->ID); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= get_delete_post_link($post->ID); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
+                                <div class="row-actions"><span class="edit"><a href="<?= esc_url(get_edit_post_link($post->ID)); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= esc_url(get_delete_post_link($post->ID)); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
                                 </div>
                                 <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span>
                                 </button>
