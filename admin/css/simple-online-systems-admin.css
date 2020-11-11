@@ -129,14 +129,19 @@
 .sos-wrap .search {
     /* Style for "tab" */
     float: right;
-    padding: 5%;
     background-color: #a6a6a6;
     background-image: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.2) 100%);
     color: #fefefe;
-    font-family: Gilroy;
     font-size: 20px;
     font-weight: 300;
     margin-right: -45px;
+}
+.sos-wrap .search::placeholder {
+    background-color: #a6a6a6;
+    background-image: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.2) 100%);
+    color: #fefefe;
+    font-size: 20px;
+    font-weight: 300;
 }
 
 .sos-wrap .quantity {
@@ -159,15 +164,26 @@
     font-weight: 300;
 }
 
+.sos-wrap tbody tr {
+    border-bottom: 5px solid #fff;
+    border-top: 5px solid #fff;
+}
+
+.sos-wrap thead th:not(:nth-child(1)) {
+    min-width: 200px;
+}
+
 .sos-wrap tbody {
     background-color: #f1f1f1;
 }
 
-.sos-wrap tbody td {
+.sos-wrap tbody td:not(:nth-child(1)) {
     text-transform: none;
+    min-width: 200px;
+    width: auto;
 }
 
-.sos-wrap table button {
+.sos-wrap button.add-filter {
     padding: 5px;
     text-transform: uppercase;
     box-shadow: -1px 1px 0 rgba(255, 255, 255, 0.55), inset 0 0 0 2px rgba(255, 255, 255, 0.3);
@@ -204,6 +220,7 @@
     background-color: #f1f1f1;
 }
 .sos-wrap .sos-content{
+    margin: 0;
     background-color: #fff !important;
 }
 
@@ -212,5 +229,12 @@
 }
 .wrap-tabs > *{
     margin-bottom: 0 !important;
-    padding: 0!important;
+    /*padding: 0!important;*/
+}
+
+.quantity #all_works{
+    font-weight: 700;
+}
+.quantity *{
+    cursor: pointer;
 }
