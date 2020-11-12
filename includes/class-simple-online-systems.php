@@ -157,12 +157,12 @@ class Simple_Online_Systems {
 		$this->loader->add_action( 'wp_ajax_sos_add_plugin_to_filter', $plugin_admin, 'ajax_add_plugin_to_filter' );
 		$this->loader->add_action( 'wp_ajax_sos_search_pages', $plugin_admin, 'ajax_search_pages' );
 		$this->loader->add_action( 'wp_ajax_sos_search_filters', $plugin_admin, 'ajax_search_filters' );
-		$this->loader->add_action( 'wp_ajax_sos_search_works', $plugin_admin, 'ajax_search_works' );
-		$this->loader->add_action( 'wp_ajax_sos_all_works', $plugin_admin, 'ajax_all_works' );
-		$this->loader->add_action( 'wp_ajax_sos_trash_works', $plugin_admin, 'ajax_trash_works' );
-		$this->loader->add_action( 'wp_ajax_sos_delete_works', $plugin_admin, 'ajax_delete_works' );
-		$this->loader->add_action( 'wp_ajax_sos_publish_works', $plugin_admin, 'ajax_publish_works' );
-		$this->loader->add_action( 'wp_ajax_sos_count_works', $plugin_admin, 'ajax_count_works' );
+		$this->loader->add_action( 'wp_ajax_sos_search_elements', $plugin_admin, 'ajax_search_elements' );
+		$this->loader->add_action( 'wp_ajax_sos_all_elements', $plugin_admin, 'ajax_all_elements' );
+		$this->loader->add_action( 'wp_ajax_sos_trash_elements', $plugin_admin, 'ajax_trash_elements' );
+		$this->loader->add_action( 'wp_ajax_sos_delete_elements', $plugin_admin, 'ajax_delete_elements' );
+		$this->loader->add_action( 'wp_ajax_sos_publish_elements', $plugin_admin, 'ajax_publish_elements' );
+		$this->loader->add_action( 'wp_ajax_sos_count_elements', $plugin_admin, 'ajax_count_elements' );
 		$this->loader->add_action( 'wp_ajax_sos_add_group_plugins', $plugin_admin, 'ajax_add_group_plugins' );
 
 	}

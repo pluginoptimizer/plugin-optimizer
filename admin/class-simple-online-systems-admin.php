@@ -342,39 +342,7 @@ class Simple_Online_Systems_Admin {
 			'numberposts' => - 1,
 		) );
 
-		foreach ( $posts as $post ) : ?>
-            <tr id="post-205" class="iedit author-self level-0 post-205 type-sos_work status-publish hentry pmpro-has-access">
-                <th scope="row" class="check-column"> <label class="screen-reader-text" for="cb-select-205">
-                        Select <?= $post->post_title; ?> </label>
-                    <input id="cb-select-205" type="checkbox" name="post[]" value="205">
-                    <div class="locked-indicator">
-                        <span class="locked-indicator-icon" aria-hidden="true"></span>
-                        <span class="screen-reader-text">
-                                “<?= $post->post_title; ?>” is locked </span>
-                    </div>
-                </th>
-                <td class="title column-title has-row-actions column-primary page-title" data-colname="Title">
-                    <div class="locked-info"><span class="locked-avatar"></span> <span class="locked-text"></span></div>
-                    <strong>
-                        <a class="row-title" href="<?= esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters&work_title=' . urlencode(str_replace(' ', '_', str_replace('Add filter to ', '', $post->post_title))) . '&work_link=' . urlencode(implode( '', get_metadata( 'post', $post->ID, 'post_link' ))))); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)">
-							<?= $post->post_title; ?>
-                        </a>
-                    </strong>
-
-                    <div class="row-actions">
-						<span class="edit">
-							<a href="<?= esc_url(get_edit_post_link($post->ID)); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> |
-						</span>
-                        <span class="trash">
-							<a href="<?= esc_url(get_delete_post_link($post->ID)); ?>" class="submitdelete" aria-label="Move “<?= $post->post_title; ?>” to the Trash">
-								Trash
-							</a>
-						</span>
-                        <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span></button>
-                </td>
-                <td class="date column-date" data-colname="Date">Published<br><?= substr(str_replace( '-', '/', str_replace(" ", " at ", $post->post_date)), 0 , -3) . ' pm'; ?></td>
-            </tr>
-		<?php endforeach;
+		$this->content_filters($posts);
 
 		wp_send_json_success( ob_get_clean() );
 
@@ -714,29 +682,63 @@ class Simple_Online_Systems_Admin {
 	}
 
 	/**
-	 * Search works
+	 * Content for filters
 	 */
-	public function ajax_search_works(){
+	function content_filters($posts){
+		if( $posts ) :
+			foreach ( $posts as $post ) : ?>
+				<tr>
+					<td><input type="checkbox" id="<?= $post->ID; ?>"></td>
+					<td><?= $post->post_title; ?></td>
+					<td><?= implode( ",", get_metadata( 'post', $post->ID, 'category_filter' ) ); ?></td>
+					<td><?= implode( ",", get_metadata( 'post', $post->ID, 'type_filter' ) ); ?></td>
+					<td><?= implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ) . ', '  . implode( get_metadata( 'post', $post->ID, 'selected_page' )); ?></td>
+					<td><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( get_metadata( 'post', $post->ID, 'block_group_plugins' )); ?></td>
+				</tr>
+			<?php
+			endforeach;
+		else:
+			?>
+			<tr>
+				<td colspan="6">Not filtres</td>
+			</tr>
+		<?php
+		endif;
+	}
+
+	/**
+	 * Search elements
+	 */
+	public function ajax_search_elements(){
+		$name_post_type  = htmlspecialchars( $_POST[ 'name_post_type' ] );
 		$type_works  = htmlspecialchars( $_POST[ 'type_works' ] );
 
 		ob_start();
 		if($type_works === 'all'){
 			$posts = get_posts( array(
-				'post_type'   => 'sos_work',
+				'post_type'   => $name_post_type,
 				'numberposts' => - 1,
 				's' => esc_attr( $_POST['keyword'] ),
 			) );
 
-			$this->content_works($posts);
+			if($name_post_type === 'sos_work'){
+				$this->content_works($posts);
+			} elseif($name_post_type === 'sos_filter'){
+				$this->content_filters($posts);
+			}
 		} else {
 			$posts = get_posts( array(
-				'post_type'   => 'sos_work',
+				'post_type'   => $name_post_type,
 				'numberposts' => - 1,
 				'post_status' => 'trash',
 				's' => esc_attr( $_POST['keyword'] ),
 			) );
 
-			$this->content_works($posts);
+			if($name_post_type === 'sos_work'){
+				$this->content_works($posts);
+			} elseif($name_post_type === 'sos_filter'){
+				$this->content_filters($posts);
+			}
 		}
 
 		wp_send_json_success( ob_get_clean() );
@@ -744,62 +746,71 @@ class Simple_Online_Systems_Admin {
 	}
 
 	/**
-	 * Show all works
+	 * Show all elements
 	 */
-	public function ajax_all_works(){
-
+	public function ajax_all_elements(){
+		$name_post_type  = htmlspecialchars( $_POST[ 'name_post_type' ] );
 		ob_start();
 
 		$posts = get_posts( array(
-			'post_type'   => 'sos_work',
+			'post_type'   => $name_post_type,
 			'numberposts' => - 1,
 		) );
 
-		$this->content_works($posts);
+		if($name_post_type === 'sos_work'){
+			$this->content_works($posts);
+		} elseif($name_post_type === 'sos_filter'){
+			$this->content_filters($posts);
+		}
 
 		wp_send_json_success( ob_get_clean() );
 
 	}
 
 	/**
-	 * Show trash works
+	 * Show trash elements
 	 */
-    public function ajax_trash_works(){
+    public function ajax_trash_elements(){
+	    $name_post_type  = htmlspecialchars( $_POST[ 'name_post_type' ] );
+	    ob_start();
 
-		ob_start();
-
-		$posts = get_posts( array(
-			'post_type'   => 'sos_work',
+	    $posts = get_posts( array(
+		    'post_type'   => $name_post_type,
 			'numberposts' => - 1,
 			'post_status' => 'trash',
 		) );
 
-	    $this->content_works($posts);
+        if($name_post_type === 'sos_work'){
+	        $this->content_works($posts);
+        } elseif($name_post_type === 'sos_filter'){
+	        $this->content_filters($posts);
+        }
 
 		wp_send_json_success( ob_get_clean() );
 
 	}
 
 	/**
-	 * Delete works
+	 * Delete elements
 	 */
-	public function ajax_delete_works(){
+	public function ajax_delete_elements(){
+		$name_post_type  = htmlspecialchars( $_POST[ 'name_post_type' ] );
 		$id_works  = htmlspecialchars( $_POST[ 'id_works' ] );
 		$type_works  = htmlspecialchars( $_POST[ 'type_works' ] );
 
 		if($type_works === 'all'){
 			$posts = get_posts( array(
-				'post_type'   =>'sos_work',
+				'post_type'   =>$name_post_type,
 				'include'     => $id_works,
 			) );
 
 			foreach ($posts as $post) {
 				wp_trash_post( $post->ID);
 			}
-		    $this->ajax_all_works();
+		    $this->ajax_all_elements();
         } else {
 			$posts = get_posts( array(
-				'post_type'   =>'sos_work',
+				'post_type'   =>$name_post_type,
 				'include'     => $id_works,
 				'post_status' => 'trash',
 			) );
@@ -807,18 +818,19 @@ class Simple_Online_Systems_Admin {
 			foreach ($posts as $post) {
 				wp_delete_post( $post->ID, true );
 			}
-			$this->ajax_trash_works();
+			$this->ajax_trash_elements();
         }
 	}
 
 	/**
 	 * Restore works
 	 */
-	public function ajax_publish_works(){
+	public function ajax_publish_elements(){
+		$name_post_type  = htmlspecialchars( $_POST[ 'name_post_type' ] );
 		$id_works  = htmlspecialchars( $_POST[ 'id_works' ] );
 
 		$posts = get_posts( array(
-			'post_type'   =>'sos_work',
+			'post_type'   => $name_post_type,
 			'include'     => $id_works,
 			'post_status' => 'trash',
 		) );
@@ -826,17 +838,18 @@ class Simple_Online_Systems_Admin {
 		foreach ($posts as $post) {
 			wp_publish_post( $post->ID );
 		}
-		$this->ajax_trash_works();
+		$this->ajax_trash_elements();
 	}
 
 	/**
-	 * Show count works
+	 * Show count elements
 	 */
-	public function ajax_count_works(){
+	public function ajax_count_elements(){
+		$name_post_type  = htmlspecialchars( $_POST[ 'name_post_type' ] );
 
 		$return = array(
-			'all'   => wp_count_posts('sos_work')->publish,
-			'trash' =>  wp_count_posts('sos_work')->trash,
+			'all'   => wp_count_posts($name_post_type)->publish,
+			'trash' =>  wp_count_posts($name_post_type)->trash,
 		);
 		wp_send_json_success( $return );
 

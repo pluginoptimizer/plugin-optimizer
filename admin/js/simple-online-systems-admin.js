@@ -6,6 +6,12 @@
         (function () {
             $('.created-filters input[type="submit"]').click(function (e) {
                 e.preventDefault();
+                let name_post_type;
+                if($('#name_page').text() === 'worklist'){
+                    name_post_type = 'sos_work';
+                } else if($('#name_page').text() === 'filters'){
+                    name_post_type = 'sos_filter';
+                }
 
                 $.ajax({
                     // url: filter_ajax.ajaxurl,
@@ -23,6 +29,18 @@
                     },
                     success: function (response) {
                         $('#the-list').html(response.data);
+                        $.ajax({
+                            url: simple_online_systems_groups.ajax_url,
+                            type: 'POST',
+                            data: {
+                                action: 'sos_count_elements',
+                                'name_post_type': name_post_type,
+                            },
+                            success: function (response) {
+                                $('#count_all_elements').text(response.data.all);
+                                $('#count_trash_elements').text(response.data.trash);
+                            },
+                        });
                     }
                 })
             });
@@ -83,30 +101,6 @@
             });
         })();
 
-        //search works
-        (function(){
-            $('#search_works').keyup(function () {
-                let type_works;
-                if($('#all_works').css('font-weight') === '700'){
-                    type_works = 'all';
-                } else {
-                    type_works = 'trash';
-                }
-                $.ajax({
-                    url: simple_online_systems_groups.ajax_url,
-                    type: 'POST',
-                    data: {
-                        action: 'sos_search_works',
-                        'type_works': type_works,
-                        'keyword': $('#search_works').val(),
-                    },
-                    success: function (response) {
-                        $('#the-list').html(response.data);
-                    }
-                });
-            });
-        })();
-
         // create plugins
         (function(){
             $('.created-groups input[type="submit"]').click(function (e) {
@@ -148,54 +142,108 @@
                 $('input[name="title_filter"]').val('Page acceleration ' + params['work_title'].replace('_', ' '));
                 $('#search_pages').val(params['work_link']);
             }
+
         })();
 
-        //all works
+        //search elements
         (function(){
-            $('#all_works').click(function () {
-                $('select#check_works option[value="restore"]').remove();
+            $('#search_elements').keyup(function () {
+                let name_post_type;
+                if($('#name_page').text() === 'worklist'){
+                    name_post_type = 'sos_work';
+                } else if($('#name_page').text() === 'filters'){
+                    name_post_type = 'sos_filter';
+                }
+                let type_works;
+                if($('#all_elements').css('font-weight') === '700'){
+                    type_works = 'all';
+                } else {
+                    type_works = 'trash';
+                }
                 $.ajax({
                     url: simple_online_systems_groups.ajax_url,
                     type: 'POST',
                     data: {
-                        action: 'sos_all_works',
+                        action: 'sos_search_elements',
+                        'name_post_type': name_post_type,
+                        'type_works': type_works,
+                        'keyword': $('#search_elements').val(),
                     },
                     success: function (response) {
-                        $('#all_works').css('font-weight', '700');
-                        $('#trash_works').css('font-weight', '400');
                         $('#the-list').html(response.data);
-                        window.checkWorks.check_all_works();
                     }
                 });
             });
         })();
 
-        // trash works
+        //all elements
         (function(){
-            $('#trash_works').click(function () {
+            $('#all_elements').click(function () {
+                let name_post_type;
+                if($('#name_page').text() === 'worklist'){
+                    name_post_type = 'sos_work';
+                } else if($('#name_page').text() === 'filters'){
+                    name_post_type = 'sos_filter';
+                }
+                $('select#check_all_elements option[value="restore"]').remove();
                 $.ajax({
                     url: simple_online_systems_groups.ajax_url,
                     type: 'POST',
                     data: {
-                        action: 'sos_trash_works',
+                        action: 'sos_all_elements',
+                        'name_post_type': name_post_type,
                     },
                     success: function (response) {
-                        $('#trash_works').css('font-weight', '700');
-                        $('#all_works').css('font-weight', '400');
+                        console.log(response);
+                        $('#all_elements').css('font-weight', '700');
+                        $('#trash_elements').css('font-weight', '400');
                         $('#the-list').html(response.data);
-                        $('select#check_works option[value="delete"]').before('<option value="restore">Restore</option>');
-                        window.checkWorks.check_all_works();
+                        window.checkAllElement.check_all_element();
                     }
                 });
             });
         })();
 
-        // delete element
+        // trash elements
+        (function(){
+            $('#trash_elements').click(function () {
+                let name_post_type;
+                if($('#name_page').text() === 'worklist'){
+                    name_post_type = 'sos_work';
+                } else if($('#name_page').text() === 'filters'){
+                    name_post_type = 'sos_filter';
+                }
+                $.ajax({
+                    url: simple_online_systems_groups.ajax_url,
+                    type: 'POST',
+                    data: {
+                        action: 'sos_trash_elements',
+                        'name_post_type': name_post_type,
+                    },
+                    success: function (response) {
+                        $('#trash_elements').css('font-weight', '700');
+                        $('#all_elements').css('font-weight', '400');
+                        $('#the-list').html(response.data);
+                        $('select#check_all_elements option[value="delete"]').before('<option value="restore">Restore</option>');
+                        window.checkAllElement.check_all_element();
+                    }
+                });
+            });
+        })();
+
+        // delete or restore element
         (function(){
             $('#btn_apply').click(function () {
-                if($('#check_works option:selected').text() === 'Delete'){
+                let name_post_type;
+                if($('#name_page').text() === 'worklist'){
+                    name_post_type = 'sos_work';
+                } else if($('#name_page').text() === 'filters'){
+                    name_post_type = 'sos_filter';
+                }
+
+                if($('#check_all_elements option:selected').text() === 'Delete'){
                     let type_works;
-                    if($('#all_works').css('font-weight') === '700'){
+                    if($('#all_elements').css('font-weight') === '700'){
                         type_works = 'all';
                     } else {
                         type_works = 'trash';
@@ -204,7 +252,8 @@
                         url: simple_online_systems_groups.ajax_url,
                         type: 'POST',
                         data: {
-                            action: 'sos_delete_works',
+                            action: 'sos_delete_elements',
+                            'name_post_type': name_post_type,
                             'type_works': type_works,
                             'id_works': $('input:checked').toArray().map(item => item.id).join(','),
                         },
@@ -217,21 +266,24 @@
                                 url: simple_online_systems_groups.ajax_url,
                                 type: 'POST',
                                 data: {
-                                    action: 'sos_count_works',
+                                    action: 'sos_count_elements',
+                                    'name_post_type': name_post_type,
                                 },
                                 success: function (response) {
-                                    $('#count_all_works').text(response.data.all);
-                                    $('#count_trash_works').text(response.data.trash);
-                                }
+                                    console.log(response);
+                                    $('#count_all_elements').text(response.data.all);
+                                    $('#count_trash_elements').text(response.data.trash);
+                                },
                             });
                         }
                     });
-                } else if($('#check_works option:selected').text() === 'Restore'){
+                } else if($('#check_all_elements option:selected').text() === 'Restore'){
                     $.ajax({
                         url: simple_online_systems_groups.ajax_url,
                         type: 'POST',
                         data: {
-                            action: 'sos_publish_works',
+                            action: 'sos_publish_elements',
+                            'name_post_type': name_post_type,
                             'id_works': $('input:checked').toArray().map(item => item.id).join(','),
                         },
                         success: function (response) {
@@ -243,12 +295,17 @@
                                 url: simple_online_systems_groups.ajax_url,
                                 type: 'POST',
                                 data: {
-                                    action: 'sos_count_works',
+                                    action: 'sos_count_elements',
+                                    'name_post_type': name_post_type,
                                     'type_works': 'trash',
                                 },
                                 success: function (response) {
-                                    $('#count_all_works').text(response.data.all);
-                                    $('#count_trash_works').text(response.data.trash);
+                                    try {
+                                        $('#count_all_elements').text(response.data.all);
+                                        $('#count_trash_elements').text(response.data.trash);
+                                    } catch (err) {
+                                        console.error(err.message);
+                                    }
                                 }
                             });
                         }
@@ -258,10 +315,10 @@
             });
         })();
 
-        // check all works
+        // check all element
         (function(){
-            window.checkWorks = {
-                check_all_works : function(){
+            window.checkAllElement = {
+                check_all_element : function(){
                     $('#check_all').change(function () {
                         if($(this).is( ":checked" )){
                             $('tbody input:checkbox').prop('checked', true);
@@ -270,16 +327,18 @@
                         }
                     });
                     $('tbody input:checkbox').change(function () {
+                        console.log('check');
                         if($('#check_all').is( ":checked" )){
                             $('#check_all').prop('checked', false);
                         }
                         if($('tbody input:checkbox').length === $('tbody input:checkbox:checked').length){
+                            console.log('change');
                             $('#check_all').prop('checked', true);
                         }
                     });
                 }
             };
-            window.checkWorks.check_all_works();
+            window.checkAllElement.check_all_element();
         })()
 
 

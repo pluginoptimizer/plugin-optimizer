@@ -215,6 +215,9 @@
 .sos-wrap .row {
     margin-bottom: 10px;
 }
+.sos-wrap .global-information {
+    margin-top: 10px;
+}
 
 #wpcontent{
     background-color: #f1f1f1;
@@ -232,7 +235,7 @@
     /*padding: 0!important;*/
 }
 
-.quantity #all_works{
+.quantity #all_elements{
     font-weight: 700;
 }
 .quantity *{
