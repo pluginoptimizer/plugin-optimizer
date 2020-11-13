@@ -81,7 +81,6 @@
 
 .sos-wrap h1 {
     color: #000000;
-    font-family: "Gilroy";
     font-size: 36px;
     font-weight: 400;
     font-style: normal;
@@ -97,7 +96,6 @@
 
 .sos-wrap h2 {
     color: #000000;
-    font-family: Gilroy;
     font-size: 30px;
     font-weight: 300;
     font-style: normal;
@@ -118,7 +116,6 @@
 
     /* Style for "filters" */
     color: #ffffff;
-    font-family: Gilroy;
     font-size: 20px;
     font-weight: 300;
     line-height: 48px;
@@ -153,13 +150,12 @@
     text-align: center;
 }
 
-.sos-wrap table *:not(span):not(a) {
+/*.sos-wrap table *:not(span):not(a) {
     padding: 10px;
-}
+}*/
 
 .sos-wrap thead th {
     color: #285483;
-    font-family: Gilroy;
     font-size: 18px;
     font-weight: 300;
 }
@@ -181,6 +177,9 @@
     text-transform: none;
     min-width: 200px;
     width: auto;
+}
+.sos-wrap tbody td {
+    padding: 10px;
 }
 
 .sos-wrap button.add-filter {
@@ -214,6 +213,7 @@
 
 .sos-wrap .row {
     margin-bottom: 10px;
+    padding: 5px;
 }
 .sos-wrap .global-information {
     margin-top: 10px;
@@ -241,3 +241,103 @@
 .quantity *{
     cursor: pointer;
 }
+
+.sos-wrap .content-permalinks{
+    display: flex;
+}
+
+.sos-wrap .content-permalinks *{
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+.sos-wrap .content-filter .header{
+    margin-bottom: 5px;
+    padding: 5px;
+    text-align: left;
+    color: #fff;
+    background-color: #535353;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sos-wrap .content-filter *:not(.header *):not(button){
+    /*padding: 5px;*/
+    text-transform: none;
+}
+
+.sos-wrap .content-filter .content-permalinks .link{
+    padding: 10px;
+    margin-right: 2%;
+    /* Style for "Validated" */
+    background-color: #ffffff;
+    text-align: left;
+}
+.sos-wrap .content-filter .content-permalinks{
+    margin-top: 10px;
+}
+.sos-wrap .content-filter .content{
+    margin-top: 10px;
+}
+
+.sos-wrap .content-filter .content{
+    padding: 10px;
+    /* Style for "Validated" */
+    background-color: #ffffff;
+    text-align: left;
+}
+.sos-wrap .content-filter .content-permalinks .link:before{
+    content: url(../img/check_mark.png);
+    display: inline-block;
+    /* Style for "V" */
+    width: 17px;
+    height: 14px;
+}
+
+.sos-wrap .content-filter span.disabled{
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: normal;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.sos-wrap .content-filter span.count-plugin{
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    letter-spacing: normal;
+    line-height: normal;
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.sos-wrap .content-filter .plugin-wrapper{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 10px;
+}
+
+.sos-wrap .content-filter .plugin-wrapper.no-plugins{
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: 0;
+}
+.sos-wrap .content-filter .plugin-wrapper.no-plugins *{
+    text-align: center;
+}
+
+.sos-wrap .content-filter .plugin-wrapper .block{
+    background-color: #ffc4c4;
+}
+.sos-wrap .hidden_info{
+    display: none;
+}
+.sos-wrap .filter_block{
+    cursor: pointer;
+}
+

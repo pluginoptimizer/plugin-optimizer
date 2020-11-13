@@ -467,52 +467,6 @@ class Simple_Online_Systems_Admin {
     }
 
 	/**
-	 * Search filter
-	 */
-	public function ajax_search_filters(){
-
-		ob_start();
-
-		$posts = get_posts( array(
-			'post_type'   => 'sos_filter',
-			'numberposts' => - 1,
-			's'           => esc_attr( $_POST['keyword'] ),
-		) );
-
-		foreach ( $posts as $post ) : ?>
-            <tr id="tag-7" class="level-0">
-                <th scope="row" class="check-column"><label class="screen-reader-text" for="cb-select-7">Select <?= $post->post_title; ?></label><input type="checkbox" name="delete_tags[]" value="7" id="cb-select-7"></th>
-                <td class="name column-name has-row-actions column-primary" data-colname="Name"><strong><a class="row-title" href="<?= esc_url(get_edit_post_link($post->ID)); ?>" aria-label="“<?= $post->post_title; ?>” (Edit)"><?= $post->post_title; ?></a></strong><br>
-                    <div class="hidden" id="inline_7">
-                        <div class="name"><?= $post->post_title; ?></div>
-                        <div class="slug"><?= $post->post_title; ?></div>
-                        <div class="parent">0</div>
-                    </div>
-                    <div class="row-actions"><span class="edit"><a href="<?= esc_url(get_edit_post_link($post->ID)); ?>" aria-label="Edit “<?= $post->post_title; ?>”">Edit</a> | </span><span class="inline hide-if-no-js"><button type="button" class="button-link editinline" aria-label="Quick edit “<?= $post->post_title; ?>” inline" aria-expanded="false">Quick&nbsp;Edit</button> | </span><span class="delete"><a href="<?= esc_url(get_delete_post_link($post->ID)); ?>" class="delete-tag aria-button-if-js" aria-label="Delete “<?= $post->post_title; ?>”" role="button">Delete</a></span>
-                    </div>
-                    <button type="button" class="toggle-row"><span class="screen-reader-text">Show more details</span>
-                    </button>
-                </td>
-                <td class="description column-description" data-colname="Selected pages"><span aria-hidden="true"><?= implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ) . ', '  . implode( get_metadata( 'post', $post->ID, 'selected_page' )); ?></span><span class="screen-reader-text">No description</span></td>
-                <td class="slug column-slug" data-colname="Block plugins"><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )); ?></td>
-                <td class="posts column-posts" data-colname="Count">
-					<?php
-					$selected_post_types = explode(', ', implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ));
-					$count_posts = 0;
-
-					foreach( $selected_post_types as $selected_post_type ):
-						$count_posts += wp_count_posts($selected_post_type)->publish;
-					endforeach;
-					echo $count_posts + count(explode(", ", implode( get_metadata( 'post', $post->ID, 'selected_page' )))); ?>
-                </td>
-            </tr>
-		<?php endforeach;
-
-		wp_send_json_success( ob_get_clean() );
-
-	}
-
-	/**
 	 * Create group
 	 */
 	public function ajax_add_group_plugins() {
@@ -685,15 +639,162 @@ class Simple_Online_Systems_Admin {
 	 * Content for filters
 	 */
 	function content_filters($posts){
+		$all_plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
+		$activate_plugins = array();
+		$deactivate_plugins = array();
+		foreach ($all_plugins as $plugin) {
+			foreach ($plugin as $key => $value) {
+				if($key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer'){
+					if($value){
+						array_push($activate_plugins, $plugin['name']);
+					} else{
+						array_push($deactivate_plugins, $plugin['name']);
+					}
+				}
+			}
+		}
 		if( $posts ) :
-			foreach ( $posts as $post ) : ?>
-				<tr>
+			foreach ( $posts as $post ) :
+				$block_plugins = implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( get_metadata( 'post', $post->ID, 'block_group_plugins' ));
+				?>
+				<tr class="filter_block">
 					<td><input type="checkbox" id="<?= $post->ID; ?>"></td>
 					<td><?= $post->post_title; ?></td>
 					<td><?= implode( ",", get_metadata( 'post', $post->ID, 'category_filter' ) ); ?></td>
 					<td><?= implode( ",", get_metadata( 'post', $post->ID, 'type_filter' ) ); ?></td>
 					<td><?= implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ) . ', '  . implode( get_metadata( 'post', $post->ID, 'selected_page' )); ?></td>
 					<td><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( get_metadata( 'post', $post->ID, 'block_group_plugins' )); ?></td>
+				</tr>
+				<tr class="hidden_info">
+					<td colspan="6">
+                        <div class="content-filter">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="header">Type</div>
+                                    <div>
+                                        <div class="content">
+                                            <span><?= implode( ",", get_metadata( 'post', $post->ID, 'type_filter' ) ); ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="header">Permalinks</div>
+                                    <div class="content-permalinks">
+                                        <div class="link">
+                                            <span><?= implode( get_metadata( 'post', $post->ID, 'selected_page' )); ?></span>
+                                        </div>
+                                        <button class="add-filter add-permalink"><span class="pluse">+</span> Permalink</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
+                                            Plugins <span class="disabled">- Disabled: 2/8</span>
+                                        </div>
+                                        <span class="count-plugin">( Active: <?= count($activate_plugins);?>   |   Inactive: <?= count($deactivate_plugins); ?> )</span>
+                                    </div>
+                                    <?php
+                                    if($activate_plugins):
+	                                    ?>
+                                        <div class="plugin-wrapper">
+                                        <?php
+                                        foreach ($activate_plugins as $activate_plugin):
+                                            ?>
+                                            <div class="content
+                                             <?php
+                                            if(substr_count($block_plugins, $activate_plugin)){
+                                                echo 'block';
+                                            }
+                                            ?>
+                                             ">
+                                                <span><?= $activate_plugin; ?></span>
+                                            </div>
+                                            <?php
+                                        endforeach;
+                                        ?>
+                                        </div>
+                                        <?php
+                                    else:
+                                        ?>
+                                            <div class="plugin-wrapper no-plugins">
+                                                <div class="content">
+                                                    <span>No activate plugins for blocking</span>
+                                                </div>
+                                            </div>
+                                        <?php
+                                    endif;
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
+                                            groups <span class="disabled">- Disabled: 1/2</span>
+                                        </div>
+                                    </div>
+                                    <div class="plugin-wrapper">
+	                                    <?php
+	                                    $groups = get_posts( array(
+		                                    'post_type'   => 'sos_group',
+		                                    'numberposts' => -1,
+	                                    ) );
+                                        if( $groups ) :
+                                            foreach ( $groups as $group ) :
+	                                    ?>
+                                                <div class="content
+                                                <?php
+                                                    if(implode( ",", get_metadata( 'post', $group->ID, 'group_plugins' ) ) === implode( get_metadata( 'post', $post->ID, 'block_group_plugins' ))){
+                                                        echo 'block';
+                                                    }
+                                                ?>
+                                                ">
+                                                    <span><?= $group->post_title; ?></span>
+                                                </div>
+                                        <?php
+                                            endforeach;
+                                        endif;
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
+                                            categories
+                                        </div>
+                                    </div>
+                                    <div class="plugin-wrapper">
+                                        <?php
+                                        $categories = get_categories( [
+	                                        'taxonomy'      => 'category',
+	                                        'type'          => 'sos_filter',
+	                                        'hide_empty'    => 0,
+                                        ] );
+
+                                        if( $categories ){
+	                                        foreach( $categories as $cat ){
+	                                            ?>
+                                                <div class="content">
+                                                    <span><?= $cat->cat_name; ?></span>
+                                                </div>
+                                                <?php
+	                                        }
+                                        }
+                                        ?>
+
+                                        <div class="content">
+                                            <span>Permalink (default type)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+					</td>
 				</tr>
 			<?php
 			endforeach;
