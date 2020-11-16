@@ -142,6 +142,7 @@ class Simple_Online_Systems {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'script_loader_tag', $plugin_admin, 'add_type_attribute', 10, 3 );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_menu_pages' );
 
 		$this->loader->add_action( 'init', $plugin_admin, 'register_post_types' );
@@ -164,6 +165,7 @@ class Simple_Online_Systems {
 		$this->loader->add_action( 'wp_ajax_sos_publish_elements', $plugin_admin, 'ajax_publish_elements' );
 		$this->loader->add_action( 'wp_ajax_sos_count_elements', $plugin_admin, 'ajax_count_elements' );
 		$this->loader->add_action( 'wp_ajax_sos_add_group_plugins', $plugin_admin, 'ajax_add_group_plugins' );
+		$this->loader->add_action( 'wp_ajax_sos_create_category', $plugin_admin, 'ajax_create_category' );
 
 	}
 

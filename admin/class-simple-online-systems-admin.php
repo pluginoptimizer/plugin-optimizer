@@ -60,17 +60,40 @@ class Simple_Online_Systems_Admin {
 	}
 
 	/**
+	 * Add type module for js
+	 */
+	public function add_type_attribute($tag, $handle, $src) {
+		// if not your script, do nothing and return original $tag
+		if ( $this->plugin_name !== $handle ) {
+			return $tag;
+		}
+		// change the script tag by adding type="module" and return it.
+		$tag = '<script type="module" src="' . esc_url( $src ) . '"></script>';
+		return $tag;
+	}
+
+	/*public function add_type_attribute_worklist($tag, $handle, $src) {
+		// if not your script, do nothing and return original $tag
+		if ( 'worklist' !== $handle ) {
+			return $tag;
+		}
+		// change the script tag by adding type="module" and return it.
+		$tag = '<script type="module" src="' . esc_url( $src ) . '"></script>';
+		return $tag;
+	}*/
+
+	/**
 	 * Add Menu Pages
 	 */
 	public function add_menu_pages() {
 
-		add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'simple_online_systems_settings', array( $this, 'render_settings_page' ), 'dashicons-sos' );
-		add_submenu_page( 'simple_online_systems_settings', 'Overview', 'Overview', 'manage_options', 'simple_online_systems_overview', array( $this, 'render_overview_page' ) );
-		add_submenu_page( 'simple_online_systems_settings', 'Filters', 'Filters', 'manage_options', 'simple_online_systems_filters', array( $this, 'render_filters_page' ) );
-		add_submenu_page( 'simple_online_systems_settings', 'Groups plugin', 'Groups plugin', 'manage_options', 'simple_online_systems_groups', array( $this, 'render_groups_page' ) );
-		add_submenu_page( 'simple_online_systems_settings', 'Settings', 'Settings', 'manage_options', 'simple_online_systems_settings', array( $this, 'render_settings_page' ) );
-		add_submenu_page( 'simple_online_systems_settings', 'Worklist', 'Worklist', 'manage_options', 'simple_online_systems_worklist', array( $this, 'render_worklist_page' ) );
-		add_submenu_page( 'simple_online_systems_settings', 'Support', 'Support', 'manage_options', 'simple_online_systems_support', array( $this, 'render_support_page' ) );
+		add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'simple_online_systems_overview', array( $this, 'render_overview_page' ), 'dashicons-sos' );
+		add_submenu_page( 'simple_online_systems_overview', 'Overview', 'Overview', 'manage_options', 'simple_online_systems_overview', array( $this, 'render_overview_page' ) );
+		add_submenu_page( 'simple_online_systems_overview', 'Filters', 'Filters', 'manage_options', 'simple_online_systems_filters', array( $this, 'render_filters_page' ) );
+//		add_submenu_page( 'simple_online_systems_settings', 'Groups plugin', 'Groups plugin', 'manage_options', 'simple_online_systems_groups', array( $this, 'render_groups_page' ) );
+		add_submenu_page( 'simple_online_systems_overview', 'Worklist', 'Worklist', 'manage_options', 'simple_online_systems_worklist', array( $this, 'render_worklist_page' ) );
+		add_submenu_page( 'simple_online_systems_overview', 'Settings', 'Settings', 'manage_options', 'simple_online_systems_settings', array( $this, 'render_settings_page' ) );
+		add_submenu_page( 'simple_online_systems_overview', 'Support', 'Support', 'manage_options', 'simple_online_systems_support', array( $this, 'render_support_page' ) );
 
 	}
 
@@ -123,11 +146,18 @@ class Simple_Online_Systems_Admin {
 			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters')),
 		) );
 
-		$wp_admin_bar->add_menu( array(
+		/*$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_groups',
 			'title'  => 'Groups',
 			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_groups')),
+		) );*/
+
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'plugin_optimizer',
+			'id'     => 'plugin_optimizer_worklist',
+			'title'  => 'Worklist',
+			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_worklist')),
 		) );
 
 		$wp_admin_bar->add_menu( array(
@@ -135,13 +165,6 @@ class Simple_Online_Systems_Admin {
 			'id'     => 'plugin_optimizer_settings',
 			'title'  => 'Settings',
 			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_settings')),
-		) );
-
-		$wp_admin_bar->add_menu( array(
-			'parent' => 'plugin_optimizer',
-			'id'     => 'plugin_optimizer_worklist',
-			'title'  => 'Worklist',
-			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_worklist')),
 		) );
 
 		$wp_admin_bar->add_menu( array(
@@ -657,7 +680,7 @@ class Simple_Online_Systems_Admin {
 			foreach ( $posts as $post ) :
 				$block_plugins = implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( get_metadata( 'post', $post->ID, 'block_group_plugins' ));
 				?>
-				<tr class="filter_block">
+				<tr class="filter_block" id="filter-<?= $post->ID; ?>">
 					<td><input type="checkbox" id="<?= $post->ID; ?>"></td>
 					<td><?= $post->post_title; ?></td>
 					<td><?= implode( ",", get_metadata( 'post', $post->ID, 'category_filter' ) ); ?></td>
@@ -785,10 +808,7 @@ class Simple_Online_Systems_Admin {
 	                                        }
                                         }
                                         ?>
-
-                                        <div class="content">
-                                            <span>Permalink (default type)</span>
-                                        </div>
+                                        <input type="text" placeholder="Name category"><button class="add-filter add-permalink add-category" id="post-<?= $post->ID; ?>"><span class="pluse">+</span> Category</button>
                                     </div>
                                 </div>
                             </div>
@@ -953,6 +973,30 @@ class Simple_Online_Systems_Admin {
 			'trash' =>  wp_count_posts($name_post_type)->trash,
 		);
 		wp_send_json_success( $return );
+
+	}
+
+	/**
+	 * Create new category
+	 */
+	public function ajax_create_category(){
+		$id_filter = htmlspecialchars( $_POST[ 'id_filter' ] );
+		$name_category = htmlspecialchars( $_POST[ 'name_category' ] );
+
+		$filter_id = $id_filter;
+
+		wp_set_object_terms( $id_filter, $name_category, 'category' );
+
+		ob_start();
+
+		$posts = get_posts( array(
+			'post_type'   => 'sos_filter',
+			'numberposts' => - 1,
+		) );
+		$this->content_filters($posts);
+
+
+		wp_send_json_success( ob_get_clean() );
 
 	}
 
