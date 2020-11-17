@@ -1,3 +1,5 @@
+import {allElements} from "./check-all-element.js";
+
 let createGroupPlugins;
 (function ($) {
     'use strict';
@@ -18,8 +20,9 @@ let createGroupPlugins;
                         'group_plugins': $('select[name="group_plugins"] option:selected').toArray().map(item => item.text).join(', '),
                     },
                     success: function (response) {
-                        console.log(response);
                         $('#the-list').html(response.data);
+                        allElements.count_element('sos_group');
+                        allElements.check_all_element();
                     }
                 })
             });

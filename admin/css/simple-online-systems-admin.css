@@ -278,6 +278,7 @@
 }
 .sos-wrap .content-filter .content{
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .sos-wrap .content-filter .content{
@@ -337,7 +338,7 @@
 .sos-wrap .hidden_info{
     display: none;
 }
-.sos-wrap .filter_block{
+.sos-wrap .block_info{
     cursor: pointer;
 }
 

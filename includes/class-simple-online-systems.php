@@ -166,6 +166,7 @@ class Simple_Online_Systems {
 		$this->loader->add_action( 'wp_ajax_sos_count_elements', $plugin_admin, 'ajax_count_elements' );
 		$this->loader->add_action( 'wp_ajax_sos_add_group_plugins', $plugin_admin, 'ajax_add_group_plugins' );
 		$this->loader->add_action( 'wp_ajax_sos_create_category', $plugin_admin, 'ajax_create_category' );
+		$this->loader->add_action( 'wp_ajax_sos_delete_category', $plugin_admin, 'ajax_delete_category' );
 
 	}
 

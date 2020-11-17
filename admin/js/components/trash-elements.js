@@ -14,6 +14,8 @@ let trashElements;
                     name_post_type = 'sos_work';
                 } else if($('#name_page').text() === 'filters'){
                     name_post_type = 'sos_filter';
+                } else if($('#name_page').text() === 'groups'){
+                    name_post_type = 'sos_group';
                 }
                 $.ajax({
                     url: simple_online_systems_groups.ajax_url,

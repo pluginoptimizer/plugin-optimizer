@@ -5,7 +5,7 @@ let hiddenInfoFilter;
     $(document).ready(function () {
         // hidden info filter
         hiddenInfoFilter = () =>{
-            $('.filter_block').click(function () {
+            $('.block_info').click(function () {
                 if($(this).next().css('display') === 'none'){
                     $(this).next().css('display', 'table-row');
                 } else{

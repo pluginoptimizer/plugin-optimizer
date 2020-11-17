@@ -9,15 +9,8 @@ let createdFilters;
         createdFilters = () => {
             $('.created-filters input[type="submit"]').click(function (e) {
                 e.preventDefault();
-                let name_post_type;
-                if($('#name_page').text() === 'worklist'){
-                    name_post_type = 'sos_work';
-                } else if($('#name_page').text() === 'filters'){
-                    name_post_type = 'sos_filter';
-                }
 
                 $.ajax({
-                    // url: filter_ajax.ajaxurl,
                     url: simple_online_systems_groups.ajax_url,
                     type: 'POST',
                     data: {
@@ -32,7 +25,7 @@ let createdFilters;
                     },
                     success: function (response) {
                         $('#the-list').html(response.data);
-                        allElements.count_element(name_post_type);
+                        allElements.count_element('sos_filter');
                         allElements.check_all_element();
                     }
                 })

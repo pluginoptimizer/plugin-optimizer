@@ -11,6 +11,8 @@ let searchElements;
                     name_post_type = 'sos_work';
                 } else if($('#name_page').text() === 'filters'){
                     name_post_type = 'sos_filter';
+                } else if($('#name_page').text() === 'groups'){
+                    name_post_type = 'sos_group';
                 }
                 let type_works;
                 if($('#all_elements').css('font-weight') === '700'){

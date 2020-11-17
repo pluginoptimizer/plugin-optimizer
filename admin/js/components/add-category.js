@@ -1,5 +1,4 @@
-import {allElements} from './check-all-element.js';
-import {hiddenInfoFilter} from './hidden-info-filter.js';
+import { deleteCategory } from './delete-category.js';
 
 let addCategory;
 (function ($) {
@@ -9,6 +8,8 @@ let addCategory;
         //all elements
         addCategory = () => {
             $('.add-category').click(function (e) {
+                console.log('click');
+                const self = this;
                 $.ajax({
                     url: simple_online_systems_groups.ajax_url,
                     type: 'POST',
@@ -18,9 +19,8 @@ let addCategory;
                         'id_filter': $(this).val().substr(5),
                     },
                     success: function (response) {
-                        $('#the-list').html(response.data);
-                        allElements.check_all_element();
-                        hiddenInfoFilter();
+                        $(self).parent().html(response.data);
+                        deleteCategory();
                     }
                 });
             })

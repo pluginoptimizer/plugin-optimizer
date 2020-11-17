@@ -10,6 +10,7 @@ import { createdFilters } from './components/created-filters.js';
 import { createGroupPlugins } from './components/create-plugins.js';
 import { showAllElements } from './components/all-elements.js';
 import { addCategory } from './components/add-category.js';
+import { deleteCategory } from './components/delete-category.js';
 
 
 (function ($) {
@@ -29,6 +30,7 @@ import { addCategory } from './components/add-category.js';
         createGroupPlugins();
         showAllElements();
         addCategory();
+        deleteCategory();
 
 
 

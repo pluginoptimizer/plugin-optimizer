@@ -13,6 +13,8 @@ let deleteRestoreElement;
                     name_post_type = 'sos_work';
                 } else if($('#name_page').text() === 'filters'){
                     name_post_type = 'sos_filter';
+                } else if($('#name_page').text() === 'groups'){
+                    name_post_type = 'sos_group';
                 }
 
                 if($('#check_all_elements option:selected').text() === 'Delete'){
