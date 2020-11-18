@@ -2,7 +2,7 @@
 	<h1>Groups plugin</h1>
 	<form action="" class="created-groups">
 		<p>Group Title</p>
-		<input type="text" placeholder="Enter filter title" name="title_group">
+		<input type="text" placeholder="Enter filter title" name="title_group" id="title_group">
 		<p>Set Type</p>
 		<input type="text" placeholder="Enter type" name="type_group">
 		<p>Select plugins</p>
