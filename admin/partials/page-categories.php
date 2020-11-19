@@ -1,46 +1,38 @@
 <?php
-$posts = get_posts( array(
-	'post_type'   => 'sos_group',
-	'numberposts' => -1,
-	'meta_query' => array(
-		array(
-			'key' => 'group_parents',
-			'value' => 'None'
-		)
-	),
-) );
+$categories = get_categories( [
+	'taxonomy'      => 'category',
+	'type'          => 'sos_filter',
+	'parent'       => 0,
+	'hide_empty'    => 0,
+] );
+
 ?>
 <div class="wrap wrapper-filter">
-	<h1>Groups plugin</h1>
+	<h1>Filters categories</h1>
 	<form action="" class="created-groups">
 		<p>Group Title</p>
-        <div id="group_name_error">
-	        <div class="wrapper_group_name_error">
-		        <p class="popup-close">×</p>
-		        <div id="result_search">This name is already in use</div>
-	        </div>
-        </div>
-		<input type="text" placeholder="Enter filter title" name="title_group" id="title_group">
-		<p>Set Type</p>
-		<input type="text" placeholder="Enter type" name="type_group">
+		<div id="group_name_error">
+			<div class="wrapper_group_name_error">
+				<p class="popup-close">×</p>
+				<div id="result_search">This name is already in use</div>
+			</div>
+		</div>
+		<input type="text" placeholder="Enter category title" name="title_group" id="title_group">
 		<p>Select parent</p>
 		<select name="group_parents">
 			<option value="none">None</option>
 			<?php
-			foreach ( $posts as $post ): ?>
-				<option value="<?= str_replace( ' ', "_", $post->post_title ); ?>"><?= $post->post_title; ?></option>
-			<?php endforeach; ?>
-		</select>
-        <p>Select plugins</p>
-		<select name="group_plugins" multiple>
-			<?php
-			$plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
-			foreach ( $plugins as $plugin => $value ): ?>
-				<option value="<?= str_replace( ' ', "_", $value[ 'name' ] ); ?>"><?= $value[ 'name' ]; ?></option>
-			<?php endforeach; ?>
+			if( $categories ):
+				foreach( $categories as $cat ):
+					?>
+					<option value="<?= str_replace( ' ', "_", $cat->cat_name ); ?>"><?= $cat->cat_name; ?></option>
+				<?php
+				endforeach;
+			endif;
+			?>
 		</select>
 		<br><br>
-		<input type="submit" value="Create new group">
+		<input type="submit" value="Create new category">
 	</form>
 
 
@@ -53,7 +45,7 @@ $posts = get_posts( array(
 			<h1>Plugin Optimizer</h1>
 		</div>
 		<div class="col-12">
-			<h2 id="name_page">groups</h2>
+			<h2 id="name_page">Filters categories</h2>
 		</div>
 
 
@@ -71,7 +63,7 @@ $posts = get_posts( array(
 		<div class="row sos-content">
 			<div class="row col-12 justify-content-between global-information">
 				<div class="col-3">
-					<button class="add-filter"><span class="pluse">+</span> add new group</button>
+					<button class="add-filter"><span class="pluse">+</span> add new category</button>
 				</div>
 				<div class="col-8 quantity">
 					<span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_posts('sos_group')->publish; ?></span>) | <span id="trash_elements">TRASH</span> (<span id="count_trash_elements"><?= wp_count_posts('sos_group')->trash; ?></span>)
@@ -100,14 +92,11 @@ $posts = get_posts( array(
 						<tr>
 							<th><input type="checkbox" id="check_all"></th>
 							<th>TITLE</th>
-							<th>type</th>
-							<th>Plugins</th>
-							<th>Count</th>
 						</tr>
 						</thead>
 						<tbody id="the-list">
 						<?php
-						$this->content_groups($posts);
+						$this->content_filters_categories($categories);
 						?>
 						</tbody>
 					</table>

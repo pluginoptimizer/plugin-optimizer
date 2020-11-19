@@ -7,7 +7,7 @@ import { hiddenInfoFilter } from './components/hidden-info-filter.js';
 import { deleteRestoreElement } from './components/delete-restore-element.js';
 import { allElements } from './components/check-all-element.js';
 import { createdFilters } from './components/created-filters.js';
-import { createGroupPlugins } from './components/create-plugins.js';
+import { createGroupPlugins } from './components/create-groups.js';
 import { showAllElements } from './components/all-elements.js';
 import { addCategory } from './components/add-category.js';
 import { deleteCategory } from './components/delete-category.js';
@@ -78,6 +78,36 @@ import { deleteCategory } from './components/delete-category.js';
                 $(`#settings_debug`).css(`display`, `flex`);
             })
         })();
+
+        (function() {
+            $('#title_group').change(function () {
+                const name_group = $(this).val();
+                $.ajax({
+                    url: simple_online_systems_groups.ajax_url,
+                    type: 'POST',
+                    data: {
+                        action: 'sos_check_name_group',
+                        'name_group': name_group,
+                    },
+                    success: function (response) {
+                        console.log(response.data);
+                        if( response.data === true && response.data !== `nothing` ){
+                            $('#group_name_error').css('display', 'block');
+                        }
+                    }
+                });
+            })
+
+            $(`#group_name_error .popup-close`).click(function () {
+                $(`#group_name_error`).css(`display`, `none`);
+                $('#title_group').val(``);
+                $('#title_group').focus();
+            })
+        })()
+
+
+
+
 
     });
 })(jQuery);

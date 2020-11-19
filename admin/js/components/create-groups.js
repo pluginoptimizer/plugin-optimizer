@@ -18,6 +18,7 @@ let createGroupPlugins;
                         'title_group': $('input[name="title_group"]').val(),
                         'type_group': $('input[name="type_group"]').val(),
                         'group_plugins': $('select[name="group_plugins"] option:selected').toArray().map(item => item.text).join(', '),
+                        'group_parents': $('select[name="group_parents"] option:selected').text(),
                     },
                     success: function (response) {
                         $('#the-list').html(response.data);

@@ -152,6 +152,7 @@ class Simple_Online_Systems {
 		$this->loader->add_action( 'save_post', $plugin_admin, 'save_group_options' );
 		$this->loader->add_action( 'save_post_page', $plugin_admin, 'add_item_to_worklist' );
 		$this->loader->add_action( 'save_post_post', $plugin_admin, 'add_item_to_worklist' );
+		$this->loader->add_action( 'activated_plugin', $plugin_admin, 'add_item_to_worklist_active_plugins', 10, 1 );
 		$this->loader->add_action( 'admin_bar_menu', $plugin_admin, 'add_plugin_in_admin_bar', 100 );
 
 
@@ -167,6 +168,7 @@ class Simple_Online_Systems {
 		$this->loader->add_action( 'wp_ajax_sos_add_group_plugins', $plugin_admin, 'ajax_add_group_plugins' );
 		$this->loader->add_action( 'wp_ajax_sos_create_category', $plugin_admin, 'ajax_create_category' );
 		$this->loader->add_action( 'wp_ajax_sos_delete_category', $plugin_admin, 'ajax_delete_category' );
+		$this->loader->add_action( 'wp_ajax_sos_check_name_group', $plugin_admin, 'ajax_check_name_group' );
 
 	}
 

@@ -28,7 +28,7 @@ $posts = get_posts( array(
         </div>
         <div class="row sos-content">
             <div class="row col-12 justify-content-end">
-                <div class="col-2 quantity">
+                <div class="quantity">
                     <span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_posts('sos_work')->publish; ?></span>) | <span id="trash_elements">TRASH</span> (<span id="count_trash_elements"><?= wp_count_posts('sos_work')->trash; ?></span>)
                 </div>
             </div>

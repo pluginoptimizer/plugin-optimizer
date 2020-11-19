@@ -90,6 +90,7 @@ class Simple_Online_Systems_Admin {
 		add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'simple_online_systems_overview', array( $this, 'render_overview_page' ), 'dashicons-sos' );
 		add_submenu_page( 'simple_online_systems_overview', 'Overview', 'Overview', 'manage_options', 'simple_online_systems_overview', array( $this, 'render_overview_page' ) );
 		add_submenu_page( 'simple_online_systems_overview', 'Filters', 'Filters', 'manage_options', 'simple_online_systems_filters', array( $this, 'render_filters_page' ) );
+		add_submenu_page( 'simple_online_systems_overview', 'Filters Categories', 'Filters Categories', 'manage_options', 'simple_online_systems_filters_categories', array( $this, 'render_filters_categories_page' ) );
 		add_submenu_page( 'simple_online_systems_overview', 'Groups plugin', 'Groups plugin', 'manage_options', 'simple_online_systems_groups', array( $this, 'render_groups_page' ) );
 		add_submenu_page( 'simple_online_systems_overview', 'Worklist', 'Worklist', 'manage_options', 'simple_online_systems_worklist', array( $this, 'render_worklist_page' ) );
 		add_submenu_page( 'simple_online_systems_overview', 'Settings', 'Settings', 'manage_options', 'simple_online_systems_settings', array( $this, 'render_settings_page' ) );
@@ -104,6 +105,10 @@ class Simple_Online_Systems_Admin {
 
 	public function render_filters_page() {
 		include 'partials/page-filters.php';
+	}
+
+	public function render_filters_categories_page() {
+		include 'partials/page-categories.php';
 	}
 
 	public function render_groups_page() {
@@ -144,6 +149,13 @@ class Simple_Online_Systems_Admin {
 			'id'     => 'plugin_optimizer_filters',
 			'title'  => 'Filters',
 			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters')),
+		) );
+
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'plugin_optimizer',
+			'id'     => 'plugin_optimizer_filters_categories',
+			'title'  => 'Filters Categories',
+			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters_categories')),
 		) );
 
 		$wp_admin_bar->add_menu( array(
@@ -497,6 +509,7 @@ class Simple_Online_Systems_Admin {
 		$title_group   = htmlspecialchars( $_POST[ 'title_group' ] );
 		$type_group    = htmlspecialchars( $_POST[ 'type_group' ] );
 		$group_plugins = htmlspecialchars( $_POST[ 'group_plugins' ] );
+		$group_parents = htmlspecialchars( $_POST[ 'group_parents' ] );
 
 		$post_data = array(
 			'post_title'  => $title_group,
@@ -513,12 +526,19 @@ class Simple_Online_Systems_Admin {
 
 		add_post_meta( $post_id, 'type_group', $type_group );
 		add_post_meta( $post_id, 'group_plugins', $group_plugins );
+		add_post_meta( $post_id, 'group_parents', $group_parents );
 
 		ob_start();
 
 		$posts = get_posts( array(
 			'post_type'   => 'sos_group',
-			'numberposts' => - 1,
+			'numberposts' => -1,
+			'meta_query' => array(
+				array(
+					'key' => 'group_parents',
+					'value' => 'None'
+				)
+			),
 		) );
 
 		$this->content_groups($posts);
@@ -595,6 +615,28 @@ class Simple_Online_Systems_Admin {
 
 		$title_work  = 'Add filter to ' . get_post($post_id)->post_title;
 		$post_link   = get_post_permalink(get_post($post_id));
+
+		$post_data = array(
+			'post_title'  => $title_work,
+			'post_type'   => 'sos_work',
+			'post_status' => 'publish',
+			'post_author' => 1,
+		);
+
+		$post_id = wp_insert_post( $post_data, true );
+		if ( is_wp_error( $post_id ) ) {
+			wp_send_json_error( $post_id->get_error_message() );
+		}
+		add_post_meta( $post_id, 'post_link', $post_link );
+	}
+
+	/**
+	 * Creating a work after active plugins
+	 */
+	function add_item_to_worklist_active_plugins( $plugin ) {
+
+		$title_work  = 'Add filter to ' .  ucfirst(dirname($plugin));
+		$post_link   = $plugin;
 
 		$post_data = array(
 			'post_title'  => $title_work,
@@ -715,11 +757,138 @@ class Simple_Online_Systems_Admin {
                         </div>
                     </td>
                 </tr>
+				<?php
+                if($post->post_status === 'publish'){
+	                $posts_chidren = get_posts( array(
+		                'post_type'   => 'sos_group',
+		                'numberposts' => -1,
+		                'meta_query' => array(
+			                array(
+				                'key' => 'group_parents',
+				                'value' => $post->post_title,
+			                )
+		                ),
+	                ) );
+                } else if($post->post_status === 'trash'){
+	                $posts_chidren = get_posts( array(
+		                'post_type'   => 'sos_group',
+		                'numberposts' => -1,
+		                'post_status' => 'trash',
+		                'meta_query'  => array(
+			                array(
+				                'key'   => 'group_parents',
+				                'value' => $post->post_title,
+			                )
+		                ),
+	                ) );
+                }
+
+
+				if( $posts_chidren ) :
+					foreach ( $posts_chidren as $post_chidren ) :
+						$children_group_plugins = implode( ', ', get_metadata( 'post', $post_chidren->ID, 'group_plugins' ));
+						?>
+
+                        <tr class="block_info block_children">
+                            <td><input type="checkbox" id="<?= $post_chidren->ID; ?>"></td>
+                            <td> — <?= $post_chidren->post_title; ?></td>
+                            <td><?= implode( ",", get_metadata( 'post', $post_chidren->ID, 'type_group' ) ); ?></td>
+                            <td><?= implode( ', ', get_metadata( 'post', $post_chidren->ID, 'group_plugins' )); ?></td>
+                            <td><?= count(explode(", ", implode( get_metadata( 'post', $post_chidren->ID, 'group_plugins' )))); ?></td>
+                        </tr>
+                        <tr class="hidden_info">
+                            <td colspan="6">
+                                <div class="content-filter">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="header">
+                                                <div class="title">
+                                                    Plugins <span class="disabled">- Disabled: 2/8</span>
+                                                </div>
+                                                <span class="count-plugin">( Active: <?= count($activate_plugins);?>   |   Inactive: <?= count($deactivate_plugins); ?> )</span>
+                                            </div>
+											<?php
+											if($activate_plugins):
+												?>
+                                                <div class="plugin-wrapper">
+													<?php
+													foreach ($activate_plugins as $activate_plugin):
+														?>
+                                                        <div class="content
+                                             <?php
+														if(substr_count($children_group_plugins, $activate_plugin)){
+															echo 'block';
+														}
+														?>
+                                             ">
+                                                            <span><?= $activate_plugin; ?></span>
+                                                        </div>
+													<?php
+													endforeach;
+													?>
+                                                </div>
+											<?php
+											else:
+												?>
+                                                <div class="plugin-wrapper no-plugins">
+                                                    <div class="content">
+                                                        <span>No activate plugins</span>
+                                                    </div>
+                                                </div>
+											<?php
+											endif;
+											?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+					<?php endforeach;
+					endif;
+
+				?>
 			<?php endforeach;
 		else:
 			?>
 			<tr>
 				<td colspan="5">Not group plugins</td>
+			</tr>
+		<?php
+		endif;
+	}
+
+	/**
+	 * Content for filters categories
+	 */
+	function content_filters_categories($categories){
+		if( $categories ) :
+			foreach ( $categories as $cat ) :?>
+                <tr class="block_info">
+                    <td><input type="checkbox" id="<?= $cat->cat_ID ?>"></td>
+                    <td><?= $cat->cat_name; ?></td>
+                </tr>
+                <?php
+				$difference = $cat->cat_ID;
+				$subcategories = get_categories( array(
+					'parent'       => $difference,
+					'taxonomy'      => 'category',
+					'type'          => 'sos_filter',
+					'hide_empty'    => 0,
+				) );
+				if( $subcategories ) :
+					foreach ( $subcategories as $subcategory ) :?>
+                        <tr class="block_info block_children">
+                            <td><input type="checkbox" id="<?= $subcategory->cat_ID ?>"></td>
+                            <td> — <?= $subcategory->cat_name; ?></td>
+                        </tr>
+					<?php endforeach;
+				endif;
+                ?>
+			<?php endforeach;
+		else:
+			?>
+			<tr>
+				<td colspan="5">Not filters categories</td>
 			</tr>
 		<?php
 		endif;
@@ -939,6 +1108,16 @@ class Simple_Online_Systems_Admin {
 		} elseif($name_post_type === 'sos_filter'){
 			$this->content_filters($posts);
 		} elseif($name_post_type === 'sos_group'){
+			$posts = get_posts( array(
+				'post_type'   => 'sos_group',
+				'numberposts' => -1,
+				'meta_query' => array(
+					array(
+						'key' => 'group_parents',
+						'value' => 'None'
+					)
+				),
+			) );
 			$this->content_groups($posts);
 		}
 
@@ -964,6 +1143,17 @@ class Simple_Online_Systems_Admin {
         } elseif($name_post_type === 'sos_filter'){
 	        $this->content_filters($posts);
         } elseif($name_post_type === 'sos_group'){
+	        $posts = get_posts( array(
+		        'post_type'   => 'sos_group',
+		        'numberposts' => -1,
+		        'post_status' => 'trash',
+		        'meta_query' => array(
+			        array(
+				        'key' => 'group_parents',
+				        'value' => 'None'
+			        )
+		        ),
+	        ) );
 	        $this->content_groups($posts);
         }
 
@@ -1096,6 +1286,33 @@ class Simple_Online_Systems_Admin {
 		wp_delete_category( $cat_ID );
 
 		$this->ajax_create_category($id_filter);
+	}
+
+	/**
+	 * Check name group
+	 */
+
+	public function ajax_check_name_group(){
+		$name_group = htmlspecialchars( $_POST[ 'name_group' ] );
+		$posts = get_posts( array(
+			'post_type'   => 'sos_group',
+			'numberposts' => -1,
+		) );
+
+		$names_group = array();
+
+		if( $posts ) {
+			foreach ( $posts as $post ) {
+				array_push($names_group, $post->post_title);
+			}
+		} else {
+			wp_send_json_success( 'nothing' );
+		}
+		if ( in_array($name_group, $names_group) ) {
+			wp_send_json_success( true );
+		} else {
+			wp_send_json_success( false );
+		}
 	}
 
 }

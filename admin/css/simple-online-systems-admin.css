@@ -373,7 +373,40 @@
 .sos-wrap .active-plugin{
     font-weight: 600;
 }
+/*.sos-wrap form.created-groups group_name{
+    display: block !important;
+    margin-top: 35px !important;
+    position: relative !important;
+}*/
 
+#group_name_error{
+    display: none;
+    margin-top: 35px;
+    box-shadow: 0 3px 5px rgba(0,191,255,0.5);
+    border-radius: 8px;
+    width: 250px;
+    height: auto;
+    padding: 10px;
+    position: absolute;
+    background: #fff;
+    z-index: 9;
+}
+
+.wrapper_group_name_error{
+    position: relative;
+}
+
+.wrapper_group_name_error .popup-close {
+    font-size: 30px;
+    position: absolute;
+    top: -20px;
+    right: 0;
+    color: rgb(0,191,255);
+    cursor: pointer;
+}
+#result_search > *{
+    font-size: 18px;
+}
 
 
 
@@ -451,3 +484,13 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+.block_info{
+    font-weight: 600;
+}
+
+.block_children{
+    font-size: 14px;
+    font-weight: 400;
+}
+
