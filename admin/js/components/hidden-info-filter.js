@@ -5,11 +5,11 @@ let hiddenInfoFilter;
     $(document).ready(function () {
         // hidden info filter
         hiddenInfoFilter = () =>{
-            $('.block_info').click(function () {
-                if($(this).next().css('display') === 'none'){
-                    $(this).next().css('display', 'table-row');
+            $('.block_info > td:not(:nth-child(1))').click(function () {
+                if($(this).parent().next('.hidden_info').css('display') === 'none'){
+                    $(this).parent().next('.hidden_info').css('display', 'table-row');
                 } else{
-                    $(this).next().css('display', 'none');
+                    $(this).parent().next('.hidden_info').css('display', 'none');
                 }
             })
         }

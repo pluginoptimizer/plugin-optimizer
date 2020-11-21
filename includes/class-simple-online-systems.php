@@ -167,8 +167,10 @@ class Simple_Online_Systems {
 		$this->loader->add_action( 'wp_ajax_sos_count_elements', $plugin_admin, 'ajax_count_elements' );
 		$this->loader->add_action( 'wp_ajax_sos_add_group_plugins', $plugin_admin, 'ajax_add_group_plugins' );
 		$this->loader->add_action( 'wp_ajax_sos_create_category', $plugin_admin, 'ajax_create_category' );
+		$this->loader->add_action( 'wp_ajax_sos_create_cat_subcat', $plugin_admin, 'ajax_create_cat_subcat' );
 		$this->loader->add_action( 'wp_ajax_sos_delete_category', $plugin_admin, 'ajax_delete_category' );
 		$this->loader->add_action( 'wp_ajax_sos_check_name_group', $plugin_admin, 'ajax_check_name_group' );
+		$this->loader->add_action( 'wp_ajax_sos_change_plugins_to_filter', $plugin_admin, 'ajax_change_plugins_to_filter' );
 
 	}
 

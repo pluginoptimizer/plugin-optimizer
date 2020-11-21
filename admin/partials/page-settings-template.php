@@ -115,6 +115,62 @@ foreach ($all_plugins as $plugin) {
                                         <td><input type="checkbox"></td>
                                         <td><?= $activate_plugin; ?></td>
                                     </tr>
+									<?php
+									$posts = get_posts( array(
+										'post_type'   => 'sos_filter',
+										'numberposts' => -1,
+									) );
+									?>
+                                    <tr class="hidden_info">
+                                        <td colspan="6">
+                                            <div class="content-filter">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="header">
+                                                            <div class="title">
+                                                                Filters
+                                                            </div>
+                                                            <span class="count-plugin">( All: <?= wp_count_posts('sos_filter')->publish;?>   |   Trash: <?= wp_count_posts('sos_filter')->trash; ?> )</span>
+                                                        </div>
+														<?php
+														if($posts):
+															?>
+                                                            <div class="plugin-wrapper">
+																<?php
+																foreach ($posts as $post):
+																	$group_plugins = implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( ', ', get_metadata( 'post', $post->ID, 'block_group_plugins' ));
+																	?>
+                                                                <a href="<?= esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters&filter_title=' . urlencode( $post->post_title ))); ?>">
+                                                                    <div class="content
+                                             <?php
+																	if(substr_count($group_plugins, $activate_plugin)){
+																		echo 'block';
+																	}
+																	?>
+                                             ">
+                                                                        <span><?= $post->post_title; ?></span>
+                                                                    </div>
+                                                                </a>
+																<?php
+																endforeach;
+																?>
+                                                            </div>
+														<?php
+														else:
+															?>
+                                                            <div class="plugin-wrapper no-plugins">
+                                                                <div class="content">
+                                                                    <span>No activate plugins</span>
+                                                                </div>
+                                                            </div>
+														<?php
+														endif;
+														?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
 								<?php
 								endforeach;
 								?>

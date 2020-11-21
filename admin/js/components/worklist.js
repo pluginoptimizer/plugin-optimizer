@@ -22,6 +22,9 @@ let getWorklist;
             if(params['work_title']){
                 $('input[name="title_filter"]').val(`Page acceleration ${params['work_title'].replace('_', ' ')}`);
                 $('#search_pages').val(params['work_link']);
+            } else if(params['filter_title']) {
+                $(`tr.block_info > td:nth-child(2):contains(${params['filter_title'].replace('+', ' ')})`).parent().next('.hidden_info').css('display', 'table-row');
+                $('html').animate({ scrollTop: $(`tr.block_info > td:nth-child(2):contains(${params['filter_title'].replace('+', ' ')})`).parent().next('.hidden_info').children().children().children('.block-plugin-wrapper').children().children('.plugin-wrapper').offset().top - 100 }, 1000);
             }
         };
 

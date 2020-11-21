@@ -8,7 +8,6 @@ let addCategory;
         //all elements
         addCategory = () => {
             $('.add-category').click(function (e) {
-                console.log('click');
                 const self = this;
                 $.ajax({
                     url: simple_online_systems_groups.ajax_url,

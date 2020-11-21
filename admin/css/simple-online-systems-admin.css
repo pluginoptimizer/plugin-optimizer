@@ -494,3 +494,26 @@ input:checked + .slider:before {
     font-weight: 400;
 }
 
+.sos-wrap a{
+    color: #444 !important;
+}
+
+.sos-wrap a:hover{
+    color: #000 !important;
+    text-decoration: none !important;
+}
+
+.sos-wrap a:visited, a:active, a:focus{
+    outline: none;
+    box-shadow: none;
+}
+
+.sos-wrap .content:hover{
+    box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+    transform: scale(1.03, 1.03);
+    transition: box-shadow, transform 0.35s ease-in-out;
+}
+
+
+
+

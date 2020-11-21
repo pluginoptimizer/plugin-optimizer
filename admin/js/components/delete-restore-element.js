@@ -15,6 +15,8 @@ let deleteRestoreElement;
                     name_post_type = 'sos_filter';
                 } else if($('#name_page').text() === 'groups'){
                     name_post_type = 'sos_group';
+                } else if($('#name_page').text() === 'Filters categories'){
+                    name_post_type = 'cat';
                 }
 
                 if($('#check_all_elements option:selected').text() === 'Delete'){

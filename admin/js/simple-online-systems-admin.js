@@ -90,7 +90,6 @@ import { deleteCategory } from './components/delete-category.js';
                         'name_group': name_group,
                     },
                     success: function (response) {
-                        console.log(response.data);
                         if( response.data === true && response.data !== `nothing` ){
                             $('#group_name_error').css('display', 'block');
                         }
@@ -105,6 +104,49 @@ import { deleteCategory } from './components/delete-category.js';
             })
         })()
 
+
+
+        $('form.created-cat input[type="submit"]').click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: simple_online_systems_groups.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'sos_create_cat_subcat',
+                    'name_category': $(`#title_cat`).val(),
+                    'parent_category': $('select[name="cat_parents"] option:selected').val(),
+                },
+                success: function (response) {
+                    $('#the-list').html(response.data);
+                    allElements.count_element('cat');
+                    allElements.check_all_element();
+                }
+            });
+        })
+
+        const changePlugins = () => {
+            $('.close').click(function(){
+                const filter_id = $(this).attr('value');
+                const plugin_name = $(this).attr('id');
+                const change_plugins = $(this).text();
+                $.ajax({
+                    url: simple_online_systems_groups.ajax_url,
+                    type: 'POST',
+                    data: {
+                        action: 'sos_change_plugins_to_filter',
+                        'filter_id': filter_id,
+                        'plugin_name': plugin_name,
+                        'change_plugins': change_plugins,
+                    },
+                    success: function (response) {
+                        $(`tr#filter-${response.data.filter_id}`).next('.hidden_info').children().children().children('.block-plugin-wrapper').html(response.data.return);
+                        changePlugins();
+                    }
+                });
+            })
+        }
+        changePlugins();
 
 
 

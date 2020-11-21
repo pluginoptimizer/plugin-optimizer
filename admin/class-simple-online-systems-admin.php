@@ -664,7 +664,7 @@ class Simple_Online_Systems_Admin {
 					<td><?= esc_url(implode( '', get_metadata( 'post', $post->ID, 'post_link' ))); ?></td>
 					<td><?= substr(str_replace( '-', '/', str_replace(" ", " at ", $post->post_date)), 0 , -3) . ' pm'; ?></td>
 					<td>
-						<a class="row-title" href="<?= esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters&work_title=' . urlencode(str_replace(' ', '_', str_replace('Add filter to ', '', $post->post_title))) . '&work_link=' . urlencode(esc_url(implode( '', get_metadata( 'post', $post->ID, 'post_link' )))))); ?>" aria-label="“<?/*= $post->post_title; */?>” (Edit)">
+						<a class="row-title" href="<?= esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters&work_title=' . urlencode(str_replace(' ', '_', str_replace('Add filter to ', '', $post->post_title))) . '&work_link=' . urlencode(esc_url(implode( '', get_metadata( 'post', $post->ID, 'post_link' )))))); ?>">
 							<button class="add-filter"><span class="pluse">+</span> add new filter</button>
 						</a>
 					</td>
@@ -898,23 +898,8 @@ class Simple_Online_Systems_Admin {
 	 * Content for filters
 	 */
 	function content_filters($posts){
-		$all_plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
-		$activate_plugins = array();
-		$deactivate_plugins = array();
-		foreach ($all_plugins as $plugin) {
-			foreach ($plugin as $key => $value) {
-				if($key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer'){
-					if($value){
-						array_push($activate_plugins, $plugin['name']);
-					} else{
-						array_push($deactivate_plugins, $plugin['name']);
-					}
-				}
-			}
-		}
 		if( $posts ) :
 			foreach ( $posts as $post ) :
-				$block_plugins = implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( get_metadata( 'post', $post->ID, 'block_group_plugins' ));
 				?>
 				<tr class="block_info" id="filter-<?= $post->ID; ?>">
 					<td><input type="checkbox" id="<?= $post->ID; ?>"></td>
@@ -946,47 +931,11 @@ class Simple_Online_Systems_Admin {
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="header">
-                                        <div class="title">
-                                            Plugins <span class="disabled">- Disabled: 2/8</span>
-                                        </div>
-                                        <span class="count-plugin">( Active: <?= count($activate_plugins);?>   |   Inactive: <?= count($deactivate_plugins); ?> )</span>
-                                    </div>
-                                    <?php
-                                    if($activate_plugins):
-	                                    ?>
-                                        <div class="plugin-wrapper">
-                                        <?php
-                                        foreach ($activate_plugins as $activate_plugin):
-                                            ?>
-                                            <div class="content
-                                             <?php
-                                            if(substr_count($block_plugins, $activate_plugin)){
-                                                echo 'block';
-                                            }
-                                            ?>
-                                             ">
-                                                <span><?= $activate_plugin; ?></span>
-                                            </div>
-                                            <?php
-                                        endforeach;
-                                        ?>
-                                        </div>
-                                        <?php
-                                    else:
-                                        ?>
-                                            <div class="plugin-wrapper no-plugins">
-                                                <div class="content">
-                                                    <span>No activate plugins for blocking</span>
-                                                </div>
-                                            </div>
-                                        <?php
-                                    endif;
-                                    ?>
-                                </div>
-                            </div>
+	                        <div class="row block-plugin-wrapper">
+		                        <?php
+		                            $this->content_plugin_to_filter($post);
+		                        ?>
+	                        </div>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="header">
@@ -1069,6 +1018,16 @@ class Simple_Online_Systems_Admin {
 				$this->content_filters($posts);
 			} elseif($name_post_type === 'sos_group'){
 				$this->content_groups($posts);
+			} elseif($name_post_type === 'cat'){
+				$categories = get_categories( [
+					'taxonomy'      => 'category',
+					'type'          => 'sos_filter',
+					'parent'       => 0,
+					'hide_empty'    => 0,
+					'name__like'  => esc_attr( $_POST['keyword'] ),
+				] );
+
+				$this->content_filters_categories($categories);
 			}
 		} else {
 			$posts = get_posts( array(
@@ -1170,15 +1129,32 @@ class Simple_Online_Systems_Admin {
 		$type_works  = htmlspecialchars( $_POST[ 'type_works' ] );
 
 		if($type_works === 'all'){
-			$posts = get_posts( array(
-				'post_type'   =>$name_post_type,
-				'include'     => $id_works,
-			) );
+			if($name_post_type === 'cat'){
+				wp_delete_category( $id_works );
 
-			foreach ($posts as $post) {
-				wp_trash_post( $post->ID);
+				ob_start();
+
+				$categories = get_categories( [
+					'taxonomy'      => 'category',
+					'type'          => 'sos_filter',
+					'parent'       => 0,
+					'hide_empty'    => 0,
+				] );
+
+				$this->content_filters_categories($categories);
+
+				wp_send_json_success( ob_get_clean() );
+			} else {
+				$posts = get_posts( array(
+					'post_type'   =>$name_post_type,
+					'include'     => $id_works,
+				) );
+
+				foreach ($posts as $post) {
+					wp_trash_post( $post->ID);
+				}
+				$this->ajax_all_elements();
 			}
-		    $this->ajax_all_elements();
         } else {
 			$posts = get_posts( array(
 				'post_type'   =>$name_post_type,
@@ -1218,10 +1194,17 @@ class Simple_Online_Systems_Admin {
 	public function ajax_count_elements(){
 		$name_post_type  = htmlspecialchars( $_POST[ 'name_post_type' ] );
 
-		$return = array(
-			'all'   => wp_count_posts($name_post_type)->publish,
-			'trash' =>  wp_count_posts($name_post_type)->trash,
-		);
+		if($name_post_type === 'cat'){
+			$return = array(
+				'all'   => wp_count_terms( 'category' ),
+			);
+		} else {
+			$return = array(
+				'all'   => wp_count_posts($name_post_type)->publish,
+				'trash' =>  wp_count_posts($name_post_type)->trash,
+			);
+		}
+
 		wp_send_json_success( $return );
 
 	}
@@ -1313,6 +1296,156 @@ class Simple_Online_Systems_Admin {
 		} else {
 			wp_send_json_success( false );
 		}
+	}
+
+
+
+	/**
+	 * Create new category for page category
+	 */
+
+	public function ajax_create_cat_subcat(){
+		$name_category = htmlspecialchars( $_POST[ 'name_category' ] );
+		$parent_category = htmlspecialchars( $_POST[ 'parent_category' ] );
+
+		wp_create_category($name_category, $parent_category);
+
+
+		ob_start();
+
+		$categories = get_categories( [
+			'taxonomy'      => 'category',
+			'type'          => 'sos_filter',
+			'parent'       => 0,
+			'hide_empty'    => 0,
+		] );
+
+		$this->content_filters_categories($categories);
+
+		wp_send_json_success( ob_get_clean() );
+
+	}
+	/**
+	 * Add plugin to filter
+	 */
+
+	public function ajax_change_plugins_to_filter(){
+		$filter_id= htmlspecialchars( $_POST[ 'filter_id' ] );
+		$plugin_name = htmlspecialchars( $_POST[ 'plugin_name' ] );
+		$change_plugins = htmlspecialchars( $_POST[ 'change_plugins' ] );
+
+		$array_plugins = explode(', ', implode(', ', get_metadata( 'post', $filter_id, 'block_plugins' )));
+//		var_dump($filter_id);
+		if($change_plugins === '+'){
+		    array_push($array_plugins, $plugin_name);
+        } else {
+		    $array_plugins = array_diff($array_plugins, [$plugin_name]);
+        }
+
+//		var_dump($array_plugins);
+
+		update_metadata( 'post', $filter_id, 'block_plugins', implode(', ', $array_plugins ) );
+
+
+		ob_start();
+
+		$posts = get_posts( array(
+			'post_type'   => 'sos_filter',
+			'include'     => $filter_id,
+		) );
+		if( $posts ) {
+			foreach ( $posts as $post ) {
+				$this->content_plugin_to_filter($post);
+			}
+		}
+
+
+		$return = array(
+			'filter_id'   => $filter_id,
+			'return' =>  ob_get_clean(),
+		);
+
+		wp_send_json_success( $return );
+
+	}
+
+	function content_plugin_to_filter($post){
+		$all_plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
+		$activate_plugins = array();
+		$deactivate_plugins = array();
+		foreach ($all_plugins as $plugin) {
+			foreach ($plugin as $key => $value) {
+				if($key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer'){
+					if($value){
+						array_push($activate_plugins, $plugin['name']);
+					} else{
+						array_push($deactivate_plugins, $plugin['name']);
+					}
+				}
+			}
+		}
+		$block_plugins = implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( get_metadata( 'post', $post->ID, 'block_group_plugins' ));
+		?>
+			<div class="col-12">
+				<div class="header">
+					<div class="title">
+						<?php $count_plugins = 0;
+						if($activate_plugins){
+							foreach ($activate_plugins as $activate_plugin){
+								if ( substr_count( $block_plugins, $activate_plugin ) ) {
+									$count_plugins++;
+								}
+							}
+						}
+						?>
+						Plugins <span class="disabled">- Disabled: <?= $count_plugins; ?>/<?= count($activate_plugins);?></span>
+					</div>
+					<span class="count-plugin">( Active: <?= count($activate_plugins);?>   |   Inactive: <?= count($deactivate_plugins); ?> )</span>
+				</div>
+				<?php
+				if($activate_plugins):
+					?>
+					<div class="plugin-wrapper">
+						<?php
+						foreach ($activate_plugins as $activate_plugin):
+							?>
+							<div class="content
+                                             <?php
+							if(substr_count($block_plugins, $activate_plugin)){
+								echo 'block';
+							}
+							?>
+                                             ">
+								<span><?= $activate_plugin; ?></span>
+								<?php
+								if(substr_count($block_plugins, $activate_plugin)):
+									?>
+									<span class="close" id="<?= $activate_plugin; ?>" value="<?= $post->ID; ?>">×</span>
+								<?php
+								else:
+									?>
+									<span class="close pluse_plugin" id="<?= $activate_plugin; ?>" value="<?= $post->ID; ?>">+</span>
+								<?php
+								endif;
+								?>
+							</div>
+						<?php
+						endforeach;
+						?>
+					</div>
+				<?php
+				else:
+					?>
+					<div class="plugin-wrapper no-plugins">
+						<div class="content">
+							<span>No activate plugins for blocking</span>
+						</div>
+					</div>
+				<?php
+				endif;
+				?>
+			</div>
+		<?php
 	}
 
 }

@@ -9,7 +9,7 @@ $categories = get_categories( [
 ?>
 <div class="wrap wrapper-filter">
 	<h1>Filters categories</h1>
-	<form action="" class="created-groups">
+	<form action="" class="created-cat">
 		<p>Group Title</p>
 		<div id="group_name_error">
 			<div class="wrapper_group_name_error">
@@ -17,15 +17,15 @@ $categories = get_categories( [
 				<div id="result_search">This name is already in use</div>
 			</div>
 		</div>
-		<input type="text" placeholder="Enter category title" name="title_group" id="title_group">
+		<input type="text" placeholder="Enter category title" name="title_cat" id="title_cat">
 		<p>Select parent</p>
-		<select name="group_parents">
+		<select name="cat_parents" id="cat_parents">
 			<option value="none">None</option>
 			<?php
 			if( $categories ):
 				foreach( $categories as $cat ):
 					?>
-					<option value="<?= str_replace( ' ', "_", $cat->cat_name ); ?>"><?= $cat->cat_name; ?></option>
+					<option value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></option>
 				<?php
 				endforeach;
 			endif;
@@ -66,7 +66,7 @@ $categories = get_categories( [
 					<button class="add-filter"><span class="pluse">+</span> add new category</button>
 				</div>
 				<div class="col-8 quantity">
-					<span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_posts('sos_group')->publish; ?></span>) | <span id="trash_elements">TRASH</span> (<span id="count_trash_elements"><?= wp_count_posts('sos_group')->trash; ?></span>)
+					<span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_terms( 'category' ); ?></span>)
 				</div>
 			</div>
 			<div class="row col-12 ">
