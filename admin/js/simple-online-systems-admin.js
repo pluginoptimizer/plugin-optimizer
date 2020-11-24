@@ -146,7 +146,27 @@ import { deleteCategory } from './components/delete-category.js';
                 });
             })
         }
-        changePlugins();
+
+        const searchPlugins = () => {
+            $('#search_plugins').on('input', function(){
+                let filter_plugins = $(this).val();
+                $.ajax({
+                    url: simple_online_systems_groups.ajax_url,
+                    type: 'POST',
+                    data: {
+                        action: 'sos_search_plugins_to_settings',
+                        'filter_plugins': filter_plugins,
+                    },
+                    success: function (response) {
+                        $(`#the-list`).html(response.data);
+                        hiddenInfoFilter();
+                    }
+                });
+            })
+        }
+        searchPlugins();
+
+        $('.sos-speed').text(`${Number.parseFloat($('html').html().length / 1024).toFixed(2)} kB` );
 
 
 

@@ -171,6 +171,7 @@ class Simple_Online_Systems {
 		$this->loader->add_action( 'wp_ajax_sos_delete_category', $plugin_admin, 'ajax_delete_category' );
 		$this->loader->add_action( 'wp_ajax_sos_check_name_group', $plugin_admin, 'ajax_check_name_group' );
 		$this->loader->add_action( 'wp_ajax_sos_change_plugins_to_filter', $plugin_admin, 'ajax_change_plugins_to_filter' );
+		$this->loader->add_action( 'wp_ajax_sos_search_plugins_to_settings', $plugin_admin, 'ajax_search_plugins_to_settings' );
 
 	}
 

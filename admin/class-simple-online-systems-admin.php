@@ -130,47 +130,149 @@ class Simple_Online_Systems_Admin {
 	/**
 	 * Add Admin-Bar Pages
 	 */
-	public function add_plugin_in_admin_bar($wp_admin_bar){
+	public function add_plugin_in_admin_bar($wp_admin_bar) {
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'plugin_optimizer',
-			'title' => '<span class="sos-icon"></span> Plugin Optimizer',
-			'href'  => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_settings')),
+			'title' => '<span class="sos-icon"></span> Plugin Optimizer <span class="sos-speed"></span>' ,
+			'href'  => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_settings' ) ),
 		) );
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_overview',
 			'title'  => 'Overview',
-			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_overview')),
+			'href'   => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_overview' ) ),
 		) );
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_filters',
-			'title'  => 'Filters',
-			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters')),
+			'title'  => 'Filters (' . wp_count_posts('sos_filter')->publish . ')',
+			'href'   => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_filters' ) ),
 		) );
+
+		$posts = get_posts( array(
+			'post_type'   => 'sos_filter',
+			'numberposts' => - 1,
+		) );
+		foreach ( $posts as $post ) {
+			$wp_admin_bar->add_menu( array(
+				'parent' => 'plugin_optimizer_filters',
+				'id'     => 'plugin_optimizer_filters' . $post->post_title,
+				'title'  => $post->post_title,
+				'href'   => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_filters&filter_title=' . $post->post_title ) ),
+			) );
+		}
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_filters_categories',
-			'title'  => 'Filters Categories',
-			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters_categories')),
+			'title'  => 'Filters Categories (' . wp_count_terms( 'category' ) . ')',
+			'href'   => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_filters_categories' ) ),
 		) );
+
+		$categories = get_categories( [
+			'taxonomy'   => 'category',
+			'type'       => 'sos_filter',
+			'parent'     => 0,
+			'hide_empty' => 0,
+		] );
+
+		if ( $categories ) {
+			foreach ( $categories as $cat ) {
+				$wp_admin_bar->add_menu( array(
+					'parent' => 'plugin_optimizer_filters_categories',
+					'id'     => 'plugin_optimizer_filters_categories_' . $cat->cat_name,
+					'title'  => $cat->cat_name,
+					'href'   => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_filters_categories' ) ),
+				) );
+
+				$subcategories = get_categories( array(
+					'parent'     => $cat->cat_ID,
+					'taxonomy'   => 'category',
+					'type'       => 'sos_filter',
+					'hide_empty' => 0,
+				) );
+				if ( $subcategories ) {
+					foreach ( $subcategories as $subcategory ){
+						$wp_admin_bar->add_menu( array(
+							'parent' => 'plugin_optimizer_filters_categories',
+							'id'     => 'plugin_optimizer_filters_categories_' . $subcategory->cat_name,
+							'title'  => $subcategory->cat_name,
+							'href'   => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_filters_categories' ) ),
+						) );
+					}
+				}
+			}
+		}
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_groups',
-			'title'  => 'Groups',
+			'title'  => 'Groups (' . wp_count_posts('sos_group')->publish . ')',
 			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_groups')),
 		) );
+
+		$posts = get_posts( array(
+			'post_type'   => 'sos_group',
+			'numberposts' => -1,
+			'meta_query' => array(
+				array(
+					'key' => 'group_parents',
+					'value' => 'None'
+				)
+			),
+		) );
+		foreach ($posts as $post) {
+			$wp_admin_bar->add_menu( array(
+				'parent' => 'plugin_optimizer_groups',
+				'id'     => 'plugin_optimizer_groups' . $post->post_title,
+				'title'  => $post->post_title,
+				'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_groups&group_title=' . $post->post_title)),
+			));
+			$posts_chidrens = get_posts( array(
+				'post_type'   => 'sos_group',
+				'numberposts' => -1,
+				'meta_query' => array(
+					array(
+						'key' => 'group_parents',
+						'value' => $post->post_title,
+					)
+				),
+			) );
+
+
+			if( $posts_chidrens ){
+				foreach ( $posts_chidrens as $post_chidren ){
+					$wp_admin_bar->add_menu( array(
+						'parent' => 'plugin_optimizer_groups',
+						'id'     => 'plugin_optimizer_groups' . $post_chidren->post_title,
+						'title'  => $post_chidren->post_title,
+						'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_groups&group_title=' . $post_chidren->post_title)),
+					));
+				}
+			}
+		}
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_worklist',
-			'title'  => 'Worklist',
+			'title'  => 'Worklist (' . wp_count_posts('sos_work')->publish . ')',
 			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_worklist')),
 		) );
+
+		$posts = get_posts( array(
+			'post_type'   => 'sos_work',
+			'numberposts' => -1,
+		) );
+		foreach ($posts as $post) {
+			$wp_admin_bar->add_menu( array(
+				'parent' => 'plugin_optimizer_worklist',
+				'id'     => 'plugin_optimizer_worklist' . $post->post_title,
+				'title'  => $post->post_title,
+				'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_worklist&work_title=' . $post->post_title)),
+			));
+		}
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
@@ -178,6 +280,46 @@ class Simple_Online_Systems_Admin {
 			'title'  => 'Settings',
 			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_settings')),
 		) );
+
+
+		if ( is_admin() ) {
+			$all_plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
+			$activate_plugins = array();
+			$deactivate_plugins = array();
+			foreach ($all_plugins as $plugin) {
+				foreach ($plugin as $key => $value) {
+					if($key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer'){
+						if($value){
+							array_push($activate_plugins, $plugin['name']);
+						} else{
+							array_push($deactivate_plugins, $plugin['name']);
+						}
+					}
+				}
+			}
+
+			$wp_admin_bar->add_menu( array(
+				'parent' => 'plugin_optimizer_settings',
+				'id'     => 'plugin_optimizer_settings_plugin_activated',
+				'title'  => 'Activate plugins ('. count($activate_plugins) . ')',
+			));
+
+			$wp_admin_bar->add_menu( array(
+				'parent' => 'plugin_optimizer_settings',
+				'id'     => 'plugin_optimizer_settings_plugin_deactivated',
+				'title'  => 'Deactivate plugins ('. count($deactivate_plugins) . ')',
+			));
+
+
+			foreach ($activate_plugins as $activate_plugin) {
+				$wp_admin_bar->add_menu( array(
+					'parent' => 'plugin_optimizer_settings_plugin_activated',
+					'id'     => 'plugin_optimizer_settings_plugin_activated' . $activate_plugin,
+					'title'  => $activate_plugin,
+					'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_settings&plugin_title=' . $activate_plugin)),
+				));
+			}
+		}
 
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
@@ -1446,6 +1588,131 @@ class Simple_Online_Systems_Admin {
 				?>
 			</div>
 		<?php
+	}
+
+
+
+	/**
+	 * Search plugin to settings
+	 */
+
+	public function ajax_search_plugins_to_settings(){
+		$filter_plugins = htmlspecialchars( $_POST[ 'filter_plugins' ] );
+
+
+
+		$all_plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
+		$activate_plugins = array();
+		$deactivate_plugins = array();
+		foreach ($all_plugins as $plugin) {
+			foreach ($plugin as $key => $value) {
+				if($key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer'){
+					if($value){
+						array_push($activate_plugins, $plugin['name']);
+					} else{
+						array_push($deactivate_plugins, $plugin['name']);
+					}
+				}
+			}
+		}
+
+
+		$activate_plugins = preg_grep('~^' . $filter_plugins . '~i', $activate_plugins);
+
+		ob_start();
+
+		$this->content_plugins_to_settings($activate_plugins);
+
+		wp_send_json_success( ob_get_clean() );
+	}
+
+
+	/**
+	 * Content plugins to settings
+	 */
+
+	public function content_plugins_to_settings($activate_plugins){
+
+		if($activate_plugins):
+			?>
+			<?php
+			foreach ($activate_plugins as $activate_plugin):
+				?>
+                <tr class="block_info">
+                    <td><input type="checkbox"></td>
+                    <td><?= $activate_plugin; ?></td>
+                </tr>
+				<?php
+				$posts = get_posts( array(
+					'post_type'   => 'sos_filter',
+					'numberposts' => -1,
+				) );
+				?>
+                <tr class="hidden_info">
+                    <td colspan="2">
+                        <div class="content-filter">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
+                                            Filters
+                                        </div>
+                                        <span class="count-plugin">( All: <?= wp_count_posts('sos_filter')->publish;?>   |   Trash: <?= wp_count_posts('sos_filter')->trash; ?> )</span>
+                                    </div>
+									<?php
+									if($posts):
+										?>
+                                        <div class="plugin-wrapper">
+											<?php
+											foreach ($posts as $post):
+												$group_plugins = implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( ', ', get_metadata( 'post', $post->ID, 'block_group_plugins' ));
+												?>
+                                                <a href="<?= esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_filters&filter_title=' . urlencode( $post->post_title ))); ?>">
+                                                    <div class="content
+                                             <?php
+													if(substr_count($group_plugins, $activate_plugin)){
+														echo 'block';
+													}
+													?>
+                                             ">
+                                                        <span><?= $post->post_title; ?></span>
+                                                    </div>
+                                                </a>
+											<?php
+											endforeach;
+											?>
+                                        </div>
+									<?php
+									else:
+										?>
+                                        <div class="plugin-wrapper no-plugins">
+                                            <div class="content">
+                                                <span>No activate plugins</span>
+                                            </div>
+                                        </div>
+									<?php
+									endif;
+									?>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+			<?php
+			endforeach;
+			?>
+		<?php
+		else:
+			?>
+            <tr class="plugin-wrapper no-plugins">
+	            <td colspan="2">
+		            <div class="content">
+			            <span>No activate plugins for blocking</span>
+		            </div>
+	            </td>
+            </tr>
+		<?php
+		endif;
 	}
 
 }

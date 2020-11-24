@@ -141,7 +141,7 @@ $posts = get_posts( array(
 //var_dump(get_metadata( 'post', 3620, 'block_plugins' ));
 //var_dump(get_metadata( 'post', 3620, 'block_group_plugins' ));
 
-echo implode(', ', array_diff(explode(', ', implode(', ', get_metadata( 'post', 3620, 'block_group_plugins' ))), ["Duplicate Page"]));
+/*echo implode(', ', array_diff(explode(', ', implode(', ', get_metadata( 'post', 3620, 'block_group_plugins' ))), ["Duplicate Page"]));
 $array = explode(', ', implode(', ', get_metadata( 'post', 3620, 'block_group_plugins' )));
 array_push($array, "WP Rocket");
-echo implode(', ', $array);
+echo implode(', ', $array);*/
