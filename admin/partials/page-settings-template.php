@@ -52,7 +52,7 @@ foreach ($all_plugins as $plugin) {
                 <div class="tabs col-2">worklist</div>
             </div>
             <div class="col-2">
-                <input class="search" type="search" id="search_plugins" name="s" value="" placeholder="Search">
+                <input class="search" type="search" id="search_elements" name="s" value="" placeholder="Search">
             </div>
         </div>
         <div class="row sos-content">
@@ -76,7 +76,7 @@ foreach ($all_plugins as $plugin) {
             <div id="settings_plugins" class="col-12">
                 <div class="row col-12 justify-content-end">
                     <div class="col-8 quantity">
-                        <span class="active-plugin">Active</span> (<span class="count-active-plugin"><?= count($activate_plugins);?>)</span> | <span class="inactive-plugin">Inactive</span> (<span class="count-trash-plugin"><?= count($deactivate_plugins);?></span>)
+                        <span class="active-plugin" id="all_elements">Active</span> (<span class="count-active-plugin"><?= count($activate_plugins);?>)</span> | <span class="inactive-plugin">Inactive</span> (<span class="count-trash-plugin"><?= count($deactivate_plugins);?></span>)
                     </div>
                 </div>
                 <div class="row col-12">

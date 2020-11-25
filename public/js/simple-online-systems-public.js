@@ -1,3 +1,9 @@
+function check_speed() {
+	sessionStorage.now = Date.now();
+	setTimeout(check_speed, 25);
+}
+
+
 (function( $ ) {
 	'use strict';
 
@@ -28,7 +34,16 @@
 	 * Although scripts in the WordPress core, Plugins and Themes may be
 	 * practising this, we should strive to set a better example in our own work.
 	 */
+
 	$(document).ready(function () {
-		$('.sos-speed').text(`${Number.parseFloat($('html').html().length / 1024).toFixed(2)} kB` );
+		window.onload = function() {
+			const now = Date.now();
+			if ( sessionStorage.now ) {
+				const loaded_in = now - parseInt(sessionStorage.now);
+				$('.sos-speed').text(` | ${Number.parseFloat(loaded_in  *  0.001).toFixed(2)} s | ${Number.parseFloat($('html').html().length / 1024).toFixed(2)} kB` );
+			}
+			check_speed();
+		};
+
 	});
 })( jQuery );

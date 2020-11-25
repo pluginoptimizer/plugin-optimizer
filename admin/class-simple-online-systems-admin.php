@@ -334,7 +334,9 @@ class Simple_Online_Systems_Admin {
 	 * Register all post types
 	 */
 	public function register_post_types() {
-
+		/**
+		 * Register filter for page
+		 */
 		register_post_type( 'sos_filter', array(
 			'label'         => null,
 			'labels'        => array(
@@ -366,6 +368,10 @@ class Simple_Online_Systems_Admin {
 			'rewrite'       => true,
 			'query_var'     => true,
 		) );
+
+		/**
+		 * Register group for plugins
+		 */
 		register_post_type( 'sos_group', array(
 			'label'         => null,
 			'labels'        => array(
@@ -397,6 +403,10 @@ class Simple_Online_Systems_Admin {
 			'rewrite'       => true,
 			'query_var'     => true,
 		) );
+
+		/**
+		 * Register work for worklist
+		 */
 		register_post_type( 'sos_work', array(
 			'label'         => null,
 			'labels'        => array(
@@ -413,7 +423,7 @@ class Simple_Online_Systems_Admin {
 				'parent_item_colon'  => '',
 				'menu_name'          => 'Works',
 			),
-			'description'   => 'Work for your customers',
+			'description'   => 'Work for Worklist',
 			'public'        => true,
 			'show_in_menu'  => true,
 			// 'show_in_admin_bar'   => null,
@@ -485,12 +495,16 @@ class Simple_Online_Systems_Admin {
 		}
 		$block_group_plugins = substr($block_group_plugins, 0, -2);
 
-		$block_plugins      = htmlspecialchars( $_POST[ 'block_plugins' ] );
+		$block_plugins      = htmlspecialchars( $_POST[ 'block_plugins' ] ) . ', ' . $block_group_plugins;
+		$block_plugins      = explode(', ', $block_plugins);
+		$block_plugins      = implode( ', ', array_unique($block_plugins));
+		$block_group        = htmlspecialchars( $_POST[ 'block_group_plugins' ] );
 		$post_type          = htmlspecialchars( $_POST[ 'post_type' ] );
 		$pages              = htmlspecialchars( $_POST[ 'pages' ] );
 		$title_filter       = htmlspecialchars( $_POST[ 'title_filter' ] );
 		$type_filter        = htmlspecialchars( $_POST[ 'type_filter' ] );
 		$category_filter    = htmlspecialchars( $_POST[ 'category_filter' ] );
+
 
 		$post_data = array(
 			'post_title'  => $title_filter,
@@ -506,7 +520,7 @@ class Simple_Online_Systems_Admin {
 		}
 
 		add_post_meta( $post_id, 'block_plugins', $block_plugins );
-		add_post_meta( $post_id, 'block_group_plugins', $block_group_plugins );
+		add_post_meta( $post_id, 'block_group_plugins', $block_group );
 		add_post_meta( $post_id, 'selected_post_type', $post_type );
 		add_post_meta( $post_id, 'selected_page', $pages );
 		add_post_meta( $post_id, 'type_filter', $type_filter );
@@ -1049,7 +1063,7 @@ class Simple_Online_Systems_Admin {
 					<td><?= implode( ",", get_metadata( 'post', $post->ID, 'category_filter' ) ); ?></td>
 					<td><?= implode( ",", get_metadata( 'post', $post->ID, 'type_filter' ) ); ?></td>
 					<td><?= implode( ",", get_metadata( 'post', $post->ID, 'selected_post_type' ) ) . ', '  . implode( get_metadata( 'post', $post->ID, 'selected_page' )); ?></td>
-					<td><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )) . ', ' . implode( get_metadata( 'post', $post->ID, 'block_group_plugins' )); ?></td>
+					<td><?= implode( ', ', get_metadata( 'post', $post->ID, 'block_plugins' )); ?></td>
 				</tr>
 				<tr class="hidden_info">
 					<td colspan="6">
@@ -1170,6 +1184,27 @@ class Simple_Online_Systems_Admin {
 				] );
 
 				$this->content_filters_categories($categories);
+			} elseif($name_post_type === 'plugins'){
+				$filter_plugins = htmlspecialchars( $_POST['keyword'] );
+
+				$all_plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
+				$activate_plugins = array();
+				$deactivate_plugins = array();
+				foreach ($all_plugins as $plugin) {
+					foreach ($plugin as $key => $value) {
+						if($key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer'){
+							if($value){
+								array_push($activate_plugins, $plugin['name']);
+							} else{
+								array_push($deactivate_plugins, $plugin['name']);
+							}
+						}
+					}
+				}
+
+				$activate_plugins = preg_grep('~^' . $filter_plugins . '~i', $activate_plugins);
+
+				$this->content_plugins_to_settings($activate_plugins);
 			}
 		} else {
 			$posts = get_posts( array(
@@ -1588,42 +1623,6 @@ class Simple_Online_Systems_Admin {
 				?>
 			</div>
 		<?php
-	}
-
-
-
-	/**
-	 * Search plugin to settings
-	 */
-
-	public function ajax_search_plugins_to_settings(){
-		$filter_plugins = htmlspecialchars( $_POST[ 'filter_plugins' ] );
-
-
-
-		$all_plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
-		$activate_plugins = array();
-		$deactivate_plugins = array();
-		foreach ($all_plugins as $plugin) {
-			foreach ($plugin as $key => $value) {
-				if($key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer'){
-					if($value){
-						array_push($activate_plugins, $plugin['name']);
-					} else{
-						array_push($deactivate_plugins, $plugin['name']);
-					}
-				}
-			}
-		}
-
-
-		$activate_plugins = preg_grep('~^' . $filter_plugins . '~i', $activate_plugins);
-
-		ob_start();
-
-		$this->content_plugins_to_settings($activate_plugins);
-
-		wp_send_json_success( ob_get_clean() );
 	}
 
 

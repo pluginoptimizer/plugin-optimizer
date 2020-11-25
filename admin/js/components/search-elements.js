@@ -1,3 +1,5 @@
+import {hiddenInfoFilter} from "./hidden-info-filter.js";
+
 let searchElements;
 (function ($) {
     'use strict';
@@ -15,6 +17,8 @@ let searchElements;
                     name_post_type = 'sos_group';
                 } else if($('#name_page').text() === 'Filters categories'){
                     name_post_type = 'cat';
+                } else if($('#name_page').text() === 'settings'){
+                    name_post_type = 'plugins';
                 }
                 let type_works;
                 if($('#all_elements').css('font-weight') === '700'){
@@ -33,6 +37,7 @@ let searchElements;
                     },
                     success: function (response) {
                         $('#the-list').html(response.data);
+                        hiddenInfoFilter();
                     }
                 });
             });
