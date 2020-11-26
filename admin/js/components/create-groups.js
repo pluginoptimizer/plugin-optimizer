@@ -22,6 +22,7 @@ let createGroupPlugins;
                     },
                     success: function (response) {
                         $('#the-list').html(response.data);
+                        $('#create_elements').css('display', 'none');
                         allElements.count_element('sos_group');
                         allElements.check_all_element();
                     }

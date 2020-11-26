@@ -517,3 +517,37 @@ input:checked + .slider:before {
 
 
 
+
+
+#create_elements{
+    display: none;
+    margin-top: 35px;
+    box-shadow: 0 3px 5px rgba(0,191,255,0.5);
+    border-radius: 8px;
+    height: auto;
+    padding: 10px;
+    position: absolute;
+    background: #fff;
+    z-index: 9;
+    width: 50%;
+    left: 25%;
+    top: 25%;
+    text-align: center;
+}
+
+.wrapper_create-elements{
+    position: relative;
+}
+
+.wrapper_create-elements input, .wrapper_create-elements select{
+    width: 100%;
+}
+
+.wrapper_create-elements .popup-close {
+    font-size: 30px;
+    position: absolute;
+    top: -20px;
+    right: 0;
+    color: rgb(0,191,255);
+    cursor: pointer;
+}

@@ -16,6 +16,7 @@ import { changeSettings } from './components/change-settings.js';
 import { checkNameGroup } from './components/check-name-group.js';
 import { createCat } from './components/create-category.js';
 import { speedTest } from './components/speed-test.js';
+import { createPopup } from './components/create-popup.js';
 
 
 (function ($) {
@@ -41,6 +42,7 @@ import { speedTest } from './components/speed-test.js';
         checkNameGroup();
         createCat();
         speedTest();
+        createPopup();
 
     });
 })(jQuery);
