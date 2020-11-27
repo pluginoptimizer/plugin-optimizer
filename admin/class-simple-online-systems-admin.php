@@ -355,7 +355,7 @@ class Simple_Online_Systems_Admin {
 			),
 			'description'   => 'Filter for your customers',
 			'public'        => true,
-			'show_in_menu'  => true,
+			'show_in_menu'  => false,
 			// 'show_in_admin_bar'   => null,
 			'show_in_rest'  => null,
 			'rest_base'     => null,
@@ -390,7 +390,7 @@ class Simple_Online_Systems_Admin {
 			),
 			'description'   => 'Group plugins for your customers',
 			'public'        => true,
-			'show_in_menu'  => true,
+			'show_in_menu'  => false,
 			// 'show_in_admin_bar'   => null,
 			'show_in_rest'  => null,
 			'rest_base'     => null,
@@ -423,9 +423,9 @@ class Simple_Online_Systems_Admin {
 				'parent_item_colon'  => '',
 				'menu_name'          => 'Works',
 			),
-			'description'   => 'Work for Worklist',
+			'description'   => 'Items that are created after activating the plugin, or creating a page or post and that are recorded in a Worklist',
 			'public'        => true,
-			'show_in_menu'  => true,
+			'show_in_menu'  => false,
 			// 'show_in_admin_bar'   => null,
 			'show_in_rest'  => null,
 			'rest_base'     => null,
@@ -1158,10 +1158,10 @@ class Simple_Online_Systems_Admin {
 	 */
 	public function ajax_search_elements(){
 		$name_post_type  = htmlspecialchars( $_POST[ 'name_post_type' ] );
-		$type_works  = htmlspecialchars( $_POST[ 'type_works' ] );
+		$type_elements  = htmlspecialchars( $_POST[ 'type_elements' ] );
 
 		ob_start();
-		if($type_works === 'all'){
+		if($type_elements === 'all'){
 			$posts = get_posts( array(
 				'post_type'   => $name_post_type,
 				'numberposts' => - 1,
@@ -1302,12 +1302,12 @@ class Simple_Online_Systems_Admin {
 	 */
 	public function ajax_delete_elements(){
 		$name_post_type  = htmlspecialchars( $_POST[ 'name_post_type' ] );
-		$id_works  = htmlspecialchars( $_POST[ 'id_works' ] );
-		$type_works  = htmlspecialchars( $_POST[ 'type_works' ] );
+		$id_elements  = htmlspecialchars( $_POST[ 'id_elements' ] );
+		$type_elements  = htmlspecialchars( $_POST[ 'type_elements' ] );
 
-		if($type_works === 'all'){
+		if($type_elements === 'all'){
 			if($name_post_type === 'cat'){
-				wp_delete_category( $id_works );
+				wp_delete_category( $id_elements );
 
 				ob_start();
 
@@ -1324,7 +1324,7 @@ class Simple_Online_Systems_Admin {
 			} else {
 				$posts = get_posts( array(
 					'post_type'   =>$name_post_type,
-					'include'     => $id_works,
+					'include'     => $id_elements,
 				) );
 
 				foreach ($posts as $post) {
@@ -1334,8 +1334,8 @@ class Simple_Online_Systems_Admin {
 			}
         } else {
 			$posts = get_posts( array(
-				'post_type'   =>$name_post_type,
-				'include'     => $id_works,
+				'post_type'   => $name_post_type,
+				'include'     => $id_elements,
 				'post_status' => 'trash',
 			) );
 
@@ -1351,11 +1351,11 @@ class Simple_Online_Systems_Admin {
 	 */
 	public function ajax_publish_elements(){
 		$name_post_type  = htmlspecialchars( $_POST[ 'name_post_type' ] );
-		$id_works  = htmlspecialchars( $_POST[ 'id_works' ] );
+		$id_elements  = htmlspecialchars( $_POST[ 'id_elements' ] );
 
 		$posts = get_posts( array(
 			'post_type'   => $name_post_type,
-			'include'     => $id_works,
+			'include'     => $id_elements,
 			'post_status' => 'trash',
 		) );
 

@@ -1,8 +1,4 @@
-function check_speed() {
-	sessionStorage.now = Date.now();
-	setTimeout(check_speed, 25);
-}
-
+import { speedTest } from '../../admin/js/components/speed-test.js';
 
 (function( $ ) {
 	'use strict';
@@ -36,14 +32,6 @@ function check_speed() {
 	 */
 
 	$(document).ready(function () {
-		window.onload = function() {
-			const now = Date.now();
-			if ( sessionStorage.now ) {
-				const loaded_in = now - parseInt(sessionStorage.now);
-				$('.sos-speed').text(` | ${Number.parseFloat(loaded_in  *  0.001).toFixed(2)} s | ${Number.parseFloat($('html').html().length / 1024).toFixed(2)} kB` );
-			}
-			check_speed();
-		};
-
+		speedTest();
 	});
 })( jQuery );

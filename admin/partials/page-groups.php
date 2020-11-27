@@ -59,7 +59,7 @@ $posts = get_posts( array(
 			<h1>Plugin Optimizer</h1>
 		</div>
 		<div class="col-12">
-			<h2 id="name_page">groups</h2>
+			<h2 id="name_page" class="groups">groups</h2>
 		</div>
 
 
@@ -77,7 +77,7 @@ $posts = get_posts( array(
 		<div class="row sos-content">
 			<div class="row col-12 justify-content-between global-information">
 				<div class="col-3">
-					<button class="add-filter" id="add_group"><span class="pluse">+</span> add new group</button>
+					<button class="add-filter" id="add_elements"><span class="pluse">+</span> add new group</button>
 				</div>
 				<div class="col-8 quantity">
 					<span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_posts('sos_group')->publish; ?></span>) | <span id="trash_elements">TRASH</span> (<span id="count_trash_elements"><?= wp_count_posts('sos_group')->trash; ?></span>)

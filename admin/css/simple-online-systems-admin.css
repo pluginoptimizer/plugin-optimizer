@@ -22,7 +22,7 @@
     border: none;
     outline: none;
     border-radius: 8px;
-    width: 200px;
+    /*width: 200px;*/
     padding: 5px;
     box-shadow: 0 0 5px rgba(0,191,255,0.5);
     color: #0073aa;
@@ -31,10 +31,10 @@
 
 #result{
     display: none;
-    margin-top: 20px;
+    margin-top: 5px;
     box-shadow: 0 3px 5px rgba(0,191,255,0.5);
     border-radius: 8px;
-    width: 300px;
+    width: 58%;
     height: auto;
     padding: 10px;
     position: absolute;
@@ -544,10 +544,14 @@ input:checked + .slider:before {
 }
 
 .wrapper_create-elements .popup-close {
-    font-size: 30px;
+    font-size: 35px;
     position: absolute;
-    top: -20px;
-    right: 0;
+    top: -10px;
+    right: 10px;
     color: rgb(0,191,255);
     cursor: pointer;
+}
+
+#create_elements.create_filter{
+    top: 0;
 }

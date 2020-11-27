@@ -45,7 +45,7 @@ $categories = get_categories( [
 			<h1>Plugin Optimizer</h1>
 		</div>
 		<div class="col-12">
-			<h2 id="name_page">Filters categories</h2>
+			<h2 id="name_page" class="filters_categories">Filters categories</h2>
 		</div>
 
 

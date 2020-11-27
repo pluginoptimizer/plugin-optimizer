@@ -9,22 +9,22 @@ let deleteRestoreElement;
         deleteRestoreElement = () =>{
             $('#btn_apply').click(function () {
                 let name_post_type;
-                if($('#name_page').text() === 'worklist'){
+                if($('#name_page').attr("class") === 'worklist'){
                     name_post_type = 'sos_work';
-                } else if($('#name_page').text() === 'filters'){
+                } else if($('#name_page').attr("class") === 'filters'){
                     name_post_type = 'sos_filter';
-                } else if($('#name_page').text() === 'groups'){
+                } else if($('#name_page').attr("class") === 'groups'){
                     name_post_type = 'sos_group';
-                } else if($('#name_page').text() === 'Filters categories'){
+                } else if($('#name_page').attr("class") === 'filters_categories'){
                     name_post_type = 'cat';
                 }
 
                 if($('#check_all_elements option:selected').text() === 'Delete'){
-                    let type_works;
+                    let type_elements;
                     if($('#all_elements').css('font-weight') === '700'){
-                        type_works = 'all';
+                        type_elements = 'all';
                     } else {
-                        type_works = 'trash';
+                        type_elements = 'trash';
                     }
                     $.ajax({
                         url: simple_online_systems_groups.ajax_url,
@@ -32,8 +32,8 @@ let deleteRestoreElement;
                         data: {
                             action: 'sos_delete_elements',
                             'name_post_type': name_post_type,
-                            'type_works': type_works,
-                            'id_works': $('input:checked').toArray().map(item => item.id).join(','),
+                            'type_elements': type_elements,
+                            'id_elements': $('input:checked').toArray().map(item => item.id).join(','),
                         },
                         success: function (response) {
                             $('#the-list').html(response.data);
@@ -51,7 +51,7 @@ let deleteRestoreElement;
                         data: {
                             action: 'sos_publish_elements',
                             'name_post_type': name_post_type,
-                            'id_works': $('input:checked').toArray().map(item => item.id).join(','),
+                            'id_elements': $('input:checked').toArray().map(item => item.id).join(','),
                         },
                         success: function (response) {
                             $('#the-list').html(response.data);

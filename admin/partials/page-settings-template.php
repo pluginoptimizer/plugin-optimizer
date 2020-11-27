@@ -40,7 +40,7 @@ foreach ($all_plugins as $plugin) {
             <h1>Plugin Optimizer</h1>
         </div>
         <div class="col-12">
-            <h2 id="name_page">settings</h2>
+            <h2 id="name_page" class="settings">settings</h2>
         </div>
 
 

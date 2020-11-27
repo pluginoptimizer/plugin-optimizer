@@ -9,22 +9,22 @@ let searchElements;
         searchElements = () => {
             $('#search_elements').keyup(function () {
                 let name_post_type;
-                if($('#name_page').text() === 'worklist'){
+                if($('#name_page').attr("class") === 'worklist'){
                     name_post_type = 'sos_work';
-                } else if($('#name_page').text() === 'filters'){
+                } else if($('#name_page').attr("class") === 'filters'){
                     name_post_type = 'sos_filter';
-                } else if($('#name_page').text() === 'groups'){
+                } else if($('#name_page').attr("class") === 'groups'){
                     name_post_type = 'sos_group';
-                } else if($('#name_page').text() === 'Filters categories'){
+                } else if($('#name_page').attr("class") === 'filters_categories'){
                     name_post_type = 'cat';
-                } else if($('#name_page').text() === 'settings'){
+                } else if($('#name_page').attr("class") === 'settings'){
                     name_post_type = 'plugins';
                 }
-                let type_works;
+                let type_elements;
                 if($('#all_elements').css('font-weight') === '700'){
-                    type_works = 'all';
+                    type_elements = 'all';
                 } else {
-                    type_works = 'trash';
+                    type_elements = 'trash';
                 }
                 $.ajax({
                     url: simple_online_systems_groups.ajax_url,
@@ -32,7 +32,7 @@ let searchElements;
                     data: {
                         action: 'sos_search_elements',
                         'name_post_type': name_post_type,
-                        'type_works': type_works,
+                        'type_elements': type_elements,
                         'keyword': $('#search_elements').val(),
                     },
                     success: function (response) {

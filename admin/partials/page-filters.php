@@ -1,62 +1,64 @@
 <div class="wrap wrapper-filter">
-    <h1>Filtres</h1>
-    <form action="" class="created-filters">
-        <p>Filter Title</p>
-        <input type="text" placeholder="Enter filter title" name="title_filter">
-        <p>Set Type</p>
-        <input type="text" placeholder="Enter type" name="type_filter">
-        <p>Select category</p>
-        <input type="text" placeholder="Enter category" name="category_filter">
-        <p>Add Permalinks</p>
-        <input type="text" id="search_pages" placeholder="Enter name page" name="pages">
-
-        <div id="result">
+    <div id="create_elements" class="create_filter">
+        <div class="wrapper_create-elements">
             <p class="popup-close">×</p>
-            <div id="result_search"></div>
+            <form action="" class="created-filters">
+                <p>Filter Title</p>
+                <input type="text" placeholder="Enter filter title" name="title_filter">
+                <p>Set Type</p>
+                <input type="text" placeholder="Enter type" name="type_filter">
+                <p>Select category</p>
+                <input type="text" placeholder="Enter category" name="category_filter">
+                <p>Add Permalinks</p>
+                <input type="text" id="search_pages" placeholder="Enter name page" name="pages">
+
+                <div id="result">
+                    <p class="popup-close">×</p>
+                    <div id="result_search"></div>
+                </div>
+
+                <p>Add post type</p>
+                <select name="post_type" multiple>
+			        <?php
+			        $post_types           = get_post_types( [ 'publicly_queryable' => 1 ] );
+			        $post_types[ 'page' ] = 'page';
+			        unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ] );
+
+			        foreach ( $post_types as $post_type ) {
+				        ?>
+                        <option value="<?= str_replace( ' ', "_", $post_type ); ?>"><?= $post_type; ?></option>
+				        <?php
+			        }
+
+			        ?>
+                </select>
+                <p>Select block plugins</p>
+                <select name="block_plugins" multiple>
+			        <?php
+			        $plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
+			        foreach ( $plugins as $plugin => $value ): ?>
+                        <option value="<?= str_replace( ' ', "_", $value[ 'name' ] ); ?>"><?= $value[ 'name' ]; ?></option>
+			        <?php endforeach; ?>
+                </select>
+                <p>Select block group plugins</p>
+                <select name="block_group_plugins" multiple>
+			        <?php
+			        $posts = get_posts( array(
+				        'post_type'   => 'sos_group',
+				        'numberposts' => -1,
+			        ) );
+			        foreach( $posts as $post ){
+				        ?>
+                        <option value="<?= str_replace( ' ', "_", $post->post_title ); ?>"><?= $post->post_title; ?></option>
+				        <?php
+			        }
+			        ?>
+                </select>
+                <br><br>
+                <input type="submit" value="Create new filter">
+            </form>
         </div>
-
-        <p>Add post type</p>
-        <select name="post_type" multiple>
-            <?php
-            $post_types           = get_post_types( [ 'publicly_queryable' => 1 ] );
-            $post_types[ 'page' ] = 'page';
-            unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ] );
-
-            foreach ( $post_types as $post_type ) {
-                ?>
-                <option value="<?= str_replace( ' ', "_", $post_type ); ?>"><?= $post_type; ?></option>
-                <?php
-            }
-
-            ?>
-        </select>
-        <p>Select block plugins</p>
-        <select name="block_plugins" multiple>
-            <?php
-            $plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
-            foreach ( $plugins as $plugin => $value ): ?>
-                <option value="<?= str_replace( ' ', "_", $value[ 'name' ] ); ?>"><?= $value[ 'name' ]; ?></option>
-            <?php endforeach; ?>
-        </select>
-        <p>Select block group plugins</p>
-        <select name="block_group_plugins" multiple>
-            <?php
-            $posts = get_posts( array(
-	            'post_type'   => 'sos_group',
-	            'numberposts' => -1,
-            ) );
-            foreach( $posts as $post ){
-	            ?>
-                <option value="<?= str_replace( ' ', "_", $post->post_title ); ?>"><?= $post->post_title; ?></option>
-	            <?php
-            }
-            ?>
-        </select>
-        <br><br>
-        <input type="submit" value="Create new filter">
-    </form>
-
-
+    </div>
 </div>
 
 <?php
@@ -72,7 +74,7 @@ $posts = get_posts( array(
             <h1>Plugin Optimizer</h1>
         </div>
         <div class="col-12">
-            <h2 id="name_page">filters</h2>
+            <h2 id="name_page" class="filters">filters</h2>
         </div>
 
 
@@ -90,7 +92,7 @@ $posts = get_posts( array(
         <div class="row sos-content">
             <div class="row col-12 justify-content-between global-information">
                 <div class="col-3">
-                    <button class="add-filter"><span class="pluse">+</span> add new filter</button>
+                    <button class="add-filter" id="add_elements"><span class="pluse">+</span> add new filter</button>
                 </div>
                 <div class="col-2 quantity">
                     <span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_posts('sos_filter')->publish; ?></span>) | <span id="trash_elements">TRASH</span> (<span id="count_trash_elements"><?= wp_count_posts('sos_filter')->trash; ?></span>)

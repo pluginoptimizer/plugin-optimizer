@@ -5,10 +5,10 @@ let createPopup;
     $(document).ready(function () {
         // create plugins
         createPopup = () => {
-            $(`#add_group`).click(function(){
+            $(`#add_elements`).click(function(){
                 $('#create_elements').css('display', 'block');
             })
-            $(`#create_elements .popup-close`).click(function(){
+            $(`.wrapper_create-elements > .popup-close`).click(function(){
                 $('#create_elements').css('display', 'none');
             })
         }
