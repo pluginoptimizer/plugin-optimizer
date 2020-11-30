@@ -1,4 +1,5 @@
 import {allElements} from './check-all-element.js';
+import {hiddenInfoFilter} from "./hidden-info-filter.js";
 
 let deleteRestoreElement;
 (function ($) {
@@ -42,6 +43,7 @@ let deleteRestoreElement;
                             }
                             allElements.count_element(name_post_type);
                             allElements.check_all_element();
+                            hiddenInfoFilter();
                         }
                     });
                 } else if($('#check_all_elements option:selected').text() === 'Restore'){
@@ -60,6 +62,7 @@ let deleteRestoreElement;
                             }
                             allElements.count_element(name_post_type);
                             allElements.check_all_element();
+                            hiddenInfoFilter();
                         }
                     });
                 }

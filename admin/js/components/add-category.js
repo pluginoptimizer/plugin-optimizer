@@ -9,13 +9,15 @@ let addCategory;
         addCategory = () => {
             $('.add-category').click(function (e) {
                 const self = this;
+                const name_category = $(this).prev().val();
+                const id_filter = $(this).attr('id').substr(5);
                 $.ajax({
                     url: simple_online_systems_groups.ajax_url,
                     type: 'POST',
                     data: {
                         action: 'sos_create_category',
-                        'name_category': $(this).prev().val(),
-                        'id_filter': $(this).val().substr(5),
+                        'name_category': name_category,
+                        'id_filter': id_filter,
                     },
                     success: function (response) {
                         $(self).parent().html(response.data);

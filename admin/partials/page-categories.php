@@ -1,6 +1,6 @@
 <?php
 $categories = get_categories( [
-	'taxonomy'      => 'category',
+	'taxonomy'      => 'сategories_filters',
 	'type'          => 'sos_filter',
 	'parent'       => 0,
 	'hide_empty'    => 0,

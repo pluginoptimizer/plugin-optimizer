@@ -8,7 +8,24 @@
                 <p>Set Type</p>
                 <input type="text" placeholder="Enter type" name="type_filter">
                 <p>Select category</p>
-                <input type="text" placeholder="Enter category" name="category_filter">
+<!--                <input type="text" placeholder="Enter category" name="category_filter">-->
+                <select name="category_filter">
+		            <?php
+		            $categories = get_categories( [
+			            'taxonomy'      => 'сategories_filters',
+			            'type'          => 'sos_filter',
+			            'hide_empty'    => 0,
+		            ] );
+
+		            if( $categories ):
+			            foreach( $categories as $cat ):
+				            ?>
+                            <option value="<?= str_replace( ' ', "_", $cat->cat_ID ); ?>"><?= $cat->cat_name; ?></option>
+			            <?php
+			            endforeach;
+		            endif;
+		            ?>
+                </select>
                 <p>Add Permalinks</p>
                 <input type="text" id="search_pages" placeholder="Enter name page" name="pages">
 
@@ -42,7 +59,8 @@
                 </select>
                 <p>Select block group plugins</p>
                 <select name="block_group_plugins" multiple>
-			        <?php
+                    <option value="none" selected>None</option>
+                    <?php
 			        $posts = get_posts( array(
 				        'post_type'   => 'sos_group',
 				        'numberposts' => -1,
@@ -139,3 +157,13 @@ $posts = get_posts( array(
     </div>
 </div>
 
+<pre>
+
+
+<?php
+
+//var_dump(explode(', ', implode(', ', get_metadata( 'post', 3682))));
+//var_dump(get_metadata( 'post', 3683));
+
+?>
+</pre>

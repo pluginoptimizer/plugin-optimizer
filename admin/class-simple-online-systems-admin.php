@@ -446,7 +446,7 @@ class Simple_Online_Systems_Admin {
 	 */
 	public function register_taxonomies() {
 
-		register_taxonomy( 'Category filters', array( 'sos_filter' ), array(
+		register_taxonomy( 'сategories_filters', array( 'sos_filter' ), array(
 			'hierarchical' => true,
 			'labels'       => array(
 				'name'              => _x( 'Categories', 'taxonomy general name' ),
@@ -481,29 +481,35 @@ class Simple_Online_Systems_Admin {
 	 * Create filter
 	 */
 	public function ajax_add_plugin_to_filter() {
-		$block_group_plugins_get = explode(',',  htmlspecialchars( $_POST[ 'block_group_plugins' ] ));
-		$block_group_plugins = '';
-		foreach( $block_group_plugins_get as $block_group_plugin ){
-			$posts = get_posts( array(
-				'post_type'     => 'sos_group',
-				's'             => $block_group_plugin,
-				'numberposts'   => -1,
-			) );
-			foreach( $posts as $post ){
-				$block_group_plugins .= implode( ",", get_metadata( 'post', $post->ID, 'group_plugins' ) ) . ', ';
-			}
-		}
-		$block_group_plugins = substr($block_group_plugins, 0, -2);
-
-		$block_plugins      = htmlspecialchars( $_POST[ 'block_plugins' ] ) . ', ' . $block_group_plugins;
-		$block_plugins      = explode(', ', $block_plugins);
-		$block_plugins      = implode( ', ', array_unique($block_plugins));
 		$block_group        = htmlspecialchars( $_POST[ 'block_group_plugins' ] );
+	    if($block_group !== 'none'){
+		    $block_group_plugins_get = explode(',',  htmlspecialchars( $_POST[ 'block_group_plugins' ] ));
+		    $block_group_plugins = '';
+		    foreach( $block_group_plugins_get as $block_group_plugin ){
+			    $posts = get_posts( array(
+				    'post_type'     => 'sos_group',
+				    's'             => $block_group_plugin,
+				    'numberposts'   => -1,
+			    ) );
+			    foreach( $posts as $post ){
+				    $block_group_plugins .= implode( ",", get_metadata( 'post', $post->ID, 'group_plugins' ) ) . ', ';
+			    }
+		    }
+		    $block_group_plugins = substr($block_group_plugins, 0, -2);
+
+		    $block_plugins      = htmlspecialchars( $_POST[ 'block_plugins' ] ) . ', ' . $block_group_plugins;
+		    $block_plugins      = explode(', ', $block_plugins);
+		    $block_plugins      = implode( ', ', array_unique($block_plugins));
+	    } else {
+		    $block_plugins      = htmlspecialchars( $_POST[ 'block_plugins' ] );
+	    }
+
 		$post_type          = htmlspecialchars( $_POST[ 'post_type' ] );
 		$pages              = htmlspecialchars( $_POST[ 'pages' ] );
 		$title_filter       = htmlspecialchars( $_POST[ 'title_filter' ] );
 		$type_filter        = htmlspecialchars( $_POST[ 'type_filter' ] );
 		$category_filter    = htmlspecialchars( $_POST[ 'category_filter' ] );
+		$category_id_filter    = htmlspecialchars( $_POST[ 'category_id_filter' ] );
 
 
 		$post_data = array(
@@ -525,6 +531,7 @@ class Simple_Online_Systems_Admin {
 		add_post_meta( $post_id, 'selected_page', $pages );
 		add_post_meta( $post_id, 'type_filter', $type_filter );
 		add_post_meta( $post_id, 'category_filter', $category_filter );
+		wp_set_post_terms( $post_id, $category_id_filter, 'сategories_filters' );
 
 		ob_start();
 
@@ -1096,7 +1103,22 @@ class Simple_Online_Systems_Admin {
                                 <div class="col-12">
                                     <div class="header">
                                         <div class="title">
-                                            groups <span class="disabled">- Disabled: 1/2</span>
+	                                        <?php
+	                                        $groups_plugins = explode(', ', implode(', ', get_metadata( 'post', $post->ID, 'block_group_plugins' )));
+	                                        $count_groups = 0;
+											$groups = get_posts( array(
+												'post_type'   => 'sos_group',
+												'numberposts' => -1,
+											) );
+											if( $groups ){
+												foreach ( $groups as $group ) {
+													if(in_array($group->post_title, $groups_plugins)){
+														$count_groups++;
+													}
+												}
+											}
+	                                        ?>
+	                                        groups <span class="disabled">- Disabled: <?= $count_groups; ?>/<?= count($groups);?></span>
                                         </div>
                                     </div>
                                     <div class="plugin-wrapper">
@@ -1110,7 +1132,8 @@ class Simple_Online_Systems_Admin {
 	                                    ?>
                                                 <div class="content
                                                 <?php
-                                                    if(implode( ",", get_metadata( 'post', $group->ID, 'group_plugins' ) ) === implode( get_metadata( 'post', $post->ID, 'block_group_plugins' ))){
+//                                                    if(implode( ",", get_metadata( 'post', $group->ID, 'group_plugins' ) ) === implode( get_metadata( 'post', $post->ID, 'block_group_plugins' ))){
+                                                    if(in_array($group->post_title, $groups_plugins)){
                                                         echo 'block';
                                                     }
                                                 ?>
@@ -1399,14 +1422,15 @@ class Simple_Online_Systems_Admin {
 		    $id_filter = htmlspecialchars( $_POST[ 'id_filter' ] );
 		    $name_category = htmlspecialchars( $_POST[ 'name_category' ] );
 
-		    wp_set_object_terms( $id_filter, $name_category, 'category' );
+		    wp_set_object_terms( $id_filter, $name_category, 'сategories_filters' );
 	    }
 
 
 		ob_start();
+		$categories_filter = explode(', ', implode(', ', get_metadata( 'post', $id_filter, 'category_filter' )));
 
 		$categories = get_categories( [
-			'taxonomy'      => 'category',
+			'taxonomy'      => 'сategories_filters',
 			'type'          => 'sos_filter',
 			'hide_empty'    => 0,
 		] );
@@ -1414,7 +1438,13 @@ class Simple_Online_Systems_Admin {
 		if( $categories ):
 			foreach( $categories as $cat ):
 				?>
-                <div class="content filter-category">
+                <div class="content filter-category
+				<?php
+                if(in_array($cat->cat_name, $categories_filter)){
+	                echo 'block';
+                }
+                ?>
+				">
                     <span><?= $cat->cat_name; ?></span>
                     <span class="close" id="<?= $cat->cat_ID; ?>">×</span>
                 </div>
@@ -1443,7 +1473,8 @@ class Simple_Online_Systems_Admin {
 		$cat_ID = htmlspecialchars( $_POST[ 'id_category' ] );
 		$id_filter = htmlspecialchars( $_POST[ 'id_filter' ] );
 
-		wp_delete_category( $cat_ID );
+//		wp_delete_category( $cat_ID );
+		wp_delete_term( $cat_ID, 'сategories_filters' );
 
 		$this->ajax_create_category($id_filter);
 	}

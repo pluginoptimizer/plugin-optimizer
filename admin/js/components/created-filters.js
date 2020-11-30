@@ -1,4 +1,5 @@
 import {allElements} from "./check-all-element.js";
+import {hiddenInfoFilter} from "./hidden-info-filter.js";
 
 let createdFilters;
 (function ($) {
@@ -21,13 +22,15 @@ let createdFilters;
                         'pages': $('input[name="pages"]').val(),
                         'title_filter': $('input[name="title_filter"]').val(),
                         'type_filter': $('input[name="type_filter"]').val(),
-                        'category_filter': $('input[name="category_filter"]').val(),
+                        'category_filter': $('select[name="category_filter"] option:selected').text(),
+                        'category_id_filter': $('select[name="category_filter"] option:selected').val(),
                     },
                     success: function (response) {
                         $('#the-list').html(response.data);
                         $('#create_elements').css('display', 'none');
                         allElements.count_element('sos_filter');
                         allElements.check_all_element();
+                        hiddenInfoFilter();
                     }
                 })
             });
