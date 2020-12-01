@@ -18,7 +18,6 @@ let deleteCategory;
                         'id_filter': $(this).parent().parent().children('button').attr('id').substr(5),
                     },
                     success: function (response) {
-                        console.log(response);
                         $(selfDelete).parent().parent().html(response.data);
                         deleteCategory();
                         addCategory();

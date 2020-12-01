@@ -127,13 +127,19 @@ class Simple_Online_Systems_Admin {
 		include 'partials/page-support.php';
 	}
 
+    var $memory_peak = 0;
+
+	function check_memory_usage() {
+		$this->memory_peak = function_exists('memory_get_peak_usage') ? round( memory_get_peak_usage() / 1024 / 1024, 2 ) : 0;
+	}
 	/**
 	 * Add Admin-Bar Pages
 	 */
 	public function add_plugin_in_admin_bar($wp_admin_bar) {
+		$this->check_memory_usage();
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'plugin_optimizer',
-			'title' => '<span class="sos-icon"></span> Plugin Optimizer <span class="sos-speed"></span>' ,
+			'title' => '<span class="sos-icon"></span> Plugin Optimizer | Memory used: ' . $this->memory_peak . ' Mb<span class="sos-speed"></span>' ,
 			'href'  => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_settings' ) ),
 		) );
 
@@ -147,7 +153,8 @@ class Simple_Online_Systems_Admin {
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_filters',
-			'title'  => 'Filters (' . wp_count_posts('sos_filter')->publish . ')',
+//			'title'  => 'Filters (' . wp_count_posts('sos_filter')->publish . ')',
+			'title'  => 'Filters',
 			'href'   => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_filters' ) ),
 		) );
 
@@ -156,12 +163,14 @@ class Simple_Online_Systems_Admin {
 			'numberposts' => - 1,
 		) );
 		foreach ( $posts as $post ) {
-			$wp_admin_bar->add_menu( array(
-				'parent' => 'plugin_optimizer_filters',
-				'id'     => 'plugin_optimizer_filters' . $post->post_title,
-				'title'  => $post->post_title,
-				'href'   => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_filters&filter_title=' . $post->post_title ) ),
-			) );
+			if ( get_permalink( substr(implode(', ', get_metadata( 'post', $post->ID, 'selected_page')), -1 )) == get_home_url() . trim( $_SERVER["REQUEST_URI"] )  ) {
+                $wp_admin_bar->add_menu( array(
+                    'parent' => 'plugin_optimizer_filters',
+                    'id'     => 'plugin_optimizer_filters' . $post->post_title,
+                    'title'  => $post->post_title,
+                    'href'   => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_filters&filter_title=' . $post->post_title ) ),
+                ) );
+			}
 		}
 
 		$wp_admin_bar->add_menu( array(
@@ -280,6 +289,38 @@ class Simple_Online_Systems_Admin {
 			'title'  => 'Settings',
 			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_settings')),
 		) );
+
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'plugin_optimizer',
+			'id'     => 'plugin_optimizer_disable_plugins',
+			'title'  => 'Disable Plugins',
+			'href'   => esc_url(get_admin_url(null, 'admin.php?page=simple_online_systems_settings')),
+		) );
+
+		$plugin_arr = array();
+		$posts = get_posts( array(
+			'post_type'   => 'sos_filter',
+			'numberposts' => - 1,
+		) );
+		foreach ( $posts as $post ) {
+			if ( get_permalink( substr(implode(', ', get_metadata( 'post', $post->ID, 'selected_page')), -1 )) == get_home_url() . trim( $_SERVER["REQUEST_URI"] )  ) {
+				array_push($plugin_arr, implode(', ', get_metadata( 'post', $post->ID, 'block_plugins')));
+			}
+		}
+
+		if($plugin_arr){
+			$plugin_arr = explode(', ', implode(', ', $plugin_arr));
+			$plugin_arr = array_unique($plugin_arr);
+			foreach ( $plugin_arr as $plugin ) {
+				$wp_admin_bar->add_menu( array(
+					'parent' => 'plugin_optimizer_disable_plugins',
+					'id'     => 'plugin_optimizer_disable_plugin_' . $plugin,
+					'title'  => $plugin,
+					'href'   => esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_filters&filter_title=' . $plugin ) ),
+				) );
+			}
+		}
+
 
 
 		if ( is_admin() ) {
@@ -509,7 +550,7 @@ class Simple_Online_Systems_Admin {
 		$title_filter       = htmlspecialchars( $_POST[ 'title_filter' ] );
 		$type_filter        = htmlspecialchars( $_POST[ 'type_filter' ] );
 		$category_filter    = htmlspecialchars( $_POST[ 'category_filter' ] );
-		$category_id_filter    = htmlspecialchars( $_POST[ 'category_id_filter' ] );
+//		$category_id_filter    = htmlspecialchars( $_POST[ 'category_id_filter' ] );
 
 
 		$post_data = array(
@@ -530,8 +571,8 @@ class Simple_Online_Systems_Admin {
 		add_post_meta( $post_id, 'selected_post_type', $post_type );
 		add_post_meta( $post_id, 'selected_page', $pages );
 		add_post_meta( $post_id, 'type_filter', $type_filter );
-		add_post_meta( $post_id, 'category_filter', $category_filter );
-		wp_set_post_terms( $post_id, $category_id_filter, 'сategories_filters' );
+//		add_post_meta( $post_id, 'category_filter', $category_filter );
+		wp_set_post_terms( $post_id, $category_filter, 'сategories_filters' );
 
 		ob_start();
 
@@ -1030,6 +1071,59 @@ class Simple_Online_Systems_Admin {
                     <td><input type="checkbox" id="<?= $cat->cat_ID ?>"></td>
                     <td><?= $cat->cat_name; ?></td>
                 </tr>
+                <tr class="hidden_info">
+                    <td colspan="2">
+                        <div class="content-filter">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
+											<?php
+											$count_filters = 0;
+											$posts = get_posts( array(
+												'post_type'   => 'sos_filter',
+												'numberposts' => -1,
+											) );
+											if( $posts ){
+												foreach ( $posts as $post ) {
+													if ( has_term( $cat->cat_ID, 'сategories_filters', $post->ID ) ) {
+														$count_filters++;
+													}
+												}
+											}
+											?>
+                                            Filters <span class="disabled">- Used: <?= $count_filters; ?>/<?= wp_count_posts('sos_filter')->publish; ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="plugin-wrapper">
+										<?php
+										$posts = get_posts( array(
+											'post_type'   => 'sos_filter',
+											'numberposts' => -1,
+										) );
+										if( $posts ) :
+											foreach ( $posts as $post ) :
+												?>
+                                                <div class="content
+                                                <?php
+												if( has_term( $cat->cat_ID, 'сategories_filters', $post->ID ) ){
+													echo 'block';
+												}
+												?>
+                                                ">
+                                                    <span><?= $post->post_title; ?></span>
+                                                </div>
+											<?php
+											endforeach;
+										endif;
+										?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
                 <?php
 				$difference = $cat->cat_ID;
 				$subcategories = get_categories( array(
@@ -1196,10 +1290,21 @@ class Simple_Online_Systems_Admin {
 			} elseif($name_post_type === 'sos_filter'){
 				$this->content_filters($posts);
 			} elseif($name_post_type === 'sos_group'){
+				$posts = get_posts( array(
+					'post_type'   => 'sos_group',
+					'numberposts' => -1,
+					's' => esc_attr( $_POST['keyword'] ),
+					'meta_query' => array(
+						array(
+							'key' => 'group_parents',
+							'value' => 'None'
+						)
+					),
+				) );
 				$this->content_groups($posts);
 			} elseif($name_post_type === 'cat'){
 				$categories = get_categories( [
-					'taxonomy'      => 'category',
+					'taxonomy'      => 'сategories_filters',
 					'type'          => 'sos_filter',
 					'parent'       => 0,
 					'hide_empty'    => 0,
@@ -1440,9 +1545,13 @@ class Simple_Online_Systems_Admin {
 				?>
                 <div class="content filter-category
 				<?php
-                if(in_array($cat->cat_name, $categories_filter)){
+//                if ( in_category( $cat->cat_name, $id_filter ) ) {
+                if ( has_term( $cat->cat_name, 'сategories_filters', $id_filter ) ) {
 	                echo 'block';
                 }
+                /*if(in_array($cat->cat_name, $categories_filter)){
+	                echo 'block';
+                }*/
                 ?>
 				">
                     <span><?= $cat->cat_name; ?></span>
@@ -1473,10 +1582,22 @@ class Simple_Online_Systems_Admin {
 		$cat_ID = htmlspecialchars( $_POST[ 'id_category' ] );
 		$id_filter = htmlspecialchars( $_POST[ 'id_filter' ] );
 
-//		wp_delete_category( $cat_ID );
 		wp_delete_term( $cat_ID, 'сategories_filters' );
 
 		$this->ajax_create_category($id_filter);
+	}
+
+	/**
+	 * Add category to filter
+	 */
+
+	public function ajax_add_category_to_filter(){
+		$cat_ID = htmlspecialchars( $_POST[ 'id_category' ] );
+		$filter_ID = htmlspecialchars( $_POST[ 'id_filter' ] );
+
+		wp_set_post_terms( $filter_ID, $cat_ID,'сategories_filters' );
+
+		$this->ajax_create_category($filter_ID);
 	}
 
 	/**

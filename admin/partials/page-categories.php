@@ -8,34 +8,36 @@ $categories = get_categories( [
 
 ?>
 <div class="wrap wrapper-filter">
-	<h1>Filters categories</h1>
-	<form action="" class="created-cat">
-		<p>Group Title</p>
-		<div id="group_name_error">
-			<div class="wrapper_group_name_error">
-				<p class="popup-close">×</p>
-				<div id="result_search">This name is already in use</div>
-			</div>
-		</div>
-		<input type="text" placeholder="Enter category title" name="title_cat" id="title_cat">
-		<p>Select parent</p>
-		<select name="cat_parents" id="cat_parents">
-			<option value="none">None</option>
-			<?php
-			if( $categories ):
-				foreach( $categories as $cat ):
-					?>
-					<option value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></option>
-				<?php
-				endforeach;
-			endif;
-			?>
-		</select>
-		<br><br>
-		<input type="submit" value="Create new category">
-	</form>
-
-
+    <div id="create_elements" class="create_category">
+        <div class="wrapper_create-elements">
+            <p class="popup-close">×</p>
+            <form action="" class="created-cat">
+                <p>Group Title</p>
+                <div id="group_name_error">
+                    <div class="wrapper_group_name_error">
+                        <p class="popup-close">×</p>
+                        <div id="result_search">This name is already in use</div>
+                    </div>
+                </div>
+                <input type="text" placeholder="Enter category title" name="title_cat" id="title_cat">
+                <p>Select parent</p>
+                <select name="cat_parents" id="cat_parents">
+                    <option value="none">None</option>
+			        <?php
+			        if( $categories ):
+				        foreach( $categories as $cat ):
+					        ?>
+                            <option value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></option>
+				        <?php
+				        endforeach;
+			        endif;
+			        ?>
+                </select>
+                <br><br>
+                <input type="submit" value="Create new category">
+            </form>
+        </div>
+    </div>
 </div>
 
 
@@ -63,7 +65,7 @@ $categories = get_categories( [
 		<div class="row sos-content">
 			<div class="row col-12 justify-content-between global-information">
 				<div class="col-3">
-					<button class="add-filter"><span class="pluse">+</span> add new category</button>
+					<button class="add-filter" id="add_elements"><span class="pluse">+</span> add new category</button>
 				</div>
 				<div class="col-8 quantity">
 					<span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_terms( 'category' ); ?></span>)

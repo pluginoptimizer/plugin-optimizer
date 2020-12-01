@@ -1,5 +1,3 @@
-import { speedTest } from '../../admin/js/components/speed-test.js';
-
 (function( $ ) {
 	'use strict';
 
@@ -32,6 +30,6 @@ import { speedTest } from '../../admin/js/components/speed-test.js';
 	 */
 
 	$(document).ready(function () {
-		speedTest();
+
 	});
 })( jQuery );

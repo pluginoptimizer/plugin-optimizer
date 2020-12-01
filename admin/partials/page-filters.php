@@ -162,8 +162,19 @@ $posts = get_posts( array(
 
 <?php
 
-//var_dump(explode(', ', implode(', ', get_metadata( 'post', 3682))));
+//var_dump(explode(', ', implode(', ', get_metadata( 'post', 3682, 'selected_page'))));
+//var_dump(implode(', ', get_metadata( 'post', 3682, 'selected_page')));
 //var_dump(get_metadata( 'post', 3683));
+
+
+//if ( in_category( 70, 3683 ) ) {
+/*if ( has_term( 70, 'сategories_filters', 3683 ) ) {
+	echo 'block';
+}*/
+
+/*if ( get_permalink( substr(implode(', ', get_metadata( 'post', 3682, 'selected_page')), -1 )) == "http://wad/calendar/" ) {
+	echo trim( $_SERVER["REQUEST_URI"] );
+}*/
 
 ?>
 </pre>

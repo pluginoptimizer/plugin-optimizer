@@ -555,3 +555,8 @@ input:checked + .slider:before {
 #create_elements.create_filter{
     top: 0;
 }
+
+
+form.created-cat * {
+    width: 60%;
+}

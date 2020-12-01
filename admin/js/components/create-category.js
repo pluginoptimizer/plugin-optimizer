@@ -21,6 +21,7 @@ let createCat;
                     },
                     success: function (response) {
                         $('#the-list').html(response.data);
+                        $('#create_elements').css('display', 'none');
                         allElements.count_element('cat');
                         allElements.check_all_element();
                     }

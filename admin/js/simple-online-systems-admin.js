@@ -15,7 +15,6 @@ import { changePlugins } from './components/change-plugins.js';
 import { changeSettings } from './components/change-settings.js';
 import { checkNameGroup } from './components/check-name-group.js';
 import { createCat } from './components/create-category.js';
-import { speedTest } from './components/speed-test.js';
 import { createPopup } from './components/create-popup.js';
 
 
@@ -41,8 +40,31 @@ import { createPopup } from './components/create-popup.js';
         changeSettings();
         checkNameGroup();
         createCat();
-        speedTest();
         createPopup();
+
+        const addCategoryFilter = () => {
+            $('.filter-category').click(function () {
+                let self = this;
+                $.ajax({
+                    url: simple_online_systems_groups.ajax_url,
+                    type: 'POST',
+                    data: {
+                        action: 'sos_add_category_to_filter',
+                        'id_category': $(this).children('span.close').attr('id'),
+                        'id_filter': $(this).parent().children('button').attr('id').substr(5),
+                    },
+                    success: function (response) {
+                        $(self).parent().html(response.data);
+                        deleteCategory();
+                        addCategory();
+                        addCategoryFilter();
+                    }
+                });
+            })
+        }
+
+        addCategoryFilter();
+
 
     });
 })(jQuery);
