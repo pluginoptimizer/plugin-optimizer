@@ -54,7 +54,7 @@
 			        <?php
 			        $plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
 			        foreach ( $plugins as $plugin => $value ): ?>
-                        <option value="<?= str_replace( ' ', "_", $value[ 'name' ] ); ?>"><?= $value[ 'name' ]; ?></option>
+                        <option value="<?= str_replace( ' ', "_", $value[ 'file' ] ); ?>"><?= $value[ 'name' ]; ?></option>
 			        <?php endforeach; ?>
                 </select>
                 <p>Select block group plugins</p>
@@ -163,8 +163,12 @@ $posts = get_posts( array(
 <?php
 
 //var_dump(explode(', ', implode(', ', get_metadata( 'post', 3682, 'selected_page'))));
-//var_dump(implode(', ', get_metadata( 'post', 3682, 'selected_page')));
-//var_dump(get_metadata( 'post', 3683));
+//var_dump(implode(', ', get_metadata( 'post', 3682, 'block_group_plugins')));
+//var_dump(get_metadata( 'post', 3718));
+//var_dump(get_metadata( 'post', 3718, 'block_value_plugins'));
+//var_dump(get_post_meta( '3718', 'block_group_plugins'));
+//var_dump(get_post_meta( '3719', 'block_group_plugins'));
+//var_dump($plugins);
 
 
 //if ( in_category( 70, 3683 ) ) {
@@ -176,5 +180,21 @@ $posts = get_posts( array(
 	echo trim( $_SERVER["REQUEST_URI"] );
 }*/
 
+/*$block_plugins = array('BuddyPress', 'Classic Editor', 'Contact Form 7');
+
+$all_plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
+$activate_plugins = array();
+$deactivate_plugins = array();
+foreach ($all_plugins as $plugin) {
+	if(in_array($plugin['name'], $block_plugins)){
+		array_push($activate_plugins, $plugin['file']);
+	}
+}
+print_r($activate_plugins);*/
+
+/*$array_plugins = explode(', ', implode(', ', get_metadata( 'post', 3721, 'block_plugins' )));
+print_r($array_plugins);
+$array_plugins = get_post_meta( 3721, 'block_plugins', true);
+print_r($array_plugins);*/
 ?>
 </pre>

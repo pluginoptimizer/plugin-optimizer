@@ -17,13 +17,14 @@ let createdFilters;
                     data: {
                         action: 'sos_add_plugin_to_filter',
                         'block_plugins': $('select[name="block_plugins"] option:selected').toArray().map(item => item.text).join(', '),
+                        'block_value_plugins': $('select[name="block_plugins"] option:selected').toArray().map(item => item.value).join(', '),
                         'block_group_plugins': $('select[name="block_group_plugins"] option:selected').toArray().map(item => item.text).join(', '),
                         'post_type': $('select[name="post_type"] option:selected').toArray().map(item => item.text).join(', '),
                         'pages': $('input[name="pages"]').val(),
                         'title_filter': $('input[name="title_filter"]').val(),
                         'type_filter': $('input[name="type_filter"]').val(),
-                        'category_filter': $('select[name="category_filter"] option:selected').val(),
-                        // 'category_id_filter': $('select[name="category_filter"] option:selected').val(),
+                        'category_filter': $('select[name="category_filter"] option:selected').text(),
+                        'category_id_filter': $('select[name="category_filter"] option:selected').val(),
                     },
                     success: function (response) {
                         $('#the-list').html(response.data);

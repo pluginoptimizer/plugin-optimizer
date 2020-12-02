@@ -6,7 +6,7 @@
 //                print_r(Simple_Online_Systems_Helper::get_plugins_with_status());
 //        echo count($deactivate_plugins);
 //                print_r(get_plugins());
-        //        echo plugins_url();
+//                echo plugins_url();
 
         ?>
     </pre>

@@ -6,6 +6,8 @@
 class Simple_Online_Systems_Helper {
 
 	public static function get_plugins_with_status() {
+		
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 		$plugins = [];
 
