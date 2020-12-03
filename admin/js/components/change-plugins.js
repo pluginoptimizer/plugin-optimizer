@@ -6,9 +6,10 @@ let changePlugins;
     $(document).ready(function () {
         //change plugins
         changePlugins = () => {
-            $('.close').click(function(){
+            $('.close').click(function () {
                 const filter_id = $(this).attr('value');
                 const plugin_name = $(this).attr('id');
+                const plugin_link = $(this).attr('link');
                 const change_plugins = $(this).text();
                 $.ajax({
                     url: simple_online_systems_groups.ajax_url,
@@ -17,6 +18,7 @@ let changePlugins;
                         action: 'sos_change_plugins_to_filter',
                         'filter_id': filter_id,
                         'plugin_name': plugin_name,
+                        'plugin_link': plugin_link,
                         'change_plugins': change_plugins,
                     },
                     success: function (response) {

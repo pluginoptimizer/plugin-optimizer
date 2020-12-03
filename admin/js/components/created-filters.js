@@ -1,5 +1,6 @@
 import {allElements} from "./check-all-element.js";
 import {hiddenInfoFilter} from "./hidden-info-filter.js";
+import {changePlugins} from "./change-plugins.js";
 
 let createdFilters;
 (function ($) {
@@ -32,6 +33,7 @@ let createdFilters;
                         allElements.count_element('sos_filter');
                         allElements.check_all_element();
                         hiddenInfoFilter();
+                        changePlugins();
                     }
                 })
             });

@@ -338,13 +338,24 @@ class Simple_Online_Systems_Admin {
 		}
 
 		$plugin_arr = array();
+		$current_url = get_home_url() . trim( $_SERVER["REQUEST_URI"] );
 		$posts      = get_posts( array(
 			'post_type'   => 'sos_filter',
 			'numberposts' => - 1,
 		) );
 		foreach ( $posts as $post ) {
-			if ( get_permalink( substr( get_post_meta( $post->ID, 'selected_page', true ), - 1 ) ) == get_home_url() . trim( $_SERVER["REQUEST_URI"] ) ) {
-				$plugin_arr = array_merge( $plugin_arr, get_post_meta( $post->ID, 'block_plugins', true ) );
+			$selected_pages = get_post_meta( $post->ID, 'selected_page', true );
+
+			if ( is_array( $selected_pages ) ) {
+				foreach ( $selected_pages as $selected_page ) {
+					if ( $selected_page == $current_url ) {
+						$plugin_arr = array_merge( $plugin_arr, get_post_meta( $post->ID, 'block_plugins', true ) );
+					}
+				}
+			} else {
+				if ( $selected_pages == $current_url ) {
+					$plugin_arr = array_merge( $plugin_arr, get_post_meta( $post->ID, 'block_plugins', true ) );
+				}
 			}
 		}
 
@@ -365,7 +376,7 @@ class Simple_Online_Systems_Admin {
 			'title'  => 'Enabled Plugins',
 		) );
 
-		$enabled_plugins = array_diff($activate_plugins, $plugin_arr);
+		$enabled_plugins = array_diff( $activate_plugins, $plugin_arr );
 		foreach ( $enabled_plugins as $enabled_plugin ) {
 			$wp_admin_bar->add_menu( array(
 				'parent' => 'plugin_optimizer_enabled_plugins',
@@ -435,7 +446,7 @@ class Simple_Online_Systems_Admin {
 			),
 			'description'   => 'Filter for your customers',
 			'public'        => true,
-//			'show_in_menu'  => false,
+			'show_in_menu'  => false,
 			// 'show_in_admin_bar'   => null,
 			'show_in_rest'  => null,
 			'rest_base'     => null,
@@ -747,7 +758,7 @@ class Simple_Online_Systems_Admin {
 		if ( $posts ) :
 			foreach ( $posts as $post ) : ?>
                 <h2>
-                    <a href="<?= esc_url( $post->guid ); ?>" class="link_search_page">
+                    <a href="<?= get_permalink( $post->ID ); ?>" class="link_search_page">
 						<?= $post->post_title; ?>
                     </a>
                 </h2>
@@ -924,7 +935,7 @@ class Simple_Online_Systems_Admin {
                 <tr>
                     <td><input type="checkbox" id="<?= $post->ID; ?>"></td>
                     <td><?= $post->post_title; ?></td>
-                    <td><?= esc_url( get_post_meta( $post->ID, 'post_link', true) ); ?></td>
+                    <td><?= esc_url( get_post_meta( $post->ID, 'post_link', true ) ); ?></td>
                     <td><?= substr( str_replace( '-', '/', str_replace( " ", " at ", $post->post_date ) ), 0, - 3 ) . ' pm'; ?></td>
                     <td>
                         <a class="row-title"
@@ -964,13 +975,13 @@ class Simple_Online_Systems_Admin {
 		}
 		if ( $posts ) :
 			foreach ( $posts as $post ) :
-				$group_plugins = get_post_meta( $post->ID, 'group_plugins', true);
+				$group_plugins = get_post_meta( $post->ID, 'group_plugins', true );
 				?>
 
                 <tr class="block_info">
                     <td><input type="checkbox" id="<?= $post->ID; ?>"></td>
                     <td><?= $post->post_title; ?></td>
-                    <td><?= get_post_meta( $post->ID, 'type_group', true); ?></td>
+                    <td><?= get_post_meta( $post->ID, 'type_group', true ); ?></td>
                     <td><?= $group_plugins; ?></td>
                     <td><?= substr_count( $group_plugins, ',' ) + 1; ?></td>
                 </tr>
@@ -981,15 +992,16 @@ class Simple_Online_Systems_Admin {
                                 <div class="col-12">
                                     <div class="header">
                                         <div class="title">
-	                                        <?php
-	                                        $count_block_plugins = 0;
-	                                        foreach ( $activate_plugins as $activate_plugin ){
-		                                        if(substr_count( $group_plugins, $activate_plugin )){
-			                                        $count_block_plugins++;
-		                                        }
-	                                        }
-	                                        ?>
-	                                        Plugins <span class="disabled">- Disabled: <?= $count_block_plugins ?>/<?= count( $activate_plugins ); ?></span>
+											<?php
+											$count_block_plugins = 0;
+											foreach ( $activate_plugins as $activate_plugin ) {
+												if ( substr_count( $group_plugins, $activate_plugin ) ) {
+													$count_block_plugins ++;
+												}
+											}
+											?>
+                                            Plugins <span
+                                                    class="disabled">- Disabled: <?= $count_block_plugins ?>/<?= count( $activate_plugins ); ?></span>
                                         </div>
                                         <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
                                     </div>
@@ -1052,15 +1064,15 @@ class Simple_Online_Systems_Admin {
 
 				if ( $posts_chidren ) :
 					foreach ( $posts_chidren as $post_chidren ) :
-						$children_group_plugins = get_post_meta( $post_chidren->ID, 'group_plugins', true);
+						$children_group_plugins = get_post_meta( $post_chidren->ID, 'group_plugins', true );
 						?>
 
                         <tr class="block_info block_children">
                             <td><input type="checkbox" id="<?= $post_chidren->ID; ?>"></td>
                             <td> — <?= $post_chidren->post_title; ?></td>
-	                        <td><?= get_post_meta( $post_chidren->ID, 'type_group', true); ?></td>
-	                        <td><?= $children_group_plugins; ?></td>
-	                        <td><?= substr_count( $children_group_plugins, ',' ) + 1; ?></td>
+                            <td><?= get_post_meta( $post_chidren->ID, 'type_group', true ); ?></td>
+                            <td><?= $children_group_plugins; ?></td>
+                            <td><?= substr_count( $children_group_plugins, ',' ) + 1; ?></td>
                         </tr>
                         <tr class="hidden_info">
                             <td colspan="6">
@@ -1069,15 +1081,16 @@ class Simple_Online_Systems_Admin {
                                         <div class="col-12">
                                             <div class="header">
                                                 <div class="title">
-	                                                <?php
+													<?php
 													$count_block_plugins = 0;
-	                                                foreach ( $activate_plugins as $activate_plugin ){
-	                                                	if(substr_count( $children_group_plugins, $activate_plugin )){
-			                                                $count_block_plugins++;
-		                                                }
-	                                                }
-	                                                ?>
-                                                    Plugins <span class="disabled">- Disabled: <?= $count_block_plugins ?>/<?= count( $activate_plugins ); ?></span>
+													foreach ( $activate_plugins as $activate_plugin ) {
+														if ( substr_count( $children_group_plugins, $activate_plugin ) ) {
+															$count_block_plugins ++;
+														}
+													}
+													?>
+                                                    Plugins <span
+                                                            class="disabled">- Disabled: <?= $count_block_plugins ?>/<?= count( $activate_plugins ); ?></span>
                                                 </div>
                                                 <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
                                             </div>
@@ -1716,16 +1729,23 @@ class Simple_Online_Systems_Admin {
 	public function ajax_change_plugins_to_filter() {
 		$filter_id      = htmlspecialchars( $_POST['filter_id'] );
 		$plugin_name    = htmlspecialchars( $_POST['plugin_name'] );
+		$plugin_link    = htmlspecialchars( $_POST['plugin_link'] );
 		$change_plugins = htmlspecialchars( $_POST['change_plugins'] );
+
+
 		$array_plugins  = get_post_meta( $filter_id, 'block_plugins', true );
+		$array_link_plugins  = get_post_meta( $filter_id, 'block_value_plugins', true );
 
 		if ( $change_plugins === '+' ) {
 			array_push( $array_plugins, $plugin_name );
+			array_push( $array_link_plugins, $plugin_link );
 		} else {
 			$array_plugins = array_diff( $array_plugins, [ $plugin_name ] );
+			$array_link_plugins = array_diff( $array_link_plugins, [ $plugin_link ] );
 		}
 
 		update_post_meta( $filter_id, 'block_plugins', $array_plugins );
+		update_post_meta( $filter_id, 'block_value_plugins', $array_link_plugins );
 
 
 		ob_start();
@@ -1758,7 +1778,7 @@ class Simple_Online_Systems_Admin {
 			foreach ( $plugin as $key => $value ) {
 				if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
 					if ( $value ) {
-						array_push( $activate_plugins, $plugin['name'] );
+						$activate_plugins[$plugin['name']] = $plugin['file'];
 					} else {
 						array_push( $deactivate_plugins, $plugin['name'] );
 					}
@@ -1789,19 +1809,19 @@ class Simple_Online_Systems_Admin {
 				?>
                 <div class="plugin-wrapper">
 					<?php
-					foreach ( $activate_plugins as $activate_plugin ):
+					foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
 						?>
                         <div class="content <?= ( in_array( $activate_plugin, $block_plugins ) ) ? 'block' : '' ?>">
                             <span><?= $activate_plugin; ?></span>
 							<?php
 							if ( in_array( $activate_plugin, $block_plugins ) ):
 								?>
-                                <span class="close" id="<?= $activate_plugin; ?>" value="<?= $post->ID; ?>">×</span>
+                                <span class="close" id="<?= $activate_plugin; ?>" value="<?= $post->ID; ?>" link="<?= $activate_plugin_link; ?>">×</span>
 							<?php
 							else:
 								?>
                                 <span class="close pluse_plugin" id="<?= $activate_plugin; ?>"
-                                      value="<?= $post->ID; ?>">+</span>
+                                      value="<?= $post->ID; ?>" link="<?= $activate_plugin_link; ?>">+</span>
 							<?php
 							endif;
 							?>
@@ -1864,7 +1884,7 @@ class Simple_Online_Systems_Admin {
                                         <div class="plugin-wrapper">
 											<?php
 											foreach ( $posts as $post ):
-												$group_plugins = get_post_meta( $post->ID, 'block_plugins', true);
+												$group_plugins = get_post_meta( $post->ID, 'block_plugins', true );
 												?>
                                                 <a href="<?= esc_url( get_admin_url( null, 'admin.php?page=simple_online_systems_filters&filter_title=' . urlencode( $post->post_title ) ) ); ?>">
                                                     <div class="content

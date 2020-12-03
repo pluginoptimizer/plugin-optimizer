@@ -8,23 +8,23 @@
                 <p>Set Type</p>
                 <input type="text" placeholder="Enter type" name="type_filter">
                 <p>Select category</p>
-<!--                <input type="text" placeholder="Enter category" name="category_filter">-->
+                <!--                <input type="text" placeholder="Enter category" name="category_filter">-->
                 <select name="category_filter">
-		            <?php
-		            $categories = get_categories( [
-			            'taxonomy'      => 'сategories_filters',
-			            'type'          => 'sos_filter',
-			            'hide_empty'    => 0,
-		            ] );
+					<?php
+					$categories = get_categories( [
+						'taxonomy'   => 'сategories_filters',
+						'type'       => 'sos_filter',
+						'hide_empty' => 0,
+					] );
 
-		            if( $categories ):
-			            foreach( $categories as $cat ):
-				            ?>
+					if ( $categories ):
+						foreach ( $categories as $cat ):
+							?>
                             <option value="<?= str_replace( ' ', "_", $cat->cat_ID ); ?>"><?= $cat->cat_name; ?></option>
-			            <?php
-			            endforeach;
-		            endif;
-		            ?>
+						<?php
+						endforeach;
+					endif;
+					?>
                 </select>
                 <p>Add Permalinks</p>
                 <input type="text" id="search_pages" placeholder="Enter name page" name="pages">
@@ -36,41 +36,59 @@
 
                 <p>Add post type</p>
                 <select name="post_type" multiple>
-			        <?php
-			        $post_types           = get_post_types( [ 'publicly_queryable' => 1 ] );
-			        $post_types[ 'page' ] = 'page';
-			        unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ] );
+					<?php
+					$post_types         = get_post_types( [ 'publicly_queryable' => 1 ] );
+					$post_types['page'] = 'page';
+					unset( $post_types['attachment'], $post_types['sos_filter'], $post_types['sos_group'] );
 
-			        foreach ( $post_types as $post_type ) {
-				        ?>
+					foreach ( $post_types as $post_type ) {
+						?>
                         <option value="<?= str_replace( ' ', "_", $post_type ); ?>"><?= $post_type; ?></option>
-				        <?php
-			        }
+						<?php
+					}
 
-			        ?>
+					?>
                 </select>
                 <p>Select block plugins</p>
                 <select name="block_plugins" multiple>
-			        <?php
-			        $plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
-			        foreach ( $plugins as $plugin => $value ): ?>
-                        <option value="<?= str_replace( ' ', "_", $value[ 'file' ] ); ?>"><?= $value[ 'name' ]; ?></option>
-			        <?php endforeach; ?>
+					<?php
+					$all_plugins        = Simple_Online_Systems_Helper::get_plugins_with_status();
+					$activate_plugins   = array();
+					$deactivate_plugins = array();
+					foreach ( $all_plugins as $plugin ) {
+						foreach ( $plugin as $key => $value ) {
+							if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
+								if ( $value ) {
+									$activate_plugins[ $plugin['name'] ] = $plugin['file'];
+								} else {
+									array_push( $deactivate_plugins, $plugin['name'] );
+								}
+							}
+						}
+					}
+					if ( $activate_plugins ):
+						foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
+							?>
+                            <option value="<?= $activate_plugin_link; ?>"><?= $activate_plugin ?></option>
+						<?php
+						endforeach;
+					endif;
+					?>
                 </select>
                 <p>Select block group plugins</p>
                 <select name="block_group_plugins" multiple>
                     <option value="none" selected>None</option>
-                    <?php
-			        $posts = get_posts( array(
-				        'post_type'   => 'sos_group',
-				        'numberposts' => -1,
-			        ) );
-			        foreach( $posts as $post ){
-				        ?>
+					<?php
+					$posts = get_posts( array(
+						'post_type'   => 'sos_group',
+						'numberposts' => - 1,
+					) );
+					foreach ( $posts as $post ) {
+						?>
                         <option value="<?= str_replace( ' ', "_", $post->post_title ); ?>"><?= $post->post_title; ?></option>
-				        <?php
-			        }
-			        ?>
+						<?php
+					}
+					?>
                 </select>
                 <br><br>
                 <input type="submit" value="Create new filter">
@@ -81,8 +99,8 @@
 
 <?php
 $posts = get_posts( array(
-    'post_type'   => 'sos_filter',
-    'numberposts' => -1,
+	'post_type'   => 'sos_filter',
+	'numberposts' => - 1,
 ) );
 ?>
 
@@ -113,7 +131,10 @@ $posts = get_posts( array(
                     <button class="add-filter" id="add_elements"><span class="pluse">+</span> add new filter</button>
                 </div>
                 <div class="col-2 quantity">
-                    <span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_posts('sos_filter')->publish; ?></span>) | <span id="trash_elements">TRASH</span> (<span id="count_trash_elements"><?= wp_count_posts('sos_filter')->trash; ?></span>)
+                    <span id="all_elements">all</span> (<span
+                            id="count_all_elements"><?= wp_count_posts( 'sos_filter' )->publish; ?></span>) | <span
+                            id="trash_elements">TRASH</span> (<span
+                            id="count_trash_elements"><?= wp_count_posts( 'sos_filter' )->trash; ?></span>)
                 </div>
             </div>
             <div class="row col-12 ">
@@ -147,7 +168,7 @@ $posts = get_posts( array(
                         </thead>
                         <tbody id="the-list">
 						<?php
-						$this->content_filters($posts);
+						$this->content_filters( $posts );
 						?>
                         </tbody>
                     </table>
@@ -166,7 +187,7 @@ $posts = get_posts( array(
 //var_dump(implode(', ', get_metadata( 'post', 3682, 'block_group_plugins')));
 //var_dump(get_metadata( 'post', 3718));
 //var_dump(get_metadata( 'post', 3718, 'block_value_plugins'));
-//var_dump(get_post_meta( '3718', 'block_group_plugins'));
+//print_r( get_post_meta( '3727', 'block_value_plugins' ) );
 //var_dump(get_post_meta( '3719', 'block_group_plugins'));
 //var_dump($plugins);
 
@@ -196,5 +217,26 @@ print_r($activate_plugins);*/
 print_r($array_plugins);
 $array_plugins = get_post_meta( 3721, 'block_plugins', true);
 print_r($array_plugins);*/
+
+/*$all_plugins        = Simple_Online_Systems_Helper::get_plugins_with_status();
+$activate_plugins   = array();
+$deactivate_plugins = array();
+foreach ( $all_plugins as $plugin ) {
+	foreach ( $plugin as $key => $value ) {
+		if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
+			if ( $value ) {
+				$activate_plugins[$plugin['name']] = $plugin['file'];
+			} else {
+				array_push( $deactivate_plugins, $plugin['name'] );
+			}
+		}
+	}
+}
+
+print_r($activate_plugins);
+foreach ( $activate_plugins as $name => $link ) {
+    echo $name . ' = ' . $link;
+}*/
+
 ?>
 </pre>
