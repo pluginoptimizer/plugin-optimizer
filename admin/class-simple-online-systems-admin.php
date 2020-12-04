@@ -1343,7 +1343,7 @@ class Simple_Online_Systems_Admin {
 		else:
 			?>
             <tr>
-                <td colspan="6">Not filtres</td>
+                <td colspan="6">Not filters</td>
             </tr>
 		<?php
 		endif;
@@ -1932,6 +1932,37 @@ class Simple_Online_Systems_Admin {
             </tr>
 		<?php
 		endif;
+	}
+
+
+
+
+	/**
+	 * Create new category for page category
+	 */
+
+	public function ajax_transition_viewed() {
+		$self_id = htmlspecialchars( $_POST['selfId'] );
+
+		ob_start();
+
+		switch ($self_id) {
+			case 'window_filters':
+				include 'partials/page-filters.php';
+				break;
+			case 'window_categories':
+				include 'partials/page-categories.php';
+				break;
+			case 'window_groups':
+				include 'partials/page-groups.php';
+				break;
+			case 'window_worklist':
+				include 'partials/page-worklist.php';
+				break;
+		}
+
+		wp_send_json_success( ob_get_clean() );
+
 	}
 
 }

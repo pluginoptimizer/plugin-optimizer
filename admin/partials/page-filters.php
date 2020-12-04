@@ -75,6 +75,17 @@
 					endif;
 					?>
                 </select>
+                <div class="select-filter">
+		            <?php
+		            if ( $activate_plugins ):
+			            foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
+				            ?>
+                            <span class="content select_plugins_to_filter" value="<?= $activate_plugin_link; ?>"><?= $activate_plugin ?></span>
+			            <?php
+			            endforeach;
+		            endif;
+		            ?>
+                </div>
                 <p>Select block group plugins</p>
                 <select name="block_group_plugins" multiple>
                     <option value="none" selected>None</option>
@@ -90,94 +101,110 @@
 					}
 					?>
                 </select>
-                <br><br>
+                <div class="select-filter">
+                    <span class="content select_groups_to_filter none_group block" value="none">None</span>
+                    <?php
+	                $posts = get_posts( array(
+		                'post_type'   => 'sos_group',
+		                'numberposts' => - 1,
+	                ) );
+	                foreach ( $posts as $post ) {
+		                ?>
+                        <span class="content select_groups_to_filter" value="<?= str_replace( ' ', "_", $post->post_title ); ?>"><?= $post->post_title; ?></span>
+		                <?php
+	                }
+	                ?>
+                </div>
+
                 <input type="submit" value="Create new filter">
             </form>
         </div>
     </div>
-</div>
-
-<?php
-$posts = get_posts( array(
-	'post_type'   => 'sos_filter',
-	'numberposts' => - 1,
-) );
-?>
-
-<div class="sos-wrap container">
-    <div class="row">
-        <div class="col-12">
-            <h1>Plugin Optimizer</h1>
-        </div>
-        <div class="col-12">
-            <h2 id="name_page" class="filters">filters</h2>
-        </div>
 
 
-        <div class="row col-12 justify-content-between wrap-tabs">
-            <div class="col-10 row">
-                <div class="tabs col-2">filters</div>
-                <div class="tabs col-2">categories</div>
-                <div class="tabs col-2">groups</div>
-                <div class="tabs col-2">worklist</div>
+	<?php
+	$posts = get_posts( array(
+		'post_type'   => 'sos_filter',
+		'numberposts' => - 1,
+	) );
+	?>
+
+    <div class="sos-wrap container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Plugin Optimizer</h1>
             </div>
-            <div class="col-2">
-                <input class="search" type="search" id="search_elements" name="s" value="" placeholder="Search filters">
+            <div class="col-12">
+                <h2 id="name_page" class="filters">filters</h2>
             </div>
-        </div>
-        <div class="row sos-content">
-            <div class="row col-12 justify-content-between global-information">
-                <div class="col-3">
-                    <button class="add-filter" id="add_elements"><span class="pluse">+</span> add new filter</button>
+
+
+            <div class="row col-12 justify-content-between wrap-tabs">
+                <div class="col-10 row">
+                    <div id="window_filters" class="tabs col-2">filters</div>
+                    <div id="window_categories" class="tabs col-2">categories</div>
+                    <div id="window_groups" class="tabs col-2">groups</div>
+                    <div id="window_worklist" class="tabs col-2">worklist</div>
                 </div>
-                <div class="col-2 quantity">
-                    <span id="all_elements">all</span> (<span
-                            id="count_all_elements"><?= wp_count_posts( 'sos_filter' )->publish; ?></span>) | <span
-                            id="trash_elements">TRASH</span> (<span
-                            id="count_trash_elements"><?= wp_count_posts( 'sos_filter' )->trash; ?></span>)
-                </div>
-            </div>
-            <div class="row col-12 ">
-                <div class="col-3">
-                    <select id="check_all_elements">
-                        <option value="default">Bulk actions</option>
-                        <option value="delete">Delete</option>
-                    </select>
-                    <button id="btn_apply">Apply</button>
-                </div>
-                <div class="col-3">
-                    <select id="filter_all_elements">
-                        <option value="default">All dates</option>
-                        <option value="delete">November</option>
-                    </select>
-                    <button id="btn_filter">Filter</button>
+                <div class="col-2">
+                    <input class="search" type="search" id="search_elements" name="s" value=""
+                           placeholder="Search filters">
                 </div>
             </div>
-            <div class="row col-12">
-                <div class="col-12">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th><input type="checkbox" id="check_all"></th>
-                            <th>TITLE</th>
-                            <th>cATEGORIES</th>
-                            <th>type</th>
-                            <th>permalinks</th>
-                            <th>Block plugins</th>
-                        </tr>
-                        </thead>
-                        <tbody id="the-list">
-						<?php
-						$this->content_filters( $posts );
-						?>
-                        </tbody>
-                    </table>
+            <div class="row sos-content">
+                <div class="row col-12 justify-content-between global-information">
+                    <div class="col-3">
+                        <button class="add-filter" id="add_elements"><span class="pluse">+</span> add new filter
+                        </button>
+                    </div>
+                    <div class="col-2 quantity">
+                        <span id="all_elements">all</span> (<span
+                                id="count_all_elements"><?= wp_count_posts( 'sos_filter' )->publish; ?></span>) | <span
+                                id="trash_elements">TRASH</span> (<span
+                                id="count_trash_elements"><?= wp_count_posts( 'sos_filter' )->trash; ?></span>)
+                    </div>
+                </div>
+                <div class="row col-12 ">
+                    <div class="col-3">
+                        <select id="check_all_elements">
+                            <option value="default">Bulk actions</option>
+                            <option value="delete">Delete</option>
+                        </select>
+                        <button id="btn_apply">Apply</button>
+                    </div>
+                    <div class="col-3">
+                        <select id="filter_all_elements">
+                            <option value="default">All dates</option>
+                            <option value="delete">November</option>
+                        </select>
+                        <button id="btn_filter">Filter</button>
+                    </div>
+                </div>
+                <div class="row col-12">
+                    <div class="col-12">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" id="check_all"></th>
+                                <th>TITLE</th>
+                                <th>cATEGORIES</th>
+                                <th>type</th>
+                                <th>permalinks</th>
+                                <th>Block plugins</th>
+                            </tr>
+                            </thead>
+                            <tbody id="the-list">
+							<?php
+							$this->content_filters( $posts );
+							?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <pre>
 
 

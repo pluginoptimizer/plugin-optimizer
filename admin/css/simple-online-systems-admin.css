@@ -111,6 +111,7 @@
 
 
 .sos-wrap .tabs {
+    cursor: pointer;
     background-color: #1e4d7d;
     background-image: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.2) 100%);
 
@@ -318,7 +319,7 @@
     text-transform: uppercase;
 }
 
-.sos-wrap .content-filter .plugin-wrapper{
+.sos-wrap .content-filter .plugin-wrapper, .select-filter{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     column-gap: 10px;
@@ -333,9 +334,11 @@
     text-align: center;
 }
 
-.sos-wrap .content-filter .plugin-wrapper .block{
+.sos-wrap .content-filter .plugin-wrapper .block, .select-filter .block{
     background-color: #ffc4c4;
 }
+
+
 .sos-wrap .hidden_info{
     display: none;
 }
@@ -559,4 +562,27 @@ input:checked + .slider:before {
 
 form.created-cat * {
     width: 60%;
+}
+
+.select-filter{
+    margin-bottom: 5px;
+}
+.select-filter span {
+    padding: 10px;
+    /*background-color: #ffffff;*/
+    text-align: left;
+    cursor: pointer;
+    border: 1px solid rgba(99, 99, 99, 0.2);
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.select-filter span:hover{
+    box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+    transform: scale(1.03, 1.03);
+    transition: box-shadow, transform 0.35s ease-in-out;
+}
+
+select[name="block_plugins"], select[name="block_group_plugins"]{
+    display: none;
 }

@@ -53,10 +53,10 @@ $categories = get_categories( [
 
 		<div class="row col-12 justify-content-between wrap-tabs">
 			<div class="col-10 row">
-				<div class="tabs col-2">filters</div>
-				<div class="tabs col-2">categories</div>
-				<div class="tabs col-2">groups</div>
-				<div class="tabs col-2">worklist</div>
+                <div id="window_filters" class="tabs col-2">filters</div>
+                <div id="window_categories" class="tabs col-2">categories</div>
+                <div id="window_groups" class="tabs col-2">groups</div>
+                <div id="window_worklist" class="tabs col-2">worklist</div>
 			</div>
 			<div class="col-2">
 				<input class="search" type="search" id="search_elements" name="s" value="" placeholder="Search filters">

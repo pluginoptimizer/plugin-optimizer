@@ -23,24 +23,29 @@ import { createPopup } from './components/create-popup.js';
 
     $(document).ready(function () {
 
-        getWorklist();
-        trashElements();
-        searchPages();
-        searchFilters();
-        searchElements();
-        hiddenInfoFilter();
-        deleteRestoreElement();
-        allElements.check_all_element();
-        createdFilters();
-        createGroupPlugins();
-        showAllElements();
-        addCategory();
-        deleteCategory();
-        changePlugins();
-        changeSettings();
-        checkNameGroup();
-        createCat();
-        createPopup();
+        const allFunction = () => {
+            getWorklist();
+            trashElements();
+            searchPages();
+            searchFilters();
+            searchElements();
+            hiddenInfoFilter();
+            deleteRestoreElement();
+            allElements.check_all_element();
+            createdFilters();
+            createGroupPlugins();
+            showAllElements();
+            addCategory();
+            deleteCategory();
+            changePlugins();
+            changeSettings();
+            checkNameGroup();
+            createCat();
+            createPopup();
+        }
+
+        allFunction();
+
 
         const addCategoryFilter = () => {
             $('.filter-category').click(function () {
@@ -64,6 +69,67 @@ import { createPopup } from './components/create-popup.js';
         }
 
         addCategoryFilter();
+
+
+
+        const transitionElements = () => {
+            $(`#window_filters, #window_categories, #window_groups, #window_worklist`).click(function(){
+                const selfId = $(this).attr(`id`);
+                $.ajax({
+                    url: simple_online_systems_groups.ajax_url,
+                    type: `POST`,
+                    data: {
+                        action: `sos_transition_viewed`,
+                        selfId: selfId
+                    },
+                    success: function (response) {
+                        $(`.wrap`).html(response.data);
+                        allFunction();
+                        transitionElements();
+                    }
+                });
+            })
+        }
+
+        transitionElements();
+
+        $(`.select_groups_to_filter`).click(function(){
+            if($(this).text() !== 'None' && $(`.none_group`).hasClass('block')){
+                $(`.none_group`).removeClass('block');
+                $(`select[name="block_group_plugins"] option[value="none"]`).prop('selected', false);
+            }
+            if($(this).hasClass('block')){
+                $(this).removeClass('block');
+                $(`select[name="block_group_plugins"] option:contains(${$(this).text()})`).prop('selected', false);
+                if($(this).text() !== 'None'){
+                    let countItem = 0;
+                    $( `.select_groups_to_filter` ).each(function( item ) {
+                        if($(this).hasClass(`block`)){
+                            countItem++;
+                        }
+                    });
+                    if(countItem === 0){
+                        $(`select[name="block_group_plugins"] option[value="none"]`).prop('selected', true);
+                        $(`.none_group`).addClass(`block`);
+                    }
+                }
+            } else {
+                $(this).addClass('block');
+                $(`select[name="block_group_plugins"] option:contains(${$(this).text()})`).prop('selected', true);
+            }
+        })
+
+
+
+        $(`.select_plugins_to_filter`).click(function(){
+            if($(this).hasClass('block')){
+                $(this).removeClass('block');
+                $(`select[name="block_plugins"] option:contains(${$(this).text()})`).prop('selected', false);
+            } else {
+                $(this).addClass('block');
+                $(`select[name="block_plugins"] option:contains(${$(this).text()})`).prop('selected', true);
+            }
+        })
 
 
     });
