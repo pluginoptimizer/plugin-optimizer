@@ -561,7 +561,7 @@ input:checked + .slider:before {
 
 
 form.created-cat * {
-    width: 60%;
+    /*width: 60%;*/
 }
 
 .select-filter{
@@ -583,6 +583,6 @@ form.created-cat * {
     transition: box-shadow, transform 0.35s ease-in-out;
 }
 
-select[name="block_plugins"], select[name="block_group_plugins"]{
+select[name="block_plugins"], select[name="block_group_plugins"], select[name="post_type"], select[name="category_filter"], select[name="cat_parents"], select[name="group_parents"], select[name="group_plugins"]{
     display: none;
 }

@@ -337,9 +337,9 @@ class Simple_Online_Systems_Admin {
 			}
 		}
 
-		$plugin_arr = array();
+		$plugin_arr  = array();
 		$current_url = get_home_url() . trim( $_SERVER["REQUEST_URI"] );
-		$posts      = get_posts( array(
+		$posts       = get_posts( array(
 			'post_type'   => 'sos_filter',
 			'numberposts' => - 1,
 		) );
@@ -446,7 +446,7 @@ class Simple_Online_Systems_Admin {
 			),
 			'description'   => 'Filter for your customers',
 			'public'        => true,
-			'show_in_menu'  => false,
+//			'show_in_menu'  => false,
 			// 'show_in_admin_bar'   => null,
 			'show_in_rest'  => null,
 			'rest_base'     => null,
@@ -1206,7 +1206,7 @@ class Simple_Online_Systems_Admin {
 				$difference    = $cat->cat_ID;
 				$subcategories = get_categories( array(
 					'parent'     => $difference,
-					'taxonomy'   => 'category',
+					'taxonomy'   => 'сategories_filters',
 					'type'       => 'sos_filter',
 					'hide_empty' => 0,
 				) );
@@ -1514,12 +1514,16 @@ class Simple_Online_Systems_Admin {
 
 		if ( $type_elements === 'all' ) {
 			if ( $name_post_type === 'cat' ) {
-				wp_delete_category( $id_elements );
+				$id_elements = explode(',', $id_elements);
+
+				foreach ( $id_elements as $id_element ) {
+					wp_delete_term( $id_element, 'сategories_filters' );
+				}
 
 				ob_start();
 
 				$categories = get_categories( [
-					'taxonomy'   => 'category',
+					'taxonomy'   => 'сategories_filters',
 					'type'       => 'sos_filter',
 					'parent'     => 0,
 					'hide_empty' => 0,
@@ -1704,13 +1708,25 @@ class Simple_Online_Systems_Admin {
 		$name_category   = htmlspecialchars( $_POST['name_category'] );
 		$parent_category = htmlspecialchars( $_POST['parent_category'] );
 
-		wp_create_category( $name_category, $parent_category );
-
+		if($parent_category === 'None'){
+			wp_insert_category( array(
+				'cat_ID'          => 0,
+				'cat_name'        => $name_category,
+				'taxonomy'        => 'сategories_filters'
+			) );
+        } else {
+			wp_insert_category( array(
+				'cat_ID'          => 0,
+				'cat_name'        => $name_category,
+				'category_parent' => $parent_category,
+				'taxonomy'        => 'сategories_filters'
+			) );
+        }
 
 		ob_start();
 
 		$categories = get_categories( [
-			'taxonomy'   => 'category',
+			'taxonomy'   => 'сategories_filters',
 			'type'       => 'sos_filter',
 			'parent'     => 0,
 			'hide_empty' => 0,
@@ -1733,14 +1749,14 @@ class Simple_Online_Systems_Admin {
 		$change_plugins = htmlspecialchars( $_POST['change_plugins'] );
 
 
-		$array_plugins  = get_post_meta( $filter_id, 'block_plugins', true );
-		$array_link_plugins  = get_post_meta( $filter_id, 'block_value_plugins', true );
+		$array_plugins      = get_post_meta( $filter_id, 'block_plugins', true );
+		$array_link_plugins = get_post_meta( $filter_id, 'block_value_plugins', true );
 
 		if ( $change_plugins === '+' ) {
 			array_push( $array_plugins, $plugin_name );
 			array_push( $array_link_plugins, $plugin_link );
 		} else {
-			$array_plugins = array_diff( $array_plugins, [ $plugin_name ] );
+			$array_plugins      = array_diff( $array_plugins, [ $plugin_name ] );
 			$array_link_plugins = array_diff( $array_link_plugins, [ $plugin_link ] );
 		}
 
@@ -1778,7 +1794,7 @@ class Simple_Online_Systems_Admin {
 			foreach ( $plugin as $key => $value ) {
 				if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
 					if ( $value ) {
-						$activate_plugins[$plugin['name']] = $plugin['file'];
+						$activate_plugins[ $plugin['name'] ] = $plugin['file'];
 					} else {
 						array_push( $deactivate_plugins, $plugin['name'] );
 					}
@@ -1816,7 +1832,8 @@ class Simple_Online_Systems_Admin {
 							<?php
 							if ( in_array( $activate_plugin, $block_plugins ) ):
 								?>
-                                <span class="close" id="<?= $activate_plugin; ?>" value="<?= $post->ID; ?>" link="<?= $activate_plugin_link; ?>">×</span>
+                                <span class="close" id="<?= $activate_plugin; ?>" value="<?= $post->ID; ?>"
+                                      link="<?= $activate_plugin_link; ?>">×</span>
 							<?php
 							else:
 								?>
@@ -1935,8 +1952,6 @@ class Simple_Online_Systems_Admin {
 	}
 
 
-
-
 	/**
 	 * Create new category for page category
 	 */
@@ -1946,7 +1961,7 @@ class Simple_Online_Systems_Admin {
 
 		ob_start();
 
-		switch ($self_id) {
+		switch ( $self_id ) {
 			case 'window_filters':
 				include 'partials/page-filters.php';
 				break;

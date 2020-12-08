@@ -26,6 +26,17 @@
 					endif;
 					?>
                 </select>
+                <div class="select-filter">
+	                <?php
+	                if ( $categories ):
+		                foreach ( $categories as $cat ):
+			                ?>
+                            <span class="content select_category_to_filter" value="<?= str_replace( ' ', "_", $cat->cat_ID ); ?>"><?= $cat->cat_name; ?></span>
+		                <?php
+		                endforeach;
+	                endif;
+	                ?>
+                </div>
                 <p>Add Permalinks</p>
                 <input type="text" id="search_pages" placeholder="Enter name page" name="pages">
 
@@ -39,16 +50,25 @@
 					<?php
 					$post_types         = get_post_types( [ 'publicly_queryable' => 1 ] );
 					$post_types['page'] = 'page';
-					unset( $post_types['attachment'], $post_types['sos_filter'], $post_types['sos_group'] );
+					unset( $post_types['attachment'], $post_types['sos_filter'], $post_types['sos_group'], $post_types['sos_work'], $post_types['bp-email'] );
 
-					foreach ( $post_types as $post_type ) {
+					foreach ( $post_types as $post_type ) :
 						?>
                         <option value="<?= str_replace( ' ', "_", $post_type ); ?>"><?= $post_type; ?></option>
 						<?php
-					}
+					endforeach;
 
 					?>
                 </select>
+                <div class="select-filter">
+	            <?php
+	            foreach ( $post_types as $post_type ) :
+		            ?>
+                    <span class="content select_post_to_filter" value="<?= str_replace( ' ', "_", $post_type ); ?>"><?= $post_type; ?></span>
+		            <?php
+	            endforeach;
+	            ?>
+                </div>
                 <p>Select block plugins</p>
                 <select name="block_plugins" multiple>
 					<?php

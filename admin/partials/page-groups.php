@@ -27,21 +27,45 @@ $posts = get_posts( array(
                 <input type="text" placeholder="Enter type" name="type_group">
                 <p>Select parent</p>
                 <select name="group_parents">
-                    <option value="none">None</option>
+                    <option value="none" selected>None</option>
 					<?php
-					foreach ( $posts as $post ): ?>
-                        <option value="<?= str_replace( ' ', "_", $post->post_title ); ?>"><?= $post->post_title; ?></option>
-					<?php endforeach; ?>
+					if ( $posts ):
+                        foreach ( $posts as $post ): ?>
+                            <option value="<?= str_replace( ' ', "_", $post->post_title ); ?>"><?= $post->post_title; ?></option>
+                        <?php endforeach;
+					endif;
+					?>
                 </select>
+                <div class="select-filter">
+                    <span class="content block select_parent_to_group none_parent" value="none">None</span>
+		            <?php
+		            if ( $posts ):
+			            foreach ( $posts as $post ): ?>
+                            <span class="content select_parent_to_group" value="<?= str_replace( ' ', "_", $post->post_title ); ?>"><?= $post->post_title; ?></span>
+			            <?php endforeach;
+		            endif;
+		            ?>
+                </div>
                 <p>Select plugins</p>
                 <select name="group_plugins" multiple>
 					<?php
 					$plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
-					foreach ( $plugins as $plugin => $value ): ?>
-                        <option value="<?= str_replace( ' ', "_", $value['name'] ); ?>"><?= $value['name']; ?></option>
-					<?php endforeach; ?>
+					if ( $plugins ):
+                        foreach ( $plugins as $plugin => $value ): ?>
+                            <option value="<?= str_replace( ' ', "_", $value['name'] ); ?>"><?= $value['name']; ?></option>
+                        <?php endforeach;
+					endif;
+					?>
                 </select>
-                <br><br>
+                <div class="select-filter">
+		            <?php
+		            if ( $plugins ):
+			            foreach ( $plugins as $plugin => $value ): ?>
+                            <span class="content select_plugin_to_group" value="<?= str_replace( ' ', "_", $value['name'] ); ?>"><?= $value['name']; ?></span>
+			            <?php endforeach;
+		            endif;
+		            ?>
+                </div>
                 <input type="submit" value="Create new group">
             </form>
         </div>

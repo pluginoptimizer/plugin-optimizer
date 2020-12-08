@@ -131,6 +131,74 @@ import { createPopup } from './components/create-popup.js';
             }
         })
 
+        $(`.select_post_to_filter`).click(function(){
+            if($(this).hasClass('block')){
+                $(this).removeClass('block');
+                $(`select[name="post_type"] option:contains(${$(this).text()})`).prop('selected', false);
+            } else {
+                $(this).addClass('block');
+                $(`select[name="post_type"] option:contains(${$(this).text()})`).prop('selected', true);
+            }
+        })
+
+        $(`.select_category_to_filter`).click(function(){
+            const selfText = $(this).text();
+            if($(this).hasClass('block')){
+                $(this).removeClass('block');
+                $(`select[name="category_filter"] option:contains(${$(this).text()})`).prop('selected', false);
+            } else {
+                $( `.select_category_to_filter` ).each(function( item ) {
+                    if($(this).hasClass(`block`) && selfText !== $(this).text()){
+                        $(this).removeClass(`block`);
+                    }
+                });
+                $(this).addClass('block');
+                $(`select[name="category_filter"] option:contains(${$(this).text()})`).prop('selected', true);
+            }
+        })
+
+
+        $(`.select_parent_to_category`).click(function(){
+            const selfText = $(this).text();
+            if($(this).hasClass('block')){
+                $(this).removeClass('block');
+                $(`.none_parent`).addClass('block');
+            } else {
+                $( `.select_parent_to_category` ).each(function( item ) {
+                    if($(this).hasClass(`block`) && selfText !== $(this).text()){
+                        $(this).removeClass(`block`);
+                    }
+                });
+                $(this).addClass('block');
+            }
+        })
+
+        $(`.select_parent_to_group`).click(function(){
+            const selfText = $(this).text();
+            if($(this).hasClass('block')){
+                $(this).removeClass('block');
+                $(`select[name="group_parents"] option:contains(${$(this).text()})`).prop('selected', false);
+            } else {
+                $( `.select_parent_to_group` ).each(function( item ) {
+                    if($(this).hasClass(`block`) && selfText !== $(this).text()){
+                        $(this).removeClass(`block`);
+                    }
+                });
+                $(this).addClass('block');
+                $(`select[name="group_parents"] option:contains(${$(this).text()})`).prop('selected', true);
+            }
+        })
+
+        $(`.select_plugin_to_group`).click(function(){
+            if($(this).hasClass('block')){
+                $(this).removeClass('block');
+                $(`select[name="group_plugins"] option:contains(${$(this).text()})`).prop('selected', false);
+            } else {
+                $(this).addClass('block');
+                $(`select[name="group_plugins"] option:contains(${$(this).text()})`).prop('selected', true);
+            }
+        })
+
 
     });
 })(jQuery);

@@ -21,19 +21,18 @@ $categories = get_categories( [
                 </div>
                 <input type="text" placeholder="Enter category title" name="title_cat" id="title_cat">
                 <p>Select parent</p>
-                <select name="cat_parents" id="cat_parents">
-                    <option value="none">None</option>
-			        <?php
-			        if( $categories ):
-				        foreach( $categories as $cat ):
-					        ?>
-                            <option value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></option>
-				        <?php
-				        endforeach;
-			        endif;
-			        ?>
-                </select>
-                <br><br>
+                <div class="select-filter">
+                    <span class="content block select_parent_to_category none_parent" value="none">None</span>
+		            <?php
+		            if ( $categories ):
+			            foreach ( $categories as $cat ):
+				            ?>
+                            <span class="content select_parent_to_category" value="<?= str_replace( ' ', "_", $cat->cat_ID ); ?>"><?= $cat->cat_name; ?></span>
+			            <?php
+			            endforeach;
+		            endif;
+		            ?>
+                </div>
                 <input type="submit" value="Create new category">
             </form>
         </div>

@@ -19,7 +19,7 @@ class Simple_Online_Systems_Activator {
 	 *
 	 */
 	public static function activate() {
-
+		copy(__DIR__ . '/class-simple-online-systems-mu.php', WPMU_PLUGIN_DIR.'/class-simple-online-systems-mu.php' );
 	}
 
 }
