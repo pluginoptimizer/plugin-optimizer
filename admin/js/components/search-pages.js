@@ -8,7 +8,7 @@ let searchPages;
         // search pages
         searchPages = () => {
             $('.popup-close').click(function () {
-                $('#result').css( 'display', 'none' )
+                $('#result').css('display', 'none')
             });
 
             $('#search_pages').on('input', function () {
@@ -19,17 +19,19 @@ let searchPages;
                         action: 'sos_search_pages',
                         keyword: $('#search_pages').val()
                     },
-                    success: function(response) {
-                        $('#result').css( 'display', 'block' );
-                        $('#result_search').html( response.data );
-                        if($('#search_pages').val() === '') $('#result').css( 'display', 'none' );
+                    success: function (response) {
+                        $('#result').css('display', 'block');
+                        $('#result_search').html(response.data);
+                        if ($('#search_pages').val() === '') $('#result').css('display', 'none');
 
-                        $('.link_search_page').click(function(e){
+                        $('.link_search_page').click(function (e) {
                             e.preventDefault();
+
+                            $('#result').css('display', 'none');
 
                             let select_link = $('#search_pages').val();
 
-                            if(select_link.includes('http')){
+                            if (select_link.includes('http')) {
                                 $('#search_pages').val(select_link + ', ' + $(this).attr('href'));
                                 $('#search_pages').focus();
                             } else {

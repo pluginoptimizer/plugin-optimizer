@@ -200,5 +200,71 @@ import { createPopup } from './components/create-popup.js';
         })
 
 
+        /*     Show the selected links    */
+        $(`.add-permalink`).click(function () {
+            $(this).prev().before(`
+            <div class="link">
+                <span class="text_link">${$(`#search_pages`).val()}</span>
+            </div>
+            `);
+            $('#search_pages').val('');
+            $('#search_pages').focus();
+        })
+
+
+
+        /*$(`.content-new-filter .content`).click(function () {
+            $(this).addClass(`block`);
+        })*/
+
+        /*  Select a category for a new filter   */
+        $(`.category-wrapper .content`).click(function(){
+            const selfText = $(this).text();
+            if($(this).hasClass('block')){
+                $(this).removeClass('block');
+            } else {
+                $( `.category-wrapper .content` ).each(function( item ) {
+                    if($(this).hasClass(`block`) && selfText !== $(this).text()){
+                        $(this).removeClass(`block`);
+                    }
+                });
+                $(this).addClass('block');
+            }
+        })
+
+        /*  Select a group plugins for a new filter   */
+        $(`.block-group-plugin-wrapper .content`).click(function(){
+            if($(this).text() !== 'None' && $(`.none_group`).hasClass('block')){
+                $(`.none_group`).removeClass('block');
+            }
+            if($(this).hasClass('block')){
+                $(this).removeClass('block');
+                if($(this).text() !== 'None'){
+                    let countItem = 0;
+                    $( `.block-group-plugin-wrapper .content` ).each(function( item ) {
+                        if($(this).hasClass(`block`)){
+                            countItem++;
+                        }
+                    });
+                    if(countItem === 0){
+                        $(`.none_group`).addClass(`block`);
+                    }
+                }
+            } else {
+                $(this).addClass('block');
+            }
+        })
+
+        /*  Select a plugins for a new filter   */
+        $(`.block-plugin-wrapper .content`).click(function(){
+            if($(this).hasClass('block')){
+                $(this).removeClass('block');
+            } else {
+                $(this).addClass('block');
+            }
+        })
+
+
+
     });
 })(jQuery);

@@ -22,11 +22,13 @@
     border: none;
     outline: none;
     border-radius: 8px;
-    /*width: 200px;*/
+    min-width: 200px;
+    width: auto;
     padding: 5px;
     box-shadow: 0 0 5px rgba(0,191,255,0.5);
     color: #0073aa;
-    font-size: 14px;
+    font-size: 16px;
+    text-transform: none;
 }
 
 #result{
@@ -34,7 +36,8 @@
     margin-top: 5px;
     box-shadow: 0 3px 5px rgba(0,191,255,0.5);
     border-radius: 8px;
-    width: 58%;
+    width: auto;
+    min-width: 250px;
     height: auto;
     padding: 10px;
     position: absolute;
@@ -48,7 +51,7 @@
 .popup-close {
     font-size: 35px;
     position: absolute;
-    top: -40px;
+    top: -10px;
     right: 20px;
     color: rgb(0,191,255);
     cursor: pointer;
@@ -56,19 +59,6 @@
 
 .popup-close:hover {
     color: #0073aa;
-}
-
-.sos-icon:before {
-    font-family: "dashicons";
-    content: "\f468";
-    display: inline-block;
-    line-height: 1;
-    width: 20px;
-    height: 20px;
-    font-size: 20px;
-    vertical-align: top;
-    margin-top: 6px;
-    color: #fff;
 }
 
 
@@ -132,7 +122,7 @@
     color: #fefefe;
     font-size: 20px;
     font-weight: 300;
-    margin-right: -45px;
+    margin-left: -40px;
 }
 .sos-wrap .search::placeholder {
     background-color: #a6a6a6;
@@ -224,9 +214,9 @@
     background-color: #f1f1f1;
 }
 .sos-wrap .sos-content{
-    margin: 0;
+    /*margin: 0;*/
     background-color: #fff !important;
-    width: 100%;
+    /*width: 100%;*/
 }
 
 .wrap-tabs{
@@ -586,3 +576,43 @@ form.created-cat * {
 select[name="block_plugins"], select[name="block_group_plugins"], select[name="post_type"], select[name="category_filter"], select[name="cat_parents"], select[name="group_parents"], select[name="group_plugins"]{
     display: none;
 }
+
+.wrap-tabs{
+    display: flex;
+    /*margin-bottom: 10px !important;*/
+}
+
+.sos-wrap .notice{
+    display: none;
+}
+
+.sos-wrap .save-filter{
+    width: 50%;
+    margin-left: 25%;
+    height: 50px;
+}
+
+.sos-wrap .content-permalinks .link span{
+    text-transform: none;
+}
+
+.sos-wrap .content-new-filter .content{
+    cursor: pointer;
+}
+
+.sos-wrap .content-text{
+    border-top: 0;
+    border-right: 0;
+    border-left: 0;
+}
+
+.sos-wrap .content-text:focus{
+    border-bottom: 1px solid #7e8993;
+    box-shadow: none;
+    outline: none;
+}
+
+.sos-wrap .content-new-filter{
+    display: none;
+}
+

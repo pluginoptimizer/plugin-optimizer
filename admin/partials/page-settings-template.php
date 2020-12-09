@@ -22,11 +22,10 @@
 	?>
 
     <div class="sos-wrap container">
-        <div class="row">
-            <div class="col-12">
+            <div class="row col-12">
                 <h1>Plugin Optimizer</h1>
             </div>
-            <div class="col-12">
+            <div class="row col-12">
                 <h2 id="name_page" class="settings">settings</h2>
             </div>
 
@@ -38,7 +37,7 @@
                     <div id="window_groups" class="tabs col-2">groups</div>
                     <div id="window_worklist" class="tabs col-2">worklist</div>
                 </div>
-                <div class="col-2">
+                <div class="row col-2">
                     <input class="search" type="search" id="search_elements" name="s" value="" placeholder="Search">
                 </div>
             </div>
@@ -127,7 +126,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 
 </div>

@@ -42,10 +42,11 @@ class Simple_Online_Systems_Admin {
 	 * Register the stylesheets for the admin area.
 	 */
 	public function enqueue_styles() {
-
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/simple-online-systems-admin.css', array(), $this->version, 'all' );
-		wp_enqueue_style( 'bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css', array(), $this->version, 'all' );
-
+			wp_enqueue_style( $this->plugin_name . '-public', plugin_dir_url( __FILE__ ) . 'css/simple-online-systems-admin-public.css', array(), $this->version, 'all' );
+		if ( stripos( $_SERVER["QUERY_STRING"], "simple_online_systems" ) ) {
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/simple-online-systems-admin.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name . '_bootstrap', plugin_dir_url( __FILE__ ) . 'css/simple-online-systems-admin-bootstrap.css', array(), $this->version, 'all' );
+		}
 	}
 
 	/**
@@ -446,7 +447,7 @@ class Simple_Online_Systems_Admin {
 			),
 			'description'   => 'Filter for your customers',
 			'public'        => true,
-//			'show_in_menu'  => false,
+			'show_in_menu'  => false,
 			// 'show_in_admin_bar'   => null,
 			'show_in_rest'  => null,
 			'rest_base'     => null,
@@ -579,7 +580,7 @@ class Simple_Online_Systems_Admin {
 	 */
 	public function ajax_add_plugin_to_filter() {
 		$block_group = htmlspecialchars( $_POST['block_group_plugins'] );
-		if ( $block_group !== 'none' ) {
+		if ( $block_group !== 'None' ) {
 			$block_group_plugins_get = explode( ',', htmlspecialchars( $_POST['block_group_plugins'] ) );
 			$block_group_plugins     = '';
 			foreach ( $block_group_plugins_get as $block_group_plugin ) {
@@ -611,7 +612,7 @@ class Simple_Online_Systems_Admin {
 			$block_value_plugins = explode( ', ', htmlspecialchars( $_POST['block_value_plugins'] ) );
 		}
 
-		$post_type          = htmlspecialchars( $_POST['post_type'] );
+//		$post_type          = htmlspecialchars( $_POST['post_type'] );
 		$pages              = htmlspecialchars( $_POST['pages'] );
 		$title_filter       = htmlspecialchars( $_POST['title_filter'] );
 		$type_filter        = htmlspecialchars( $_POST['type_filter'] );
@@ -636,7 +637,7 @@ class Simple_Online_Systems_Admin {
 		add_post_meta( $post_id, 'block_plugins', $block_plugins );
 		add_post_meta( $post_id, 'block_group_plugins', $block_group );
 		add_post_meta( $post_id, 'block_value_plugins', $block_value_plugins );
-		add_post_meta( $post_id, 'selected_post_type', $post_type );
+//		add_post_meta( $post_id, 'selected_post_type', $post_type );
 		add_post_meta( $post_id, 'selected_page', $pages );
 		add_post_meta( $post_id, 'type_filter', $type_filter );
 		add_post_meta( $post_id, 'category_filter', $category_filter );
@@ -665,7 +666,7 @@ class Simple_Online_Systems_Admin {
 
 		$value_block_plugins       = get_post_meta( $post->ID, 'block_plugins', 1 );
 		$value_block_group_plugins = get_post_meta( $post->ID, 'block_group_plugins', 1 );
-		$value_selected_post_type  = get_post_meta( $post->ID, 'selected_post_type', 1 );
+//		$value_selected_post_type  = get_post_meta( $post->ID, 'selected_post_type', 1 );
 		$value_selected_page       = get_post_meta( $post->ID, 'selected_page', 1 );
 		$value_type_filter         = get_post_meta( $post->ID, 'type_filter', 1 );
 		$value_category_filter     = get_post_meta( $post->ID, 'category_filter', 1 );
@@ -682,11 +683,11 @@ class Simple_Online_Systems_Admin {
         <br>
         <br>
 
-        <label for="selected_post_type"> <?= "Add post type" ?> </label>
-        <input type="text" id="selected_post_type" name="selected_post_type" value=" <?= $value_selected_post_type ?>"
+       <!-- <label for="selected_post_type"> <?/*= "Add post type" */?> </label>
+        <input type="text" id="selected_post_type" name="selected_post_type" value=" <?/*= $value_selected_post_type */?>"
                size="25"/>
         <br>
-        <br>
+        <br>-->
 
         <label for="selected_page"> <?= "Add Permalinks" ?> </label>
         <input type="text" id="selected_page" name="selected_page" value=" <?= $value_selected_page ?>" size="25"/>
@@ -712,7 +713,8 @@ class Simple_Online_Systems_Admin {
 	 */
 	public function save_filter_options( $post_id ) {
 
-		if ( ! isset( $_POST['block_plugins'] ) && ! isset( $_POST['block_group_plugins'] ) && ! isset( $_POST['selected_post_type'] ) && ! isset( $_POST['selected_page'] ) && ! isset( $_POST['type_filter'] ) ) {
+//		if ( ! isset( $_POST['block_plugins'] ) && ! isset( $_POST['block_group_plugins'] ) && ! isset( $_POST['selected_post_type'] ) && ! isset( $_POST['selected_page'] ) && ! isset( $_POST['type_filter'] ) ) {
+		if ( ! isset( $_POST['block_plugins'] ) && ! isset( $_POST['block_group_plugins'] ) && ! isset( $_POST['selected_page'] ) && ! isset( $_POST['type_filter'] ) ) {
 			return;
 		}
 
@@ -730,14 +732,14 @@ class Simple_Online_Systems_Admin {
 
 		$block_plugins       = sanitize_text_field( $_POST['block_plugins'] );
 		$block_group_plugins = sanitize_text_field( $_POST['block_group_plugins'] );
-		$selected_post_type  = sanitize_text_field( $_POST['selected_post_type'] );
+//		$selected_post_type  = sanitize_text_field( $_POST['selected_post_type'] );
 		$selected_page       = sanitize_text_field( $_POST['selected_page'] );
 		$type_filter         = sanitize_text_field( $_POST['type_filter'] );
 		$category_filter     = sanitize_text_field( $_POST['category_filter'] );
 
 		update_post_meta( $post_id, 'block_plugins', $block_plugins );
 		update_post_meta( $post_id, 'block_group_plugins', $block_group_plugins );
-		update_post_meta( $post_id, 'selected_post_type', $selected_post_type );
+//		update_post_meta( $post_id, 'selected_post_type', $selected_post_type );
 		update_post_meta( $post_id, 'selected_page', $selected_page );
 		update_post_meta( $post_id, 'type_filter', $type_filter );
 		update_post_meta( $post_id, 'category_filter', $category_filter );
@@ -1241,7 +1243,7 @@ class Simple_Online_Systems_Admin {
                     <td><?= $post->post_title; ?></td>
                     <td><?= get_post_meta( $post->ID, 'category_filter', true ); ?></td>
                     <td><?= get_post_meta( $post->ID, 'type_filter', true ); ?></td>
-                    <td><?= get_post_meta( $post->ID, 'selected_post_type', true ); ?></td>
+                    <td><?= get_post_meta( $post->ID, 'selected_page', true ); ?></td>
                     <td><?= implode( ', ', get_post_meta( $post->ID, 'block_plugins', true ) ); ?></td>
                 </tr>
                 <tr class="hidden_info">
@@ -1267,7 +1269,7 @@ class Simple_Online_Systems_Admin {
                                     </div>
                                 </div>
                             </div>
-                            <div class="row block-plugin-wrapper">
+                            <div class="row">
 								<?php
 								$this->content_plugin_to_filter( $post );
 								?>
@@ -1514,7 +1516,7 @@ class Simple_Online_Systems_Admin {
 
 		if ( $type_elements === 'all' ) {
 			if ( $name_post_type === 'cat' ) {
-				$id_elements = explode(',', $id_elements);
+				$id_elements = explode( ',', $id_elements );
 
 				foreach ( $id_elements as $id_element ) {
 					wp_delete_term( $id_element, 'сategories_filters' );
@@ -1708,20 +1710,20 @@ class Simple_Online_Systems_Admin {
 		$name_category   = htmlspecialchars( $_POST['name_category'] );
 		$parent_category = htmlspecialchars( $_POST['parent_category'] );
 
-		if($parent_category === 'None'){
+		if ( $parent_category === 'None' ) {
 			wp_insert_category( array(
-				'cat_ID'          => 0,
-				'cat_name'        => $name_category,
-				'taxonomy'        => 'сategories_filters'
+				'cat_ID'   => 0,
+				'cat_name' => $name_category,
+				'taxonomy' => 'сategories_filters'
 			) );
-        } else {
+		} else {
 			wp_insert_category( array(
 				'cat_ID'          => 0,
 				'cat_name'        => $name_category,
 				'category_parent' => $parent_category,
 				'taxonomy'        => 'сategories_filters'
 			) );
-        }
+		}
 
 		ob_start();
 
