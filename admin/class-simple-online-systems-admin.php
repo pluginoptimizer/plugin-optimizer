@@ -1218,6 +1218,60 @@ class Simple_Online_Systems_Admin {
                             <td><input type="checkbox" id="<?= $subcategory->cat_ID ?>"></td>
                             <td> — <?= $subcategory->cat_name; ?></td>
                         </tr>
+                        <tr class="hidden_info">
+                            <td colspan="2">
+                                <div class="content-filter">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="header">
+                                                <div class="title">
+													<?php
+													$count_filters = 0;
+													$posts         = get_posts( array(
+														'post_type'   => 'sos_filter',
+														'numberposts' => - 1,
+													) );
+													if ( $posts ) {
+														foreach ( $posts as $post ) {
+															if ( has_term( $subcategory->cat_ID, 'сategories_filters', $post->ID ) ) {
+																$count_filters ++;
+															}
+														}
+													}
+													?>
+                                                    Filters <span
+                                                            class="disabled">- Used: <?= $count_filters; ?>/<?= wp_count_posts( 'sos_filter' )->publish; ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="plugin-wrapper">
+												<?php
+												$posts = get_posts( array(
+													'post_type'   => 'sos_filter',
+													'numberposts' => - 1,
+												) );
+												if ( $posts ) :
+													foreach ( $posts as $post ) :
+														?>
+                                                        <div class="content
+                                                <?php
+														if ( has_term( $subcategory->cat_ID, 'сategories_filters', $post->ID ) ) {
+															echo 'block';
+														}
+														?>
+                                                ">
+                                                            <span><?= $post->post_title; ?></span>
+                                                        </div>
+													<?php
+													endforeach;
+												endif;
+												?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
 					<?php endforeach;
 				endif;
 				?>

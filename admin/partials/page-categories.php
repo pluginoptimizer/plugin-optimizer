@@ -7,39 +7,6 @@ $categories = get_categories( [
 ] );
 
 ?>
-<div class="wrap wrapper-filter">
-    <div id="create_elements" class="create_category">
-        <div class="wrapper_create-elements">
-            <p class="popup-close">×</p>
-            <form action="" class="created-cat">
-                <p>Group Title</p>
-                <div id="group_name_error">
-                    <div class="wrapper_group_name_error">
-                        <p class="popup-close">×</p>
-                        <div id="result_search">This name is already in use</div>
-                    </div>
-                </div>
-                <input type="text" placeholder="Enter category title" name="title_cat" id="title_cat">
-                <p>Select parent</p>
-                <div class="select-filter">
-                    <span class="content block select_parent_to_category none_parent" value="none">None</span>
-		            <?php
-		            if ( $categories ):
-			            foreach ( $categories as $cat ):
-				            ?>
-                            <span class="content select_parent_to_category" value="<?= str_replace( ' ', "_", $cat->cat_ID ); ?>"><?= $cat->cat_name; ?></span>
-			            <?php
-			            endforeach;
-		            endif;
-		            ?>
-                </div>
-                <input type="submit" value="Create new category">
-            </form>
-        </div>
-    </div>
-</div>
-
-
 <div class="sos-wrap container">
 		<div class="row col-12">
 			<h1>Plugin Optimizer</h1>
@@ -69,6 +36,63 @@ $categories = get_categories( [
 					<span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_terms( 'category' ); ?></span>)
 				</div>
 			</div>
+            <div class="row col-12 content-new-element">
+                <div class="col-12">
+                    <table>
+                        <tr>
+                            <td colspan="6">
+                                <div class="content-filter">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="header">Title</div>
+                                            <div>
+                                                <div class="content">
+                                                    <span><input class="content-text" id="set_title" type="text"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row category-wrapper">
+                                        <div class="col-12">
+                                            <div class="header">
+                                                <div class="title">
+                                                    categories
+                                                </div>
+                                            </div>
+                                            <div class="plugin-wrapper">
+	                                            <div class="content block none_parent">
+		                                            <span value="None">None</span>
+	                                            </div>
+												<?php
+
+												if ( $categories ):
+													foreach ( $categories as $cat ):
+														?>
+                                                        <div class="content select_parent_to_category">
+                                                            <span value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></span>
+                                                        </div>
+													<?php
+													endforeach;
+												endif;
+												?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <button class="add-filter save save-category" id="add_elements"><span class="pluse">+</span> save new category
+                                    </button>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+
+
+            </div>
 			<div class="row col-12 ">
 				<div class="col-3">
 					<select id="check_all_elements">

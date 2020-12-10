@@ -93,113 +93,6 @@ import { createPopup } from './components/create-popup.js';
 
         transitionElements();
 
-        $(`.select_groups_to_filter`).click(function(){
-            if($(this).text() !== 'None' && $(`.none_group`).hasClass('block')){
-                $(`.none_group`).removeClass('block');
-                $(`select[name="block_group_plugins"] option[value="none"]`).prop('selected', false);
-            }
-            if($(this).hasClass('block')){
-                $(this).removeClass('block');
-                $(`select[name="block_group_plugins"] option:contains(${$(this).text()})`).prop('selected', false);
-                if($(this).text() !== 'None'){
-                    let countItem = 0;
-                    $( `.select_groups_to_filter` ).each(function( item ) {
-                        if($(this).hasClass(`block`)){
-                            countItem++;
-                        }
-                    });
-                    if(countItem === 0){
-                        $(`select[name="block_group_plugins"] option[value="none"]`).prop('selected', true);
-                        $(`.none_group`).addClass(`block`);
-                    }
-                }
-            } else {
-                $(this).addClass('block');
-                $(`select[name="block_group_plugins"] option:contains(${$(this).text()})`).prop('selected', true);
-            }
-        })
-
-
-
-        $(`.select_plugins_to_filter`).click(function(){
-            if($(this).hasClass('block')){
-                $(this).removeClass('block');
-                $(`select[name="block_plugins"] option:contains(${$(this).text()})`).prop('selected', false);
-            } else {
-                $(this).addClass('block');
-                $(`select[name="block_plugins"] option:contains(${$(this).text()})`).prop('selected', true);
-            }
-        })
-
-        $(`.select_post_to_filter`).click(function(){
-            if($(this).hasClass('block')){
-                $(this).removeClass('block');
-                $(`select[name="post_type"] option:contains(${$(this).text()})`).prop('selected', false);
-            } else {
-                $(this).addClass('block');
-                $(`select[name="post_type"] option:contains(${$(this).text()})`).prop('selected', true);
-            }
-        })
-
-        $(`.select_category_to_filter`).click(function(){
-            const selfText = $(this).text();
-            if($(this).hasClass('block')){
-                $(this).removeClass('block');
-                $(`select[name="category_filter"] option:contains(${$(this).text()})`).prop('selected', false);
-            } else {
-                $( `.select_category_to_filter` ).each(function( item ) {
-                    if($(this).hasClass(`block`) && selfText !== $(this).text()){
-                        $(this).removeClass(`block`);
-                    }
-                });
-                $(this).addClass('block');
-                $(`select[name="category_filter"] option:contains(${$(this).text()})`).prop('selected', true);
-            }
-        })
-
-
-        $(`.select_parent_to_category`).click(function(){
-            const selfText = $(this).text();
-            if($(this).hasClass('block')){
-                $(this).removeClass('block');
-                $(`.none_parent`).addClass('block');
-            } else {
-                $( `.select_parent_to_category` ).each(function( item ) {
-                    if($(this).hasClass(`block`) && selfText !== $(this).text()){
-                        $(this).removeClass(`block`);
-                    }
-                });
-                $(this).addClass('block');
-            }
-        })
-
-        $(`.select_parent_to_group`).click(function(){
-            const selfText = $(this).text();
-            if($(this).hasClass('block')){
-                $(this).removeClass('block');
-                $(`select[name="group_parents"] option:contains(${$(this).text()})`).prop('selected', false);
-            } else {
-                $( `.select_parent_to_group` ).each(function( item ) {
-                    if($(this).hasClass(`block`) && selfText !== $(this).text()){
-                        $(this).removeClass(`block`);
-                    }
-                });
-                $(this).addClass('block');
-                $(`select[name="group_parents"] option:contains(${$(this).text()})`).prop('selected', true);
-            }
-        })
-
-        $(`.select_plugin_to_group`).click(function(){
-            if($(this).hasClass('block')){
-                $(this).removeClass('block');
-                $(`select[name="group_plugins"] option:contains(${$(this).text()})`).prop('selected', false);
-            } else {
-                $(this).addClass('block');
-                $(`select[name="group_plugins"] option:contains(${$(this).text()})`).prop('selected', true);
-            }
-        })
-
-
         /*     Show the selected links    */
         $(`.add-permalink`).click(function () {
             $(this).prev().before(`
@@ -211,11 +104,6 @@ import { createPopup } from './components/create-popup.js';
             $('#search_pages').focus();
         })
 
-
-
-        /*$(`.content-new-filter .content`).click(function () {
-            $(this).addClass(`block`);
-        })*/
 
         /*  Select a category for a new filter   */
         $(`.category-wrapper .content`).click(function(){
@@ -232,7 +120,9 @@ import { createPopup } from './components/create-popup.js';
             }
         })
 
-        /*  Select a group plugins for a new filter   */
+        /*  Select a group plugins for a new filter
+        *   or select parent for a new group
+        * */
         $(`.block-group-plugin-wrapper .content`).click(function(){
             if($(this).text() !== 'None' && $(`.none_group`).hasClass('block')){
                 $(`.none_group`).removeClass('block');
@@ -255,7 +145,9 @@ import { createPopup } from './components/create-popup.js';
             }
         })
 
-        /*  Select a plugins for a new filter   */
+        /*  Select a plugins for a new filter
+        *   or select plugins for a new group
+        * */
         $(`.block-plugin-wrapper .content`).click(function(){
             if($(this).hasClass('block')){
                 $(this).removeClass('block');
@@ -264,7 +156,22 @@ import { createPopup } from './components/create-popup.js';
             }
         })
 
-
+        /*  Select a parent for a new category   */
+        $(`.select_parent_to_category`).click(function(){
+            const selfText = $(this).text();
+            if($(this).hasClass('block')){
+                $(this).removeClass('block');
+                $(`.none_parent`).addClass('block');
+            } else {
+                $( `.select_parent_to_category` ).each(function( item ) {
+                    if($(this).hasClass(`block`) && selfText !== $(this).text()){
+                        $(this).removeClass(`block`);
+                    }
+                });
+                $(`.none_parent`).removeClass('block');
+                $(this).addClass('block');
+            }
+        })
 
     });
 })(jQuery);

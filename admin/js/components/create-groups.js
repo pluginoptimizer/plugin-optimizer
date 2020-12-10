@@ -1,4 +1,5 @@
 import {allElements} from "./check-all-element.js";
+import {hiddenInfoFilter} from "./hidden-info-filter.js";
 
 let createGroupPlugins;
 (function ($) {
@@ -7,24 +8,24 @@ let createGroupPlugins;
     $(document).ready(function () {
         // create plugins
         createGroupPlugins = () => {
-            $('.created-groups input[type="submit"]').click(function (e) {
-                e.preventDefault();
+            $('.save-group').click(function () {
 
                 $.ajax({
                     url: simple_online_systems_groups.ajax_url,
                     type: 'POST',
                     data: {
                         action: 'sos_add_group_plugins',
-                        'title_group': $('input[name="title_group"]').val(),
-                        'type_group': $('input[name="type_group"]').val(),
-                        'group_plugins': $('select[name="group_plugins"] option:selected').toArray().map(item => item.text).join(', '),
-                        'group_parents': $('select[name="group_parents"] option:selected').text(),
+                        'title_group': $('#set_title').val(),
+                        'type_group': $('#set_type').val(),
+                        'group_parents': $(`.block-group-plugin-wrapper .block span`).toArray().map(item => $(item).text()).join(', '),
+                        'group_plugins': $(`.block-plugin-wrapper .block span`).toArray().map(item => $(item).text()).join(', '),
                     },
                     success: function (response) {
                         $('#the-list').html(response.data);
-                        $('#create_elements').css('display', 'none');
+                        $('.content-new-element').css('display', 'none');
                         allElements.count_element('sos_group');
                         allElements.check_all_element();
+                        hiddenInfoFilter();
                     }
                 })
             });
@@ -32,4 +33,4 @@ let createGroupPlugins;
     });
 })(jQuery);
 
-export { createGroupPlugins };
+export {createGroupPlugins};

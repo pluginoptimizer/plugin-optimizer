@@ -11,66 +11,6 @@ $posts = get_posts( array(
 ) );
 ?>
 <div class="wrap wrapper-filter">
-    <div id="create_elements">
-        <div class="wrapper_create-elements">
-            <p class="popup-close">×</p>
-            <form action="" class="created-groups">
-                <p>Group Title</p>
-                <div id="group_name_error">
-                    <div class="wrapper_group_name_error">
-                        <p class="popup-close">×</p>
-                        <div id="result_search">This name is already in use</div>
-                    </div>
-                </div>
-                <input type="text" placeholder="Enter filter title" name="title_group" id="title_group">
-                <p>Set Type</p>
-                <input type="text" placeholder="Enter type" name="type_group">
-                <p>Select parent</p>
-                <select name="group_parents">
-                    <option value="none" selected>None</option>
-					<?php
-					if ( $posts ):
-                        foreach ( $posts as $post ): ?>
-                            <option value="<?= str_replace( ' ', "_", $post->post_title ); ?>"><?= $post->post_title; ?></option>
-                        <?php endforeach;
-					endif;
-					?>
-                </select>
-                <div class="select-filter">
-                    <span class="content block select_parent_to_group none_parent" value="none">None</span>
-		            <?php
-		            if ( $posts ):
-			            foreach ( $posts as $post ): ?>
-                            <span class="content select_parent_to_group" value="<?= str_replace( ' ', "_", $post->post_title ); ?>"><?= $post->post_title; ?></span>
-			            <?php endforeach;
-		            endif;
-		            ?>
-                </div>
-                <p>Select plugins</p>
-                <select name="group_plugins" multiple>
-					<?php
-					$plugins = Simple_Online_Systems_Helper::get_plugins_with_status();
-					if ( $plugins ):
-                        foreach ( $plugins as $plugin => $value ): ?>
-                            <option value="<?= str_replace( ' ', "_", $value['name'] ); ?>"><?= $value['name']; ?></option>
-                        <?php endforeach;
-					endif;
-					?>
-                </select>
-                <div class="select-filter">
-		            <?php
-		            if ( $plugins ):
-			            foreach ( $plugins as $plugin => $value ): ?>
-                            <span class="content select_plugin_to_group" value="<?= str_replace( ' ', "_", $value['name'] ); ?>"><?= $value['name']; ?></span>
-			            <?php endforeach;
-		            endif;
-		            ?>
-                </div>
-                <input type="submit" value="Create new group">
-            </form>
-        </div>
-
-    </div>
 
 
     <div class="sos-wrap container">
@@ -105,6 +45,128 @@ $posts = get_posts( array(
                                 id="trash_elements">TRASH</span> (<span
                                 id="count_trash_elements"><?= wp_count_posts( 'sos_group' )->trash; ?></span>)
                     </div>
+                </div>
+                <div class="row content-new-element">
+                    <div class="col-12">
+                        <table>
+                            <tr>
+                                <td colspan="6">
+                                    <div class="content-filter">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="header">Title</div>
+                                                <div>
+                                                    <div class="content">
+                                                        <span><input class="content-text" id="set_title" type="text"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="header">Type</div>
+                                                <div>
+                                                    <div class="content">
+                                                        <span><input class="content-text" id="set_type" type="text"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row block-group-plugin-wrapper">
+                                            <div class="col-12">
+                                                <div class="header">
+                                                    <div class="title">
+					                                    <?php
+					                                    $groups         = get_posts( array(
+						                                    'post_type'   => 'sos_group',
+						                                    'numberposts' => - 1,
+					                                    ) );
+					                                    ?>
+                                                        Select parent <span
+                                                                class="disabled">- <?= count( $groups ); ?></span>
+                                                    </div>
+                                                </div>
+                                                <div class="plugin-wrapper">
+                                                    <div class="content none_group block">
+                                                        <span>None</span>
+                                                    </div>
+				                                    <?php
+				                                    if ( $groups ) :
+					                                    foreach ( $groups as $group ) :
+						                                    ?>
+                                                            <div class="content">
+                                                                <span><?= $group->post_title; ?></span>
+                                                            </div>
+					                                    <?php
+					                                    endforeach;
+				                                    endif;
+				                                    ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row block-plugin-wrapper">
+                                            <div class="col-12">
+                                                <div class="header">
+										            <?php
+										            $all_plugins        = Simple_Online_Systems_Helper::get_plugins_with_status();
+										            $activate_plugins   = array();
+										            $deactivate_plugins = array();
+										            foreach ( $all_plugins as $plugin ) {
+											            foreach ( $plugin as $key => $value ) {
+												            if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
+													            if ( $value ) {
+														            $activate_plugins[ $plugin['name'] ] = $plugin['file'];
+													            } else {
+														            array_push( $deactivate_plugins, $plugin['name'] );
+													            }
+												            }
+											            }
+										            }
+										            ?>
+                                                    <div class="title">
+                                                        Select plugins <span
+                                                                class="disabled">- <?= count( $activate_plugins ); ?></span>
+                                                    </div>
+                                                    <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
+                                                </div>
+									            <?php
+									            if ( $activate_plugins ):
+										            ?>
+                                                    <div class="plugin-wrapper">
+											            <?php
+											            foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
+												            ?>
+                                                            <div class="content">
+                                                                <span value="<?= $activate_plugin_link ?>"><?= $activate_plugin; ?></span>
+                                                            </div>
+											            <?php
+											            endforeach;
+											            ?>
+                                                    </div>
+									            <?php
+									            else:
+										            ?>
+                                                    <div class="plugin-wrapper no-plugins">
+                                                        <div class="content">
+                                                            <span>No activate plugins for blocking</span>
+                                                        </div>
+                                                    </div>
+									            <?php
+									            endif;
+									            ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <button class="add-filter save save-group" id="add_elements"><span class="pluse">+</span> save new group
+                                        </button>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+
                 </div>
                 <div class="row col-12 ">
                     <div class="col-3">

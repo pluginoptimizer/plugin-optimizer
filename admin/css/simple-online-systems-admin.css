@@ -586,7 +586,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     display: none;
 }
 
-.sos-wrap .save-filter{
+.sos-wrap .save{
     width: 50%;
     margin-left: 25%;
     height: 50px;
@@ -596,7 +596,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     text-transform: none;
 }
 
-.sos-wrap .content-new-filter .content{
+.sos-wrap .content-new-element .content{
     cursor: pointer;
 }
 
@@ -604,6 +604,8 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     border-top: 0;
     border-right: 0;
     border-left: 0;
+    border-radius: 0;
+    width: 100%;
 }
 
 .sos-wrap .content-text:focus{
@@ -612,7 +614,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     outline: none;
 }
 
-.sos-wrap .content-new-filter{
+.sos-wrap .content-new-element{
     display: none;
 }
 

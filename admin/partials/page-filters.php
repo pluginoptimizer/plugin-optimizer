@@ -41,7 +41,7 @@
                             id="count_trash_elements"><?= wp_count_posts( 'sos_filter' )->trash; ?></span>)
                 </div>
             </div>
-            <div class="row content-new-filter">
+            <div class="row content-new-element">
                 <div class="col-12">
                     <table>
                         <tr>
@@ -198,7 +198,7 @@
                                 </div>
 
                                 <div class="row">
-                                    <button class="add-filter save-filter" id="add_elements"><span class="pluse">+</span> save new filter
+                                    <button class="add-filter save save-filter" id="add_elements"><span class="pluse">+</span> save new filter
                                     </button>
                                 </div>
 
