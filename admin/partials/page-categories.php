@@ -33,7 +33,7 @@ $categories = get_categories( [
 					<button class="add-filter" id="add_elements"><span class="pluse">+</span> add new category</button>
 				</div>
 				<div class="col-8 quantity">
-					<span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_terms( 'category' ); ?></span>)
+					<span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_terms( 'сategories_filters' ); ?></span>)
 				</div>
 			</div>
             <div class="row col-12 content-new-element">
@@ -50,9 +50,16 @@ $categories = get_categories( [
                                                     <span><input class="content-text" id="set_title" type="text"></span>
                                                 </div>
                                             </div>
+                                            <div class="header">Description</div>
+                                            <div>
+                                                <div class="content">
+<!--                                                    <span><textarea class="content-text" id="set_title" type="text"></span>-->
+                                                    <span><textarea id="set_description" name="text"></textarea></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row category-wrapper">
+                                    <div class="row parent-category-wrapper">
                                         <div class="col-12">
                                             <div class="header">
                                                 <div class="title">

@@ -11,23 +11,23 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
-class Simple_Online_Systems_MU {
+class Plugin_Optimizer_MU {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
 	 *
 	 * @access   protected
-	 * @var      Simple_Online_Systems_Loader_MU $loader Maintains and registers all hooks for the plugin.
+	 * @var      Plugin_Optimizer_Loader_MU $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
 	/**
-	 * Simple_Online_Systems_MU constructor.
+	 * Plugin_Optimizer_MU constructor.
 	 */
 	public function __construct() {
 
-		$this->loader = new Simple_Online_Systems_Loader_MU();
+		$this->loader = new Plugin_Optimizer_Loader_MU();
 		$this->define_mu_hooks();
 
 	}
@@ -122,7 +122,7 @@ class Simple_Online_Systems_MU {
 /**
  * Register all actions and filters for the plugin.
  */
-class Simple_Online_Systems_Loader_MU {
+class Plugin_Optimizer_Loader_MU {
 
 	/**
 	 * The array of actions registered with WordPress.
@@ -233,11 +233,11 @@ class Simple_Online_Systems_Loader_MU {
 /**
  * Begins execution of the plugin.
  */
-function run_simple_online_systems_mu() {
+function run_plugin_optimizer_mu() {
 
-	$plugin = new Simple_Online_Systems_MU();
+	$plugin = new Plugin_Optimizer_MU();
 	$plugin->run();
 
 }
 
-run_simple_online_systems_mu();
+run_plugin_optimizer_mu();

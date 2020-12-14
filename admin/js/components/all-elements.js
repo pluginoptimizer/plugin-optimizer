@@ -19,7 +19,7 @@ let showAllElements;
                 }
                 $('select#check_all_elements option[value="restore"]').remove();
                 $.ajax({
-                    url: simple_online_systems_groups.ajax_url,
+                    url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
                         action: 'sos_all_elements',

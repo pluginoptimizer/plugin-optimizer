@@ -74,12 +74,12 @@ $posts = get_posts( array(
                                             <div class="col-12">
                                                 <div class="header">
                                                     <div class="title">
-					                                    <?php
-					                                    $groups         = get_posts( array(
-						                                    'post_type'   => 'sos_group',
-						                                    'numberposts' => - 1,
-					                                    ) );
-					                                    ?>
+			                                            <?php
+			                                            $groups         = get_posts( array(
+				                                            'post_type'   => 'sos_group',
+				                                            'numberposts' => - 1,
+			                                            ) );
+			                                            ?>
                                                         Select parent <span
                                                                 class="disabled">- <?= count( $groups ); ?></span>
                                                     </div>
@@ -88,17 +88,17 @@ $posts = get_posts( array(
                                                     <div class="content none_group block">
                                                         <span>None</span>
                                                     </div>
-				                                    <?php
-				                                    if ( $groups ) :
-					                                    foreach ( $groups as $group ) :
-						                                    ?>
+		                                            <?php
+		                                            if ( $groups ) :
+			                                            foreach ( $groups as $group ) :
+				                                            ?>
                                                             <div class="content">
                                                                 <span><?= $group->post_title; ?></span>
                                                             </div>
-					                                    <?php
-					                                    endforeach;
-				                                    endif;
-				                                    ?>
+			                                            <?php
+			                                            endforeach;
+		                                            endif;
+		                                            ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -106,7 +106,7 @@ $posts = get_posts( array(
                                             <div class="col-12">
                                                 <div class="header">
 										            <?php
-										            $all_plugins        = Simple_Online_Systems_Helper::get_plugins_with_status();
+										            $all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
 										            $activate_plugins   = array();
 										            $deactivate_plugins = array();
 										            foreach ( $all_plugins as $plugin ) {
@@ -115,7 +115,7 @@ $posts = get_posts( array(
 													            if ( $value ) {
 														            $activate_plugins[ $plugin['name'] ] = $plugin['file'];
 													            } else {
-														            array_push( $deactivate_plugins, $plugin['name'] );
+														            $deactivate_plugins[ $plugin['name'] ] = $plugin['file'];
 													            }
 												            }
 											            }
@@ -136,6 +136,13 @@ $posts = get_posts( array(
 												            ?>
                                                             <div class="content">
                                                                 <span value="<?= $activate_plugin_link ?>"><?= $activate_plugin; ?></span>
+                                                            </div>
+											            <?php
+											            endforeach;
+											            foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):
+												            ?>
+                                                            <div class="content deactivate-plugin">
+                                                                <span value="<?= $deactivate_plugin_link ?>"><?= $deactivate_plugin; ?></span>
                                                             </div>
 											            <?php
 											            endforeach;
@@ -207,6 +214,3 @@ $posts = get_posts( array(
             </div>
     </div>
 </div>
-
-
-

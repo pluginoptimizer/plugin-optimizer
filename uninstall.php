@@ -22,7 +22,7 @@
  * @link       author-uri.com
  * @since      1.0.0
  *
- * @package    Simple_Online_Systems
+ * @package    Plugin_Optimizer
  */
 
 // If uninstall not called from WordPress, then exit.

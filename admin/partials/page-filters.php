@@ -83,7 +83,7 @@
                                         <div class="col-12">
                                             <div class="header">
                                                 <?php
-                                                $all_plugins        = Simple_Online_Systems_Helper::get_plugins_with_status();
+                                                $all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
                                                 $activate_plugins   = array();
                                                 $deactivate_plugins = array();
                                                 foreach ( $all_plugins as $plugin ) {
@@ -92,16 +92,18 @@
 			                                                if ( $value ) {
 				                                                $activate_plugins[ $plugin['name'] ] = $plugin['file'];
 			                                                } else {
-				                                                array_push( $deactivate_plugins, $plugin['name'] );
+				                                                $deactivate_plugins[ $plugin['name'] ] = $plugin['file'];
 			                                                }
 		                                                }
 	                                                }
                                                 }
                                                 ?>
                                                 <div class="title">
-                                                    Plugins <span
-                                                            class="disabled">- <?= count( $activate_plugins ); ?></span>
+                                                    Plugins  <span
+                                                            class="disabled">- <?= count( $all_plugins ) - 1 ; ?></span>
+
                                                 </div>
+                                                <span class="all-check">All disable</span>
                                                 <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
                                             </div>
 							                <?php
@@ -113,6 +115,13 @@
 										                ?>
                                                         <div class="content">
                                                             <span value="<?= $activate_plugin_link ?>"><?= $activate_plugin; ?></span>
+                                                        </div>
+									                <?php
+									                endforeach;
+									                foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):
+										                ?>
+                                                        <div class="content deactivate-plugin">
+                                                            <span value="<?= $deactivate_plugin_link ?>"><?= $deactivate_plugin; ?></span>
                                                         </div>
 									                <?php
 									                endforeach;
@@ -250,3 +259,4 @@
         </div>
     </div>
 </div>
+

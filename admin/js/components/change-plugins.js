@@ -12,7 +12,7 @@ let changePlugins;
                 const plugin_link = $(this).attr('link');
                 const change_plugins = $(this).text();
                 $.ajax({
-                    url: simple_online_systems_groups.ajax_url,
+                    url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
                         action: 'sos_change_plugins_to_filter',

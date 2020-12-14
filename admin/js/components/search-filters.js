@@ -7,7 +7,7 @@ let searchFilters;
         searchFilters = ()=>{
             $('#search_filters').keyup(function () {
                 $.ajax({
-                    url: simple_online_systems_groups.ajax_url,
+                    url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
                         action: 'sos_search_filters',

@@ -28,7 +28,7 @@ let deleteRestoreElement;
                         type_elements = 'trash';
                     }
                     $.ajax({
-                        url: simple_online_systems_groups.ajax_url,
+                        url: plugin_optimizer_groups.ajax_url,
                         type: 'POST',
                         data: {
                             action: 'sos_delete_elements',
@@ -48,7 +48,7 @@ let deleteRestoreElement;
                     });
                 } else if($('#check_all_elements option:selected').text() === 'Restore'){
                     $.ajax({
-                        url: simple_online_systems_groups.ajax_url,
+                        url: plugin_optimizer_groups.ajax_url,
                         type: 'POST',
                         data: {
                             action: 'sos_publish_elements',

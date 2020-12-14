@@ -12,7 +12,7 @@ let addCategory;
                 const name_category = $(this).prev().val();
                 const id_filter = $(this).attr('id').substr(5);
                 $.ajax({
-                    url: simple_online_systems_groups.ajax_url,
+                    url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
                         action: 'sos_create_category',

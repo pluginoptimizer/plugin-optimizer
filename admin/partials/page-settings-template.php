@@ -5,7 +5,7 @@
 		'post_type'   => 'sos_work',
 		'numberposts' => - 1,
 	) );
-	$all_plugins        = Simple_Online_Systems_Helper::get_plugins_with_status();
+	$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
 	$activate_plugins   = array();
 	$deactivate_plugins = array();
 	foreach ( $all_plugins as $plugin ) {

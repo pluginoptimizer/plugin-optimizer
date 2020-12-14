@@ -24,7 +24,7 @@ let allElements;
             },
             count_element : function(name_post_type){
                 $.ajax({
-                    url: simple_online_systems_groups.ajax_url,
+                    url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
                         action: 'sos_count_elements',

@@ -18,7 +18,7 @@ let trashElements;
                     name_post_type = 'sos_group';
                 }
                 $.ajax({
-                    url: simple_online_systems_groups.ajax_url,
+                    url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
                         action: 'sos_trash_elements',

@@ -13,7 +13,7 @@ let createdFilters;
                 e.preventDefault();
 
                 $.ajax({
-                    url: simple_online_systems_groups.ajax_url,
+                    url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
                         action: 'sos_add_plugin_to_filter',

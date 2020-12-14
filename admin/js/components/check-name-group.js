@@ -9,7 +9,7 @@ let checkNameGroup;
             $('#title_group').change(function () {
                 const name_group = $(this).val();
                 $.ajax({
-                    url: simple_online_systems_groups.ajax_url,
+                    url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
                         action: 'sos_check_name_group',
