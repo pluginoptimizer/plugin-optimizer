@@ -123,8 +123,9 @@ $posts = get_posts( array(
 										            ?>
                                                     <div class="title">
                                                         Select plugins <span
-                                                                class="disabled">- <?= count( $activate_plugins ); ?></span>
+                                                                class="disabled">- <?= count( $all_plugins ) - 1; ?></span>
                                                     </div>
+                                                    <span class="all-check">All disable</span>
                                                     <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
                                                 </div>
 									            <?php

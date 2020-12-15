@@ -640,4 +640,14 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     width: 100%;
     height: auto;
     background: #fff;
+    padding: 10px;
+}
+
+.hidden_content{
+    display: none;
+    box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+}
+
+.content:hover .hidden_content{
+    display: block;
 }

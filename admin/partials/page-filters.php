@@ -74,7 +74,8 @@
                                                         <div id="result_search"></div>
                                                     </div>
                                                 </div>
-                                                <button class="add-filter add-permalink"><span class="pluse">+</span> Permalink
+                                                <button class="add-filter add-permalink"><span class="pluse">+</span>
+                                                    Permalink
                                                 </button>
                                             </div>
                                         </div>
@@ -82,74 +83,74 @@
                                     <div class="row block-plugin-wrapper">
                                         <div class="col-12">
                                             <div class="header">
-                                                <?php
-                                                $all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
-                                                $activate_plugins   = array();
-                                                $deactivate_plugins = array();
-                                                foreach ( $all_plugins as $plugin ) {
-	                                                foreach ( $plugin as $key => $value ) {
-		                                                if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-			                                                if ( $value ) {
-				                                                $activate_plugins[ $plugin['name'] ] = $plugin['file'];
-			                                                } else {
-				                                                $deactivate_plugins[ $plugin['name'] ] = $plugin['file'];
-			                                                }
-		                                                }
-	                                                }
-                                                }
-                                                ?>
+												<?php
+												$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
+												$activate_plugins   = array();
+												$deactivate_plugins = array();
+												foreach ( $all_plugins as $plugin ) {
+													foreach ( $plugin as $key => $value ) {
+														if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
+															if ( $value ) {
+																$activate_plugins[ $plugin['name'] ] = $plugin['file'];
+															} else {
+																$deactivate_plugins[ $plugin['name'] ] = $plugin['file'];
+															}
+														}
+													}
+												}
+												?>
                                                 <div class="title">
-                                                    Plugins  <span
-                                                            class="disabled">- <?= count( $all_plugins ) - 1 ; ?></span>
+                                                    Plugins <span
+                                                            class="disabled">- <?= count( $all_plugins ) - 1; ?></span>
 
                                                 </div>
                                                 <span class="all-check">All disable</span>
                                                 <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
                                             </div>
-							                <?php
-							                if ( $activate_plugins ):
-								                ?>
+											<?php
+											if ( $activate_plugins ):
+												?>
                                                 <div class="plugin-wrapper">
-									                <?php
-									                foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
-										                ?>
+													<?php
+													foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
+														?>
                                                         <div class="content">
                                                             <span value="<?= $activate_plugin_link ?>"><?= $activate_plugin; ?></span>
                                                         </div>
-									                <?php
-									                endforeach;
-									                foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):
-										                ?>
+													<?php
+													endforeach;
+													foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):
+														?>
                                                         <div class="content deactivate-plugin">
                                                             <span value="<?= $deactivate_plugin_link ?>"><?= $deactivate_plugin; ?></span>
                                                         </div>
-									                <?php
-									                endforeach;
-									                ?>
+													<?php
+													endforeach;
+													?>
                                                 </div>
-							                <?php
-							                else:
-								                ?>
+											<?php
+											else:
+												?>
                                                 <div class="plugin-wrapper no-plugins">
                                                     <div class="content">
                                                         <span>No activate plugins for blocking</span>
                                                     </div>
                                                 </div>
-							                <?php
-							                endif;
-							                ?>
+											<?php
+											endif;
+											?>
                                         </div>
                                     </div>
                                     <div class="row block-group-plugin-wrapper">
                                         <div class="col-12">
                                             <div class="header">
                                                 <div class="title">
-									                <?php
-									                $groups         = get_posts( array(
-										                'post_type'   => 'sos_group',
-										                'numberposts' => - 1,
-									                ) );
-									                ?>
+													<?php
+													$groups = get_posts( array(
+														'post_type'   => 'sos_group',
+														'numberposts' => - 1,
+													) );
+													?>
                                                     groups <span
                                                             class="disabled">- <?= count( $groups ); ?></span>
                                                 </div>
@@ -158,17 +159,26 @@
                                                 <div class="content none_group block">
                                                     <span>None</span>
                                                 </div>
-								                <?php
-								                if ( $groups ) :
-									                foreach ( $groups as $group ) :
-										                ?>
+												<?php
+												if ( $groups ) :
+													foreach ( $groups as $group ) :
+														?>
                                                         <div class="content">
                                                             <span><?= $group->post_title; ?></span>
+															<? $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ));
+															foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
+																?>
+                                                                <div class="hidden_content content">
+                                                                    <span><?= $block_plugin_in_group; ?></span>
+                                                                </div>
+															<?php
+															endforeach;
+															?>
                                                         </div>
-									                <?php
-									                endforeach;
-								                endif;
-								                ?>
+													<?php
+													endforeach;
+												endif;
+												?>
                                             </div>
                                         </div>
                                     </div>
@@ -180,25 +190,26 @@
                                                 </div>
                                             </div>
                                             <div class="plugin-wrapper">
-								                <?php
-								                $categories = get_categories( [
-									                'taxonomy'   => 'сategories_filters',
-									                'type'       => 'sos_filter',
-									                'hide_empty' => 0,
-								                ] );
+												<?php
+												$categories = get_categories( [
+													'taxonomy'   => 'сategories_filters',
+													'type'       => 'sos_filter',
+													'hide_empty' => 0,
+												] );
 
-								                if ( $categories ):
-									                foreach ( $categories as $cat ):
-										                ?>
+												if ( $categories ):
+													foreach ( $categories as $cat ):
+														?>
                                                         <div class="content filter-category">
                                                             <span value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></span>
                                                         </div>
-									                <?php
-									                endforeach;
-								                endif;
-								                ?>
+													<?php
+													endforeach;
+												endif;
+												?>
                                                 <input type="text" placeholder="Name category">
-                                                <button class="add-filter add-permalink add-category" id="post-<?= $id_filter; ?>">
+                                                <button class="add-filter add-permalink add-category"
+                                                        id="post-<?= $id_filter; ?>">
                                                     <span class="pluse">+</span> Category
                                                 </button>
                                             </div>
@@ -207,7 +218,8 @@
                                 </div>
 
                                 <div class="row">
-                                    <button class="add-filter save save-filter" id="add_elements"><span class="pluse">+</span> save new filter
+                                    <button class="add-filter save save-filter" id="add_elements"><span
+                                                class="pluse">+</span> save new filter
                                     </button>
                                 </div>
 
@@ -215,7 +227,6 @@
                         </tr>
                     </table>
                 </div>
-
 
 
             </div>

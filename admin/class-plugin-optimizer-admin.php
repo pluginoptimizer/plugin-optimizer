@@ -1167,11 +1167,11 @@ class Plugin_Optimizer_Admin {
                                 <div class="col-12">
                                     <div class="header">
                                         <div class="title">
-											Description
+                                            Description
                                         </div>
                                     </div>
                                     <div class="content-description">
-                                        <span><?= $cat->category_description ? $cat->category_description : 'None description' ; ?></span>
+                                        <span><?= $cat->category_description ? $cat->category_description : 'None description'; ?></span>
                                     </div>
                                 </div>
                             </div>
@@ -1179,40 +1179,40 @@ class Plugin_Optimizer_Admin {
                                 <div class="col-12">
                                     <div class="header">
                                         <div class="title">
-					                        <?php
-					                        $count_filters = 0;
-					                        $posts         = get_posts( array(
-						                        'post_type'   => 'sos_filter',
-						                        'numberposts' => - 1,
-					                        ) );
-					                        if ( $posts ) {
-						                        foreach ( $posts as $post ) {
-							                        if ( has_term( $cat->cat_ID, 'сategories_filters', $post->ID ) ) {
-								                        $count_filters ++;
-							                        }
-						                        }
-					                        }
-					                        ?>
+											<?php
+											$count_filters = 0;
+											$posts         = get_posts( array(
+												'post_type'   => 'sos_filter',
+												'numberposts' => - 1,
+											) );
+											if ( $posts ) {
+												foreach ( $posts as $post ) {
+													if ( has_term( $cat->cat_ID, 'сategories_filters', $post->ID ) ) {
+														$count_filters ++;
+													}
+												}
+											}
+											?>
                                             Filters <span
                                                     class="disabled">- Used: <?= $count_filters; ?>/<?= wp_count_posts( 'sos_filter' )->publish; ?></span>
                                         </div>
                                     </div>
                                     <div class="plugin-wrapper">
-				                        <?php
-				                        $posts = get_posts( array(
-					                        'post_type'   => 'sos_filter',
-					                        'numberposts' => - 1,
-				                        ) );
-				                        if ( $posts ) :
-					                        foreach ( $posts as $post ) :
-						                        ?>
+										<?php
+										$posts = get_posts( array(
+											'post_type'   => 'sos_filter',
+											'numberposts' => - 1,
+										) );
+										if ( $posts ) :
+											foreach ( $posts as $post ) :
+												?>
                                                 <div class="content <?= has_term( $cat->cat_ID, 'сategories_filters', $post->ID ) ? 'block' : ''; ?>                                                ">
                                                     <span><?= $post->post_title; ?></span>
                                                 </div>
-					                        <?php
-					                        endforeach;
-				                        endif;
-				                        ?>
+											<?php
+											endforeach;
+										endif;
+										?>
                                     </div>
                                 </div>
                             </div>
@@ -1376,14 +1376,17 @@ class Plugin_Optimizer_Admin {
 										if ( $groups ) :
 											foreach ( $groups as $group ) :
 												?>
-                                                <div class="content
-                                                <?php
-												if ( in_array( $group->post_title, $groups_plugins ) ) {
-													echo 'block';
-												}
-												?>
-                                                ">
+                                                <div class="content <?= in_array( $group->post_title, $groups_plugins ) ? 'block' : ''; ?> ">
                                                     <span><?= $group->post_title; ?></span>
+													<? $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
+													foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
+														?>
+                                                        <div class="hidden_content content">
+                                                            <span><?= $block_plugin_in_group; ?></span>
+                                                        </div>
+													<?php
+													endforeach;
+													?>
                                                 </div>
 											<?php
 											endforeach;
