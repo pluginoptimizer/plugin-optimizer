@@ -11,6 +11,15 @@ let createCat;
         //change plugins
         createCat = () => {
             $(`.save-category`).click(function () {
+                let result = true;
+                $(`.content-new-element input`).toArray().some(function (item) {
+                    $(item).focus();
+                    return result = false;
+                })
+                if (!result) {
+                    return false;
+                }
+
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

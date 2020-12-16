@@ -67,7 +67,7 @@ $categories = get_categories( [
                                                 </div>
                                             </div>
                                             <div class="plugin-wrapper">
-	                                            <div class="content block none_parent">
+	                                            <div class="content block none_parent select_parent_to_category">
 		                                            <span value="None">None</span>
 	                                            </div>
 												<?php

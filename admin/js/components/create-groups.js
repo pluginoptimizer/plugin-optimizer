@@ -11,14 +11,14 @@ let createGroupPlugins;
         // create plugins
         createGroupPlugins = () => {
             $('.save-group').click(function () {
-                let rv = true;
+                let result = true;
                 $(`.content-new-element input`).toArray().some(function (item) {
-                    if ($(item).val().trim() === "" && rv) {
+                    if ($(item).val().trim() === "" && result) {
                         $(item).focus();
-                        return rv = false;
+                        return result = false;
                     }
                 })
-                if (!rv) {
+                if (!result) {
                     return false;
                 }
                 if (!$(`.block-plugin-wrapper .content`).hasClass(`block`)) {

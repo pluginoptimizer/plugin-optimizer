@@ -12,7 +12,7 @@
             <h1>Plugin Optimizer</h1>
         </div>
         <div class="row col-12">
-            <h2 id="name_page" class="filters">filters</h2>
+            <h2 id="name_page" class="filters">Filters</h2>
         </div>
 
 
@@ -165,7 +165,7 @@
 														?>
                                                         <div class="content">
                                                             <span><?= $group->post_title; ?></span>
-															<? $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ));
+															<? $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
 															foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
 																?>
                                                                 <div class="hidden_content content">
@@ -200,18 +200,13 @@
 												if ( $categories ):
 													foreach ( $categories as $cat ):
 														?>
-                                                        <div class="content filter-category">
+                                                        <div class="content">
                                                             <span value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></span>
                                                         </div>
 													<?php
 													endforeach;
 												endif;
 												?>
-                                                <input type="text" placeholder="Name category">
-                                                <button class="add-filter add-permalink add-category"
-                                                        id="post-<?= $id_filter; ?>">
-                                                    <span class="pluse">+</span> Category
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
