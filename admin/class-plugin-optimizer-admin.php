@@ -1757,23 +1757,45 @@ class Plugin_Optimizer_Admin {
 	 * Check name group
 	 */
 
-	public function ajax_check_name_group() {
-		$name_group = htmlspecialchars( $_POST['name_group'] );
-		$posts      = get_posts( array(
-			'post_type'   => 'sos_group',
-			'numberposts' => - 1,
-		) );
+	public function ajax_check_name_elements() {
+		$name_element = htmlspecialchars( $_POST['name_element'] );
+		$type_element = htmlspecialchars( $_POST['type_element'] );
 
-		$names_group = array();
+		$posts;
+		$categories;
+
+		if ( $type_element === 'filters' ) {
+			$posts = get_posts( array(
+				'post_type'   => 'sos_filter',
+				'numberposts' => - 1,
+			) );
+		} elseif ( $type_element === 'filters_categories' ) {
+			$categories = get_categories( [
+				'taxonomy' => 'сategories_filters',
+				'type'     => 'sos_filter',
+			] );
+		} elseif ( $type_element === 'groups' ) {
+			$posts = get_posts( array(
+				'post_type'   => 'sos_group',
+				'numberposts' => - 1,
+			) );
+		}
+
+
+		$names_element = array();
 
 		if ( $posts ) {
 			foreach ( $posts as $post ) {
-				array_push( $names_group, $post->post_title );
+				array_push( $names_element, $post->post_title );
+			}
+		} elseif ( $categories ) {
+			foreach ( $categories as $cat ) {
+				array_push( $names_element, $cat->cat_name );
 			}
 		} else {
 			wp_send_json_success( 'nothing' );
 		}
-		if ( in_array( $name_group, $names_group ) ) {
+		if ( in_array( $name_element, $names_element ) ) {
 			wp_send_json_success( true );
 		} else {
 			wp_send_json_success( false );

@@ -13,8 +13,10 @@ let createCat;
             $(`.save-category`).click(function () {
                 let result = true;
                 $(`.content-new-element input`).toArray().some(function (item) {
-                    $(item).focus();
-                    return result = false;
+                    if ($(item).val().trim() === "" && result) {
+                        $(item).focus();
+                        return result = false;
+                    }
                 })
                 if (!result) {
                     return false;

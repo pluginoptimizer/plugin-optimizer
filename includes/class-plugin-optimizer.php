@@ -169,7 +169,7 @@ class Plugin_Optimizer {
 		$this->loader->add_action( 'wp_ajax_sos_create_category', $plugin_admin, 'ajax_create_category' );
 		$this->loader->add_action( 'wp_ajax_sos_create_cat_subcat', $plugin_admin, 'ajax_create_cat_subcat' );
 		$this->loader->add_action( 'wp_ajax_sos_delete_category', $plugin_admin, 'ajax_delete_category' );
-		$this->loader->add_action( 'wp_ajax_sos_check_name_group', $plugin_admin, 'ajax_check_name_group' );
+		$this->loader->add_action( 'wp_ajax_sos_check_name_elements', $plugin_admin, 'ajax_check_name_elements' );
 		$this->loader->add_action( 'wp_ajax_sos_change_plugins_to_filter', $plugin_admin, 'ajax_change_plugins_to_filter' );
 		$this->loader->add_action( 'wp_ajax_sos_add_category_to_filter', $plugin_admin, 'ajax_add_category_to_filter' );
 		$this->loader->add_action( 'wp_ajax_sos_transition_viewed', $plugin_admin, 'ajax_transition_viewed' );
