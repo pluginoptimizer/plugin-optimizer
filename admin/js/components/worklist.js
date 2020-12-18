@@ -20,9 +20,9 @@ let getWorklist;
                     {}
                 );
             if(params['work_title']){
-                $('input[name="title_filter"]').val(`Page acceleration ${params['work_title'].replace('_', ' ')}`);
-                $('#search_pages').val(params['work_link']);
-                $(`#create_elements`).css(`display`, `block`);
+                $('input#set_title').val(`Optimization for ${params['work_title'].replace('_', ' ')}`);
+                params['work_link'].includes('http') ? $('#search_pages').val(params['work_link']) : $(`span[value="${params['work_link']}"]`).parent().addClass(`block`);
+                $('.content-new-element').css('display', 'block');
             } else if(params['filter_title']) {
                 $(`tr.block_info > td:nth-child(2):contains(${params['filter_title'].replace('+', ' ')})`).parent().next('.hidden_info').css('display', 'table-row');
                 $('html').animate({ scrollTop: $(`tr.block_info > td:nth-child(2):contains(${params['filter_title'].replace('+', ' ')})`).parent().next('.hidden_info').children().children().children('.block-plugin-wrapper').children().children('.plugin-wrapper').offset().top - 100 }, 1000);

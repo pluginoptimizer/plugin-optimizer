@@ -912,18 +912,20 @@ class Plugin_Optimizer_Admin {
 		$title_work = 'Add filter to ' . ucfirst( dirname( $plugin ) );
 		$post_link  = $plugin;
 
-		$post_data = array(
-			'post_title'  => $title_work,
-			'post_type'   => 'sos_work',
-			'post_status' => 'publish',
-			'post_author' => 1,
-		);
+		if($plugin !== 'plugin-optimizer/plugin-optimizer.php'){
+			$post_data = array(
+				'post_title'  => $title_work,
+				'post_type'   => 'sos_work',
+				'post_status' => 'publish',
+				'post_author' => 1,
+			);
 
-		$post_id = wp_insert_post( $post_data, true );
-		if ( is_wp_error( $post_id ) ) {
-			wp_send_json_error( $post_id->get_error_message() );
+			$post_id = wp_insert_post( $post_data, true );
+			if ( is_wp_error( $post_id ) ) {
+				wp_send_json_error( $post_id->get_error_message() );
+			}
+			add_post_meta( $post_id, 'post_link', $post_link );
 		}
-		add_post_meta( $post_id, 'post_link', $post_link );
 	}
 
 	/**
@@ -935,11 +937,11 @@ class Plugin_Optimizer_Admin {
                 <tr>
                     <td><input type="checkbox" id="<?= $post->ID; ?>"></td>
                     <td><?= $post->post_title; ?></td>
-                    <td><?= esc_url( get_post_meta( $post->ID, 'post_link', true ) ); ?></td>
+                    <td><?= get_post_meta( $post->ID, 'post_link', true ); ?></td>
                     <td><?= substr( str_replace( '-', '/', str_replace( " ", " at ", $post->post_date ) ), 0, - 3 ) . ' pm'; ?></td>
                     <td>
                         <a class="row-title"
-                           href="<?= esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_filters&work_title=' . urlencode( str_replace( ' ', '_', str_replace( 'Add filter to ', '', $post->post_title ) ) ) . '&work_link=' . urlencode( esc_url( get_post_meta( $post->ID, 'post_link', true ) ) ) ) ); ?>">
+                           href="<?= get_admin_url( null, 'admin.php?page=plugin_optimizer_filters&work_title=' . urlencode( str_replace( ' ', '_', str_replace( 'Add filter to ', '', $post->post_title ) ) ) . '&work_link=' . urlencode( get_post_meta( $post->ID, 'post_link', true ) ) ); ?>">
                             <button class="add-filter"><span class="pluse">+</span> add new filter</button>
                         </a>
                     </td>

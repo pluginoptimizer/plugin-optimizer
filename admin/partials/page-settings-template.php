@@ -45,7 +45,7 @@
                 <div class="row col-12 justify-content-end">
                     <div class="col-6 quantity">
                         <span id="show_settings_general">General</span> | <span
-                                id="show_settings_plugins">Plugin Search</span> | <span id="show_settings_premium">Premium</span>
+                                id="show_settings_plugins">Plugin Search</span>
                         | <span id="show_settings_debug">Debug SOS</span>
                     </div>
                 </div>
@@ -103,15 +103,6 @@
                             </table>
                         </div>
 
-                    </div>
-                </div>
-                <div id="settings_premium" class="row col-12">
-                    <div class="col-6">
-                        <!-- Rounded switch -->
-                        <input type="text" id="premium_key">
-                    </div>
-                    <div class="col-6">
-                        <span>enter a purchase key to restore their premium features</span>
                     </div>
                 </div>
                 <div id="settings_debug" class="row col-12">
