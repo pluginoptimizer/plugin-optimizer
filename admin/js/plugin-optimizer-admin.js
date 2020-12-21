@@ -18,8 +18,14 @@ import { createCat } from './components/create-category.js';
 import { createPopup } from './components/create-popup.js';
 import { selectParentCategory } from './components/select-parent-category.js';
 import { selectParentGroup } from './components/select-parent-group.js';
+import { selectAllPlugins } from './components/select-all-plugins.js';
+import { choicePlugins } from './components/choice-plugin.js';
+import { choiceCategories } from './components/choice-category.js';
+import { choiceLinks } from './components/choice-link.js';
+import { transitionElements } from './components/transition-elements.js';
+import { addCategoryFilter } from './components/add-category-filter.js';
 
-
+let allFunction;
 (function ($) {
     'use strict';
 
@@ -46,106 +52,18 @@ import { selectParentGroup } from './components/select-parent-group.js';
             createPopup();
             selectParentCategory();
             selectParentGroup();
+            selectAllPlugins();
+            choicePlugins();
+            choiceCategories();
+            choiceLinks();
+            transitionElements();
+            addCategoryFilter();
         }
 
         allFunction();
 
 
-        const addCategoryFilter = () => {
-            $('.filter-category').click(function () {
-                let self = this;
-                $.ajax({
-                    url: plugin_optimizer_groups.ajax_url,
-                    type: 'POST',
-                    data: {
-                        action: 'sos_add_category_to_filter',
-                        'id_category': $(this).children('span.close').attr('id'),
-                        'id_filter': $(this).parent().children('button').attr('id').substr(5),
-                        'trigger': $(this).hasClass(`block`) ? `delete` : `add`,
-                    },
-                    success: function (response) {
-                        $(self).parent().html(response.data);
-                        deleteCategory();
-                        addCategory();
-                        addCategoryFilter();
-                    }
-                });
-            })
-        }
-
-        addCategoryFilter();
-
-
-
-        const transitionElements = () => {
-            $(`#window_filters, #window_categories, #window_groups, #window_worklist`).click(function(){
-                const selfId = $(this).attr(`id`);
-                $.ajax({
-                    url: plugin_optimizer_groups.ajax_url,
-                    type: `POST`,
-                    data: {
-                        action: `sos_transition_viewed`,
-                        selfId: selfId
-                    },
-                    success: function (response) {
-                        $(`.wrap`).html(response.data);
-                        allFunction();
-                        transitionElements();
-                    }
-                });
-            })
-        }
-
-        transitionElements();
-
-        /*     Show the selected links    */
-        $(`.add-permalink`).click(function () {
-            $(this).prev().before(`
-            <div class="link">
-                <span class="text_link">${$(`#search_pages`).val()}</span>
-            </div>
-            `);
-            $('#search_pages').val('');
-            $('#search_pages').focus();
-        })
-
-
-        /*  Select a category for a new filter   */
-        $(`.category-wrapper .content`).click(function(){
-            if($(this).hasClass('block')){
-                $(this).removeClass('block');
-            } else {
-                $(this).addClass('block');
-            }
-        })
-
-
-
-        /*  Select a plugins for a new filter
-        *   or select plugins for a new group
-        * */
-        $(`.block-plugin-wrapper .content`).click(function(){
-            if($(this).hasClass('block')){
-                $(this).removeClass('block');
-            } else {
-                $(this).addClass('block');
-            }
-        })
-
-        /*  Select all plugins for a new filter
-        * */
-        $(`.all-check`).click(function(){
-
-            if($(this).text() === `All disable`){
-                $(this).text(`All enable`);
-                $(`.block-plugin-wrapper .content`).addClass(`block`);
-            } else {
-                $(this).text(`All disable`);
-                $(`.block-plugin-wrapper .content`).removeClass(`block`);
-            }
-        })
-
-
-
     });
 })(jQuery);
+
+export {allFunction};
