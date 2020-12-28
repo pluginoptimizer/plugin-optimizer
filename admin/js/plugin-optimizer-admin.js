@@ -24,6 +24,9 @@ import { choiceCategories } from './components/choice-category.js';
 import { choiceLinks } from './components/choice-link.js';
 import { transitionElements } from './components/transition-elements.js';
 import { addCategoryFilter } from './components/add-category-filter.js';
+import { changePluginsGroup } from './components/change-plugins-group.js';
+import { showHiddenOverview } from './components/show-hidden-overview.js';
+import { changeFilterToCategory } from './components/change-filter-to-category.js';
 
 let allFunction;
 (function ($) {
@@ -58,9 +61,14 @@ let allFunction;
             choiceLinks();
             transitionElements();
             addCategoryFilter();
+            changePluginsGroup();
+            showHiddenOverview();
+            changeFilterToCategory();
         }
 
         allFunction();
+
+
 
 
     });

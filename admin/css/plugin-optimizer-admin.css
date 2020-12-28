@@ -651,3 +651,70 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 .content:hover .hidden_content{
     display: block;
 }
+
+
+
+.tab{
+    background-color: #f1f1f1;
+    padding: 25px;
+    font-size: 20px;
+    text-transform: uppercase;
+    margin: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.info-content{
+    display: flex;
+    align-items: center;
+}
+
+.done.info-passage:before{
+    content: '\2713';
+    /*content: '✔';*/
+    display: block;
+    width: 30px;
+    height: 30px;
+    color: #fff;
+    background-color: #489948;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.info-passage:before{
+    content: '\2715';
+    display: block;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    color: #fff;
+    background-color: #5f5e5e;
+    border-radius: 50%;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.trigger_exit:before{
+    content: '▼';
+    color: #72777c;
+    font-size: 15px;
+}
+
+.trigger_open:before{
+    content: '▲';
+    color: #72777c;
+    font-size: 15px;
+}
+
+.hidden-info_overview> .container{
+    background-color: #f1f1f1;
+    padding: 35px;
+}
+
+.hidden-info_overview{
+    padding: 5px;
+    margin-top: -10px !important;
+    display: none;
+}

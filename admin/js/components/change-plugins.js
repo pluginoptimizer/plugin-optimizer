@@ -4,7 +4,13 @@ let changePlugins;
     'use strict';
 
     $(document).ready(function () {
-        //change plugins
+        /*
+        * Change plugins to filter
+        * @const      text filter_id ID filter that changes the presence of plugins
+        * @const      text plugin_name name plugin chose
+        * @const      text plugin_link link plugin chose
+        * @const      text change_plugins ('+' or '×') add or delete to filter
+        * */
         changePlugins = () => {
             $('.close').click(function () {
                 const filter_id = $(this).attr('value');
@@ -22,7 +28,9 @@ let changePlugins;
                         'change_plugins': change_plugins,
                     },
                     success: function (response) {
+                        /* Change the content of the block plugins */
                         $(`tr#filter-${response.data.filter_id}`).next('.hidden_info').children().children().children('.block-plugin-wrapper').html(response.data.return);
+                        /* Added the ability change plugins */
                         changePlugins();
                     }
                 });

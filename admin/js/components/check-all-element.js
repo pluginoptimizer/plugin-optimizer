@@ -3,9 +3,17 @@ let allElements;
     'use strict';
 
     $(document).ready(function () {
-        // check all element
+        /*
+        * Actions for all elements
+        * */
         allElements = {
+            /*
+            * Actions checkbox for elements
+            * */
             check_all_element : function(){
+                /*
+                * Select all elements
+                * */
                 $('#check_all').change(function () {
                     if($(this).is( ":checked" )){
                         $('tbody input:checkbox').prop('checked', true);
@@ -13,6 +21,9 @@ let allElements;
                         $('tbody input:checkbox').prop('checked', false);
                     }
                 });
+                /*
+                * Change appearance checkbox all elements
+                * */
                 $('tbody input:checkbox').change(function(){
                     if($('#check_all').is( ":checked" )){
                         $('#check_all').prop('checked', false);
@@ -22,6 +33,9 @@ let allElements;
                     }
                 });
             },
+            /*
+            * Change count elements after deleting or adding
+            * */
             count_element : function(name_post_type){
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,

@@ -8,7 +8,7 @@ let createGroupPlugins;
     'use strict';
 
     $(document).ready(function () {
-        // create plugins
+        // create group plugins
         createGroupPlugins = () => {
             $('.save-group').click(function () {
                 let result = true;

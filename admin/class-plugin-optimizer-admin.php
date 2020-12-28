@@ -912,7 +912,7 @@ class Plugin_Optimizer_Admin {
 		$title_work = 'Add filter to ' . ucfirst( dirname( $plugin ) );
 		$post_link  = $plugin;
 
-		if($plugin !== 'plugin-optimizer/plugin-optimizer.php'){
+		if ( $plugin !== 'plugin-optimizer/plugin-optimizer.php' ) {
 			$post_data = array(
 				'post_title'  => $title_work,
 				'post_type'   => 'sos_work',
@@ -980,7 +980,7 @@ class Plugin_Optimizer_Admin {
 				$group_plugins = get_post_meta( $post->ID, 'group_plugins', true );
 				?>
 
-                <tr class="block_info">
+                <tr class="block_info" id="group_<?= $post->ID; ?>">
                     <td><input type="checkbox" id="<?= $post->ID; ?>"></td>
                     <td><?= $post->post_title; ?></td>
                     <td><?= get_post_meta( $post->ID, 'type_group', true ); ?></td>
@@ -1015,18 +1015,19 @@ class Plugin_Optimizer_Admin {
 									<?php
 									if ( $activate_plugins ):
 										?>
-                                        <div class="plugin-wrapper">
+                                        <div class="plugin-wrapper wrapper-group-plugins">
 											<?php
 											foreach ( $activate_plugins as $activate_plugin ):
 												?>
-                                                <div class="content <?= substr_count( $group_plugins, $activate_plugin ) ? 'block' : ''; ?>">
+                                                <div class="content<?= substr_count( $group_plugins, $activate_plugin ) ? ' block' : ''; ?>"
+                                                     group_id="<?= $post->ID; ?>">
                                                     <span><?= $activate_plugin; ?></span>
                                                 </div>
 											<?php
 											endforeach;
 											foreach ( $deactivate_plugins as $deactivate_plugin ):
 												?>
-                                                <div class="content deactivate-plugin <?= substr_count( $group_plugins, $deactivate_plugin ) ? 'block' : ''; ?>">
+                                                <div class="content deactivate-plugin<?= substr_count( $group_plugins, $deactivate_plugin ) ? ' block' : ''; ?>">
                                                     <span><?= $deactivate_plugin; ?></span>
                                                 </div>
 											<?php
@@ -1111,7 +1112,7 @@ class Plugin_Optimizer_Admin {
 											<?php
 											if ( $activate_plugins ):
 												?>
-                                                <div class="plugin-wrapper">
+                                                <div class="plugin-wrapper wrapper-group-plugins">
 													<?php
 													foreach ( $activate_plugins as $activate_plugin ):
 														?>
@@ -1199,7 +1200,7 @@ class Plugin_Optimizer_Admin {
                                                     class="disabled">- Used: <?= $count_filters; ?>/<?= wp_count_posts( 'sos_filter' )->publish; ?></span>
                                         </div>
                                     </div>
-                                    <div class="plugin-wrapper">
+                                    <div class="plugin-wrapper wrapper_filter_to_category">
 										<?php
 										$posts = get_posts( array(
 											'post_type'   => 'sos_filter',
@@ -1208,7 +1209,8 @@ class Plugin_Optimizer_Admin {
 										if ( $posts ) :
 											foreach ( $posts as $post ) :
 												?>
-                                                <div class="content <?= has_term( $cat->cat_ID, 'сategories_filters', $post->ID ) ? 'block' : ''; ?>                                                ">
+                                                <div class="content <?= has_term( $cat->cat_ID, 'сategories_filters', $post->ID ) ? 'block' : ''; ?>"
+                                                     id="<?= $post->ID; ?>" cat_id="cat_<?= $cat->cat_ID; ?>">
                                                     <span><?= $post->post_title; ?></span>
                                                 </div>
 											<?php
@@ -1261,7 +1263,7 @@ class Plugin_Optimizer_Admin {
                                                             class="disabled">- Used: <?= $count_filters; ?>/<?= wp_count_posts( 'sos_filter' )->publish; ?></span>
                                                 </div>
                                             </div>
-                                            <div class="plugin-wrapper">
+                                            <div class="plugin-wrapper wrapper_filter_to_category">
 												<?php
 												$posts = get_posts( array(
 													'post_type'   => 'sos_filter',
@@ -1270,13 +1272,9 @@ class Plugin_Optimizer_Admin {
 												if ( $posts ) :
 													foreach ( $posts as $post ) :
 														?>
-                                                        <div class="content
-                                                <?php
-														if ( has_term( $subcategory->cat_ID, 'сategories_filters', $post->ID ) ) {
-															echo 'block';
-														}
-														?>
-                                                ">
+                                                        <div class="content <?= has_term( $subcategory->cat_ID, 'сategories_filters', $post->ID ) ? 'block' : ''; ?>"
+                                                             id="<?= $post->ID; ?>"
+                                                             cat_id="cat_<?= $subcategory->cat_ID; ?>">
                                                             <span><?= $post->post_title; ?></span>
                                                         </div>
 													<?php
@@ -1744,6 +1742,8 @@ class Plugin_Optimizer_Admin {
 		$cat_ID    = htmlspecialchars( $_POST['id_category'] );
 		$filter_ID = htmlspecialchars( $_POST['id_filter'] );
 		$trigger   = htmlspecialchars( $_POST['trigger'] );
+		$page      = htmlspecialchars( $_POST['page'] );
+
 
 		if ( $trigger === 'delete' ) {
 			wp_remove_object_terms( intval( $filter_ID ), intval( $cat_ID ), 'сategories_filters' );
@@ -1752,7 +1752,55 @@ class Plugin_Optimizer_Admin {
 		}
 
 
-		$this->ajax_create_category( $filter_ID );
+		if ( $page === 'filters' ):
+			$this->ajax_create_category( $filter_ID );
+		else:
+			ob_start();
+            ?>
+            <div class="col-12">
+                <div class="header">
+                    <div class="title">
+                        <?php
+                        $count_filters = 0;
+                        $posts         = get_posts( array(
+                            'post_type'   => 'sos_filter',
+                            'numberposts' => - 1,
+                        ) );
+                        if ( $posts ) {
+                            foreach ( $posts as $post ) {
+                                if ( has_term( $cat_ID, 'сategories_filters', $post->ID ) ) {
+                                    $count_filters ++;
+                                }
+                            }
+                        }
+                        ?>
+                        Filters <span
+                                class="disabled">- Used: <?= $count_filters; ?>/<?= wp_count_posts( 'sos_filter' )->publish; ?></span>
+                    </div>
+                </div>
+                <div class="plugin-wrapper wrapper_filter_to_category">
+                    <?php
+                    $posts = get_posts( array(
+                        'post_type'   => 'sos_filter',
+                        'numberposts' => - 1,
+                    ) );
+                    if ( $posts ) :
+                        foreach ( $posts as $post ) :
+                            ?>
+                            <div class="content <?= has_term( $cat_ID, 'сategories_filters', $post->ID ) ? 'block' : ''; ?>"
+                                 id="<?= $post->ID; ?>" cat_id="cat_<?= $cat_ID; ?>">
+                                <span><?= $post->post_title; ?></span>
+                            </div>
+                        <?php
+                        endforeach;
+                    endif;
+                    ?>
+                </div>
+            </div>
+            <?php
+            wp_send_json_success( ob_get_clean() );
+		endif;
+
 	}
 
 	/**
@@ -2164,6 +2212,63 @@ class Plugin_Optimizer_Admin {
 		<?php
 
 		wp_send_json_success( ob_get_clean() );
+
+	}
+
+
+	/**
+	 * Add plugin to group
+	 */
+
+	public function ajax_change_plugins_to_group() {
+		$group_id    = htmlspecialchars( $_POST['group_id'] );
+		$plugin_name = htmlspecialchars( $_POST['plugin_name'] );
+		$trigger     = htmlspecialchars( $_POST['trigger'] );
+
+		$group_plugins = get_post_meta( $group_id, 'group_plugins', true );
+		$group_plugins = $group_plugins ? $group_plugins : '';
+
+		if ( $trigger === 'add' ) {
+			if ( $group_plugins ) {
+				$group_plugins .= ', ' . $plugin_name;
+			} else {
+				$group_plugins .= $plugin_name;
+			}
+		} else {
+			if ( stripos( $group_plugins, ', ' . $plugin_name ) !== false ) {
+				$group_plugins = str_replace( ', ' . $plugin_name, '', $group_plugins );
+			} elseif ( stripos( $group_plugins, $plugin_name . ', ' ) !== false ) {
+				$group_plugins = str_replace( $plugin_name . ', ', '', $group_plugins );
+			} else {
+				$group_plugins = '';
+			}
+
+		}
+
+		update_post_meta( $group_id, 'group_plugins', $group_plugins );
+
+
+		ob_start();
+
+		$posts = get_posts( array(
+			'post_type'   => 'sos_group',
+			'numberposts' => - 1,
+			'meta_query'  => array(
+				array(
+					'key'   => 'group_parents',
+					'value' => 'None'
+				)
+			),
+		) );
+
+		$this->content_groups( $posts );
+
+		$return = array(
+			'group_id' => $group_id,
+			'return'   => ob_get_clean(),
+		);
+
+		wp_send_json_success( $return );
 
 	}
 

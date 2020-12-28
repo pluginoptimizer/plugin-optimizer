@@ -5,7 +5,12 @@ let addCategory;
     'use strict';
 
     $(document).ready(function () {
-        //all elements
+        /*
+        * Add new category for filters on filters page
+        * @const      object self button "+ category" in categories block
+        * @const      text name_category name new category entered by the client in category block
+        * @const      text id_filter the ID of the filter for which the category is created
+        * */
         addCategory = () => {
             $('.add-category').click(function (e) {
                 const self = this;
@@ -20,7 +25,9 @@ let addCategory;
                         'id_filter': id_filter,
                     },
                     success: function (response) {
+                        /* Change the content of the block of categories already with a new category */
                         $(self).parent().html(response.data);
+                        /* Added the ability to delete categories, because after changing the look, the created events are deleted */
                         deleteCategory();
                     }
                 });

@@ -4,7 +4,11 @@ let checkNameElements;
     'use strict';
 
     $(document).ready(function () {
-        //change plugins
+        /*
+        * Check the name of the elements when creating them
+        * @const      text name_element the name of the item entered by the client
+        * @const      text type_element the type of element we are creating
+        * */
         checkNameElements = () => {
             $('#set_title').change(function () {
                 const name_element = $(this).val();

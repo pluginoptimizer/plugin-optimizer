@@ -4,8 +4,11 @@ let changeSettings;
     'use strict';
 
     $(document).ready(function () {
-        //change plugins
+        /*
+        * Change the appearance of the tab selection
+        * */
         changeSettings = () => {
+            /* Hidden appearance settings */
             function hidden_settings(){
                 if($(`#settings_plugins`).css(`display`) === 'block'){
                     $(`#settings_plugins`).css(`display`, `none`);
@@ -23,6 +26,7 @@ let changeSettings;
                 }
             }
 
+            /* Hidden appearance settings */
             $(`#show_settings_general`).click(function(){
                 $(this).css('font-weight', 600);
                 hidden_settings();
