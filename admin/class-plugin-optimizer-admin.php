@@ -2058,7 +2058,7 @@ class Plugin_Optimizer_Admin {
 	 * Content plugins to settings
 	 */
 
-	public function content_plugins_to_settings( $activate_plugins ) {
+	public function content_activate_plugins_to_settings( $activate_plugins ) {
 
 		if ( $activate_plugins ):
 			?>
@@ -2098,6 +2098,95 @@ class Plugin_Optimizer_Admin {
                                                     <div class="content
                                              <?php
 													if ( in_array( $activate_plugin, $group_plugins ) ) {
+														echo 'block';
+													}
+													?>
+                                             ">
+                                                        <span><?= $post->post_title; ?></span>
+                                                    </div>
+                                                </a>
+											<?php
+											endforeach;
+											?>
+                                        </div>
+									<?php
+									else:
+										?>
+                                        <div class="plugin-wrapper no-plugins">
+                                            <div class="content">
+                                                <span>No activate plugins</span>
+                                            </div>
+                                        </div>
+									<?php
+									endif;
+									?>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+			<?php
+			endforeach;
+			?>
+		<?php
+		else:
+			?>
+            <tr class="plugin-wrapper no-plugins">
+                <td colspan="2">
+                    <div class="content">
+                        <span>No activate plugins for blocking</span>
+                    </div>
+                </td>
+            </tr>
+		<?php
+		endif;
+	}
+
+
+	/**
+	 * Content deactive plugins to settings
+	 */
+
+	public function content_deactive_plugins_to_settings( $deactivate_plugins ) {
+
+		if ( $deactivate_plugins ):
+			?>
+			<?php
+			foreach ( $deactivate_plugins as $deactivate_plugin ):
+				?>
+                <tr class="block_info">
+                    <td><input type="checkbox"></td>
+                    <td><?= $deactivate_plugin; ?></td>
+                </tr>
+				<?php
+				$posts = get_posts( array(
+					'post_type'   => 'sos_filter',
+					'numberposts' => - 1,
+				) );
+				?>
+                <tr class="hidden_info">
+                    <td colspan="2">
+                        <div class="content-filter">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
+                                            Filters
+                                        </div>
+                                        <span class="count-plugin">( All: <?= wp_count_posts( 'sos_filter' )->publish; ?>   |   Trash: <?= wp_count_posts( 'sos_filter' )->trash; ?> )</span>
+                                    </div>
+									<?php
+									if ( $posts ):
+										?>
+                                        <div class="plugin-wrapper">
+											<?php
+											foreach ( $posts as $post ):
+												$group_plugins = get_post_meta( $post->ID, 'block_plugins', true );
+												?>
+                                                <a href="<?= esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_filters&filter_title=' . urlencode( $post->post_title ) ) ); ?>">
+                                                    <div class="content
+                                             <?php
+													if ( in_array( $deactivate_plugin, $group_plugins ) ) {
 														echo 'block';
 													}
 													?>
@@ -2273,5 +2362,39 @@ class Plugin_Optimizer_Admin {
 	}
 
 
+
+
+	/**
+	 * Ajax show plugins on settings
+	 */
+
+	public function ajax_show_plugins() {
+		$type_plugins = htmlspecialchars( $_POST['type_plugins'] );
+
+		$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
+		$activate_plugins   = array();
+		$deactivate_plugins = array();
+		foreach ( $all_plugins as $plugin ) {
+			foreach ( $plugin as $key => $value ) {
+				if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
+					if ( $value ) {
+						array_push( $activate_plugins, $plugin['name'] );
+					} else {
+						array_push( $deactivate_plugins, $plugin['name'] );
+					}
+				}
+			}
+		}
+
+		ob_start();
+
+		if($type_plugins === 'activate_plugins'){
+		    $this->content_activate_plugins_to_settings( $activate_plugins );
+		} else {
+			$this->content_deactive_plugins_to_settings( $deactivate_plugins );
+		}
+
+		wp_send_json_success( ob_get_clean() );
+	}
 }
 

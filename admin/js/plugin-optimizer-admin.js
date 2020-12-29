@@ -27,6 +27,7 @@ import { addCategoryFilter } from './components/add-category-filter.js';
 import { changePluginsGroup } from './components/change-plugins-group.js';
 import { showHiddenOverview } from './components/show-hidden-overview.js';
 import { changeFilterToCategory } from './components/change-filter-to-category.js';
+import { showPluginsSettings } from './components/show-plugins-to-settings.js';
 
 let allFunction;
 (function ($) {
@@ -64,6 +65,7 @@ let allFunction;
             changePluginsGroup();
             showHiddenOverview();
             changeFilterToCategory();
+            showPluginsSettings();
         }
 
         allFunction();

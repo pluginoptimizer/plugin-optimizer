@@ -64,9 +64,9 @@
                 <div id="settings_plugins" class="col-12">
                     <div class="row col-12 justify-content-end">
                         <div class="col-8 quantity">
-                            <span class="active-plugin" id="all_elements">Active</span> (<span
+                            <span class="active-plugin" id="activate_plugins">Active</span> (<span
                                     class="count-active-plugin"><?= count( $activate_plugins ); ?>)</span> | <span
-                                    class="inactive-plugin">Inactive</span> (<span
+                                    class="inactive-plugin" id="deactivate_plugins">Inactive</span> (<span
                                     class="count-trash-plugin"><?= count( $deactivate_plugins ); ?></span>)
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                                 </thead>
                                 <tbody id="the-list">
 								<?php
-								$this->content_plugins_to_settings( $activate_plugins );
+								$this->content_activate_plugins_to_settings( $activate_plugins );
 								?>
                                 </tbody>
                             </table>
