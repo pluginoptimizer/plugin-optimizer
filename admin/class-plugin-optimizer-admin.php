@@ -619,6 +619,24 @@ class Plugin_Optimizer_Admin {
 		$block_group        = explode( ', ', $block_group );
 
 
+		global $wpdb;
+
+		$table_name = $wpdb->get_blog_prefix() . 'filter_optimize';
+
+		$wpdb->insert(
+			$table_name,
+			array( 'audit' => 1,
+			       'name_filter' => $title_filter,
+			       'type_filter' => $type_filter,
+			       'permalinks_filter' => $pages,
+			       'plugins_name_filter' => implode(',', $block_plugins),
+			       'plugins_link_filter' => implode(',', $block_value_plugins),
+			       'groups_filter' => implode(',', $block_group),
+			       'categories_filter' => $category_filter ),
+			array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
+		);
+
+
 		$post_data = array(
 			'post_title'  => $title_filter,
 			'post_type'   => 'sos_filter',

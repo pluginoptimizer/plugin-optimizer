@@ -1,3 +1,5 @@
+import {hiddenInfoFilter} from "./hidden-info-filter.js";
+
 let showPluginsSettings;
 (function ($) {
     // 'use strict';
@@ -22,6 +24,7 @@ let showPluginsSettings;
                             $(`#activate_plugins`).css(`font-weight`, 400);
                         }
                         $('#the-list').html(response.data);
+                        hiddenInfoFilter();
                     }
                 });
             })
