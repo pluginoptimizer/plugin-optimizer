@@ -165,7 +165,7 @@
 														?>
                                                         <div class="content">
                                                             <span><?= $group->post_title; ?></span>
-															<? $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
+															<?php $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
 															foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
 																?>
                                                                 <div class="hidden_content content">
