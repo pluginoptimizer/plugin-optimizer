@@ -1,10 +1,16 @@
 <div class="wrap wrapper-filter">
 
 	<?php
-	$posts = get_posts( array(
+	/*$posts = get_posts( array(
 		'post_type'   => 'sos_filter',
 		'numberposts' => - 1,
-	) );
+	) );*/
+	global $wpdb;
+
+	$table_name = $wpdb->get_blog_prefix() . 'filter_optimize';
+
+	$posts = $wpdb->get_results( "SELECT * FROM $table_name" );
+
 	?>
 
     <div class="sos-wrap container">
@@ -265,3 +271,5 @@
         </div>
     </div>
 </div>
+
+
