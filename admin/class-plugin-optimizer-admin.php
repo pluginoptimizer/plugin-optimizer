@@ -445,7 +445,7 @@ class Plugin_Optimizer_Admin {
 			),
 			'description'   => 'Filter for your customers',
 			'public'        => true,
-			'show_in_menu'  => false,
+//			'show_in_menu'  => false,
 			// 'show_in_admin_bar'   => null,
 			'show_in_rest'  => null,
 			'rest_base'     => null,
@@ -617,24 +617,6 @@ class Plugin_Optimizer_Admin {
 		$category_filter    = htmlspecialchars( $_POST['category_filter'] );
 		$category_id_filter = htmlspecialchars( $_POST['category_id_filter'] );
 		$block_group        = explode( ', ', $block_group );
-
-
-		global $wpdb;
-
-		$table_name = $wpdb->get_blog_prefix() . 'filter_optimize';
-
-		$wpdb->insert(
-			$table_name,
-			array( 'audit' => 1,
-			       'name_filter' => $title_filter,
-			       'type_filter' => $type_filter,
-			       'permalinks_filter' => $pages,
-			       'plugins_name_filter' => implode(',', $block_plugins),
-			       'plugins_link_filter' => implode(',', $block_value_plugins),
-			       'groups_filter' => implode(',', $block_group),
-			       'categories_filter' => $category_filter ),
-			array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )
-		);
 
 
 		$post_data = array(
@@ -1328,11 +1310,11 @@ class Plugin_Optimizer_Admin {
 				?>
                 <tr class="block_info" id="filter-<?= $post->ID; ?>">
                     <td><input type="checkbox" id="<?= $post->ID; ?>"></td>
-                    <td><?= $post->name_filter; ?></td>
-                    <td><?= $post->categories_filter; ?></td>
-                    <td><?= $post->type_filter; ?></td>
-                    <td><?= $post->permalinks_filter; ?></td>
-                    <td><?= $post->plugins_name_filter; ?></td>
+                    <td><?= $post->post_title; ?></td>
+                    <td><?= get_post_meta( $post->ID, 'category_filter', true ); ?></td>
+                    <td><?= get_post_meta( $post->ID, 'type_filter', true ); ?></td>
+                    <td><?= get_post_meta( $post->ID, 'selected_page', true ); ?></td>
+                    <td><?= implode( ', ', get_post_meta( $post->ID, 'block_plugins', true ) ); ?></td>
                 </tr>
                 <tr class="hidden_info">
                     <td colspan="6">
@@ -1342,7 +1324,7 @@ class Plugin_Optimizer_Admin {
                                     <div class="header">Type</div>
                                     <div>
                                         <div class="content">
-                                            <span><?= $post->type_filter; ?></span>
+                                            <span><?= get_post_meta( $post->ID, 'type_filter', true ); ?></span>
                                         </div>
                                     </div>
                                 </div>
@@ -1350,7 +1332,7 @@ class Plugin_Optimizer_Admin {
                                     <div class="header">Permalinks</div>
                                     <div class="content-permalinks">
                                         <div class="link">
-                                            <span><?= $post->permalinks_filter; ?></span>
+                                            <span><?= get_post_meta( $post->ID, 'selected_page', true ) ?></span>
                                         </div>
                                         <button class="add-filter add-permalink"><span class="pluse">+</span> Permalink
                                         </button>
@@ -1359,79 +1341,7 @@ class Plugin_Optimizer_Admin {
                             </div>
                             <div class="row">
 								<?php
-								$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
-								$activate_plugins   = array();
-								$deactivate_plugins = array();
-								foreach ( $all_plugins as $plugin ) {
-									foreach ( $plugin as $key => $value ) {
-										if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-											if ( $value ) {
-												$activate_plugins[ $plugin['name'] ] = $plugin['file'];
-											} else {
-												array_push( $deactivate_plugins, $plugin['name'] );
-											}
-										}
-									}
-								}
-								$block_plugins = explode(', ', $post->plugins_name_filter);
-								?>
-                                <div class="col-12">
-                                    <div class="header">
-                                        <div class="title">
-				                            <?php $count_plugins = 0;
-				                            if ( $activate_plugins ) {
-					                            foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ) {
-						                            if ( in_array( $activate_plugin, $block_plugins ) ) {
-							                            $count_plugins++;
-						                            }
-					                            }
-				                            }
-				                            ?>
-                                            Plugins <span
-                                                    class="disabled">- Disabled: <?= $count_plugins; ?>/<?= count( $activate_plugins ); ?></span>
-                                        </div>
-                                        <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
-                                    </div>
-		                            <?php
-		                            if ( $activate_plugins ):
-			                            ?>
-                                        <div class="plugin-wrapper">
-				                            <?php
-				                            foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
-					                            ?>
-                                                <div class="content <?= ( in_array( $activate_plugin, $block_plugins ) ) ? 'block' : '' ?>">
-                                                    <span><?= $activate_plugin; ?></span>
-						                            <?php
-						                            if ( in_array( $activate_plugin, $block_plugins ) ):
-							                            ?>
-                                                        <span class="close" id="<?= $activate_plugin; ?>" value="<?= $post->ID; ?>"
-                                                              link="<?= $activate_plugin_link; ?>">×</span>
-						                            <?php
-						                            else:
-							                            ?>
-                                                        <span class="close pluse_plugin" id="<?= $activate_plugin; ?>"
-                                                              value="<?= $post->ID; ?>" link="<?= $activate_plugin_link; ?>">+</span>
-						                            <?php
-						                            endif;
-						                            ?>
-                                                </div>
-				                            <?php
-				                            endforeach;
-				                            ?>
-                                        </div>
-		                            <?php
-		                            else:
-			                            ?>
-                                        <div class="plugin-wrapper no-plugins">
-                                            <div class="content">
-                                                <span>No activate plugins for blocking</span>
-                                            </div>
-                                        </div>
-		                            <?php
-		                            endif;
-		                            ?>
-                                </div>
-	                            <?php
+								$this->content_plugin_to_filter( $post );
 								?>
                             </div>
                             <div class="row">
@@ -1439,7 +1349,7 @@ class Plugin_Optimizer_Admin {
                                     <div class="header">
                                         <div class="title">
 											<?php
-											$groups_plugins = explode(', ', $post->groups_filter);
+											$groups_plugins = get_post_meta( $post->ID, 'block_group_plugins', true );
 											$count_groups   = 0;
 											$groups         = get_posts( array(
 												'post_type'   => 'sos_group',
@@ -1448,7 +1358,7 @@ class Plugin_Optimizer_Admin {
 											if ( $groups ) {
 												foreach ( $groups as $group ) {
 													if ( in_array( $group->post_title, $groups_plugins ) ) {
-														$count_groups++;
+														$count_groups ++;
 													}
 												}
 											}
@@ -1468,7 +1378,7 @@ class Plugin_Optimizer_Admin {
 												?>
                                                 <div class="content <?= in_array( $group->post_title, $groups_plugins ) ? 'block' : ''; ?> ">
                                                     <span><?= $group->post_title; ?></span>
-													<?php $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
+													<? $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
 													foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
 														?>
                                                         <div class="hidden_content content">
@@ -1494,27 +1404,8 @@ class Plugin_Optimizer_Admin {
                                     </div>
                                     <div class="plugin-wrapper">
 										<?php
-										$categories = get_categories( [
-											'taxonomy'   => 'сategories_filters',
-											'type'       => 'sos_filter',
-											'hide_empty' => 0,
-										] );
-
-										if ( $categories ):
-											foreach ( $categories as $cat ):
-												?>
-                                                <div class="content filter-category <?= ( $cat->cat_name === $post->categories_filter ) ? 'block' : ''; ?>">
-                                                    <span><?= $cat->cat_name; ?></span>
-                                                    <span class="close" id="<?= $cat->cat_ID; ?>">×</span>
-                                                </div>
-											<?php
-											endforeach;
-										endif;
+										$this->ajax_create_category( $post );
 										?>
-                                        <input type="text" placeholder="Name category">
-                                        <button class="add-filter add-permalink add-category" id="post-<?= $post->ID; ?>">
-                                            <span class="pluse">+</span> Category
-                                        </button>
                                     </div>
                                 </div>
                             </div>

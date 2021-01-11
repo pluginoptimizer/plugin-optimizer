@@ -11,10 +11,10 @@ let selectAllPlugins;
             $(`.all-check`).click(function(){
                 if($(this).text() === `All disable`){
                     $(this).text(`All enable`);
-                    $(`.block-plugin-wrapper .content`).addClass(`block`);
+                    $(this).parent().parent().children(`.plugin-wrapper`).children(`.content`).addClass(`block`);
                 } else {
                     $(this).text(`All disable`);
-                    $(`.block-plugin-wrapper .content`).removeClass(`block`);
+                    $(this).parent().parent().children(`.plugin-wrapper`).children(`.content`).removeClass(`block`);
                 }
             })
 

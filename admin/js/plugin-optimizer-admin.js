@@ -22,58 +22,57 @@ import { selectAllPlugins } from './components/select-all-plugins.js';
 import { choicePlugins } from './components/choice-plugin.js';
 import { choiceCategories } from './components/choice-category.js';
 import { choiceLinks } from './components/choice-link.js';
-import { transitionElements } from './components/transition-elements.js';
 import { addCategoryFilter } from './components/add-category-filter.js';
 import { changePluginsGroup } from './components/change-plugins-group.js';
 import { showHiddenOverview } from './components/show-hidden-overview.js';
 import { changeFilterToCategory } from './components/change-filter-to-category.js';
 import { showPluginsSettings } from './components/show-plugins-to-settings.js';
+import { transitionElements } from './components/transition-elements.js';
 
-let allFunction;
 (function ($) {
     'use strict';
 
     $(document).ready(function () {
 
-        const allFunction = () => {
-            getWorklist();
-            trashElements();
-            searchPages();
-            searchFilters();
-            searchElements();
-            hiddenInfoFilter();
-            deleteRestoreElement();
-            allElements.check_all_element();
-            createdFilters();
-            createGroupPlugins();
-            showAllElements();
-            addCategory();
-            deleteCategory();
-            changePlugins();
-            changeSettings();
-            checkNameElements();
-            createCat();
-            createPopup();
-            selectParentCategory();
-            selectParentGroup();
-            selectAllPlugins();
-            choicePlugins();
-            choiceCategories();
-            choiceLinks();
-            transitionElements();
-            addCategoryFilter();
-            changePluginsGroup();
-            showHiddenOverview();
-            changeFilterToCategory();
-            showPluginsSettings();
-        }
+        getWorklist();
+        trashElements();
+        searchPages();
+        searchFilters();
+        searchElements();
+        hiddenInfoFilter();
+        deleteRestoreElement();
+        allElements.check_all_element();
+        createdFilters();
+        createGroupPlugins();
+        showAllElements();
+        addCategory();
+        deleteCategory();
+        changePlugins();
+        changeSettings();
+        checkNameElements();
+        createCat();
+        createPopup();
+        selectParentCategory();
+        selectParentGroup();
+        selectAllPlugins();
+        choicePlugins();
+        choiceCategories();
+        choiceLinks();
+        transitionElements();
+        addCategoryFilter();
+        changePluginsGroup();
+        showHiddenOverview();
+        changeFilterToCategory();
+        showPluginsSettings();
 
-        allFunction();
+
+        let namePage = $(`#name_page`).attr(`class`);
+        namePage = namePage === `filters_categories` ? `categories` : namePage;
+        $(`#window_${namePage}`).css(`background-color`, `#d7b70a`);
+
 
 
 
 
     });
 })(jQuery);
-
-export {allFunction};

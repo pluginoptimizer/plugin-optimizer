@@ -1,16 +1,17 @@
-<?php
-$posts = get_posts( array(
-	'post_type'   => 'sos_work',
-	'numberposts' => -1,
-) );
-?>
+<div class="wrap wrapper-filter">
+	<?php
+	$posts = get_posts( array(
+		'post_type'   => 'sos_work',
+		'numberposts' => - 1,
+	) );
+	?>
 
-<div class="sos-wrap container wrap">
+    <div class="sos-wrap container">
         <div class="row col-12">
             <h1>Plugin Optimizer</h1>
         </div>
         <div class="row col-12">
-            <h2 id="name_page">worklist</h2>
+            <h2 id="name_page" class="worklist">worklist</h2>
         </div>
 
 
@@ -28,7 +29,10 @@ $posts = get_posts( array(
         <div class="row sos-content">
             <div class="row col-12 justify-content-end">
                 <div class="quantity">
-                    <span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_posts('sos_work')->publish; ?></span>) | <span id="trash_elements">TRASH</span> (<span id="count_trash_elements"><?= wp_count_posts('sos_work')->trash; ?></span>)
+                    <span id="all_elements">all</span> (<span
+                            id="count_all_elements"><?= wp_count_posts( 'sos_work' )->publish; ?></span>) | <span
+                            id="trash_elements">TRASH</span> (<span
+                            id="count_trash_elements"><?= wp_count_posts( 'sos_work' )->trash; ?></span>)
                 </div>
             </div>
             <div class="row col-12">
@@ -60,12 +64,14 @@ $posts = get_posts( array(
                         </tr>
                         </thead>
                         <tbody id="the-list">
-                        <?php
-                            $this->content_works($posts);
-                        ?>
+						<?php
+						$this->content_works( $posts );
+						?>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+    </div>
 </div>
+

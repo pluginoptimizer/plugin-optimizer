@@ -31,7 +31,7 @@ $posts = get_posts( array(
                 </div>
                 <div class="row col-2">
                     <input class="search" type="search" id="search_elements" name="s" value=""
-                           placeholder="Search filters">
+                           placeholder="Search groups">
                 </div>
             </div>
             <div class="row sos-content">

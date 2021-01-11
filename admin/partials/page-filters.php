@@ -1,16 +1,10 @@
 <div class="wrap wrapper-filter">
 
 	<?php
-	/*$posts = get_posts( array(
+	$posts = get_posts( array(
 		'post_type'   => 'sos_filter',
 		'numberposts' => - 1,
-	) );*/
-	global $wpdb;
-
-	$table_name = $wpdb->get_blog_prefix() . 'filter_optimize';
-
-	$posts = $wpdb->get_results( "SELECT * FROM $table_name" );
-
+	) );
 	?>
 
     <div class="sos-wrap container">
@@ -66,7 +60,13 @@
                                             <div class="header">Type</div>
                                             <div>
                                                 <div class="content">
-                                                    <span><input class="content-text" id="set_type" type="text"></span>
+                                                    <span>
+                                                    <select name="" id="set_type">
+                                                        <option value="economic">Economic</option>
+                                                        <option value="blog">Blog</option>
+                                                        <option value="others">Others</option>
+                                                    </select>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -160,18 +160,16 @@
                                                     groups <span
                                                             class="disabled">- <?= count( $groups ); ?></span>
                                                 </div>
+                                                <span class="all-check">All disable</span>
                                             </div>
                                             <div class="plugin-wrapper">
-                                                <div class="content none_group block">
-                                                    <span>None</span>
-                                                </div>
 												<?php
 												if ( $groups ) :
 													foreach ( $groups as $group ) :
 														?>
                                                         <div class="content">
                                                             <span><?= $group->post_title; ?></span>
-															<?php $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
+															<? $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
 															foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
 																?>
                                                                 <div class="hidden_content content">
@@ -271,5 +269,3 @@
         </div>
     </div>
 </div>
-
-
