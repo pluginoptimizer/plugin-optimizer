@@ -1332,10 +1332,8 @@ class Plugin_Optimizer_Admin {
                                     <div class="header">Permalinks</div>
                                     <div class="content-permalinks">
                                         <div class="link">
-                                            <span><?= get_post_meta( $post->ID, 'selected_page', true ) ?></span>
+                                            <span> <input class="show-link" filter_id="<?= $post->ID  ?>" type="text" value="<?= get_post_meta( $post->ID, 'selected_page', true ) ?>"> </span>
                                         </div>
-                                        <button class="add-filter add-permalink"><span class="pluse">+</span> Permalink
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -2395,6 +2393,17 @@ class Plugin_Optimizer_Admin {
 		}
 
 		wp_send_json_success( ob_get_clean() );
+	}
+
+	/**
+	 * Ajax change permalink
+	 */
+
+	public function ajax_change_permalink(){
+		$text_link = htmlspecialchars( $_POST['text_link'] );
+		$filter_id = htmlspecialchars( $_POST['filter_id'] );
+
+		update_post_meta( $filter_id, 'selected_page', $text_link );
 	}
 }
 

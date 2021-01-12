@@ -23,12 +23,16 @@
     outline: none;
     border-radius: 8px;
     min-width: 200px;
-    width: auto;
+    width: 70%;
     padding: 5px;
     box-shadow: 0 0 5px rgba(0,191,255,0.5);
     color: #0073aa;
     font-size: 16px;
     text-transform: none;
+}
+
+.add-permalink{
+    width: 25%;
 }
 
 #result{
@@ -236,6 +240,7 @@
 
 .sos-wrap .content-permalinks{
     display: flex;
+    flex-direction: column;
 }
 
 .sos-wrap .content-permalinks *{
@@ -260,10 +265,14 @@
 
 .sos-wrap .content-filter .content-permalinks .link{
     padding: 10px;
-    margin-right: 2%;
+    margin: 2% 2% 0 2%;
     /* Style for "Validated" */
     background-color: #ffffff;
     text-align: left;
+}
+
+.sos-wrap .hidden_info .content-filter .content-permalinks .link{
+    margin: 0;
 }
 .sos-wrap .content-filter .content-permalinks{
     margin-top: 10px;
@@ -606,6 +615,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 
 .sos-wrap .content-permalinks .link span{
     text-transform: none;
+    margin-left: 2%;
 }
 
 .sos-wrap .content-new-element .content{
@@ -733,4 +743,30 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 
 #set_type{
     width: 100%;
+}
+
+#content_type{
+    display: none;
+}
+
+.change_content{
+    cursor: pointer;
+}
+
+.show-link{
+    border: none !important;
+    outline: none !important;
+    text-transform: lowercase;
+}
+.show-link:focus{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.close-selected-link{
+    cursor: pointer;
+    font-size: 25px;
+    line-height: 20px;
+    float: right;
 }

@@ -177,6 +177,7 @@ class Plugin_Optimizer {
 		$this->loader->add_action( 'wp_ajax_sos_get_parent_group', $plugin_admin, 'ajax_get_parent_group' );
 		$this->loader->add_action( 'wp_ajax_sos_change_plugins_to_group', $plugin_admin, 'ajax_change_plugins_to_group' );
 		$this->loader->add_action( 'wp_ajax_sos_show_plugins', $plugin_admin, 'ajax_show_plugins' );
+		$this->loader->add_action( 'wp_ajax_sos_change_permalink', $plugin_admin, 'ajax_change_permalink' );
 
 	}
 

@@ -28,6 +28,7 @@ import { showHiddenOverview } from './components/show-hidden-overview.js';
 import { changeFilterToCategory } from './components/change-filter-to-category.js';
 import { showPluginsSettings } from './components/show-plugins-to-settings.js';
 import { transitionElements } from './components/transition-elements.js';
+import { changePermalink } from './components/change-permalink.js';
 
 (function ($) {
     'use strict';
@@ -64,11 +65,24 @@ import { transitionElements } from './components/transition-elements.js';
         showHiddenOverview();
         changeFilterToCategory();
         showPluginsSettings();
+        changePermalink();
 
 
         let namePage = $(`#name_page`).attr(`class`);
         namePage = namePage === `filters_categories` ? `categories` : namePage;
         $(`#window_${namePage}`).css(`background-color`, `#d7b70a`);
+
+
+        $(`.change_content`).click(function (){
+            console.log('click')
+            if($(this).text() === `Permalinks`){
+                $(`#content_link`).css(`display`, `none`);
+                $(`#content_type`).css(`display`, `block`);
+            } else {
+                $(`#content_link`).css(`display`, `block`);
+                $(`#content_type`).css(`display`, `none`);
+            }
+        })
 
 
 

@@ -48,7 +48,7 @@
                             <td colspan="6">
                                 <div class="content-filter">
                                     <div class="row">
-                                        <div class="col-3">
+                                        <div class="col-6">
                                             <div class="header">Title</div>
                                             <div>
                                                 <div class="content">
@@ -56,8 +56,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-3">
-                                            <div class="header">Type</div>
+                                        <div class="col-6" id="content_type">
+                                            <div class="header change_content">Type</div>
                                             <div>
                                                 <div class="content">
                                                     <span>
@@ -70,8 +70,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
-                                            <div class="header">Permalinks</div>
+                                        <div class="col-6" id="content_link">
+                                            <div class="header change_content">Permalinks</div>
                                             <div class="content-permalinks">
                                                 <div class="set_link">
                                                     <input id="search_pages" type="text">
@@ -79,10 +79,10 @@
                                                         <p class="popup-close">×</p>
                                                         <div id="result_search"></div>
                                                     </div>
+                                                    <button class="add-filter add-permalink"><span class="pluse">+</span>
+                                                        Permalink
+                                                    </button>
                                                 </div>
-                                                <button class="add-filter add-permalink"><span class="pluse">+</span>
-                                                    Permalink
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
