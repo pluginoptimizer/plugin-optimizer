@@ -757,6 +757,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     border: none !important;
     outline: none !important;
     text-transform: lowercase;
+    width: 90%;
 }
 .show-link:focus{
     border: none !important;
@@ -769,4 +770,9 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     font-size: 25px;
     line-height: 20px;
     float: right;
+}
+
+.sos-wrap .content-filter .header.attribute-plugin{
+    justify-content: center;
+    background-color: #369451;
 }

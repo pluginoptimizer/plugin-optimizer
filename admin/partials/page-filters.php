@@ -116,6 +116,7 @@
 											<?php
 											if ( $activate_plugins ):
 												?>
+                                            <div class="header attribute-plugin">Activate plugins</div>
                                                 <div class="plugin-wrapper">
 													<?php
 													foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
@@ -125,16 +126,22 @@
                                                         </div>
 													<?php
 													endforeach;
-													foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):
-														?>
+													?>
+                                                </div>
+                                                <div class="header attribute-plugin">Deactivate plugins</div>
+                                                <div class="plugin-wrapper">
+											<?php
+												foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):
+													?>
                                                         <div class="content deactivate-plugin">
                                                             <span value="<?= $deactivate_plugin_link ?>"><?= $deactivate_plugin; ?></span>
                                                         </div>
-													<?php
-													endforeach;
-													?>
+
+												<?php
+												endforeach;
+												?>
                                                 </div>
-											<?php
+                                            <?php
 											else:
 												?>
                                                 <div class="plugin-wrapper no-plugins">
@@ -169,15 +176,15 @@
 														?>
                                                         <div class="content">
                                                             <span><?= $group->post_title; ?></span>
-															<?/* $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
+															<?php $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
 															foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
-																*/?><!--
+																?>
                                                                 <div class="hidden_content content">
-                                                                    <span><?/*= $block_plugin_in_group; */?></span>
+                                                                    <span><?= $block_plugin_in_group; ?></span>
                                                                 </div>
-															--><?php
-/*															endforeach;
-															*/?>
+															<?php
+															endforeach;
+															?>
                                                         </div>
 													<?php
 													endforeach;
