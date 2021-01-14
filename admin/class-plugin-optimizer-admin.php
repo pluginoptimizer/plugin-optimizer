@@ -1342,7 +1342,7 @@ class Plugin_Optimizer_Admin {
 								$this->content_plugin_to_filter( $post );
 								?>
                             </div>
-                            <div class="row">
+                            <div class="row group-wrapper">
                                 <div class="col-12">
                                     <div class="header">
                                         <div class="title">
@@ -1367,6 +1367,16 @@ class Plugin_Optimizer_Admin {
                                     </div>
                                     <div class="plugin-wrapper group-wrapper">
 										<?php
+										$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
+										$content_plugins   = array();
+										foreach ( $all_plugins as $plugin ) {
+											foreach ( $plugin as $key => $value ) {
+												if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
+													$content_plugins[ $plugin['name'] ] = $plugin['file'];
+												}
+											}
+										}
+
 										$groups = get_posts( array(
 											'post_type'   => 'sos_group',
 											'numberposts' => - 1,
@@ -1377,11 +1387,11 @@ class Plugin_Optimizer_Admin {
                                                 <div id="<?= $group->ID; ?>" value="<?= $post->ID; ?>" class="content <?= in_array( $group->post_title, $groups_plugins ) ? 'block' : ''; ?> ">
                                                     <span><?= $group->post_title; ?></span>
 													<?php
-                                                    $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
-													foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
+                                                    $block_plugins_in_group = explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) );
+                                                    foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
 														?>
                                                         <div class="hidden_content content">
-                                                            <span><?= $block_plugin_in_group; ?></span>
+                                                            <span value="<?= $content_plugins[ $block_plugin_in_group ]; ?>"><?= $block_plugin_in_group; ?></span>
                                                         </div>
 													<?php
 													endforeach;
@@ -1986,7 +1996,7 @@ class Plugin_Optimizer_Admin {
 					if ( $value ) {
 						$activate_plugins[ $plugin['name'] ] = $plugin['file'];
 					} else {
-						array_push( $deactivate_plugins, $plugin['name'] );
+						$deactivate_plugins[ $plugin['name'] ] = $plugin['file'];
 					}
 				}
 			}
@@ -2013,6 +2023,7 @@ class Plugin_Optimizer_Admin {
 			<?php
 			if ( $activate_plugins ):
 				?>
+                <div class="header attribute-plugin">Activate plugins</div>
                 <div class="plugin-wrapper">
 					<?php
 					foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
@@ -2037,6 +2048,31 @@ class Plugin_Optimizer_Admin {
 					endforeach;
 					?>
                 </div>
+            <div class="header attribute-plugin">Deactivate plugins</div>
+                                                <div class="plugin-wrapper">
+			<?php
+				foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):
+					?>
+                    <div class="content deactivate-plugin<?=  in_array( $deactivate_plugin, $block_plugins ) ? ' block' : ''; ?>">
+                        <span><?= $deactivate_plugin; ?></span>
+							<?php
+							if ( in_array( $deactivate_plugin, $block_plugins ) ):
+								?>
+                                <span class="close" id="<?= $deactivate_plugin; ?>" value="<?= $post->ID; ?>"
+                                      link="<?= $deactivate_plugin_link; ?>">×</span>
+							<?php
+							else:
+								?>
+                                <span class="close pluse_plugin" id="<?= $deactivate_plugin; ?>"
+                                      value="<?= $post->ID; ?>" link="<?= $deactivate_plugin_link; ?>">+</span>
+							<?php
+							endif;
+							?>
+                    </div>
+				<?php
+				endforeach;
+			?>
+                                                </div>
 			<?php
 			else:
 				?>
@@ -2413,18 +2449,21 @@ class Plugin_Optimizer_Admin {
 	 */
 
 	public function ajax_change_groups_to_filter() {
+		$group_name      = htmlspecialchars( $_POST['group_name'] );
 		$filter_id      = htmlspecialchars( $_POST['filter_id'] );
-		$plugins_names    = htmlspecialchars( $_POST['plugin_name'] );
-		$plugins_links    = htmlspecialchars( $_POST['plugin_link'] );
-		$change_plugins = htmlspecialchars( $_POST['change_plugins'] );
+		$change_groups = htmlspecialchars( $_POST['change_groups'] );
+		$plugins_names    = htmlspecialchars( $_POST['plugins_names'] );
+		$plugins_links    = htmlspecialchars( $_POST['plugins_links'] );
 
-		$plugins_names = explode(',', $plugins_names);
-		$plugins_links = explode(',', $plugins_links);
+
+		$plugins_names = explode(', ', $plugins_names);
+		$plugins_links = explode(', ', $plugins_links);
 
 		$array_plugins      = get_post_meta( $filter_id, 'block_plugins', true );
 		$array_link_plugins = get_post_meta( $filter_id, 'block_value_plugins', true );
+		$array_groups_names = get_post_meta( $filter_id, 'block_group_plugins', true );
 
-		if ( $change_plugins === '+' ) {
+		if ( $change_groups === 'add' ) {
 		    foreach ($plugins_names as $plugin_name){
 			    array_push( $array_plugins, $plugin_name );
 		    }
@@ -2433,13 +2472,24 @@ class Plugin_Optimizer_Admin {
 			    array_push( $array_link_plugins, $plugin_link );
 		    }
 
+			array_push( $array_groups_names, $group_name );
+
 		} else {
-			$array_plugins      = array_diff( $array_plugins, [ $plugin_name ] );
-			$array_link_plugins = array_diff( $array_link_plugins, [ $plugin_link ] );
+			foreach ($plugins_names as $plugin_name){
+				$array_plugins      = array_diff( $array_plugins, [ $plugin_name ] );
+			}
+			foreach ($plugins_links as $plugin_link){
+				$array_link_plugins = array_diff( $array_link_plugins, [ $plugin_link ] );
+			}
+
+
+			$array_groups_names = array_diff( $array_groups_names, [ $group_name ] );
 		}
 
 		update_post_meta( $filter_id, 'block_plugins', $array_plugins );
 		update_post_meta( $filter_id, 'block_value_plugins', $array_link_plugins );
+
+		update_post_meta( $filter_id, 'block_group_plugins', $array_groups_names );
 
 
 		ob_start();
@@ -2455,41 +2505,78 @@ class Plugin_Optimizer_Admin {
 			}
 		}
 
-		$content_plugins = ob_get_clean();
+		$content_plugins_to_filter = ob_get_clean();
 
 		ob_start();
-		$groups_plugins = get_post_meta( $filter_id, 'block_group_plugins', true );
-
-        $groups = get_posts( array(
-            'post_type'   => 'sos_group',
-            'numberposts' => - 1,
-        ) );
-        if ( $groups ) :
-            foreach ( $groups as $group ) :
-                ?>
-                <div id="<?= $group->ID; ?>" value="<?= $filter_id; ?>" class="content <?= in_array( $group->post_title, $groups_plugins ) ? 'block' : ''; ?> ">
-                    <span><?= $group->post_title; ?></span>
-                    <?php
-                    $block_plugins_in_group = explode( ',', get_post_meta( $group->ID, 'group_plugins', true ) );
-                    foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
-                        ?>
-                        <div class="hidden_content content">
-                            <span><?= $block_plugin_in_group; ?></span>
-                        </div>
-                    <?php
-                    endforeach;
-                    ?>
+		?>
+        <div class="col-12">
+            <div class="header">
+                <div class="title">
+					<?php
+					$groups_plugins = get_post_meta( $filter_id, 'block_group_plugins', true );
+					$count_groups   = 0;
+					$groups         = get_posts( array(
+						'post_type'   => 'sos_group',
+						'numberposts' => - 1,
+					) );
+					if ( $groups ) {
+						foreach ( $groups as $group ) {
+							if ( in_array( $group->post_title, $groups_plugins ) ) {
+								$count_groups ++;
+							}
+						}
+					}
+					?>
+                    groups <span
+                            class="disabled">- Disabled: <?= $count_groups; ?>/<?= count( $groups ); ?></span>
                 </div>
-            <?php
-            endforeach;
-        endif;
+            </div>
+            <div class="plugin-wrapper group-wrapper">
+				<?php
+				$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
+				$content_plugins   = array();
+				foreach ( $all_plugins as $plugin ) {
+					foreach ( $plugin as $key => $value ) {
+						if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
+							$content_plugins[ $plugin['name'] ] = $plugin['file'];
+						}
+					}
+				}
 
-		$content_groups = ob_get_clean();
+				$groups = get_posts( array(
+					'post_type'   => 'sos_group',
+					'numberposts' => - 1,
+				) );
+				if ( $groups ) :
+					foreach ( $groups as $group ) :
+						?>
+                        <div id="<?= $group->ID; ?>" value="<?= $filter_id; ?>" class="content <?= in_array( $group->post_title, $groups_plugins ) ? 'block' : ''; ?> ">
+                            <span><?= $group->post_title; ?></span>
+							<?php
+							$block_plugins_in_group = explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) );
+							foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
+								?>
+                                <div class="hidden_content content">
+                                    <span value="<?= $content_plugins[ $block_plugin_in_group ]; ?>"><?= $block_plugin_in_group; ?></span>
+                                </div>
+							<?php
+							endforeach;
+							?>
+                        </div>
+					<?php
+					endforeach;
+				endif;
+				?>
+            </div>
+        </div>
+        <?php
+
+		$content_groups_to_filter = ob_get_clean();
 
 		$return = array(
 			'filter_id' => $filter_id,
-			'content_plugins'    => $content_plugins,
-			'content_groups'    => $content_groups,
+			'content_plugins'    => $content_plugins_to_filter,
+			'content_groups'    => $content_groups_to_filter,
 		);
 
 		wp_send_json_success( $return );
