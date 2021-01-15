@@ -776,3 +776,14 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     justify-content: center;
     background-color: #369451;
 }
+
+.group-name{
+    font-size: 12px;
+    position: absolute;
+    right: 35px;
+    top: 5px;
+}
+
+.content-plugins .content{
+    position: relative;
+}
