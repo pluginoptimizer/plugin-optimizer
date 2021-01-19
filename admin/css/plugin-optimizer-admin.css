@@ -753,16 +753,20 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     cursor: pointer;
 }
 
-.show-link{
+.data-interaction{
     border: none !important;
     outline: none !important;
-    text-transform: lowercase;
+    text-align: center;
     width: 90%;
 }
-.show-link:focus{
+.data-interaction:focus{
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
+}
+
+.data-link{
+    text-transform: lowercase;
 }
 
 .close-selected-link{
@@ -777,13 +781,17 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     background-color: #369451;
 }
 
-.group-name{
+.groups-names{
     font-size: 12px;
-    position: absolute;
-    right: 35px;
-    top: 5px;
+    float: right;
+    margin-right: 10px
 }
 
+.groups-names > *{
+    display: block;
+}
+
+/*
 .content-plugins .content{
     position: relative;
-}
+}*/

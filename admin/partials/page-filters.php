@@ -62,6 +62,7 @@
                                                 <div class="content">
                                                     <span>
                                                     <select name="" id="set_type">
+                                                        <option value="none">None</option>
                                                         <option value="economic">Economic</option>
                                                         <option value="blog">Blog</option>
                                                         <option value="others">Others</option>

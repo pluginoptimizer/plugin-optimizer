@@ -1159,9 +1159,9 @@ class Plugin_Optimizer_Admin {
 	function content_filters_categories( $categories ) {
 		if ( $categories ) :
 			foreach ( $categories as $cat ) :?>
-                <tr class="block_info">
+                <tr class="block_info" id="cat-<?= $cat->cat_ID ?>">
                     <td><input type="checkbox" id="<?= $cat->cat_ID ?>"></td>
-                    <td><?= $cat->cat_name; ?></td>
+                    <td class="data-title-category"><?= $cat->cat_name; ?></td>
                 </tr>
                 <tr class="hidden_info">
                     <td colspan="2">
@@ -1170,11 +1170,29 @@ class Plugin_Optimizer_Admin {
                                 <div class="col-12">
                                     <div class="header">
                                         <div class="title">
+                                            Name
+                                        </div>
+                                    </div>
+                                    <div class="content-description">
+                                        <span class="data-interaction data-title-cat" cat_id="<?= $cat->cat_ID ?>"
+                                              contenteditable>
+                                            <?= $cat->cat_name; ?>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
                                             Description
                                         </div>
                                     </div>
                                     <div class="content-description">
-                                        <span><?= $cat->category_description ? $cat->category_description : 'None description'; ?></span>
+                                        <span class="data-interaction data-description-cat" cat_id="<?= $cat->cat_ID ?>"
+                                              contenteditable>
+                                            <?= $cat->category_description ? $cat->category_description : 'None description'; ?>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -1312,31 +1330,47 @@ class Plugin_Optimizer_Admin {
                     <td><input type="checkbox" id="<?= $post->ID; ?>"></td>
                     <td><?= $post->post_title; ?></td>
                     <td><?= get_post_meta( $post->ID, 'category_filter', true ); ?></td>
-                    <td><?= get_post_meta( $post->ID, 'type_filter', true ); ?></td>
-                    <td><?= get_post_meta( $post->ID, 'selected_page', true ); ?></td>
+                    <td class="data-type-filter"><?= get_post_meta( $post->ID, 'type_filter', true ); ?></td>
+                    <td class="data-link-filter"><?= get_post_meta( $post->ID, 'selected_page', true ); ?></td>
                     <td><?= implode( ', ', get_post_meta( $post->ID, 'block_plugins', true ) ); ?></td>
                 </tr>
                 <tr class="hidden_info">
                     <td colspan="6">
                         <div class="content-filter">
                             <div class="row">
-                                <div class="col-4">
-                                    <div class="header">Type</div>
-                                    <div>
-                                        <div class="content">
-                                            <span><?= get_post_meta( $post->ID, 'type_filter', true ); ?></span>
+                                <div class="col-12">
+									<?php
+									$type_filter = get_post_meta( $post->ID, 'type_filter', true );
+									if ( $type_filter === 'none' ):
+										?>
+                                        <div class="header">Permalinks</div>
+                                        <div class="content-permalinks">
+                                            <div class="link">
+                                            <span class="data-interaction data-link" filter_id="<?= $post->ID ?>"
+                                                  contenteditable>
+                                            <?= get_post_meta( $post->ID, 'selected_page', true ) ?>
+                                            </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-8">
-                                    <div class="header">Permalinks</div>
-                                    <div class="content-permalinks">
-                                        <div class="link">
-                                            <span> <input class="show-link" filter_id="<?= $post->ID ?>" type="text"
-                                                          value="<?= get_post_meta( $post->ID, 'selected_page', true ) ?>"> </span>
+									<?php
+
+									else:
+										?>
+                                        <div class="header">Type</div>
+                                        <div>
+                                            <div class="content">
+                                            <span class="data-interaction data-type" filter_id="<?= $post->ID ?>"
+                                                  contenteditable>
+                                                <?= $type_filter ?>
+                                            </span>
+                                            </div>
                                         </div>
-                                    </div>
+
+									<?php
+									endif;
+									?>
                                 </div>
+
                             </div>
                             <div class="row content-plugins">
 								<?php
@@ -2030,26 +2064,7 @@ class Plugin_Optimizer_Admin {
 					<?php
 					foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
 						?>
-                        <div class="content <?= ( in_array( $activate_plugin, $block_plugins ) ) ? 'block' : '' ?>">
-							<?php
-							$groups_plugins = get_post_meta( $post->ID, 'block_group_plugins', true );
-
-							$groups = get_posts( array(
-								'post_type'   => 'sos_group',
-								'numberposts' => - 1,
-							) );
-							if ( $groups ) :
-								foreach ( $groups as $group ):
-									if ( in_array( $group->post_title, $groups_plugins ) && in_array( $activate_plugin, explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ) ) ):
-
-										?>
-                                        <span class="group-name"><?= $group->post_title; ?></span>
-									<?php
-									endif;
-								endforeach;
-							endif;
-							?>
-                            <span><?= $activate_plugin; ?></span>
+                        <div class="content<?= ( in_array( $activate_plugin, $block_plugins ) ) ? ' block' : '' ?>">
 							<?php
 							if ( in_array( $activate_plugin, $block_plugins ) ):
 								?>
@@ -2063,6 +2078,31 @@ class Plugin_Optimizer_Admin {
 							<?php
 							endif;
 							?>
+							<?php
+							$groups_plugins = get_post_meta( $post->ID, 'block_group_plugins', true );
+
+							$groups = get_posts( array(
+								'post_type'   => 'sos_group',
+								'numberposts' => - 1,
+							) );
+							if ( $groups ) :
+								?>
+                                <div class="groups-names">
+									<?php
+									foreach ( $groups as $group ):
+										if ( in_array( $group->post_title, $groups_plugins ) && in_array( $activate_plugin, explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ) ) ):
+
+											?>
+                                            <span><?= $group->post_title; ?></span>
+										<?php
+										endif;
+									endforeach;
+									?>
+                                </div>
+							<?php
+							endif;
+							?>
+                            <span><?= $activate_plugin; ?></span>
                         </div>
 					<?php
 					endforeach;
@@ -2082,14 +2122,20 @@ class Plugin_Optimizer_Admin {
 								'numberposts' => - 1,
 							) );
 							if ( $groups ) :
-								foreach ( $groups as $group ):
-									if ( in_array( $group->post_title, $groups_plugins ) && in_array( $deactivate_plugin, explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ) ) ):
-
-										?>
-                                        <span class="group-name"><?= $group->post_title; ?></span>
+								?>
+                                <div class="groups-names">
 									<?php
-									endif;
-								endforeach;
+									foreach ( $groups as $group ):
+										if ( in_array( $group->post_title, $groups_plugins ) && in_array( $deactivate_plugin, explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ) ) ):
+
+											?>
+                                            <span class="group-name"><?= $group->post_title; ?></span>
+										<?php
+										endif;
+									endforeach;
+									?>
+                                </div>
+							<?php
 							endif;
 							?>
                             <span><?= $deactivate_plugin; ?></span>
@@ -2477,6 +2523,51 @@ class Plugin_Optimizer_Admin {
 		$filter_id = htmlspecialchars( $_POST['filter_id'] );
 
 		update_post_meta( $filter_id, 'selected_page', $text_link );
+
+		wp_send_json_success( $text_link );
+	}
+
+	/**
+	 * Ajax change type
+	 */
+
+	public function ajax_change_type() {
+		$text_type = htmlspecialchars( $_POST['text_type'] );
+		$filter_id = htmlspecialchars( $_POST['filter_id'] );
+
+		update_post_meta( $filter_id, 'type_filter', $text_type );
+
+		wp_send_json_success( $text_type );
+	}
+
+	/**
+	 * Ajax change description category
+	 */
+
+	public function ajax_change_data_category() {
+		$text_name = htmlspecialchars( $_POST['text_name'] );
+		$cat_id    = htmlspecialchars( $_POST['cat_id'] );
+
+		wp_insert_category( array(
+			'cat_ID'   => $cat_id,
+			'cat_name' => $text_name,
+			'taxonomy' => 'сategories_filters',
+			'type'     => 'sos_filter',
+		) );
+
+		$categories = get_categories( [
+			'taxonomy' => 'сategories_filters',
+			'cat_ID'   => $cat_id,
+			'type'     => 'sos_filter',
+		] );
+
+		if ( $categories ) {
+			foreach ( $categories as $cat ) {
+				wp_send_json_success( $cat->cat_name );
+			}
+		}
+
+
 	}
 
 
@@ -2512,10 +2603,21 @@ class Plugin_Optimizer_Admin {
 
 		} else {
 			foreach ( $plugins_names as $plugin_name ) {
-				$array_plugins = array_diff( $array_plugins, [ $plugin_name ] );
+				if ( count( array_keys( $array_plugins, $plugin_name ) ) > 1 ) {
+					$array_plugins = array_diff( $array_plugins, [ $plugin_name ] );
+					array_push( $array_plugins, $plugin_name );
+				} else {
+					$array_plugins = array_diff( $array_plugins, [ $plugin_name ] );
+				}
 			}
+
 			foreach ( $plugins_links as $plugin_link ) {
-				$array_link_plugins = array_diff( $array_link_plugins, [ $plugin_link ] );
+				if ( count( array_keys( $array_link_plugins, $plugin_link ) ) > 1 ) {
+					$array_link_plugins = array_diff( $array_link_plugins, [ $plugin_link ] );
+					array_push( $array_link_plugins, $plugin_link );
+				} else {
+					$array_link_plugins = array_diff( $array_link_plugins, [ $plugin_link ] );
+				}
 			}
 
 

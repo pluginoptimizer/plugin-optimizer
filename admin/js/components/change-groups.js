@@ -11,8 +11,6 @@ let changeGroups;
                 const change_groups = $(this).is('.block') ? 'remove' : 'add';
                 const plugins_names = $(this).children('.hidden_content').children().toArray().map(item => $(item).text()).join(', ');
                 const plugins_links = $(this).children('.hidden_content').children().toArray().map(item => $(item).attr('value')).join(', ');
-                console.log(plugins_names)
-                console.log(plugins_links)
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

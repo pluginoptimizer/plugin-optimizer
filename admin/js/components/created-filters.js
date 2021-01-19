@@ -11,8 +11,12 @@ let createdFilters;
         createdFilters = () => {
             $('.save-filter').click(function () {
                 let result = true;
-                $(`.content-new-element input`).toArray().some(function (item) {
-                    if ($(item).val().trim() === "" && result && item.id !== `search_pages`) {
+                $(`.content-new-element input#set_title`).toArray().some(function (item) {
+                    if ($(item).val().trim() === "" && result) {
+                        $(item).focus();
+                        return result = false;
+                    }
+                    /*if ($(item).val().trim() === "" && result && item.id !== `search_pages`) {
                         $(item).focus();
                         return result = false;
                     } else if ($(item).val().trim() === "" && result && item.id === `search_pages` && !$(`span`).is(`.text_link`)) {
@@ -21,7 +25,7 @@ let createdFilters;
                     } else if ($(item).val().trim() !== "" && item.id === `search_pages` && !$(`span`).is(`.text_link`)) {
                         $(item).focus();
                         return result = false;
-                    }
+                    }*/
                 })
                 if (!result) {
                     return false;

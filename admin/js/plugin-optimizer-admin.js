@@ -29,7 +29,9 @@ import { changeFilterToCategory } from './components/change-filter-to-category.j
 import { showPluginsSettings } from './components/show-plugins-to-settings.js';
 import { transitionElements } from './components/transition-elements.js';
 import { changePermalink } from './components/change-permalink.js';
+import { changeType } from './components/change-type.js';
 import { changeGroups } from './components/change-groups.js';
+import { changeDataCategory } from './components/change-data-categories.js';
 
 (function ($) {
     'use strict';
@@ -67,7 +69,9 @@ import { changeGroups } from './components/change-groups.js';
         changeFilterToCategory();
         showPluginsSettings();
         changePermalink();
+        changeType();
         changeGroups();
+        changeDataCategory();
 
 
         let namePage = $(`#name_page`).attr(`class`);

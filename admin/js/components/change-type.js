@@ -1,27 +1,28 @@
-let changePermalink;
+let changeType;
 (function ($) {
     'use strict';
 
     $(document).ready(function () {
 
 
-        /*     Change the selected links    */
-        changePermalink = () => {
+        /*     Change the selected type    */
+        changeType = () => {
 
-            $(`.data-link`).on(`input`, function (){
-                const text_link = $(this).text();
+            $(`.data-type`).on(`input`, function (){
+                console.log(`change`)
+                const text_type = $(this).text();
                 const filter_id = $(this).attr(`filter_id`);
 
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
-                        action: 'sos_change_permalink',
-                        'text_link': text_link,
+                        action: 'sos_change_type',
+                        'text_type': text_type,
                         'filter_id': filter_id,
                     },
                     success: function ({data}) {
-                        $(`tr#filter-${filter_id}>.data-link-filter`).text(data);
+                        $(`tr#filter-${filter_id}>.data-type-filter`).text(data);
                     }
                 });
             })
@@ -31,4 +32,4 @@ let changePermalink;
     });
 })(jQuery);
 
-export {changePermalink};
+export {changeType};
