@@ -58,6 +58,16 @@ let createdFilters;
                             allElements.check_all_element();
                             hiddenInfoFilter();
                             changePlugins();
+
+                            if($(`.content-new-element *`).is(`.block`)){
+                                $(`.content-new-element *`).removeClass(`block`);
+                            }
+
+                            $(`#set_title`).val(``);
+                            $(`#search_pages`).val(``);
+                            $(`.link`).remove();
+                            $('.change_content_data option:first').prop('selected', true);
+                            $('#set_type option:first').prop('selected', true);
                         }
                     })
                 }

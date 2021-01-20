@@ -781,9 +781,7 @@ class Plugin_Optimizer_Admin {
 	public function ajax_add_group_plugins() {
 
 		$title_group   = htmlspecialchars( $_POST['title_group'] );
-		$type_group    = htmlspecialchars( $_POST['type_group'] );
 		$group_plugins = htmlspecialchars( $_POST['group_plugins'] );
-		$group_parents = htmlspecialchars( $_POST['group_parents'] );
 
 		$post_data = array(
 			'post_title'  => $title_group,
@@ -798,9 +796,7 @@ class Plugin_Optimizer_Admin {
 			wp_send_json_error( $post_id->get_error_message() );
 		}
 
-		add_post_meta( $post_id, 'type_group', $type_group );
 		add_post_meta( $post_id, 'group_plugins', $group_plugins );
-		add_post_meta( $post_id, 'group_parents', $group_parents );
 
 		ob_start();
 
@@ -951,7 +947,7 @@ class Plugin_Optimizer_Admin {
 		else:
 			?>
             <tr>
-                <td colspan="5">Not works</td>
+                <td colspan="5">Great job your work is done</td>
             </tr>
 		<?php
 		endif;
@@ -983,7 +979,6 @@ class Plugin_Optimizer_Admin {
                 <tr class="block_info" id="group_<?= $post->ID; ?>">
                     <td><input type="checkbox" id="<?= $post->ID; ?>"></td>
                     <td><?= $post->post_title; ?></td>
-                    <td><?= get_post_meta( $post->ID, 'type_group', true ); ?></td>
                     <td><?= $group_plugins; ?></td>
                     <td><?= $group_plugins ? count( explode( ',', $group_plugins ) ) : 0; ?></td>
                 </tr>
@@ -1147,7 +1142,7 @@ class Plugin_Optimizer_Admin {
 		else:
 			?>
             <tr>
-                <td colspan="5">Not group plugins</td>
+                <td colspan="5">No Groups</td>
             </tr>
 		<?php
 		endif;
@@ -1181,7 +1176,7 @@ class Plugin_Optimizer_Admin {
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row description">
                                 <div class="col-12">
                                     <div class="header">
                                         <div class="title">
@@ -1313,7 +1308,7 @@ class Plugin_Optimizer_Admin {
 		else:
 			?>
             <tr>
-                <td colspan="5">Not filters categories</td>
+                <td colspan="5">No categories</td>
             </tr>
 		<?php
 		endif;
@@ -1463,7 +1458,7 @@ class Plugin_Optimizer_Admin {
 		else:
 			?>
             <tr>
-                <td colspan="6">Not filters</td>
+                <td colspan="6">No filters</td>
             </tr>
 		<?php
 		endif;
@@ -2545,20 +2540,25 @@ class Plugin_Optimizer_Admin {
 	 */
 
 	public function ajax_change_data_category() {
-		$text_name = htmlspecialchars( $_POST['text_name'] );
-		$cat_id    = htmlspecialchars( $_POST['cat_id'] );
+		$text_name            = htmlspecialchars( $_POST['text_name'] );
+		$description_category = htmlspecialchars( $_POST['description_category'] );
+		$cat_id               = htmlspecialchars( $_POST['cat_id'] );
+
 
 		wp_insert_category( array(
-			'cat_ID'   => $cat_id,
-			'cat_name' => $text_name,
-			'taxonomy' => 'сategories_filters',
-			'type'     => 'sos_filter',
+			'cat_ID'               => $cat_id,
+			'cat_name'             => $text_name,
+			'category_description' => $description_category,
+			'taxonomy'             => 'сategories_filters',
 		) );
 
+
 		$categories = get_categories( [
-			'taxonomy' => 'сategories_filters',
-			'cat_ID'   => $cat_id,
-			'type'     => 'sos_filter',
+			'taxonomy'   => 'сategories_filters',
+			'type'       => 'sos_filter',
+			'parent'     => 0,
+			'hide_empty' => 0,
+			'include'    => $cat_id,
 		] );
 
 		if ( $categories ) {

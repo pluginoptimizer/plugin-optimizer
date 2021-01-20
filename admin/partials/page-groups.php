@@ -2,12 +2,6 @@
 $posts = get_posts( array(
 	'post_type'   => 'sos_group',
 	'numberposts' => - 1,
-	'meta_query'  => array(
-		array(
-			'key'   => 'group_parents',
-			'value' => 'None'
-		)
-	),
 ) );
 ?>
 <div class="wrap wrapper-filter">
@@ -53,52 +47,12 @@ $posts = get_posts( array(
                                 <td colspan="6">
                                     <div class="content-filter">
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-12">
                                                 <div class="header">Title</div>
                                                 <div>
                                                     <div class="content">
                                                         <span><input class="content-text" id="set_title" type="text"></span>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="header">Type</div>
-                                                <div>
-                                                    <div class="content">
-                                                        <span><input class="content-text" id="set_type" type="text"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row block-group-plugin-wrapper">
-                                            <div class="col-12">
-                                                <div class="header">
-                                                    <div class="title">
-			                                            <?php
-			                                            $groups         = get_posts( array(
-				                                            'post_type'   => 'sos_group',
-				                                            'numberposts' => - 1,
-			                                            ) );
-			                                            ?>
-                                                        Select parent <span
-                                                                class="disabled">- <?= count( $groups ); ?></span>
-                                                    </div>
-                                                </div>
-                                                <div class="plugin-wrapper">
-                                                    <div class="content none_group block">
-                                                        <span>None</span>
-                                                    </div>
-		                                            <?php
-		                                            if ( $groups ) :
-			                                            foreach ( $groups as $group ) :
-				                                            ?>
-                                                            <div class="content">
-                                                                <span><?= $group->post_title; ?></span>
-                                                            </div>
-			                                            <?php
-			                                            endforeach;
-		                                            endif;
-		                                            ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -199,7 +153,6 @@ $posts = get_posts( array(
                             <tr>
                                 <th><input type="checkbox" id="check_all"></th>
                                 <th>TITLE</th>
-                                <th>type</th>
                                 <th>Plugins</th>
                                 <th>Count</th>
                             </tr>

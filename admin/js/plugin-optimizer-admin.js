@@ -79,14 +79,14 @@ import { changeDataCategory } from './components/change-data-categories.js';
         $(`#window_${namePage}`).css(`background-color`, `#d7b70a`);
 
 
-        $(`.change_content`).click(function (){
-            console.log('click')
-            if($(this).text() === `Permalinks`){
-                $(`#content_link`).css(`display`, `none`);
-                $(`#content_type`).css(`display`, `block`);
+        $(`.change_content_data`).change(function (){
+            console.log($(this).children(`option:selected`).text());
+            if($(this).children(`option:selected`).val() === `type`){
+                $(`.content-type`).css(`display`, `block`);
+                $(`.content-permalinks`).css(`display`, `none`);
             } else {
-                $(`#content_link`).css(`display`, `block`);
-                $(`#content_type`).css(`display`, `none`);
+                $(`.content-permalinks`).css(`display`, `block`);
+                $(`.content-type`).css(`display`, `none`);
             }
         })
 

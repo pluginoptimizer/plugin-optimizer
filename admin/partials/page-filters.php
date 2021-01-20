@@ -56,23 +56,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6" id="content_type">
-                                            <div class="header change_content">Type</div>
-                                            <div>
-                                                <div class="content">
-                                                    <span>
-                                                    <select name="" id="set_type">
-                                                        <option value="none">None</option>
-                                                        <option value="economic">Economic</option>
-                                                        <option value="blog">Blog</option>
-                                                        <option value="others">Others</option>
-                                                    </select>
-                                                    </span>
-                                                </div>
+                                        <div class="col-6">
+                                            <div class="header change_content">
+                                                <select name="" class="change_content_data">
+                                                    <option value="permalinks">Permalinks</option>
+                                                    <option value="type">Type</option>
+                                                </select>
                                             </div>
-                                        </div>
-                                        <div class="col-6" id="content_link">
-                                            <div class="header change_content">Permalinks</div>
                                             <div class="content-permalinks">
                                                 <div class="set_link">
                                                     <input id="search_pages" type="text">
@@ -80,9 +70,31 @@
                                                         <p class="popup-close">×</p>
                                                         <div id="result_search"></div>
                                                     </div>
-                                                    <button class="add-filter add-permalink"><span class="pluse">+</span>
+                                                    <button class="add-filter add-permalink"><span
+                                                                class="pluse">+</span>
                                                         Permalink
                                                     </button>
+                                                </div>
+                                            </div>
+                                            <div class="content-type">
+                                                <div class="content">
+                                                    <span>
+                                                    <select name="" id="set_type">
+                                                        <option value="none">None</option>
+                                                        <?php
+                                                        $post_types         = get_post_types( [ 'publicly_queryable' => 1 ] );
+                                                        $post_types['page'] = 'page';
+                                                        unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ] );
+
+                                                        foreach ( $post_types as $post_type ) {
+	                                                        ?>
+                                                            <option value="<?= str_replace( ' ', "_", $post_type ); ?>"><?= $post_type; ?></option>
+	                                                        <?php
+                                                        }
+
+                                                        ?>
+                                                    </select>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -111,13 +123,13 @@
                                                             class="disabled">- <?= count( $all_plugins ) - 1; ?></span>
 
                                                 </div>
-                                                <span class="all-check">All disable</span>
                                                 <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
+                                                <span class="all-check">Disable All</span>
                                             </div>
 											<?php
 											if ( $activate_plugins ):
 												?>
-                                            <div class="header attribute-plugin">Activate plugins</div>
+                                                <div class="header attribute-plugin">Activate plugins</div>
                                                 <div class="plugin-wrapper">
 													<?php
 													foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
@@ -131,18 +143,18 @@
                                                 </div>
                                                 <div class="header attribute-plugin">Deactivate plugins</div>
                                                 <div class="plugin-wrapper">
-											<?php
-												foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):
-													?>
+													<?php
+													foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):
+														?>
                                                         <div class="content deactivate-plugin">
                                                             <span value="<?= $deactivate_plugin_link ?>"><?= $deactivate_plugin; ?></span>
                                                         </div>
 
-												<?php
-												endforeach;
-												?>
+													<?php
+													endforeach;
+													?>
                                                 </div>
-                                            <?php
+											<?php
 											else:
 												?>
                                                 <div class="plugin-wrapper no-plugins">
@@ -277,3 +289,5 @@
         </div>
     </div>
 </div>
+
+

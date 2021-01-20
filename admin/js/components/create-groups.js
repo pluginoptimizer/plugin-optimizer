@@ -12,7 +12,7 @@ let createGroupPlugins;
         createGroupPlugins = () => {
             $('.save-group').click(function () {
                 let result = true;
-                $(`.content-new-element input`).toArray().some(function (item) {
+                $(`.content-new-element input#set_title`).toArray().some(function (item) {
                     if ($(item).val().trim() === "" && result) {
                         $(item).focus();
                         return result = false;
@@ -31,8 +31,6 @@ let createGroupPlugins;
                         data: {
                             action: 'sos_add_group_plugins',
                             'title_group': $('#set_title').val(),
-                            'type_group': $('#set_type').val(),
-                            'group_parents': $(`.block-group-plugin-wrapper .block span`).toArray().map(item => $(item).text()).join(', '),
                             'group_plugins': $(`.block-plugin-wrapper .block span`).toArray().map(item => $(item).text()).join(', '),
                         },
                         success: function (response) {

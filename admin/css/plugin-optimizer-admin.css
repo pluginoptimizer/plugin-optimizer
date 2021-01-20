@@ -795,3 +795,41 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 .content-plugins .content{
     position: relative;
 }*/
+
+.change_content > .change_content_data{
+    background: none;
+    color: #fff;
+    border: none;
+    outline: none;
+    width: 100%;
+}
+.change_content:after {
+    position: absolute;
+    content: "";
+    top: 18px;
+    right: 150px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+    border-color: #fff transparent transparent transparent;
+}
+.change_content > .change_content_data > option{
+    color: #fff;
+    background-color: #535353;
+}
+
+.change_content > .change_content_data:focus{
+    background: none;
+    color: #fff;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.change_content > .change_content_data:hover{
+    color: #fff;
+}
+
+.content-type{
+    display: none;
+}
