@@ -80,7 +80,6 @@ import { changeDataCategory } from './components/change-data-categories.js';
 
 
         $(`.change_content_data`).change(function (){
-            console.log($(this).children(`option:selected`).text());
             if($(this).children(`option:selected`).val() === `type`){
                 $(`.content-type`).css(`display`, `block`);
                 $(`.content-permalinks`).css(`display`, `none`);

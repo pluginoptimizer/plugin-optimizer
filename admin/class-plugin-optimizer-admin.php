@@ -445,7 +445,7 @@ class Plugin_Optimizer_Admin {
 			),
 			'description'   => 'Filter for your customers',
 			'public'        => true,
-//			'show_in_menu'  => false,
+			'show_in_menu'  => false,
 			// 'show_in_admin_bar'   => null,
 			'show_in_rest'  => null,
 			'rest_base'     => null,
@@ -553,6 +553,7 @@ class Plugin_Optimizer_Admin {
 			),
 			'show_ui'      => true,
 			'query_var'    => true,
+			'default_term'    => 'Uncategorized',
 		) );
 
 	}

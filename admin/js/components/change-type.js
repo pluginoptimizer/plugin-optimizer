@@ -9,7 +9,6 @@ let changeType;
         changeType = () => {
 
             $(`.data-type`).on(`input`, function (){
-                console.log(`change`)
                 const text_type = $(this).text();
                 const filter_id = $(this).attr(`filter_id`);
 

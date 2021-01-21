@@ -22,6 +22,7 @@
                 <div id="window_categories" class="tabs col-2">categories</div>
                 <div id="window_groups" class="tabs col-2">groups</div>
                 <div id="window_worklist" class="tabs col-2">worklist</div>
+                <div id="window_settings" class="tabs col-2">settings</div>
             </div>
             <div class="row col-2">
                 <input class="search" type="search" id="search_elements" name="s" value=""
