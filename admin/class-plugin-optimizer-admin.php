@@ -43,10 +43,12 @@ class Plugin_Optimizer_Admin {
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name . '-public', plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin-public.css', array(), $this->version, 'all' );
-		if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) ) {
+		/*if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) ) {
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin.css', array(), $this->version, 'all' );
 			wp_enqueue_style( $this->plugin_name . '_bootstrap', plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin-bootstrap.css', array(), $this->version, 'all' );
-		}
+		}*/
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name . '_bootstrap', plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin-bootstrap.css', array(), $this->version, 'all' );
 	}
 
 	/**
@@ -671,13 +673,14 @@ class Plugin_Optimizer_Admin {
 		$value_category_filter = get_post_meta( $post->ID, 'category_filter', 1 );
 
 		?>
+		<div style="display: none">
         <label for="block_plugins"> <?= "Select block plugins" ?> </label>
-        <input type="text" id="block_plugins" name="block_plugins" value=" <?= $value_block_plugins ?>" size="25"/>
+        <input type="text" id="block_plugins" name="block_plugins" value=" <?= implode(',', $value_block_plugins ); ?>" size="25"/>
         <br>
         <br>
 
         <label for="block_plugins"> <?= "Select block group plugins" ?> </label>
-        <input type="text" id="block_plugins" name="block_plugins" value=" <?= $value_block_group_plugins ?>"
+        <input type="text" id="block_plugins" name="block_plugins" value=" <?= implode(',', $value_block_group_plugins); ?>"
                size="25"/>
         <br>
         <br>
@@ -698,12 +701,160 @@ class Plugin_Optimizer_Admin {
         <br>
         <br>
 
+
         <label for="type_filter"> <?= "Category Type" ?></label>
         <input type="text" id="type_filter" name="category_filter" value=" <?= $value_category_filter ?>" size="25"/>
         <br>
         <br>
+        </div>
+        <div class="sos-wrap">
+        <table>
+        <thead>
+        <tr>
+            <th><input type="checkbox" id="check_all"></th>
+                            <th>TITLE</th>
+                            <th>cATEGORIES</th>
+                            <th>type</th>
+                            <th>permalinks</th>
+                            <th>Block plugins</th>
+        </tr>
+        </thead>
+        <tbody id="the-list">
+                <tr class="block_info" id="filter-<?= $post->ID; ?>">
+                    <td><input type="checkbox" id="<?= $post->ID; ?>"></td>
+                    <td><?= $post->post_title; ?></td>
+                    <td><?= get_post_meta( $post->ID, 'category_filter', true ); ?></td>
+                    <td class="data-type-filter"><?= get_post_meta( $post->ID, 'type_filter', true ); ?></td>
+                    <td class="data-link-filter"><?= get_post_meta( $post->ID, 'selected_page', true ); ?></td>
+                    <td><?= implode( ', ', get_post_meta( $post->ID, 'block_plugins', true ) ); ?></td>
+                </tr>
+                <tr class="hidden_info">
+                    <td colspan="6">
+                        <div class="content-filter">
+                            <div class="row">
+                                <div class="col-12">
+									<?php
+									$type_filter = get_post_meta( $post->ID, 'type_filter', true );
+									if ( $type_filter === 'none' ):
+										?>
+                                        <div class="header">Permalinks</div>
+                                        <div class="content-permalinks">
+                                            <div class="link">
+                                            <span class="data-interaction data-link" filter_id="<?= $post->ID ?>"
+                                                  contenteditable>
+                                            <?= get_post_meta( $post->ID, 'selected_page', true ) ?>
+                                            </span>
+                                            </div>
+                                        </div>
+									<?php
 
-		<?php
+									else:
+										?>
+                                        <div class="header">Type</div>
+                                        <div>
+                                            <div class="content">
+                                            <span class="data-interaction data-type" filter_id="<?= $post->ID ?>"
+                                                  contenteditable>
+                                                <?= $type_filter ?>
+                                            </span>
+                                            </div>
+                                        </div>
+
+									<?php
+									endif;
+									?>
+                                </div>
+
+                            </div>
+                            <div class="row content-plugins">
+								<?php
+								$this->content_plugin_to_filter( $post );
+								?>
+                            </div>
+                            <div class="row group-wrapper">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
+											<?php
+											$groups_plugins = get_post_meta( $post->ID, 'block_group_plugins', true );
+											$count_groups   = 0;
+											$groups         = get_posts( array(
+												'post_type'   => 'sos_group',
+												'numberposts' => - 1,
+											) );
+											if ( $groups ) {
+												foreach ( $groups as $group ) {
+													if ( in_array( $group->post_title, $groups_plugins ) ) {
+														$count_groups ++;
+													}
+												}
+											}
+											?>
+                                            groups <span
+                                                    class="disabled">- Disabled: <?= $count_groups; ?>/<?= count( $groups ); ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="plugin-wrapper group-wrapper">
+										<?php
+										$all_plugins     = Plugin_Optimizer_Helper::get_plugins_with_status();
+										$content_plugins = array();
+										foreach ( $all_plugins as $plugin ) {
+											foreach ( $plugin as $key => $value ) {
+												if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
+													$content_plugins[ $plugin['name'] ] = $plugin['file'];
+												}
+											}
+										}
+
+										$groups = get_posts( array(
+											'post_type'   => 'sos_group',
+											'numberposts' => - 1,
+										) );
+										if ( $groups ) :
+											foreach ( $groups as $group ) :
+												?>
+                                                <div id="<?= $group->ID; ?>" value="<?= $post->ID; ?>"
+                                                     class="content <?= in_array( $group->post_title, $groups_plugins ) ? 'block' : ''; ?> ">
+                                                    <span><?= $group->post_title; ?></span>
+													<?php
+													$block_plugins_in_group = explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) );
+													foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
+														?>
+                                                        <div class="hidden_content content">
+                                                            <span value="<?= $content_plugins[ $block_plugin_in_group ]; ?>"><?= $block_plugin_in_group; ?></span>
+                                                        </div>
+													<?php
+													endforeach;
+													?>
+                                                </div>
+											<?php
+											endforeach;
+										endif;
+										?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
+                                            categories
+                                        </div>
+                                    </div>
+                                    <div class="plugin-wrapper">
+										<?php
+										$this->ajax_create_category( $post );
+										?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+        </tbody>
+        </table>
+			<?php
 
 	}
 
@@ -825,21 +976,209 @@ class Plugin_Optimizer_Admin {
 
 		wp_nonce_field( plugin_basename( __FILE__ ), 'nonce_sos_group_options' );
 
-		$value_type_group    = get_post_meta( $post->ID, 'type_group', 1 );
 		$value_group_plugins = get_post_meta( $post->ID, 'group_plugins', 1 );
 
 		?>
-        <label for="type_filter"> <?= "Set Type" ?></label>
-        <input type="text" id="type_filter" name="type_filter" value=" <?= $value_type_group ?>" size="25"/>
-        <br>
-        <br>
 
-        <label for="block_plugins"> <?= "Select group plugins" ?> </label>
-        <input type="text" id="block_plugins" name="block_plugins" value=" <?= $value_group_plugins ?>" size="25"/>
+        <label for="block_plugins" style="display: none"> <?= "Select group plugins" ?> </label>
+        <input type="text" style="display: none" id="block_plugins" name="block_plugins" value=" <?= $value_group_plugins ?>" size="25"/>
         <br>
         <br>
 
 		<?php
+
+		$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
+		$activate_plugins   = array();
+		$deactivate_plugins = array();
+		foreach ( $all_plugins as $plugin ) {
+			foreach ( $plugin as $key => $value ) {
+				if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
+					if ( $value ) {
+						array_push( $activate_plugins, $plugin['name'] );
+					} else {
+						array_push( $deactivate_plugins, $plugin['name'] );
+					}
+				}
+			}
+		}
+
+
+				$group_plugins = get_post_meta( $post->ID, 'group_plugins', true );
+				?>
+            <div class="sos-wrap">
+        <table>
+        <thead>
+        <tr>
+            <th><input type="checkbox" id="check_all"></th>
+            <th>TITLE</th>
+            <th>Plugins</th>
+            <th>Count</th>
+        </tr>
+        </thead>
+        <tbody id="the-list">
+                <tr class="block_info" id="group_<?= $post->ID; ?>">
+                    <td><input type="checkbox" id="<?= $post->ID; ?>"></td>
+                    <td><?= $post->post_title; ?></td>
+                    <td><?= $group_plugins; ?></td>
+                    <td><?= $group_plugins ? count( explode( ',', $group_plugins ) ) : 0; ?></td>
+                </tr>
+                <tr class="hidden_info">
+                    <td colspan="6">
+                        <div class="content-filter">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
+											<?php
+											$count_block_plugins = 0;
+
+											foreach ( $all_plugins as $plugin ) {
+												foreach ( $plugin as $key => $value ) {
+													if ( $key === 'name' ) {
+														if ( substr_count( $group_plugins, $plugin['name'] ) ) {
+															$count_block_plugins ++;
+														}
+													}
+												}
+											}
+											?>
+                                            Plugins <span
+                                                    class="disabled">- Disabled: <?= $count_block_plugins ?>/<?= count( $activate_plugins ); ?></span>
+                                        </div>
+                                        <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
+                                    </div>
+									<?php
+									if ( $activate_plugins ):
+										?>
+                                        <div class="plugin-wrapper wrapper-group-plugins">
+											<?php
+											foreach ( $activate_plugins as $activate_plugin ):
+												?>
+                                                <div class="content<?= substr_count( $group_plugins, $activate_plugin ) ? ' block' : ''; ?>"
+                                                     group_id="<?= $post->ID; ?>">
+                                                    <span><?= $activate_plugin; ?></span>
+                                                </div>
+											<?php
+											endforeach;
+											foreach ( $deactivate_plugins as $deactivate_plugin ):
+												?>
+                                                <div class="content deactivate-plugin<?= substr_count( $group_plugins, $deactivate_plugin ) ? ' block' : ''; ?>">
+                                                    <span><?= $deactivate_plugin; ?></span>
+                                                </div>
+											<?php
+											endforeach;
+											?>
+                                        </div>
+									<?php
+									else:
+										?>
+                                        <div class="plugin-wrapper no-plugins">
+                                            <div class="content">
+                                                <span>No activate plugins</span>
+                                            </div>
+                                        </div>
+									<?php
+									endif;
+									?>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+				<?php
+				if ( $post->post_status === 'publish' ) {
+					$posts_chidren = get_posts( array(
+						'post_type'   => 'sos_group',
+						'numberposts' => - 1,
+						'meta_query'  => array(
+							array(
+								'key'   => 'group_parents',
+								'value' => $post->post_title,
+							)
+						),
+					) );
+				} else if ( $post->post_status === 'trash' ) {
+					$posts_chidren = get_posts( array(
+						'post_type'   => 'sos_group',
+						'numberposts' => - 1,
+						'post_status' => 'trash',
+						'meta_query'  => array(
+							array(
+								'key'   => 'group_parents',
+								'value' => $post->post_title,
+							)
+						),
+					) );
+				}
+
+
+				if ( $posts_chidren ) :
+					foreach ( $posts_chidren as $post_chidren ) :
+						$children_group_plugins = get_post_meta( $post_chidren->ID, 'group_plugins', true );
+						?>
+
+                        <tr class="block_info block_children">
+                            <td><input type="checkbox" id="<?= $post_chidren->ID; ?>"></td>
+                            <td> — <?= $post_chidren->post_title; ?></td>
+                            <td><?= get_post_meta( $post_chidren->ID, 'type_group', true ); ?></td>
+                            <td><?= $children_group_plugins; ?></td>
+                            <td><?= substr_count( $children_group_plugins, ',' ) + 1; ?></td>
+                        </tr>
+                        <tr class="hidden_info">
+                            <td colspan="6">
+                                <div class="content-filter">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="header">
+                                                <div class="title">
+													<?php
+													$count_block_plugins = 0;
+													foreach ( $activate_plugins as $activate_plugin ) {
+														if ( substr_count( $children_group_plugins, $activate_plugin ) ) {
+															$count_block_plugins ++;
+														}
+													}
+													?>
+                                                    Plugins <span
+                                                            class="disabled">- Disabled: <?= $count_block_plugins ?>/<?= count( $activate_plugins ); ?></span>
+                                                </div>
+                                                <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
+                                            </div>
+											<?php
+											if ( $activate_plugins ):
+												?>
+                                                <div class="plugin-wrapper wrapper-group-plugins">
+													<?php
+													foreach ( $activate_plugins as $activate_plugin ):
+														?>
+                                                        <div class="content <?= substr_count( $children_group_plugins, $activate_plugin ) ? 'block' : ''; ?>">
+                                                            <span><?= $activate_plugin; ?></span>
+                                                        </div>
+													<?php
+													endforeach;
+													?>
+                                                </div>
+											<?php
+											else:
+												?>
+                                                <div class="plugin-wrapper no-plugins">
+                                                    <div class="content">
+                                                        <span>No activate plugins</span>
+                                                    </div>
+                                                </div>
+											<?php
+											endif;
+											?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                        </table>
+                        </div>
+					<?php endforeach;
+				endif;
 	}
 
 
@@ -864,10 +1203,8 @@ class Plugin_Optimizer_Admin {
 			return;
 		}
 
-		$type_group    = sanitize_text_field( $_POST['type_group'] );
 		$group_plugins = sanitize_text_field( $_POST['group_plugins'] );
 
-		update_post_meta( $post_id, 'type_group', $type_group );
 		update_post_meta( $post_id, 'group_plugins', $group_plugins );
 	}
 

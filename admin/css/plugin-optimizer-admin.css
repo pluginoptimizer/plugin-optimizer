@@ -69,6 +69,10 @@
 
 /*New design*/
 
+.sos-wrap {
+    overflow-y: auto !important;
+}
+
 .sos-wrap * {
     text-transform: uppercase;
 }
@@ -337,6 +341,9 @@
     background-color: #ffc4c4;
 }
 
+.inside .sos-wrap .hidden_info{
+    display: table-row;
+}
 
 .sos-wrap .hidden_info{
     display: none;

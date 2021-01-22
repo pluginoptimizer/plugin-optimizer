@@ -13,7 +13,7 @@ let choiceLinks;
             $(`.add-permalink`).click(function () {
                 $(this).parent().after(`
             <div class="link">
-                <span class="text_link">${$(`#search_pages`).val()}</span>
+                <span class="data-interaction text_link" contenteditable>${$(`#search_pages`).val()}</span>
                 <span class="close-selected-link">×</span>
             </div>
             `);
