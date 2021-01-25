@@ -12,7 +12,11 @@ let changeType;
                 const text_type = $(this).text();
                 const filter_id = $(this).attr(`filter_id`);
 
-                $.ajax({
+                $(`#type_filter`).val(text_type.trim());
+
+                $(`tr#filter-${filter_id}>.data-type-filter`).text(text_type);
+
+                /*$.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
@@ -23,7 +27,7 @@ let changeType;
                     success: function ({data}) {
                         $(`tr#filter-${filter_id}>.data-type-filter`).text(data);
                     }
-                });
+                });*/
             })
 
 

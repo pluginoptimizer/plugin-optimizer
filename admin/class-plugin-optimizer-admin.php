@@ -447,7 +447,7 @@ class Plugin_Optimizer_Admin {
 			),
 			'description'   => 'Filter for your customers',
 			'public'        => true,
-			'show_in_menu'  => false,
+//			'show_in_menu'  => false,
 			// 'show_in_admin_bar'   => null,
 			'show_in_rest'  => null,
 			'rest_base'     => null,
@@ -666,6 +666,7 @@ class Plugin_Optimizer_Admin {
 		wp_nonce_field( plugin_basename( __FILE__ ), 'nonce_sos_filter_options' );
 
 		$value_block_plugins       = get_post_meta( $post->ID, 'block_plugins', 1 );
+		$value_link_block_plugins       = get_post_meta( $post->ID, 'block_value_plugins', 1 );
 		$value_block_group_plugins = get_post_meta( $post->ID, 'block_group_plugins', 1 );
 //		$value_selected_post_type  = get_post_meta( $post->ID, 'selected_post_type', 1 );
 		$value_selected_page   = get_post_meta( $post->ID, 'selected_page', 1 );
@@ -675,12 +676,17 @@ class Plugin_Optimizer_Admin {
 		?>
 		<div style="display: none">
         <label for="block_plugins"> <?= "Select block plugins" ?> </label>
-        <input type="text" id="block_plugins" name="block_plugins" value=" <?= implode(',', $value_block_plugins ); ?>" size="25"/>
+        <input type="text" id="block_plugins" name="block_plugins" value=" <?= implode(', ', $value_block_plugins ); ?>" size="25"/>
+        <br>
+        <br>
+
+        <label for="block_link_plugins"> <?= "Select link block plugins" ?> </label>
+        <input type="text" id="block_link_plugins" name="block_link_plugins" value=" <?= implode(', ', $value_link_block_plugins ); ?>" size="25"/>
         <br>
         <br>
 
         <label for="block_plugins"> <?= "Select block group plugins" ?> </label>
-        <input type="text" id="block_plugins" name="block_plugins" value=" <?= implode(',', $value_block_group_plugins); ?>"
+        <input type="text" id="block_group_plugins" name="block_group_plugins" value=" <?= implode(', ', $value_block_group_plugins); ?>"
                size="25"/>
         <br>
         <br>
@@ -702,8 +708,8 @@ class Plugin_Optimizer_Admin {
         <br>
 
 
-        <label for="type_filter"> <?= "Category Type" ?></label>
-        <input type="text" id="type_filter" name="category_filter" value=" <?= $value_category_filter ?>" size="25"/>
+        <label for="category_filter"> <?= "Category Type" ?></label>
+        <input type="text" id="category_filter" name="category_filter" value=" <?= $value_category_filter ?>" size="25"/>
         <br>
         <br>
         </div>
@@ -880,14 +886,16 @@ class Plugin_Optimizer_Admin {
 			return;
 		}
 
-		$block_plugins       = sanitize_text_field( $_POST['block_plugins'] );
-		$block_group_plugins = sanitize_text_field( $_POST['block_group_plugins'] );
+		$block_plugins       = explode(', ', sanitize_text_field( $_POST['block_plugins'] ));
+		$block_link_plugins       = explode(', ', sanitize_text_field( $_POST['block_link_plugins'] ));
+		$block_group_plugins = explode(', ', sanitize_text_field( $_POST['block_group_plugins'] ));
 //		$selected_post_type  = sanitize_text_field( $_POST['selected_post_type'] );
 		$selected_page   = sanitize_text_field( $_POST['selected_page'] );
 		$type_filter     = sanitize_text_field( $_POST['type_filter'] );
 		$category_filter = sanitize_text_field( $_POST['category_filter'] );
 
 		update_post_meta( $post_id, 'block_plugins', $block_plugins );
+		update_post_meta( $post_id, 'block_link_plugins', $block_link_plugins );
 		update_post_meta( $post_id, 'block_group_plugins', $block_group_plugins );
 //		update_post_meta( $post_id, 'selected_post_type', $selected_post_type );
 		update_post_meta( $post_id, 'selected_page', $selected_page );
@@ -980,10 +988,12 @@ class Plugin_Optimizer_Admin {
 
 		?>
 
-        <label for="block_plugins" style="display: none"> <?= "Select group plugins" ?> </label>
-        <input type="text" style="display: none" id="block_plugins" name="block_plugins" value=" <?= $value_group_plugins ?>" size="25"/>
-        <br>
-        <br>
+        <div class="display: none">
+            <label for="block_plugins"> <?= "Select group plugins" ?> </label>
+            <input type="text" id="block_plugins" name="block_plugins" value=" <?= $value_group_plugins ?>" size="25"/>
+            <br>
+            <br>
+        </div>
 
 		<?php
 
@@ -1187,7 +1197,7 @@ class Plugin_Optimizer_Admin {
 	 */
 	public function save_group_options( $post_id ) {
 
-		if ( ! isset( $_POST['type_group'] ) && ! isset( $_POST['group_plugins'] ) ) {
+		if ( ! isset( $_POST['block_plugins'] ) ) {
 			return;
 		}
 
@@ -1203,7 +1213,7 @@ class Plugin_Optimizer_Admin {
 			return;
 		}
 
-		$group_plugins = sanitize_text_field( $_POST['group_plugins'] );
+		$group_plugins = sanitize_text_field( $_POST['block_plugins'] );
 
 		update_post_meta( $post_id, 'group_plugins', $group_plugins );
 	}
@@ -3057,6 +3067,18 @@ class Plugin_Optimizer_Admin {
 		);
 
 		wp_send_json_success( $return );
+
+	}
+
+
+	/**
+	 * Ajax change description category
+	 */
+
+	public function ajax_get_category_link() {
+		$cat_id               = htmlspecialchars( $_POST['cat_id'] );
+
+		wp_send_json_success( get_edit_term_link( $cat_id ) );
 
 	}
 }

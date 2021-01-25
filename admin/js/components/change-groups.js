@@ -11,6 +11,38 @@ let changeGroups;
                 const change_groups = $(this).is('.block') ? 'remove' : 'add';
                 const plugins_names = $(this).children('.hidden_content').children().toArray().map(item => $(item).text()).join(', ');
                 const plugins_links = $(this).children('.hidden_content').children().toArray().map(item => $(item).attr('value')).join(', ');
+
+
+                const block_plugins = $(`#block_plugins`);
+                const block_link_plugins = $(`#block_link_plugins`);
+                const block_group = $(`#block_group_plugins`);
+
+
+                if(!$(this).hasClass(`block`)){
+                    /* Change appearance */
+                    $(this).parent().addClass(`block`);
+
+                    /* Record data of group plugins */
+                    block_group.val() !== `None` ? block_group.val(`${block_group.val()}, ${group_name}`) : block_group.val(group_name);
+
+                    /* Record data of selected plugins */
+                    block_plugins.val() ? block_plugins.val(`${block_plugins.val()}, ${plugins_names}`) : block_plugins.val(plugins_names);
+
+                    /* Record data of selected link plugins */
+                    block_link_plugins.val() ? block_link_plugins.val(`${block_link_plugins.val()}, ${plugins_links}`) : block_link_plugins.val(plugins_links);
+                } else {
+                    /* Change appearance */
+                    $(this).parent().removeClass(`block`);
+                    /* Delete data of selected plugins */
+                    block_group.val(block_group.val().split(', ').filter(item => item !== group_name).join(', '))
+
+                    /* Delete data of selected plugins */
+                    block_plugins.val(block_plugins.val().split(', ').filter(item => item !== plugins_names).join(', '))
+
+                    /* Delete data of selected plugins */
+                    block_link_plugins.val(block_link_plugins.val().split(', ').filter(item => item !== plugins_links).join(', '))
+                }
+
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

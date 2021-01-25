@@ -17,7 +17,31 @@ let changePlugins;
                 const plugin_name = $(this).attr('id');
                 const plugin_link = $(this).attr('link');
                 const change_plugins = $(this).text();
-                $.ajax({
+
+                const block_plugins = $(`#block_plugins`);
+                const block_link_plugins = $(`#block_link_plugins`);
+
+                if(change_plugins === `+`){
+                    /* Change appearance */
+                    $(this).parent().addClass(`block`);
+                    $(this).text(`×`);
+                    /* Record data of selected plugins */
+                    block_plugins.val() ? block_plugins.val(`${block_plugins.val()}, ${plugin_name}`) : block_plugins.val(plugin_name);
+
+                    /* Record data of selected link plugins */
+                    block_link_plugins.val() ? block_link_plugins.val(`${block_link_plugins.val()}, ${plugin_link}`) : block_link_plugins.val(plugin_link);
+                } else {
+                    /* Change appearance */
+                    $(this).parent().removeClass(`block`);
+                    $(this).text(`+`);
+                    /* Delete data of selected plugins */
+                    block_plugins.val(block_plugins.val().split(', ').filter(item => item !== plugin_name).join(', '))
+
+                    /* Delete data of selected plugins */
+                    block_link_plugins.val(block_link_plugins.val().split(', ').filter(item => item !== plugin_link).join(', '))
+                }
+
+                /*$.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
@@ -28,12 +52,12 @@ let changePlugins;
                         'change_plugins': change_plugins,
                     },
                     success: function (response) {
-                        /* Change the content of the block plugins */
+                        /!* Change the content of the block plugins *!/
                         $(`tr#filter-${response.data.filter_id}`).next('.hidden_info').children().children().children('.content-plugins').html(response.data.return);
-                        /* Added the ability change plugins */
+                        /!* Added the ability change plugins *!/
                         changePlugins();
                     }
-                });
+                });*/
             })
         }
     });

@@ -10,7 +10,24 @@ let changePluginsGroup;
         * */
         changePluginsGroup = () => {
             $('.wrapper-group-plugins .content').click(function () {
-                $.ajax({
+                console.log('click')
+                const plugin_name = $(this).children().text();
+                const block_plugins = $(`#block_plugins`);
+
+                if(!$(this).hasClass(`block`)){
+                    /* Change appearance */
+                    $(this).addClass(`block`);
+
+                    /* Record data of selected plugins */
+                    block_plugins.val() ? block_plugins.val(`${block_plugins.val()}, ${plugin_name}`) : block_plugins.val(plugin_name);
+                } else {
+                    /* Change appearance */
+                    $(this).removeClass(`block`);
+
+                    /* Delete data of selected plugins */
+                    block_plugins.val(block_plugins.val().split(', ').filter(item => item !== plugin_name).join(', '))
+                }
+                /*$.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
@@ -25,7 +42,7 @@ let changePluginsGroup;
                         hiddenInfoFilter();
                         changePluginsGroup();
                     }
-                });
+                });*/
             })
         }
     });

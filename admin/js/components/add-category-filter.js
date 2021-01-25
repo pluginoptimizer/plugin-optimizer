@@ -12,6 +12,25 @@ let addCategoryFilter;
         * */
         addCategoryFilter = () => {
             $('.filter-category').click(function () {
+
+                const name_category = $(this).children('span:nth-child(1)').text();
+                const category_filter = $(`#category_filter`);
+
+
+                if(!$(this).hasClass(`block`)){
+                    /* Change appearance */
+                    $(this).addClass(`block`);
+
+                    /* Record data of name category */
+                    category_filter.val() ? category_filter.val(`${category_filter.val()}, ${name_category}`) : category_filter.val(name_category);
+
+                } else {
+                    /* Change appearance */
+                    $(this).removeClass(`block`);
+                    /* Delete data of name category */
+                    category_filter.val(category_filter.val().split(', ').filter(item => item !== name_category).join(', '))
+                }
+
                 let self = this;
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
@@ -28,13 +47,13 @@ let addCategoryFilter;
                     },
                     success: function (response) {
                         /* Change the content of the block of categories */
-                        $(self).parent().html(response.data);
+                        // $(self).parent().html(response.data);
                         /* Added the ability to delete categories */
-                        deleteCategory();
-                        /* Added the ability to add new categories */
+                        /*deleteCategory();
+                        /!* Added the ability to add new categories *!/
                         addCategory();
-                        /* Added the ability to appropriation categories */
-                        addCategoryFilter();
+                        /!* Added the ability to appropriation categories *!/
+                        addCategoryFilter();*/
                     }
                 });
             })

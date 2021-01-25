@@ -148,8 +148,8 @@ class Plugin_Optimizer {
 		$this->loader->add_action( 'init', $plugin_admin, 'register_post_types' );
 		$this->loader->add_action( 'init', $plugin_admin, 'register_taxonomies' );
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'register_meta_boxes' );
-		$this->loader->add_action( 'save_post', $plugin_admin, 'save_filter_options' );
-		$this->loader->add_action( 'save_post', $plugin_admin, 'save_group_options' );
+		$this->loader->add_action( 'save_post_sos_filter', $plugin_admin, 'save_filter_options' );
+		$this->loader->add_action( 'save_post_sos_group', $plugin_admin, 'save_group_options' );
 		$this->loader->add_action( 'save_post_page', $plugin_admin, 'add_item_to_worklist' );
 		$this->loader->add_action( 'save_post_post', $plugin_admin, 'add_item_to_worklist' );
 		$this->loader->add_action( 'activated_plugin', $plugin_admin, 'add_item_to_worklist_active_plugins', 10, 1 );
@@ -181,6 +181,7 @@ class Plugin_Optimizer {
 		$this->loader->add_action( 'wp_ajax_sos_change_type', $plugin_admin, 'ajax_change_type' );
 		$this->loader->add_action( 'wp_ajax_sos_change_data_category', $plugin_admin, 'ajax_change_data_category' );
 		$this->loader->add_action( 'wp_ajax_sos_change_groups_to_filter', $plugin_admin, 'ajax_change_groups_to_filter' );
+		$this->loader->add_action( 'wp_ajax_sos_get_category_link', $plugin_admin, 'ajax_get_category_link' );
 
 	}
 
