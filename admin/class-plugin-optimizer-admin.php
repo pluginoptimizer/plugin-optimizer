@@ -447,7 +447,7 @@ class Plugin_Optimizer_Admin {
 			),
 			'description'   => 'Filter for your customers',
 			'public'        => true,
-//			'show_in_menu'  => false,
+			'show_in_menu'  => false,
 			// 'show_in_admin_bar'   => null,
 			'show_in_rest'  => null,
 			'rest_base'     => null,
@@ -3070,16 +3070,5 @@ class Plugin_Optimizer_Admin {
 
 	}
 
-
-	/**
-	 * Ajax change description category
-	 */
-
-	public function ajax_get_category_link() {
-		$cat_id               = htmlspecialchars( $_POST['cat_id'] );
-
-		wp_send_json_success( get_edit_term_link( $cat_id ) );
-
-	}
 }
 

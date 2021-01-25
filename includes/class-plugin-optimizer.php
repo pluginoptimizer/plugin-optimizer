@@ -181,7 +181,6 @@ class Plugin_Optimizer {
 		$this->loader->add_action( 'wp_ajax_sos_change_type', $plugin_admin, 'ajax_change_type' );
 		$this->loader->add_action( 'wp_ajax_sos_change_data_category', $plugin_admin, 'ajax_change_data_category' );
 		$this->loader->add_action( 'wp_ajax_sos_change_groups_to_filter', $plugin_admin, 'ajax_change_groups_to_filter' );
-		$this->loader->add_action( 'wp_ajax_sos_get_category_link', $plugin_admin, 'ajax_get_category_link' );
 
 	}
 
