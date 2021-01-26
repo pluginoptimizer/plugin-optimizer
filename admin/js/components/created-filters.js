@@ -53,7 +53,7 @@ let createdFilters;
                         },
                         success: function (response) {
                             $('#the-list').html(response.data);
-                            $('.content-new-element').css('display', 'none');
+                            // $('.content-new-element').css('display', 'none');
                             allElements.count_element('sos_filter');
                             allElements.check_all_element();
                             hiddenInfoFilter();

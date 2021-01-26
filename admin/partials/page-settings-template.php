@@ -59,7 +59,7 @@
                         </label>
                     </div>
                     <div class="col-11">
-                        <span>Display Debug Messages Toggle</span>
+                        <span>Display Debug Messages</span>
                     </div>
                 </div>
                 <div id="settings_plugins" class="col-12">

@@ -35,7 +35,7 @@ let createGroupPlugins;
                         },
                         success: function (response) {
                             $('#the-list').html(response.data);
-                            $('.content-new-element').css('display', 'none');
+                            // $('.content-new-element').css('display', 'none');
                             $(`#set_title`).val(``);
                             $(`#set_type`).val(``);
                             $(`.block-plugin-wrapper .block`).toArray().map(item => $(item).removeClass(`block`));

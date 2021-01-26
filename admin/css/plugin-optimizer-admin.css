@@ -644,7 +644,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 }
 
 .sos-wrap .content-new-element{
-    display: none;
+    /*display: none;*/
 }
 
 .sos-wrap .content{
@@ -839,4 +839,12 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 
 .content-type{
     display: none;
+}
+
+input{
+    text-transform: none !important;
+}
+
+input::placeholder{
+    text-transform: uppercase !important;
 }

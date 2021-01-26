@@ -103,6 +103,10 @@ class Plugin_Optimizer_Admin {
 			$this,
 			'render_filters_page'
 		) );
+		add_submenu_page( 'plugin_optimizer_overview', 'Add Filters', 'Add Filters', 'manage_options', 'plugin_optimizer_add_filters', array(
+			$this,
+			'render_add_filters_page'
+		) );
 		add_submenu_page( 'plugin_optimizer_overview', 'Filters Categories', 'Filters Categories', 'manage_options', 'plugin_optimizer_filters_categories', array(
 			$this,
 			'render_filters_categories_page'
@@ -110,6 +114,10 @@ class Plugin_Optimizer_Admin {
 		add_submenu_page( 'plugin_optimizer_overview', 'Groups plugin', 'Groups plugin', 'manage_options', 'plugin_optimizer_groups', array(
 			$this,
 			'render_groups_page'
+		) );
+		add_submenu_page( 'plugin_optimizer_overview', 'Add groups plugin', 'Add groups plugin', 'manage_options', 'plugin_optimizer_add_groups', array(
+			$this,
+			'render_add_groups_page'
 		) );
 		add_submenu_page( 'plugin_optimizer_overview', 'Worklist', 'Worklist', 'manage_options', 'plugin_optimizer_worklist', array(
 			$this,
@@ -135,12 +143,20 @@ class Plugin_Optimizer_Admin {
 		include 'partials/page-filters.php';
 	}
 
+	public function render_add_filters_page() {
+		include 'partials/page-add-filters.php';
+	}
+
 	public function render_filters_categories_page() {
 		include 'partials/page-categories.php';
 	}
 
 	public function render_groups_page() {
 		include 'partials/page-groups.php';
+	}
+
+	public function render_add_groups_page() {
+		include 'partials/page-add-groups.php';
 	}
 
 	public function render_settings_page() {
@@ -988,7 +1004,7 @@ class Plugin_Optimizer_Admin {
 
 		?>
 
-        <div class="display: none">
+        <div style="display: none">
             <label for="block_plugins"> <?= "Select group plugins" ?> </label>
             <input type="text" id="block_plugins" name="block_plugins" value=" <?= $value_group_plugins ?>" size="25"/>
             <br>
