@@ -797,7 +797,8 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 .groups-names{
     font-size: 12px;
     float: right;
-    margin-right: 10px
+    margin-right: 10px;
+    font-weight: 800;
 }
 
 .groups-names > *{
