@@ -49,11 +49,6 @@ register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
 register_deactivation_hook( __FILE__, 'deactivate_plugin_optimizer' );
 
 /**
- * Composer Integration
- */
-require plugin_dir_path( __FILE__ ) . '/vendor/autoload.php';
-
-/**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
@@ -66,7 +61,6 @@ function run_plugin_optimizer() {
 
 	$plugin = new Plugin_Optimizer();
 	$plugin->run();
-	$plugin->appsero_init_tracker_plugin_optimizer();
 
 }
 

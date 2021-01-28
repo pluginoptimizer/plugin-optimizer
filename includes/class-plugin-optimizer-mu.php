@@ -90,6 +90,9 @@ class Plugin_Optimizer_MU {
 
 		$block_plugins = array();
 		$current_url   = get_home_url() . trim( $_SERVER["REQUEST_URI"] );
+		if(is_single()){
+			print_r('Post');
+		}
 		$posts         = get_posts( array(
 			'post_type'   => 'sos_filter',
 			'numberposts' => - 1,

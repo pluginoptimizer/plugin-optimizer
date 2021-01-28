@@ -39,7 +39,7 @@
                             id="count_all_elements"><?= wp_count_terms( 'сategories_filters' ); ?></span>)
                 </div>
             </div>
-            <div class="row col-12 content-new-element">
+            <div class="row col-12 content-new-element create-categories">
                 <div class="col-12">
                     <table>
                         <tr>

@@ -41,7 +41,7 @@
 										<div class="col-3">
 											<div class="header">Title</div>
 											<div>
-												<div class="content">
+												<div class="content enter-data">
 													<span><input class="content-text" id="set_title" type="text"></span>
 												</div>
 											</div>
@@ -49,14 +49,14 @@
 										<div class="col-3">
 											<div class="header">Type</div>
 											<div>
-												<div class="content">
+												<div class="content enter-data">
                                                     <span>
                                                         <select name="" id="set_type">
-                                                        <option value="none">None</option>
+                                                        <option value="none">Choose type post</option>
                                                         <?php
                                                         $post_types         = get_post_types( [ 'publicly_queryable' => 1 ] );
                                                         $post_types['page'] = 'page';
-                                                        unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ] );
+                                                        unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ], $post_types[ 'sos_work' ] );
 
                                                         foreach ( $post_types as $post_type ) {
 	                                                        ?>
@@ -75,10 +75,6 @@
 											<div class="content-permalinks">
 												<div class="set_link">
 													<input id="search_pages" type="text">
-													<div id="result">
-														<p class="popup-close">×</p>
-														<div id="result_search"></div>
-													</div>
 													<button class="add-filter add-permalink"><span
 															class="pluse">+</span>
 														Permalink
@@ -117,7 +113,7 @@
 											<?php
 											if ( $activate_plugins ):
 												?>
-												<div class="header attribute-plugin">Activate plugins</div>
+												<div class="header attribute-plugin">Active plugins</div>
 												<div class="plugin-wrapper">
 													<?php
 													foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
@@ -129,7 +125,7 @@
 													endforeach;
 													?>
 												</div>
-												<div class="header attribute-plugin">Deactivate plugins</div>
+												<div class="header attribute-plugin">Inactive plugins</div>
 												<div class="plugin-wrapper">
 													<?php
 													foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):

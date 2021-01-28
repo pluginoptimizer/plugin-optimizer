@@ -43,12 +43,10 @@ class Plugin_Optimizer_Admin {
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name . '-public', plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin-public.css', array(), $this->version, 'all' );
-		/*if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) ) {
+		if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) || stripos( $_SERVER["QUERY_STRING"], "action=edit" ) ) {
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin.css', array(), $this->version, 'all' );
 			wp_enqueue_style( $this->plugin_name . '_bootstrap', plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin-bootstrap.css', array(), $this->version, 'all' );
-		}*/
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin.css', array(), $this->version, 'all' );
-		wp_enqueue_style( $this->plugin_name . '_bootstrap', plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin-bootstrap.css', array(), $this->version, 'all' );
+		}
 	}
 
 	/**
@@ -2418,7 +2416,7 @@ class Plugin_Optimizer_Admin {
 			<?php
 			if ( $activate_plugins ):
 				?>
-                <div class="header attribute-plugin">Activate plugins</div>
+                <div class="header attribute-plugin">Active plugins</div>
                 <div class="plugin-wrapper">
 					<?php
 					foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
@@ -2467,7 +2465,7 @@ class Plugin_Optimizer_Admin {
 					endforeach;
 					?>
                 </div>
-                <div class="header attribute-plugin">Deactivate plugins</div>
+                <div class="header attribute-plugin">Inactive plugins</div>
                 <div class="plugin-wrapper">
 					<?php
 					foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):

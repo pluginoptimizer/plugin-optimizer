@@ -21,14 +21,20 @@
 #search_pages{
     border: none;
     outline: none;
-    border-radius: 8px;
+    border-bottom: 1px solid #7e8993;
+    border-radius: 0;
     min-width: 200px;
-    width: 70%;
+    width: 74%;
     padding: 5px;
-    box-shadow: 0 0 5px rgba(0,191,255,0.5);
+    /*box-shadow: 0 0 5px rgba(0,191,255,0.5);*/
     color: #0073aa;
     font-size: 16px;
     text-transform: none;
+}
+
+#search_pages:focus{
+    outline: none;
+    box-shadow: none;
 }
 
 .add-permalink{
@@ -249,7 +255,7 @@
 
 .sos-wrap .content-permalinks *{
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 0;
 }
 .sos-wrap .content-filter .header{
@@ -269,7 +275,7 @@
 
 .sos-wrap .content-filter .content-permalinks .link{
     padding: 10px;
-    margin: 2% 2% 0 2%;
+    margin: 2% 0;
     /* Style for "Validated" */
     background-color: #ffffff;
     text-align: left;
@@ -643,8 +649,8 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     outline: none;
 }
 
-.sos-wrap .content-new-element{
-    /*display: none;*/
+.sos-wrap .content-new-element.create-categories{
+    display: none;
 }
 
 .sos-wrap .content{
@@ -847,4 +853,13 @@ input{
 
 input::placeholder{
     text-transform: uppercase !important;
+}
+
+.enter-data{
+    padding: 0 !important;
+}
+
+.enter-data > span > *{
+    padding: 5px !important;
+    height: 43px;
 }

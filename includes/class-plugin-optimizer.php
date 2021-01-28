@@ -238,43 +238,4 @@ class Plugin_Optimizer {
 		return $this->version;
 	}
 
-	/**
-	 * Initialize the plugin tracker
-	 *
-	 * @return void
-	 */
-	public function appsero_init_tracker_plugin_optimizer() {
-
-		if ( ! class_exists( 'Appsero\Client' ) ) {
-			require_once __DIR__ . '/appsero/src/Client.php';
-		}
-
-		$client = new Appsero\Client( '7470c3a7-1b96-4dd5-9022-1c2ce171284c', 'Plugin Optimizer', __FILE__ );
-
-		// List Active Plugins
-		$plugins_meta = function () {
-			return array(
-				'installed_plugins' => array_keys( get_plugins() ),
-				'active_plugins'    => (array) get_option( 'active_plugins' ),
-			);
-		};
-
-		// Active insights
-		$client->insights()->add_extra( $plugins_meta )->init();
-
-		// Active automatic updater
-		$client->updater();
-
-		// Active license page and checker
-		$args = array(
-			'type'        => 'submenu',
-			'menu_title'  => 'License',
-			'page_title'  => 'Plugin Optimizer License',
-			'menu_slug'   => 'plugin_optimizer_license',
-			'parent_slug' => 'plugin_optimizer_overview',
-		);
-		$client->license()->add_settings_page( $args );
-
-	}
-
 }

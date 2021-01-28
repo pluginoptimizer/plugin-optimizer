@@ -1,6 +1,5 @@
 import { getWorklist } from './components/worklist.js';
 import { trashElements } from './components/trash-elements.js';
-import { searchPages } from './components/search-pages.js';
 import { searchFilters } from './components/search-filters.js';
 import { searchElements } from './components/search-elements.js';
 import { hiddenInfoFilter } from './components/hidden-info-filter.js';
@@ -40,7 +39,6 @@ import { changeDataCategory } from './components/change-data-categories.js';
 
         getWorklist();
         trashElements();
-        searchPages();
         searchFilters();
         searchElements();
         hiddenInfoFilter();
