@@ -36,6 +36,8 @@ class Plugin_Optimizer_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
+//		$this->getLinkPosts();
+
 	}
 
 	/**
@@ -1246,7 +1248,22 @@ class Plugin_Optimizer_Admin {
 		}
 
 		$title_work = 'Add filter to ' . get_post( $post_id )->post_title;
-		$post_link  = get_post_permalink( get_post( $post_id ) );
+		$post_link  = get_permalink( $post_id );
+
+		global $wpdb;
+
+		$table_name = $wpdb->get_blog_prefix() . 'post_links';
+
+		$wpdb->insert(
+            $table_name,
+            array(
+                'audit'           => 1,
+                'name_post'       => get_post( $post_id )->post_title,
+                'type_post'       => get_post_type( $post_id ),
+                'permalinks_post' => get_permalink( $post_id ),
+            ),
+            array( '%d', '%s', '%s', '%s' )
+        );
 
 		$post_data = array(
 			'post_title'  => $title_work,
@@ -3083,6 +3100,8 @@ class Plugin_Optimizer_Admin {
 		wp_send_json_success( $return );
 
 	}
+
+
 
 }
 

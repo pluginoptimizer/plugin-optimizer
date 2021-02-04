@@ -1,12 +1,12 @@
 <div class="wrap container">
     <div class="wrap sos-wrap">
-        <div class="row col-12">
-            <h1>Plugin Optimizer</h1>
-        </div>
-        <div class="row col-12">
-            <h2 id="name_page" class="filters">Overview</h2>
-        </div>
         <div class="container">
+            <div class="row col-12">
+                <h1>Plugin Optimizer</h1>
+            </div>
+            <div class="row col-12">
+                <h2 id="name_page" class="filters">Overview</h2>
+            </div>
             <div class="row sos-content">
                 <div class="col-12">
                     <div class="tab tab-overview" id="tab_1">

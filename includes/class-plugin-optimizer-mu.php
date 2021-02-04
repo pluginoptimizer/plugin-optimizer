@@ -87,12 +87,8 @@ class Plugin_Optimizer_MU {
 	 * @access   private
 	 */
 	private function get_current_url_disabled_plugins() {
-
 		$block_plugins = array();
 		$current_url   = get_home_url() . trim( $_SERVER["REQUEST_URI"] );
-		if(is_single()){
-			print_r('Post');
-		}
 		$posts         = get_posts( array(
 			'post_type'   => 'sos_filter',
 			'numberposts' => - 1,
@@ -101,6 +97,23 @@ class Plugin_Optimizer_MU {
 		foreach ( $posts as $post ) {
 
 			$selected_pages = get_post_meta( $post->ID, 'selected_page', true );
+			$type_filter = get_post_meta( $post->ID, 'type_filter', true );
+
+			if($type_filter !== 'none'){
+				global $wpdb;
+
+				$table_name = $wpdb->get_blog_prefix() . 'post_links';
+
+				$selected_posts = $wpdb->get_results( "SELECT permalinks_post FROM $table_name WHERE type_post='" . $type_filter ."'" );
+
+				if($selected_posts){
+					foreach ($selected_posts as $selected_post){
+						if ( $selected_post->permalinks_post == $current_url ) {
+							$block_plugins = array_merge( $block_plugins, get_post_meta( $post->ID, 'block_value_plugins', true ) );
+						}
+					}
+				}
+			}
 
 			if ( is_array( $selected_pages ) ) {
 				foreach ( $selected_pages as $selected_page ) {
