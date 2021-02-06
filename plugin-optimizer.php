@@ -49,7 +49,7 @@ register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
 register_deactivation_hook( __FILE__, 'deactivate_plugin_optimizer' );
 
 
-if( ! is_plugin_active("sos_plugin_optimizer/plugin-optimizer.php") || ! file_exists( WPMU_PLUGIN_DIR . '/class-plugin-optimizer-mu.php') ){
+if( ! file_exists( WPMU_PLUGIN_DIR . '/class-plugin-optimizer-mu.php') ){
     
     return;
 }
