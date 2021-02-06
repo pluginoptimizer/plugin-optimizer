@@ -20,7 +20,7 @@ class Plugin_Optimizer_Activator {
 	 */
 	public static function activate() {
 		copy( __DIR__ . '/class-plugin-optimizer-mu.php', WPMU_PLUGIN_DIR . '/class-plugin-optimizer-mu.php' );
-		self::add_elements_to_worklist();
+		// self::add_elements_to_worklist();
 		self::create_table();
 		self::insert_posts();
 	}
