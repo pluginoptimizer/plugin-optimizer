@@ -56,7 +56,7 @@
                                                         <?php
                                                         $post_types         = get_post_types( [ 'publicly_queryable' => 1 ] );
                                                         $post_types['page'] = 'page';
-                                                        unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ], $post_types[ 'sos_work' ] );
+                                                        // unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ], $post_types[ 'sos_work' ] );
 
                                                         foreach ( $post_types as $post_type ) {
 	                                                        ?>
