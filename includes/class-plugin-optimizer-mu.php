@@ -12,6 +12,8 @@
  */
 
 class Plugin_Optimizer_MU {
+    
+    protected $original_active_plugins;
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -70,9 +72,15 @@ class Plugin_Optimizer_MU {
 	 * @access   public
 	 */
 	public function disable_filtered_plugins_for_current_url( $active_plugins ) {
+        
+        $this->original_active_plugins = $active_plugins;
+
+		if ( wp_doing_ajax() ) {
+			return $active_plugins;
+		}
 
 		if ( is_admin() ) {
-			return $active_plugins;
+			// return $active_plugins;
 		}
 
 		$disabled_plugins = $this->get_current_url_disabled_plugins();
@@ -87,43 +95,71 @@ class Plugin_Optimizer_MU {
 	 * @access   private
 	 */
 	private function get_current_url_disabled_plugins() {
+        
 		$block_plugins = array();
-		$current_url   = get_home_url() . trim( $_SERVER["REQUEST_URI"] );
-		$posts         = get_posts( array(
+        
+		$relative_url  = trim( $_SERVER["REQUEST_URI"] );
+		$current_url   = get_home_url() . $relative_url;
+        
+        // write_log( $this->original_active_plugins, "ngosifugnsodifgn-original_active_plugins" );
+        // write_log( $relative_url, "ngosifugnsodifgn-relative_url" );
+        
+        $editing_post_type = $this->are_editing_post_type( $relative_url );
+        
+        // --- are we on any of the PO pages?
+        
+        $po_pages = [
+            // "/wp-admin/admin.php?page=plugin_optimizer_add_filters",
+            "/wp-admin/admin.php?page=plugin_optimizer_overview",
+            "/wp-admin/admin.php?page=plugin_optimizer_filters",
+            "/wp-admin/admin.php?page=plugin_optimizer_filters_categories",
+            "/wp-admin/admin.php?page=plugin_optimizer_groups",
+            "/wp-admin/admin.php?page=plugin_optimizer_add_groups",
+            "/wp-admin/admin.php?page=plugin_optimizer_worklist",
+            "/wp-admin/admin.php?page=plugin_optimizer_settings",
+            "/wp-admin/admin.php?page=plugin_optimizer_support",
+        ];
+        $po_post_types = [
+            "sos_filter",
+        ];
+        
+        if( in_array( $relative_url, $po_pages ) || in_array( $editing_post_type, $po_post_types ) ){
+            
+            $blocked_plugins = array_diff( $this->original_active_plugins, [ "sos_plugin_optimizer/plugin-optimizer.php" ] );
+            
+            return $blocked_plugins;
+        }
+        
+        // ---
+        
+        
+		$filters         = get_posts( array(
 			'post_type'   => 'sos_filter',
 			'numberposts' => - 1,
 		) );
+        
+        // sos_plugin_optimizer/plugin-optimizer.php
 
-		foreach ( $posts as $post ) {
 
-			$selected_pages = get_post_meta( $post->ID, 'selected_page', true );
-			$type_filter = get_post_meta( $post->ID, 'type_filter', true );
+		foreach ( $filters as $filter ) {
 
-			if($type_filter !== 'none'){
-				global $wpdb;
+			$selected_pages = get_post_meta( $filter->ID, 'selected_page', true );
+			$type_filter    = get_post_meta( $filter->ID, 'type_filter', true );
 
-				$table_name = $wpdb->get_blog_prefix() . 'post_links';
-
-				$selected_posts = $wpdb->get_results( "SELECT permalinks_post FROM $table_name WHERE type_post='" . $type_filter ."'" );
-
-				if($selected_posts){
-					foreach ($selected_posts as $selected_post){
-						if ( $selected_post->permalinks_post == $current_url ) {
-							$block_plugins = array_merge( $block_plugins, get_post_meta( $post->ID, 'block_value_plugins', true ) );
-						}
-					}
-				}
+			if( $type_filter !== 'none' && $editing_post_type && $editing_post_type == $type_filter ){
+                
+				$block_plugins = array_merge( $block_plugins, get_post_meta( $filter->ID, 'block_value_plugins', true ) );
 			}
 
 			if ( is_array( $selected_pages ) ) {
 				foreach ( $selected_pages as $selected_page ) {
 					if ( $selected_page == $current_url ) {
-						$block_plugins = array_merge( $block_plugins, get_post_meta( $post->ID, 'block_value_plugins', true ) );
+						$block_plugins = array_merge( $block_plugins, get_post_meta( $filter->ID, 'block_value_plugins', true ) );
 					}
 				}
 			} else {
 				if ( $selected_pages == $current_url ) {
-					$block_plugins = array_merge( $block_plugins, get_post_meta( $post->ID, 'block_value_plugins', true ) );
+					$block_plugins = array_merge( $block_plugins, get_post_meta( $filter->ID, 'block_value_plugins', true ) );
 				}
 			}
 
@@ -132,6 +168,31 @@ class Plugin_Optimizer_MU {
 		return $block_plugins;
 	}
 
+	function are_editing_post_type( $url ){
+        
+        $post_id   = $this->url_to_postid( $url );
+        $post_type = false;
+        
+        if( $post_id !== 0 && strpos( $url, "post.php" ) !== false && strpos( $url, "action=edit" ) !== false ){
+            
+            $post_type = get_post_type( $post_id );
+        }
+        
+        return $post_type;
+        
+	}
+    
+	function url_to_postid( $url ){
+        
+        parse_str( parse_url( $url, PHP_URL_QUERY ), $query_vars);
+        
+        $post_id =                   ! empty( $query_vars["post"] )    ? $query_vars["post"]    : 0;
+        $post_id = $post_id === 0 && ! empty( $query_vars["post_id"] ) ? $query_vars["post_id"] : $post_id;
+        
+        return $post_id;
+        
+	}
+    
 }
 
 
@@ -257,3 +318,19 @@ function run_plugin_optimizer_mu() {
 }
 
 run_plugin_optimizer_mu();
+
+if( ! function_exists( 'write_log' ) ){//                                                           Write to debug.log
+    
+    function write_log ( $log, $text = "write_log: ", $file_name = "debug.log" )  {
+        
+        $file = WP_CONTENT_DIR . '/' . $file_name;
+        
+        if ( is_array( $log ) || is_object( $log ) ) {
+            error_log( $text . PHP_EOL . print_r( $log, true ) . PHP_EOL, 3, $file );
+        } else {
+            error_log( $text . PHP_EOL . $log . PHP_EOL . PHP_EOL, 3, $file );
+        }
+        
+    }
+
+}
