@@ -179,133 +179,16 @@ class Plugin_Optimizer_Admin {
 	 * Add Admin-Bar Pages
 	 */
 	public function add_plugin_in_admin_bar( $wp_admin_bar ) {
-
+        
+        // Main top menu item
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'plugin_optimizer',
 			'title' => '<span class="sos-icon"></span> Plugin Optimizer | Memory used: ' . $this->check_memory_usage() . ' Mb<span class="sos-speed"></span>',
 			'href'  => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_settings' ) ),
 		) );
-
-		$wp_admin_bar->add_menu( array(
-			'parent' => 'plugin_optimizer',
-			'id'     => 'plugin_optimizer_overview',
-			'title'  => 'Overview',
-			'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_overview' ) ),
-		) );
-
-		$wp_admin_bar->add_menu( array(
-			'parent' => 'plugin_optimizer',
-			'id'     => 'plugin_optimizer_filters',
-//			'title'  => 'Filters (' . wp_count_posts('sos_filter')->publish . ')',
-			'title'  => 'Filters',
-			'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_filters' ) ),
-		) );
-
-		$posts = get_posts( array(
-			'post_type'   => 'sos_filter',
-			'numberposts' => - 1,
-		) );
-		foreach ( $posts as $post ) {
-			if ( get_permalink( substr( get_post_meta( $post->ID, 'selected_page', true ), - 1 ) ) == get_home_url() . trim( $_SERVER["REQUEST_URI"] ) ) {
-				$wp_admin_bar->add_menu( array(
-					'parent' => 'plugin_optimizer_filters',
-					'id'     => 'plugin_optimizer_filters' . $post->post_title,
-					'title'  => $post->post_title,
-					'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_filters&filter_title=' . $post->post_title ) ),
-				) );
-			}
-		}
-
-		$wp_admin_bar->add_menu( array(
-			'parent' => 'plugin_optimizer',
-			'id'     => 'plugin_optimizer_filters_categories',
-			'title'  => 'Filters Categories (' . wp_count_terms( 'category' ) . ')',
-			'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_filters_categories' ) ),
-		) );
-
-		$categories = get_categories( [
-			'taxonomy'   => 'category',
-			'type'       => 'sos_filter',
-			'parent'     => 0,
-			'hide_empty' => 0,
-		] );
-
-		if ( $categories ) {
-			foreach ( $categories as $cat ) {
-				$wp_admin_bar->add_menu( array(
-					'parent' => 'plugin_optimizer_filters_categories',
-					'id'     => 'plugin_optimizer_filters_categories_' . $cat->cat_name,
-					'title'  => $cat->cat_name,
-					'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_filters_categories' ) ),
-				) );
-
-				$subcategories = get_categories( array(
-					'parent'     => $cat->cat_ID,
-					'taxonomy'   => 'category',
-					'type'       => 'sos_filter',
-					'hide_empty' => 0,
-				) );
-				if ( $subcategories ) {
-					foreach ( $subcategories as $subcategory ) {
-						$wp_admin_bar->add_menu( array(
-							'parent' => 'plugin_optimizer_filters_categories',
-							'id'     => 'plugin_optimizer_filters_categories_' . $subcategory->cat_name,
-							'title'  => $subcategory->cat_name,
-							'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_filters_categories' ) ),
-						) );
-					}
-				}
-			}
-		}
-
-		$wp_admin_bar->add_menu( array(
-			'parent' => 'plugin_optimizer',
-			'id'     => 'plugin_optimizer_groups',
-			'title'  => 'Groups (' . wp_count_posts( 'sos_group' )->publish . ')',
-			'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_groups' ) ),
-		) );
-
-		$posts = get_posts( array(
-			'post_type'   => 'sos_group',
-			'numberposts' => - 1,
-			'meta_query'  => array(
-				array(
-					'key'   => 'group_parents',
-					'value' => 'None'
-				)
-			),
-		) );
-		foreach ( $posts as $post ) {
-			$wp_admin_bar->add_menu( array(
-				'parent' => 'plugin_optimizer_groups',
-				'id'     => 'plugin_optimizer_groups' . $post->post_title,
-				'title'  => $post->post_title,
-				'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_groups&group_title=' . $post->post_title ) ),
-			) );
-			$posts_chidrens = get_posts( array(
-				'post_type'   => 'sos_group',
-				'numberposts' => - 1,
-				'meta_query'  => array(
-					array(
-						'key'   => 'group_parents',
-						'value' => $post->post_title,
-					)
-				),
-			) );
-
-
-			if ( $posts_chidrens ) {
-				foreach ( $posts_chidrens as $post_chidren ) {
-					$wp_admin_bar->add_menu( array(
-						'parent' => 'plugin_optimizer_groups',
-						'id'     => 'plugin_optimizer_groups' . $post_chidren->post_title,
-						'title'  => $post_chidren->post_title,
-						'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_groups&group_title=' . $post_chidren->post_title ) ),
-					) );
-				}
-			}
-		}
-
+        
+        
+        // Worklist
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_worklist',
@@ -313,129 +196,64 @@ class Plugin_Optimizer_Admin {
 			'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_worklist' ) ),
 		) );
 
-		$posts = get_posts( array(
-			'post_type'   => 'sos_work',
-			'numberposts' => - 1,
+
+        // Blocked Plugins
+		$wp_admin_bar->add_menu( array(
+			'parent' => 'plugin_optimizer',
+			'id'     => 'plugin_optimizer_blocked_plugins',
+			'title'  => 'Blocked Plugins (' . count( po_mu_plugin()->blocked_plugins ) . ')',
 		) );
-		foreach ( $posts as $post ) {
+
+		foreach ( po_mu_plugin()->get_names_list( "blocked_plugins" ) as $plugin_path => $plugin_name) {
 			$wp_admin_bar->add_menu( array(
-				'parent' => 'plugin_optimizer_worklist',
-				'id'     => 'plugin_optimizer_worklist' . $post->post_title,
-				'title'  => $post->post_title,
-				'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_worklist&work_title=' . $post->post_title ) ),
-			) );
-		}
-
-		$wp_admin_bar->add_menu( array(
-			'parent' => 'plugin_optimizer',
-			'id'     => 'plugin_optimizer_settings',
-			'title'  => 'Settings',
-			'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_settings' ) ),
-		) );
-
-		$wp_admin_bar->add_menu( array(
-			'parent' => 'plugin_optimizer',
-			'id'     => 'plugin_optimizer_disable_plugins',
-			'title'  => 'Disabled Plugins',
-		) );
-
-		$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
-		$activate_plugins   = array();
-		$deactivate_plugins = array();
-		foreach ( $all_plugins as $plugin ) {
-			foreach ( $plugin as $key => $value ) {
-				if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-					if ( $value ) {
-						array_push( $activate_plugins, $plugin['name'] );
-					} else {
-						array_push( $deactivate_plugins, $plugin['name'] );
-					}
-				}
-			}
-		}
-
-		$plugin_arr  = array();
-		$current_url = get_home_url() . trim( $_SERVER["REQUEST_URI"] );
-		$posts       = get_posts( array(
-			'post_type'   => 'sos_filter',
-			'numberposts' => - 1,
-		) );
-		foreach ( $posts as $post ) {
-			$selected_pages = get_post_meta( $post->ID, 'selected_page', true );
-
-			if ( is_array( $selected_pages ) ) {
-				foreach ( $selected_pages as $selected_page ) {
-					if ( $selected_page == $current_url ) {
-						$plugin_arr = array_merge( $plugin_arr, get_post_meta( $post->ID, 'block_plugins', true ) );
-					}
-				}
-			} else {
-				if ( $selected_pages == $current_url ) {
-					$plugin_arr = array_merge( $plugin_arr, get_post_meta( $post->ID, 'block_plugins', true ) );
-				}
-			}
-		}
-
-		if ( $plugin_arr ) {
-			$plugin_arr = array_unique( $plugin_arr );
-			foreach ( $plugin_arr as $plugin ) {
-				$wp_admin_bar->add_menu( array(
-					'parent' => 'plugin_optimizer_disable_plugins',
-					'id'     => 'plugin_optimizer_disable_plugin_' . $plugin,
-					'title'  => $plugin,
-				) );
-			}
-		}
-
-		$wp_admin_bar->add_menu( array(
-			'parent' => 'plugin_optimizer',
-			'id'     => 'plugin_optimizer_enabled_plugins',
-			'title'  => 'Enabled Plugins',
-		) );
-
-		$enabled_plugins = array_diff( $activate_plugins, $plugin_arr );
-		foreach ( $enabled_plugins as $enabled_plugin ) {
-			$wp_admin_bar->add_menu( array(
-				'parent' => 'plugin_optimizer_enabled_plugins',
-				'id'     => 'plugin_optimizer_enabled_plugins' . $enabled_plugin,
-				'title'  => $enabled_plugin,
+				'parent' => 'plugin_optimizer_blocked_plugins',
+				'id'     => 'plugin_optimizer_blocked_plugin_' . $plugin_path,
+				'title'  => $plugin_name,
 			) );
 		}
 
 
-//		if ( is_admin() ) {
-
-
-		$wp_admin_bar->add_menu( array(
-			'parent' => 'plugin_optimizer_settings',
-			'id'     => 'plugin_optimizer_settings_plugin_activated',
-			'title'  => 'Activate plugins (' . count( $activate_plugins ) . ')',
-		) );
-
-		$wp_admin_bar->add_menu( array(
-			'parent' => 'plugin_optimizer_settings',
-			'id'     => 'plugin_optimizer_settings_plugin_deactivated',
-			'title'  => 'Deactivate plugins (' . count( $deactivate_plugins ) . ')',
-		) );
-
-
-		foreach ( $activate_plugins as $activate_plugin ) {
-			$wp_admin_bar->add_menu( array(
-				'parent' => 'plugin_optimizer_settings_plugin_activated',
-				'id'     => 'plugin_optimizer_settings_plugin_activated' . $activate_plugin,
-				'title'  => $activate_plugin,
-				'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_settings&plugin_title=' . $activate_plugin ) ),
-			) );
-		}
-//		}
-
+        // Running Plugins
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
-			'id'     => 'plugin_optimizer_support',
-			'title'  => 'Support',
-			'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_support' ) ),
+			'id'     => 'plugin_optimizer_running_plugins',
+			'title'  => 'Running Plugins (' . count( po_mu_plugin()->filtered_active_plugins ) . ')',
 		) );
 
+		foreach ( po_mu_plugin()->get_names_list( "filtered_active_plugins" ) as $plugin_path => $plugin_name) {
+			$wp_admin_bar->add_menu( array(
+				'parent' => 'plugin_optimizer_running_plugins',
+				'id'     => 'plugin_optimizer_running_plugin_' . $plugin_path,
+				'title'  => $plugin_name,
+			) );
+		}
+        
+        if( po_mu_plugin()->po_default_page ){
+            $wp_admin_bar->add_menu( array(
+                'parent' => 'plugin_optimizer',
+                'id'     => 'plugin_optimizer_default_page',
+                'title'  => 'We are on a PO default page.',
+            ) );
+        }
+        
+        if( ! empty( po_mu_plugin()->filters_in_use ) ){
+            
+            $wp_admin_bar->add_menu( array(
+                'parent' => 'plugin_optimizer',
+                'id'     => 'plugin_optimizer_filters_in_use',
+                'title'  => 'Filters in use: ' . count( po_mu_plugin()->filters_in_use ),
+            ) );
+            
+            foreach ( po_mu_plugin()->filters_in_use as $filter_id => $filter_name) {
+                $wp_admin_bar->add_menu( array(
+                    'parent' => 'plugin_optimizer_filters_in_use',
+                    'id'     => 'plugin_optimizer_filter_in_use_' . $filter_id,
+                    'title'  => $filter_name,
+                ) );
+            }
+            
+        }
+        
 	}
 
 	/**
@@ -2230,8 +2048,8 @@ class Plugin_Optimizer_Admin {
 		$name_element = htmlspecialchars( $_POST['name_element'] );
 		$type_element = htmlspecialchars( $_POST['type_element'] );
 
-		$posts;
-		$categories;
+		$posts      = [];
+		$categories = [];
 
 		if ( $type_element === 'filters' ) {
 			$posts = get_posts( array(

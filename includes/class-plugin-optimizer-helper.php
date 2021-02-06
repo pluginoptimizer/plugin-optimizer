@@ -7,12 +7,10 @@ class Plugin_Optimizer_Helper {
 
 	public static function get_plugins_with_status() {
 		
-		require_once ABSPATH . 'wp-admin/includes/plugin.php';
-
 		$plugins = [];
 
-		$all_plugins    = get_plugins();
-		$active_plugins = get_option( 'active_plugins' );
+		$all_plugins    = po_mu_plugin()->all_plugins;
+		$active_plugins = po_mu_plugin()->original_active_plugins;
 
 		foreach ( $active_plugins as $active_plugin_file ) {
 			$plugins[] = [
@@ -30,7 +28,7 @@ class Plugin_Optimizer_Helper {
 				'is_active' => 0,
 			];
 		}
-
+        
 		return $plugins;
 
 	}

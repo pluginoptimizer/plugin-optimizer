@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Plugin Name:       Plugin Optimizer MU
  * Plugin URI:        plugin-uri.com
@@ -13,103 +12,28 @@
 
 class Plugin_Optimizer_MU {
     
-    protected $original_active_plugins;
+    protected static $instance = null;
+    
+    protected $po_pages      = [];
+    protected $po_post_types = [];
+    
+    public $po_default_page = false;
+    
+    public $all_plugins             = [];
+    public $original_active_plugins = [];
+    public $filtered_active_plugins = [];
+    public $plugins_to_block        = [];
+    public $blocked_plugins         = [];
+    public $filters_in_use          = [];
 
-	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the plugin.
-	 *
-	 * @access   protected
-	 * @var      Plugin_Optimizer_Loader_MU $loader Maintains and registers all hooks for the plugin.
-	 */
-	protected $loader;
-
-	/**
-	 * Plugin_Optimizer_MU constructor.
-	 */
-	public function __construct() {
-
-		$this->loader = new Plugin_Optimizer_Loader_MU();
-		$this->define_mu_hooks();
-
-	}
-
-	/**
-	 * Run the loader to execute all of the hooks with WordPress.
-	 *
-	 */
-	public function run() {
-		$this->loader->run();
-	}
-
-	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
-	 *
-	 * @access   private
-	 */
-	private function define_mu_hooks() {
-
-		$this->loader->add_filter( 'option_active_plugins', $this, 'disable_filtered_plugins_for_current_url', 5 );
-		$this->loader->add_action('plugins_loaded', $this, 'clear_active_plugins_filters', 5);
-
-	}
-
-	/**
-	 * Exclude blocked plugins
-	 *
-	 * @access   public
-	 */
-	public function clear_active_plugins_filters (){
-
-		remove_filter('option_active_plugins', array($this, 'disable_filtered_plugins_for_current_url'), 5);
-
-	}
-
-	/**
-	 * Filter the necessary plugins from unnecessary
-	 *
-	 * @access   public
-	 */
-	public function disable_filtered_plugins_for_current_url( $active_plugins ) {
+	private function __construct() {
         
-        $this->original_active_plugins = $active_plugins;
-
-		if ( wp_doing_ajax() ) {
-			return $active_plugins;
-		}
-
-		if ( is_admin() ) {
-			// return $active_plugins;
-		}
-
-		$disabled_plugins = $this->get_current_url_disabled_plugins();
-
-		return array_diff( $active_plugins, $disabled_plugins );
-
-	}
-
-	/**
-	 * Getting plugins to exclude
-	 *
-	 * @access   private
-	 */
-	private function get_current_url_disabled_plugins() {
+        if( wp_doing_ajax() ){
+            return;
+        }
         
-		$block_plugins = array();
-        
-		$relative_url  = trim( $_SERVER["REQUEST_URI"] );
-		$current_url   = get_home_url() . $relative_url;
-        
-        // write_log( $this->original_active_plugins, "ngosifugnsodifgn-original_active_plugins" );
-        // write_log( $relative_url, "ngosifugnsodifgn-relative_url" );
-        
-        $editing_post_type = $this->are_editing_post_type( $relative_url );
-        
-        // --- are we on any of the PO pages?
-        
-        $po_pages = [
-            // "/wp-admin/admin.php?page=plugin_optimizer_add_filters",
+        $this->po_pages = [
+            "/wp-admin/admin.php?page=plugin_optimizer_add_filters",
             "/wp-admin/admin.php?page=plugin_optimizer_overview",
             "/wp-admin/admin.php?page=plugin_optimizer_filters",
             "/wp-admin/admin.php?page=plugin_optimizer_filters_categories",
@@ -119,54 +43,126 @@ class Plugin_Optimizer_MU {
             "/wp-admin/admin.php?page=plugin_optimizer_settings",
             "/wp-admin/admin.php?page=plugin_optimizer_support",
         ];
-        $po_post_types = [
+        $this->po_post_types = [
             "sos_filter",
         ];
         
-        if( in_array( $relative_url, $po_pages ) || in_array( $editing_post_type, $po_post_types ) ){
+		$this->set_hooks();
+        
+	}
+    
+    static function get_instance() {
+
+        if( self::$instance == null ){
+            self::$instance = new self();
+        }
+     
+        return self::$instance;
+
+	}
+
+
+	function set_hooks() {
+
+		add_filter( 'option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
+        
+		add_action( 'plugins_loaded',        [ $this, 'complete_action_once_plugins_are_loaded' ], 5 );
+
+	}
+
+	function complete_action_once_plugins_are_loaded(){
+
+		remove_filter('option_active_plugins', [ $this, 'disable_filtered_plugins_for_current_url' ], 5 );
+
+	}
+
+
+	function filter_active_plugins_option_value( $active_plugins ) {
+        
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+        $this->all_plugins = get_plugins();
+        
+        // $this->write_log( $this->all_plugins, "adsgashgwrest5h" );
+
+        
+        
+        $this->original_active_plugins  = $active_plugins;
+
+		$this->plugins_to_block         = $this->get_plugins_to_block_for_current_url();
+        
+        $this->filtered_active_plugins  = array_diff( $this->original_active_plugins, $this->plugins_to_block );
+        
+        $this->blocked_plugins = array_intersect( $this->original_active_plugins, $this->plugins_to_block );
+
+		return $this->filtered_active_plugins;
+
+	}
+
+	function get_plugins_to_block_for_current_url() {
+        
+		$relative_url  = trim( $_SERVER["REQUEST_URI"] );
+		$current_url   = get_home_url() . $relative_url;
+        
+        // $this->write_log( $this->original_active_plugins, "ngosifugnsodifgn-original_active_plugins" );
+        // $this->write_log( $relative_url, "ngosifugnsodifgn-relative_url" );
+        
+        $editing_post_type = $this->are_editing_post_type( $relative_url );
+        
+        // --- are we on any of the PO pages?
+        
+        if( in_array( $relative_url, $this->po_pages ) || in_array( $editing_post_type, $this->po_post_types ) ){
             
-            $blocked_plugins = array_diff( $this->original_active_plugins, [ "sos_plugin_optimizer/plugin-optimizer.php" ] );
+            $this->po_default_page = true;
             
-            return $blocked_plugins;
+            $block_all_plugins = array_diff( $this->original_active_plugins, [ "sos_plugin_optimizer/plugin-optimizer.php" ] );
+            
+            return $block_all_plugins;
         }
         
-        // ---
+        // --- Get plugins to block from all the filters
         
-        
-		$filters         = get_posts( array(
+		$filters = get_posts([
 			'post_type'   => 'sos_filter',
 			'numberposts' => - 1,
-		) );
+		]);
         
-        // sos_plugin_optimizer/plugin-optimizer.php
-
-
-		foreach ( $filters as $filter ) {
-
-			$selected_pages = get_post_meta( $filter->ID, 'selected_page', true );
-			$type_filter    = get_post_meta( $filter->ID, 'type_filter', true );
-
-			if( $type_filter !== 'none' && $editing_post_type && $editing_post_type == $type_filter ){
+		foreach( $filters as $filter ){
+            
+            // If we're on the edit post screen, filter by post type
+			if( $filter->type_filter !== 'none' && $editing_post_type && $editing_post_type == $filter->type_filter ){
                 
-				$block_plugins = array_merge( $block_plugins, get_post_meta( $filter->ID, 'block_value_plugins', true ) );
+				$this->use_filter( $filter );
 			}
 
-			if ( is_array( $selected_pages ) ) {
-				foreach ( $selected_pages as $selected_page ) {
-					if ( $selected_page == $current_url ) {
-						$block_plugins = array_merge( $block_plugins, get_post_meta( $filter->ID, 'block_value_plugins', true ) );
-					}
-				}
-			} else {
-				if ( $selected_pages == $current_url ) {
-					$block_plugins = array_merge( $block_plugins, get_post_meta( $filter->ID, 'block_value_plugins', true ) );
-				}
+            // Filter by URL
+			if( is_array( $filter->selected_page ) ){
+                
+                if( in_array( $current_url, $filter->selected_page ) ){
+                    
+                    $this->use_filter( $filter );
+                }
+                
+			} elseif( $filter->selected_page == $current_url ){
+
+				$this->use_filter( $filter );
 			}
 
 		}
-
-		return $block_plugins;
+        
+		return array_unique( $this->plugins_to_block );
 	}
+
+    function use_filter( $filter ){
+        
+        $this->plugins_to_block = array_merge( $this->plugins_to_block, $filter->block_value_plugins );
+        
+        $this->filters_in_use[ $filter->ID ] = $filter->post_title;
+        
+        return $filter->block_value_plugins;
+        
+    }
+    
 
 	function are_editing_post_type( $url ){
         
@@ -193,135 +189,7 @@ class Plugin_Optimizer_MU {
         
 	}
     
-}
-
-
-/**
- * Register all actions and filters for the plugin.
- */
-class Plugin_Optimizer_Loader_MU {
-
-	/**
-	 * The array of actions registered with WordPress.
-	 *
-	 * @access   protected
-	 * @var      array $actions The actions registered with WordPress to fire when the plugin loads.
-	 */
-	protected $actions;
-
-	/**
-	 * The array of filters registered with WordPress.
-	 *
-	 * @access   protected
-	 * @var      array $filters The filters registered with WordPress to fire when the plugin loads.
-	 */
-	protected $filters;
-
-	/**
-	 * Initialize the collections used to maintain the actions and filters.
-	 *
-	 */
-	public function __construct() {
-
-		$this->actions = array();
-		$this->filters = array();
-
-	}
-
-	/**
-	 * Add a new action to the collection to be registered with WordPress.
-	 *
-	 * @param string $hook The name of the WordPress action that is being registered.
-	 * @param object $component A reference to the instance of the object on which the action is defined.
-	 * @param string $callback The name of the function definition on the $component.
-	 * @param int $priority Optional. The priority at which the function should be fired. Default is 10.
-	 * @param int $accepted_args Optional. The number of arguments that should be passed to the $callback. Default is 1.
-	 */
-	public function add_action( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
-		$this->actions = $this->add( $this->actions, $hook, $component, $callback, $priority, $accepted_args );
-	}
-
-	/**
-	 * Add a new filter to the collection to be registered with WordPress.
-	 *
-	 * @param string $hook The name of the WordPress filter that is being registered.
-	 * @param object $component A reference to the instance of the object on which the filter is defined.
-	 * @param string $callback The name of the function definition on the $component.
-	 * @param int $priority Optional. The priority at which the function should be fired. Default is 10.
-	 * @param int $accepted_args Optional. The number of arguments that should be passed to the $callback. Default is 1
-	 */
-	public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
-		$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
-	}
-
-	/**
-	 * A utility function that is used to register the actions and hooks into a single
-	 * collection.
-	 *
-	 * @access   private
-	 *
-	 * @param array $hooks The collection of hooks that is being registered (that is, actions or filters).
-	 * @param string $hook The name of the WordPress filter that is being registered.
-	 * @param object $component A reference to the instance of the object on which the filter is defined.
-	 * @param string $callback The name of the function definition on the $component.
-	 * @param int $priority The priority at which the function should be fired.
-	 * @param int $accepted_args The number of arguments that should be passed to the $callback.
-	 *
-	 * @return   array                                  The collection of actions and filters registered with WordPress.
-	 */
-	private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
-
-		$hooks[] = array(
-			'hook'          => $hook,
-			'component'     => $component,
-			'callback'      => $callback,
-			'priority'      => $priority,
-			'accepted_args' => $accepted_args,
-		);
-
-		return $hooks;
-
-	}
-
-	/**
-	 * Register the filters and actions with WordPress.
-	 *
-	 */
-	public function run() {
-
-		foreach ( $this->filters as $hook ) {
-			add_filter( $hook['hook'], array(
-				$hook['component'],
-				$hook['callback']
-			), $hook['priority'], $hook['accepted_args'] );
-		}
-
-		foreach ( $this->actions as $hook ) {
-			add_action( $hook['hook'], array(
-				$hook['component'],
-				$hook['callback']
-			), $hook['priority'], $hook['accepted_args'] );
-		}
-
-	}
-
-}
-
-/**
- * Begins execution of the plugin.
- */
-function run_plugin_optimizer_mu() {
-
-	$plugin = new Plugin_Optimizer_MU();
-	$plugin->run();
-
-}
-
-run_plugin_optimizer_mu();
-
-if( ! function_exists( 'write_log' ) ){//                                                           Write to debug.log
-    
-    function write_log ( $log, $text = "write_log: ", $file_name = "debug.log" )  {
+    function write_log( $log, $text = "write_log: ", $file_name = "debug.log" )  {
         
         $file = WP_CONTENT_DIR . '/' . $file_name;
         
@@ -333,4 +201,31 @@ if( ! function_exists( 'write_log' ) ){//                                       
         
     }
 
+    function get_names_list( $array_name, $key = "Name" ){
+        
+        $list = [];
+        
+        foreach( $this->$array_name as $plugin_id ){
+            
+            $list[ $plugin_id ] = $this->all_plugins[ $plugin_id ][ $key ];
+            
+        }
+        
+        // $list = array_map( function( $plugin_id ) use ( $key ){
+            
+            // return $this->all_plugins[ $plugin_id ][ $key ];
+            
+        // }, $this->$array_name );
+        
+        natcasesort( $list );
+        
+        return $list;
+        
+    }
+    
 }
+
+function po_mu_plugin(){
+     return Plugin_Optimizer_MU::get_instance();
+}
+po_mu_plugin();
