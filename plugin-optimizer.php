@@ -65,3 +65,19 @@ function run_plugin_optimizer() {
 }
 
 run_plugin_optimizer();
+
+if( ! function_exists( 'write_log' ) ){//                                                           Write to debug.log
+    
+    function write_log ( $log, $text = "write_log: ", $file_name = "debug.log" )  {
+        
+        $file = WP_CONTENT_DIR . '/' . $file_name;
+        
+        if ( is_array( $log ) || is_object( $log ) ) {
+            error_log( $text . PHP_EOL . print_r( $log, true ) . PHP_EOL, 3, $file );
+        } else {
+            error_log( $text . PHP_EOL . $log . PHP_EOL . PHP_EOL, 3, $file );
+        }
+        
+    }
+
+}
