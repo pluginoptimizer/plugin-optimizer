@@ -36,8 +36,8 @@ class Plugin_Optimizer_MU {
         $this->should_be_in_worklist = true;
         
         $this->po_pages = [
+            "/wp-admin/admin.php?page=plugin_optimizer",
             "/wp-admin/admin.php?page=plugin_optimizer_add_filters",
-            "/wp-admin/admin.php?page=plugin_optimizer_overview",
             "/wp-admin/admin.php?page=plugin_optimizer_filters",
             "/wp-admin/admin.php?page=plugin_optimizer_filters_categories",
             "/wp-admin/admin.php?page=plugin_optimizer_groups",
