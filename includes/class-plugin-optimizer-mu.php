@@ -12,12 +12,13 @@
 
 class Plugin_Optimizer_MU {
     
-    protected static $instance = null;
+    protected static $instance      = null;
     
-    protected $po_pages      = [];
-    protected $po_post_types = [];
+    protected $po_pages             = [];
+    protected $po_post_types        = [];
     
-    public $po_default_page = false;
+    public $po_default_page         = false;
+    public $should_be_in_worklist   = null;
     
     public $all_plugins             = [];
     public $original_active_plugins = [];
@@ -31,6 +32,8 @@ class Plugin_Optimizer_MU {
         if( wp_doing_ajax() ){
             return;
         }
+        
+        $this->should_be_in_worklist = true;
         
         $this->po_pages = [
             "/wp-admin/admin.php?page=plugin_optimizer_add_filters",
@@ -93,7 +96,7 @@ class Plugin_Optimizer_MU {
         
         $this->filtered_active_plugins  = array_diff( $this->original_active_plugins, $this->plugins_to_block );
         
-        $this->blocked_plugins = array_intersect( $this->original_active_plugins, $this->plugins_to_block );
+        $this->blocked_plugins          = array_intersect( $this->original_active_plugins, $this->plugins_to_block );
 
 		return $this->filtered_active_plugins;
 
@@ -113,11 +116,11 @@ class Plugin_Optimizer_MU {
         
         if( in_array( $relative_url, $this->po_pages ) || in_array( $editing_post_type, $this->po_post_types ) ){
             
-            $this->po_default_page = true;
+            $this->po_default_page          = true;
+            $this->should_be_in_worklist    = false;
+            $this->plugins_to_block         = array_diff( $this->original_active_plugins, [ "plugin-optimizer/plugin-optimizer.php" ] );
             
-            $block_all_plugins = array_diff( $this->original_active_plugins, [ "sos_plugin_optimizer/plugin-optimizer.php" ] );
-            
-            return $block_all_plugins;
+            return $this->plugins_to_block;
         }
         
         // --- Get plugins to block from all the filters
@@ -154,6 +157,8 @@ class Plugin_Optimizer_MU {
 	}
 
     function use_filter( $filter ){
+        
+        $this->should_be_in_worklist = false;
         
         $this->plugins_to_block = array_merge( $this->plugins_to_block, $filter->block_value_plugins );
         
