@@ -48,6 +48,8 @@ class Plugin_Optimizer_MU {
         ];
         $this->po_post_types = [
             "sos_filter",
+            "sos_group",
+            "sos_work",
         ];
         
 		$this->set_hooks();
