@@ -18,7 +18,8 @@ class Plugin_Optimizer_MU {
     protected $po_post_types        = [];
     
     public $po_default_page         = false;
-    public $should_be_in_worklist   = null;
+    public $is_being_filtered       = false;
+    public $is_skipped              = false;
     
     public $all_plugins             = [];
     public $original_active_plugins = [];
@@ -32,8 +33,6 @@ class Plugin_Optimizer_MU {
         if( wp_doing_ajax() ){
             return;
         }
-        
-        $this->should_be_in_worklist = true;
         
         $this->po_pages = [
             "/wp-admin/admin.php?page=plugin_optimizer",
@@ -52,7 +51,7 @@ class Plugin_Optimizer_MU {
             "sos_work",
         ];
         
-		$this->set_hooks();
+        $this->set_hooks();
         
 	}
     
@@ -73,24 +72,29 @@ class Plugin_Optimizer_MU {
         
 		add_action( 'plugins_loaded',        [ $this, 'complete_action_once_plugins_are_loaded' ], 5 );
 
+		// add_action( 'shutdown',        [ $this, 'test' ] );
+		add_action( 'shutdown',        [ $this, 'update_worklist_if_needed' ] );
+
 	}
 
 	function complete_action_once_plugins_are_loaded(){
 
 		remove_filter('option_active_plugins', [ $this, 'disable_filtered_plugins_for_current_url' ], 5 );
-
+        
 	}
 
 
 	function filter_active_plugins_option_value( $active_plugins ) {
         
+        if( ! empty( $this->all_plugins ) ){
+            return $active_plugins;
+        }
+        
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-        $this->all_plugins = get_plugins();
-        
-        // $this->write_log( $this->all_plugins, "adsgashgwrest5h" );
-
-        
+        remove_filter('option_active_plugins', [ $this, 'disable_filtered_plugins_for_current_url' ], 5 );
+        $this->all_plugins              = get_plugins();
+        add_filter( 'option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
         
         $this->original_active_plugins  = $active_plugins;
 
@@ -99,9 +103,30 @@ class Plugin_Optimizer_MU {
         $this->filtered_active_plugins  = array_diff( $this->original_active_plugins, $this->plugins_to_block );
         
         $this->blocked_plugins          = array_intersect( $this->original_active_plugins, $this->plugins_to_block );
-
+        
 		return $this->filtered_active_plugins;
 
+	}
+
+	function should_skip_url( $url ) {
+        
+        $skip = [
+            '/favicon.ico',
+        ];
+        
+        if( in_array( $url, $skip ) ){
+            return true;
+        } elseif( strpos( $url, 'wp-content/plugins' ) !== false ){
+            return true;
+        } elseif( strpos( $url, 'wp-content/themes' ) !== false ){
+            return true;
+        } elseif( strpos( $url, '/wp-cron.php' ) !== false ){
+            return true;
+        } elseif( strpos( $url, '/wp-json/' ) !== false ){
+            return true;
+        }
+        
+        return false;
 	}
 
 	function get_plugins_to_block_for_current_url() {
@@ -109,8 +134,10 @@ class Plugin_Optimizer_MU {
 		$relative_url  = trim( $_SERVER["REQUEST_URI"] );
 		$current_url   = get_home_url() . $relative_url;
         
-        // $this->write_log( $this->original_active_plugins, "ngosifugnsodifgn-original_active_plugins" );
-        // $this->write_log( $relative_url, "ngosifugnsodifgn-relative_url" );
+        if( $this->should_skip_url( $relative_url ) ){
+            $this->is_skipped = true;
+            return [];
+        }
         
         $editing_post_type = $this->are_editing_post_type( $relative_url );
         
@@ -119,7 +146,7 @@ class Plugin_Optimizer_MU {
         if( in_array( $relative_url, $this->po_pages ) || in_array( $editing_post_type, $this->po_post_types ) ){
             
             $this->po_default_page          = true;
-            $this->should_be_in_worklist    = false;
+            $this->is_being_filtered        = true;
             $this->plugins_to_block         = array_diff( $this->original_active_plugins, [ "plugin-optimizer/plugin-optimizer.php" ] );
             
             return $this->plugins_to_block;
@@ -160,13 +187,38 @@ class Plugin_Optimizer_MU {
 
     function use_filter( $filter ){
         
-        $this->should_be_in_worklist = false;
+        $this->is_being_filtered = true;
         
         $this->plugins_to_block = array_merge( $this->plugins_to_block, $filter->block_value_plugins );
         
         $this->filters_in_use[ $filter->ID ] = $filter->post_title;
         
         return $filter->block_value_plugins;
+        
+    }
+    
+
+    function test(){
+        
+        if( $this->is_being_filtered ===  false && ! $this->po_default_page ){
+            
+            $this->write_log( "test-update_in_worklist" );
+        }
+        
+        
+        $this->write_log( var_export( $this->is_skipped, true ), "test-is_skipped" );
+        $this->write_log( var_export( $this->is_being_filtered, true ), "test-is_being_filtered" );
+        $this->write_log( var_export( $this->po_default_page,   true ), "test-po_default_page" );
+        
+    }
+    
+
+    function update_worklist_if_needed(){
+        
+        if( $this->is_skipped === false && $this->is_being_filtered === false && ! $this->po_default_page ){
+            
+            $this->write_log( ( is_admin() ? "Back end" : "Front end" ) . ": " . var_export( trim( $_SERVER["REQUEST_URI"] ), true ), "update_worklist_if_needed-REQUEST_URI" );
+        }
         
     }
     
