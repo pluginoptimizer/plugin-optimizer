@@ -200,11 +200,19 @@ class Plugin_Optimizer_Admin {
 			) );
 		}
         
-        if( po_mu_plugin()->po_default_page ){
+        if( po_mu_plugin()->is_po_default_page ){
             $wp_admin_bar->add_menu( array(
                 'parent' => 'plugin_optimizer',
                 'id'     => 'plugin_optimizer_default_page',
                 'title'  => 'We are on a PO default page.',
+            ) );
+        }
+        
+        if( ! po_mu_plugin()->is_being_filtered ){
+            $wp_admin_bar->add_menu( array(
+                'parent' => 'plugin_optimizer',
+                'id'     => 'plugin_optimizer_being_filtered',
+                'title'  => 'This page is not being filtered.',
             ) );
         }
         
@@ -1487,6 +1495,8 @@ class Plugin_Optimizer_Admin {
 	function content_filters( $posts ) {
 		if ( $posts ) :
 			foreach ( $posts as $post ) :
+                $blocking_plugins = get_post_meta( $post->ID, 'block_plugins', true );
+                sort( $blocking_plugins );
 				?>
                 <tr class="block_info" id="filter-<?= $post->ID; ?>">
                     <td><input type="checkbox" id="<?= $post->ID; ?>"></td>
@@ -1494,7 +1504,7 @@ class Plugin_Optimizer_Admin {
                     <td><?= get_post_meta( $post->ID, 'category_filter', true ); ?></td>
                     <td class="data-type-filter"><?= get_post_meta( $post->ID, 'type_filter', true ); ?></td>
                     <td class="data-link-filter"><?= get_post_meta( $post->ID, 'selected_page', true ); ?></td>
-                    <td><?= implode( ', ', get_post_meta( $post->ID, 'block_plugins', true ) ); ?></td>
+                    <td class="expandable"><span class="no_hover"><?= count( $blocking_plugins ) ?></span><span class="yes_hover"><?= implode( ',<br/>', $blocking_plugins ); ?></span></td>
                 </tr>
                 <tr class="hidden_info">
                     <td colspan="6">
@@ -1589,7 +1599,7 @@ class Plugin_Optimizer_Admin {
 													foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
 														?>
                                                         <div class="hidden_content content">
-                                                            <span value="<?= $content_plugins[ $block_plugin_in_group ]; ?>"><?= $block_plugin_in_group; ?></span>
+                                                            <span value="<?= isset( $content_plugins[ $block_plugin_in_group ] ) ? $content_plugins[ $block_plugin_in_group ] : "" ?>"><?= $block_plugin_in_group; ?></span>
                                                         </div>
 													<?php
 													endforeach;

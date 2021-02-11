@@ -230,7 +230,11 @@
 .sos-wrap .sos-content{
     /*margin: 0;*/
     background-color: #fff !important;
-    /*width: 100%;*/
+    width: 100%;
+}
+.sos-wrap .sos-content > .row{
+    width: 100%;
+    max-width: 100%;
 }
 
 .wrap-tabs{
@@ -436,10 +440,16 @@
 }
 
 
+td.expandable:hover .no_hover,
+td.expandable:not(:hover) .yes_hover{
+    display: none;
+}
 
 
-
-
+.sos-wrap.container{
+    max-width: 100%;
+    width: 100%;
+}
 
 
 

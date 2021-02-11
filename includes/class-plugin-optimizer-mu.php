@@ -17,7 +17,7 @@ class Plugin_Optimizer_MU {
     protected $po_pages             = [];
     protected $po_post_types        = [];
     
-    public $po_default_page         = false;
+    public $is_po_default_page      = false;
     public $is_being_filtered       = false;
     public $is_skipped              = false;
     
@@ -30,7 +30,7 @@ class Plugin_Optimizer_MU {
 
 	private function __construct() {
         
-        if( wp_doing_ajax() ){
+        if( wp_doing_ajax() || wp_doing_cron() ){
             return;
         }
         
@@ -72,8 +72,7 @@ class Plugin_Optimizer_MU {
         
 		add_action( 'plugins_loaded',        [ $this, 'complete_action_once_plugins_are_loaded' ], 5 );
 
-		// add_action( 'shutdown',        [ $this, 'test' ] );
-		add_action( 'shutdown',        [ $this, 'update_worklist_if_needed' ] );
+		add_action( 'shutdown',              [ $this, 'update_worklist_if_needed' ] );
 
 	}
 
@@ -139,15 +138,15 @@ class Plugin_Optimizer_MU {
             return [];
         }
         
-        $editing_post_type = $this->are_editing_post_type( $relative_url );
+        $editing_post_type = $this->is_editing_post_type( $relative_url );
         
         // --- are we on any of the PO pages?
         
         if( in_array( $relative_url, $this->po_pages ) || in_array( $editing_post_type, $this->po_post_types ) ){
             
-            $this->po_default_page          = true;
-            $this->is_being_filtered        = true;
-            $this->plugins_to_block         = array_diff( $this->original_active_plugins, [ "plugin-optimizer/plugin-optimizer.php" ] );
+            $this->is_po_default_page   = true;
+            $this->is_being_filtered    = true;
+            $this->plugins_to_block     = array_diff( $this->original_active_plugins, [ "plugin-optimizer/plugin-optimizer.php" ] );
             
             return $this->plugins_to_block;
         }
@@ -198,24 +197,15 @@ class Plugin_Optimizer_MU {
     }
     
 
-    function test(){
-        
-        if( $this->is_being_filtered ===  false && ! $this->po_default_page ){
-            
-            $this->write_log( "test-update_in_worklist" );
-        }
-        
-        
-        $this->write_log( var_export( $this->is_skipped, true ), "test-is_skipped" );
-        $this->write_log( var_export( $this->is_being_filtered, true ), "test-is_being_filtered" );
-        $this->write_log( var_export( $this->po_default_page,   true ), "test-po_default_page" );
-        
-    }
-    
-
     function update_worklist_if_needed(){
         
-        if( $this->is_skipped === false && $this->is_being_filtered === false && ! $this->po_default_page ){
+        if( $this->is_skipped === false && $this->is_being_filtered === false && ! $this->is_po_default_page ){
+            
+            if( ! is_admin() ){
+                
+                
+                
+            }
             
             $this->write_log( ( is_admin() ? "Back end" : "Front end" ) . ": " . var_export( trim( $_SERVER["REQUEST_URI"] ), true ), "update_worklist_if_needed-REQUEST_URI" );
         }
@@ -223,7 +213,7 @@ class Plugin_Optimizer_MU {
     }
     
 
-	function are_editing_post_type( $url ){
+	function is_editing_post_type( $url ){
         
         $post_id   = $this->url_to_postid( $url );
         $post_type = false;
