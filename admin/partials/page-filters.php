@@ -68,7 +68,7 @@
                             <th>cATEGORIES</th>
                             <th>type</th>
                             <th>permalinks</th>
-                            <th>Block plugins</th>
+                            <th>Blocked plugins</th>
                         </tr>
                         </thead>
                         <tbody id="the-list">
