@@ -220,6 +220,7 @@ class Plugin_Optimizer_Ajax {
 
 	}
 
+
 	/**
 	 * Search elements
 	 */
@@ -467,6 +468,7 @@ class Plugin_Optimizer_Ajax {
 		wp_send_json_success( $return );
 
 	}
+
 
 	/**
 	 * Create new category
