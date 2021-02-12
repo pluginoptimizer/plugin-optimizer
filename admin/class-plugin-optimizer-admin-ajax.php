@@ -10,22 +10,12 @@
 class Plugin_Optimizer_Ajax {
 
 	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power the plugin.
-	 *
-	 * @access   protected
-	 * @var      Plugin_Optimizer_Loader $loader Maintains and registers all hooks for the plugin.
-	 */
-	protected $loader;
-
-	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @param string $plugin_name The name of this plugin.
 	 * @param string $version The version of this plugin.
 	 */
 	function __construct() {
-
-		$this->loader = new Plugin_Optimizer_Loader();
 
         $this->load_hooks();
 	}
@@ -35,33 +25,33 @@ class Plugin_Optimizer_Ajax {
 	 *
 	 * @access   private
 	 */
-	private function load_hooks() {
+	function load_hooks() {
 
-		$this->loader->add_action( 'wp_ajax_sos_add_plugin_to_filter',    $this, 'ajax_add_plugin_to_filter'     );
-		$this->loader->add_action( 'wp_ajax_sos_search_pages',            $this, 'ajax_search_pages'             );
-		$this->loader->add_action( 'wp_ajax_sos_search_filters',          $this, 'ajax_search_filters'           );
-		$this->loader->add_action( 'wp_ajax_sos_search_elements',         $this, 'ajax_search_elements'          );
-		$this->loader->add_action( 'wp_ajax_sos_all_elements',            $this, 'ajax_all_elements'             );
-		$this->loader->add_action( 'wp_ajax_sos_trash_elements',          $this, 'ajax_trash_elements'           );
-		$this->loader->add_action( 'wp_ajax_sos_delete_elements',         $this, 'ajax_delete_elements'          );
-		$this->loader->add_action( 'wp_ajax_sos_publish_elements',        $this, 'ajax_publish_elements'         );
-		$this->loader->add_action( 'wp_ajax_sos_count_elements',          $this, 'ajax_count_elements'           );
-		$this->loader->add_action( 'wp_ajax_sos_add_group_plugins',       $this, 'ajax_add_group_plugins'        );
-		$this->loader->add_action( 'wp_ajax_sos_create_category',         $this, 'ajax_create_category'          );
-		$this->loader->add_action( 'wp_ajax_sos_create_cat_subcat',       $this, 'ajax_create_cat_subcat'        );
-		$this->loader->add_action( 'wp_ajax_sos_delete_category',         $this, 'ajax_delete_category'          );
-		$this->loader->add_action( 'wp_ajax_sos_check_name_elements',     $this, 'ajax_check_name_elements'      );
-		$this->loader->add_action( 'wp_ajax_sos_change_plugins_to_filter',$this, 'ajax_change_plugins_to_filter' );
-		$this->loader->add_action( 'wp_ajax_sos_add_category_to_filter',  $this, 'ajax_add_category_to_filter'   );
-		$this->loader->add_action( 'wp_ajax_sos_transition_viewed',       $this, 'ajax_transition_viewed'        );
-		$this->loader->add_action( 'wp_ajax_sos_get_parent_cat',          $this, 'ajax_get_parent_cat'           );
-		$this->loader->add_action( 'wp_ajax_sos_get_parent_group',        $this, 'ajax_get_parent_group'         );
-		$this->loader->add_action( 'wp_ajax_sos_change_plugins_to_group', $this, 'ajax_change_plugins_to_group'  );
-		$this->loader->add_action( 'wp_ajax_sos_show_plugins',            $this, 'ajax_show_plugins'             );
-		$this->loader->add_action( 'wp_ajax_sos_change_permalink',        $this, 'ajax_change_permalink'         );
-		$this->loader->add_action( 'wp_ajax_sos_change_type',             $this, 'ajax_change_type'              );
-		$this->loader->add_action( 'wp_ajax_sos_change_data_category',    $this, 'ajax_change_data_category'     );
-		$this->loader->add_action( 'wp_ajax_sos_change_groups_to_filter', $this, 'ajax_change_groups_to_filter'  );
+		add_action( 'wp_ajax_sos_add_plugin_to_filter',    [ $this, 'ajax_add_plugin_to_filter'     ] );
+		add_action( 'wp_ajax_sos_search_pages',            [ $this, 'ajax_search_pages'             ] );
+		add_action( 'wp_ajax_sos_search_filters',          [ $this, 'ajax_search_filters'           ] );
+		add_action( 'wp_ajax_sos_search_elements',         [ $this, 'ajax_search_elements'          ] );
+		add_action( 'wp_ajax_sos_all_elements',            [ $this, 'ajax_all_elements'             ] );
+		add_action( 'wp_ajax_sos_trash_elements',          [ $this, 'ajax_trash_elements'           ] );
+		add_action( 'wp_ajax_sos_delete_elements',         [ $this, 'ajax_delete_elements'          ] );
+		add_action( 'wp_ajax_sos_publish_elements',        [ $this, 'ajax_publish_elements'         ] );
+		add_action( 'wp_ajax_sos_count_elements',          [ $this, 'ajax_count_elements'           ] );
+		add_action( 'wp_ajax_sos_add_group_plugins',       [ $this, 'ajax_add_group_plugins'        ] );
+		add_action( 'wp_ajax_sos_create_category',         [ $this, 'ajax_create_category'          ] );
+		add_action( 'wp_ajax_sos_create_cat_subcat',       [ $this, 'ajax_create_cat_subcat'        ] );
+		add_action( 'wp_ajax_sos_delete_category',         [ $this, 'ajax_delete_category'          ] );
+		add_action( 'wp_ajax_sos_check_name_elements',     [ $this, 'ajax_check_name_elements'      ] );
+		add_action( 'wp_ajax_sos_change_plugins_to_filter',[ $this, 'ajax_change_plugins_to_filter' ] );
+		add_action( 'wp_ajax_sos_add_category_to_filter',  [ $this, 'ajax_add_category_to_filter'   ] );
+		add_action( 'wp_ajax_sos_transition_viewed',       [ $this, 'ajax_transition_viewed'        ] );
+		add_action( 'wp_ajax_sos_get_parent_cat',          [ $this, 'ajax_get_parent_cat'           ] );
+		add_action( 'wp_ajax_sos_get_parent_group',        [ $this, 'ajax_get_parent_group'         ] );
+		add_action( 'wp_ajax_sos_change_plugins_to_group', [ $this, 'ajax_change_plugins_to_group'  ] );
+		add_action( 'wp_ajax_sos_show_plugins',            [ $this, 'ajax_show_plugins'             ] );
+		add_action( 'wp_ajax_sos_change_permalink',        [ $this, 'ajax_change_permalink'         ] );
+		add_action( 'wp_ajax_sos_change_type',             [ $this, 'ajax_change_type'              ] );
+		add_action( 'wp_ajax_sos_change_data_category',    [ $this, 'ajax_change_data_category'     ] );
+		add_action( 'wp_ajax_sos_change_groups_to_filter', [ $this, 'ajax_change_groups_to_filter'  ] );
 
 	}
 
