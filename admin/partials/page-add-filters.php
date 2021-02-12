@@ -38,7 +38,8 @@
 							<td colspan="6">
 								<div class="content-filter">
 									<div class="row">
-										<div class="col-3">
+                                    
+										<div class="col-12">
 											<div class="header">Title</div>
 											<div>
 												<div class="content enter-data">
@@ -46,6 +47,10 @@
 												</div>
 											</div>
 										</div>
+                                        
+									</div>
+									<div class="row">
+                                    
 										<div class="col-3">
 											<div class="header">Type</div>
 											<div>
@@ -70,7 +75,8 @@
 												</div>
 											</div>
 										</div>
-										<div class="col-6">
+                                        
+										<div class="col-9">
 											<div class="header">Permalinks</div>
 											<div class="content-permalinks">
 												<div class="set_link">
@@ -82,6 +88,7 @@
 												</div>
 											</div>
 										</div>
+                                        
 									</div>
 									<div class="row block-plugin-wrapper">
 										<div class="col-12">
