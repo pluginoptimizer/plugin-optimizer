@@ -6,16 +6,16 @@ let changeGroups;
     $(document).ready(function () {
         changeGroups = () => {
             $('.group-wrapper>.content').click(function () {
-                const group_name = $(this).children('span').text();
-                const filter_id = $(this).attr('value');
+                const group_name    = $(this).children('span').text();
+                const filter_id     = $(this).attr('value');
                 const change_groups = $(this).is('.block') ? 'remove' : 'add';
                 const plugins_names = $(this).children('.hidden_content').children().toArray().map(item => $(item).text()).join(', ');
                 const plugins_links = $(this).children('.hidden_content').children().toArray().map(item => $(item).attr('value')).join(', ');
 
 
-                const block_plugins = $(`#block_plugins`);
+                const block_plugins      = $(`#block_plugins`);
                 const block_link_plugins = $(`#block_link_plugins`);
-                const block_group = $(`#block_group_plugins`);
+                const block_group        = $(`#block_group_plugins`);
 
 
                 if(!$(this).hasClass(`block`)){
@@ -48,8 +48,8 @@ let changeGroups;
                     type: 'POST',
                     data: {
                         action: 'sos_change_groups_to_filter',
-                        'group_name': group_name,
-                        'filter_id': filter_id,
+                        'group_name'   : group_name,
+                        'filter_id'    : filter_id,
                         'plugins_names': plugins_names,
                         'plugins_links': plugins_links,
                         'change_groups': change_groups,
