@@ -105,6 +105,16 @@ class Plugin_Optimizer {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-optimizer-admin.php';
 
 		/**
+		 * The class responsible for menu pages of the admin area.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-optimizer-admin-pages.php';
+
+		/**
+		 * The class responsible for defining all Ajax actions that occur in the admin area.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-optimizer-admin-ajax.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -139,48 +149,24 @@ class Plugin_Optimizer {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Plugin_Optimizer_Admin( $this->get_plugin_name(), $this->get_version() );
+		$admin_ajax   = new Plugin_Optimizer_Ajax();
+		$menu_pages   = new Plugin_Optimizer_Admin_Menu_Pages();
 
-		$this->loader->add_action( 'admin_enqueue_scripts',                 $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts',                 $plugin_admin, 'enqueue_scripts' );
-		$this->loader->add_action( 'script_loader_tag',                     $plugin_admin, 'add_type_attribute', 10, 3 );
-		$this->loader->add_action( 'admin_menu',                            $plugin_admin, 'add_menu_pages' );
-
-		$this->loader->add_action( 'init',                                  $plugin_admin, 'register_post_types' );
-		$this->loader->add_action( 'init',                                  $plugin_admin, 'register_taxonomies' );
-		$this->loader->add_action( 'add_meta_boxes',                        $plugin_admin, 'register_meta_boxes' );
-		$this->loader->add_action( 'save_post_sos_filter',                  $plugin_admin, 'save_filter_options' );
-		$this->loader->add_action( 'save_post_sos_group',                   $plugin_admin, 'save_group_options' );
-		$this->loader->add_action( 'save_post_page',                        $plugin_admin, 'add_item_to_worklist' );
-		$this->loader->add_action( 'save_post_post',                        $plugin_admin, 'add_item_to_worklist' );
-		$this->loader->add_action( 'activated_plugin',                      $plugin_admin, 'add_item_to_worklist_active_plugins', 10, 1 );
-		$this->loader->add_action( 'admin_bar_menu',                        $plugin_admin, 'add_plugin_in_admin_bar', 100 );
-
-
-		$this->loader->add_action( 'wp_ajax_sos_add_plugin_to_filter',      $plugin_admin, 'ajax_add_plugin_to_filter' );
-		$this->loader->add_action( 'wp_ajax_sos_search_pages',              $plugin_admin, 'ajax_search_pages' );
-		$this->loader->add_action( 'wp_ajax_sos_search_filters',            $plugin_admin, 'ajax_search_filters' );
-		$this->loader->add_action( 'wp_ajax_sos_search_elements',           $plugin_admin, 'ajax_search_elements' );
-		$this->loader->add_action( 'wp_ajax_sos_all_elements',              $plugin_admin, 'ajax_all_elements' );
-		$this->loader->add_action( 'wp_ajax_sos_trash_elements',            $plugin_admin, 'ajax_trash_elements' );
-		$this->loader->add_action( 'wp_ajax_sos_delete_elements',           $plugin_admin, 'ajax_delete_elements' );
-		$this->loader->add_action( 'wp_ajax_sos_publish_elements',          $plugin_admin, 'ajax_publish_elements' );
-		$this->loader->add_action( 'wp_ajax_sos_count_elements',            $plugin_admin, 'ajax_count_elements' );
-		$this->loader->add_action( 'wp_ajax_sos_add_group_plugins',         $plugin_admin, 'ajax_add_group_plugins' );
-		$this->loader->add_action( 'wp_ajax_sos_create_category',           $plugin_admin, 'ajax_create_category' );
-		$this->loader->add_action( 'wp_ajax_sos_create_cat_subcat',         $plugin_admin, 'ajax_create_cat_subcat' );
-		$this->loader->add_action( 'wp_ajax_sos_delete_category',           $plugin_admin, 'ajax_delete_category' );
-		$this->loader->add_action( 'wp_ajax_sos_check_name_elements',       $plugin_admin, 'ajax_check_name_elements' );
-		$this->loader->add_action( 'wp_ajax_sos_change_plugins_to_filter',  $plugin_admin, 'ajax_change_plugins_to_filter' );
-		$this->loader->add_action( 'wp_ajax_sos_add_category_to_filter',    $plugin_admin, 'ajax_add_category_to_filter' );
-		$this->loader->add_action( 'wp_ajax_sos_transition_viewed',         $plugin_admin, 'ajax_transition_viewed' );
-		$this->loader->add_action( 'wp_ajax_sos_get_parent_cat',            $plugin_admin, 'ajax_get_parent_cat' );
-		$this->loader->add_action( 'wp_ajax_sos_get_parent_group',          $plugin_admin, 'ajax_get_parent_group' );
-		$this->loader->add_action( 'wp_ajax_sos_change_plugins_to_group',   $plugin_admin, 'ajax_change_plugins_to_group' );
-		$this->loader->add_action( 'wp_ajax_sos_show_plugins',              $plugin_admin, 'ajax_show_plugins' );
-		$this->loader->add_action( 'wp_ajax_sos_change_permalink',          $plugin_admin, 'ajax_change_permalink' );
-		$this->loader->add_action( 'wp_ajax_sos_change_type',               $plugin_admin, 'ajax_change_type' );
-		$this->loader->add_action( 'wp_ajax_sos_change_data_category',      $plugin_admin, 'ajax_change_data_category' );
-		$this->loader->add_action( 'wp_ajax_sos_change_groups_to_filter',   $plugin_admin, 'ajax_change_groups_to_filter' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+        
+		$this->loader->add_action( 'script_loader_tag',     $plugin_admin, 'add_type_attribute', 10, 3 );
+        
+		$this->loader->add_action( 'init',                  $plugin_admin, 'register_post_types' );
+		$this->loader->add_action( 'init',                  $plugin_admin, 'register_taxonomies' );
+		$this->loader->add_action( 'add_meta_boxes',        $plugin_admin, 'register_meta_boxes' );
+        
+		$this->loader->add_action( 'save_post_sos_filter',  $plugin_admin, 'save_filter_options' );
+		$this->loader->add_action( 'save_post_sos_group',   $plugin_admin, 'save_group_options' );
+        
+		$this->loader->add_action( 'save_post_page',        $plugin_admin, 'add_item_to_worklist' );
+		$this->loader->add_action( 'save_post_post',        $plugin_admin, 'add_item_to_worklist' );
+		$this->loader->add_action( 'admin_bar_menu',        $plugin_admin, 'add_plugin_in_admin_bar', 100 );
 
 	}
 
