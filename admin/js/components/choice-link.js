@@ -20,16 +20,16 @@ let choiceLinks;
 
             $('body').on('keypress', '#search_pages', function(e){
                 if (e.keyCode == 13) {
-                    $(`.add-permalink`).click();
+                    $('.add-permalink').click();
                 }
             });
 
-            $(`.add-permalink`).click(function () {
-                let linkClient = $(`#search_pages`).val();
+            $('.add-permalink').click(function () {
+                let linkClient = $('#search_pages').val();
                 linkClient = get_hostname(linkClient) ? linkClient.replace(get_hostname(linkClient), '') : linkClient;
                 linkClient = linkClient.indexOf('/') === 0 ? linkClient.replace('/', '') : linkClient;
                 linkClient = linkClient.includes(location.hostname) ? linkClient : `${location.hostname}/${linkClient}`;
-                linkClient = linkClient.includes(`https://`) ? linkClient : `https://${linkClient}`;
+                linkClient = linkClient.includes('https://') ? linkClient : `https://${linkClient}`;
 
 
                 $(this).parent().after(`
@@ -40,7 +40,7 @@ let choiceLinks;
             `);
                 $('#search_pages').val('');
                 $('#search_pages').focus();
-                $(`.close-selected-link`).click(function (){
+                $('.close-selected-link').click(function (){
                     $(this).parent().remove();
                 })
             })

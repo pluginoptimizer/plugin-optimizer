@@ -12,7 +12,7 @@ let createGroupPlugins;
         createGroupPlugins = () => {
             $('.save-group').click(function () {
                 let result = true;
-                $(`.content-new-element input#set_title`).toArray().some(function (item) {
+                $('.content-new-element input#set_title').toArray().some(function (item) {
                     if ($(item).val().trim() === "" && result) {
                         $(item).focus();
                         return result = false;
@@ -21,8 +21,8 @@ let createGroupPlugins;
                 if (!result) {
                     return false;
                 }
-                if (!$(`.block-plugin-wrapper .content`).hasClass(`block`)) {
-                    $(`.block-plugin-wrapper .content`).toArray().map(item => $(item).css('box-shadow', 'rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px'))
+                if (!$('.block-plugin-wrapper .content').hasClass('block')) {
+                    $('.block-plugin-wrapper .content').toArray().map(item => $(item).css('box-shadow', 'rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px'))
                     return false;
                 } else {
                     $.ajax({
@@ -31,14 +31,14 @@ let createGroupPlugins;
                         data: {
                             action: 'sos_add_group_plugins',
                             'title_group': $('#set_title').val(),
-                            'group_plugins': $(`.block-plugin-wrapper .block span`).toArray().map(item => $(item).text()).join(', '),
+                            'group_plugins': $('.block-plugin-wrapper .block span').toArray().map(item => $(item).text()).join(', '),
                         },
                         success: function (response) {
                             $('#the-list').html(response.data);
                             // $('.content-new-element').css('display', 'none');
-                            $(`#set_title`).val(``);
-                            $(`#set_type`).val(``);
-                            $(`.block-plugin-wrapper .block`).toArray().map(item => $(item).removeClass(`block`));
+                            $('#set_title').val('');
+                            $('#set_type').val('');
+                            $('.block-plugin-wrapper .block').toArray().map(item => $(item).removeClass('block'));
                             allElements.count_element('sos_group');
                             allElements.check_all_element();
                             hiddenInfoFilter();

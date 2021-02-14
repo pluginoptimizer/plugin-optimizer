@@ -8,10 +8,10 @@ let changeDataCategory;
         /*     Change the category name   */
         changeDataCategory = () => {
 
-            $(`.data-title-cat`).on(`input change`, function (){
+            $('.data-title-cat').on('input change', function (){
                 const text_name = $(this).text().trim();
-                const description_category = $(this).parent().parent().parent().parent().children(`.description`).children().children(`.content-description`).children(`.data-description-cat`).text().trim();
-                const cat_id = $(this).attr(`cat_id`);
+                const description_category = $(this).parent().parent().parent().parent().children('.description').children().children('.content-description').children('.data-description-cat').text().trim();
+                const cat_id = $(this).attr('cat_id');
 
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
@@ -28,8 +28,8 @@ let changeDataCategory;
                 });
             })
 
-            $(`.data-description-cat`).on(`input`, function (){
-                $(`.data-title-cat`).change();
+            $('.data-description-cat').on('input', function (){
+                $('.data-title-cat').change();
             })
 
 

@@ -10,39 +10,39 @@ let changeSettings;
         changeSettings = () => {
             /* Hidden appearance settings */
             function hidden_settings(){
-                if($(`#settings_plugins`).css(`display`) === 'block'){
-                    $(`#settings_plugins`).css(`display`, `none`);
-                    $(`#show_settings_plugins`).css('font-weight', 400);
+                if($('#settings_plugins').css('display') === 'block'){
+                    $('#settings_plugins').css('display', 'none');
+                    $('#show_settings_plugins').css('font-weight', 400);
                 }
-                switch (`flex`) {
-                    case $(`#settings_general`).css(`display`):
-                        $(`#settings_general`).css(`display`, `none`);
-                        $(`#show_settings_general`).css('font-weight', 400);
+                switch ('flex') {
+                    case $('#settings_general').css('display'):
+                        $('#settings_general').css('display', 'none');
+                        $('#show_settings_general').css('font-weight', 400);
                         break;
-                    case $(`#settings_debug`).css(`display`):
-                        $(`#settings_debug`).css(`display`, `none`);
-                        $(`#show_settings_debug`).css('font-weight', 400);
+                    case $('#settings_debug').css('display'):
+                        $('#settings_debug').css('display', 'none');
+                        $('#show_settings_debug').css('font-weight', 400);
                         break;
                 }
             }
 
             /* Hidden appearance settings */
-            $(`#show_settings_general`).click(function(){
+            $('#show_settings_general').click(function(){
                 $(this).css('font-weight', 600);
                 hidden_settings();
-                $(`#settings_general`).css(`display`, `flex`);
+                $('#settings_general').css('display', 'flex');
             })
 
-            $(`#show_settings_plugins`).click(function(){
+            $('#show_settings_plugins').click(function(){
                 $(this).css('font-weight', 600);
                 hidden_settings();
-                $(`#settings_plugins`).css(`display`, `block`);
+                $('#settings_plugins').css('display', 'block');
             })
 
-            $(`#show_settings_debug`).click(function(){
+            $('#show_settings_debug').click(function(){
                 $(this).css('font-weight', 600);
                 hidden_settings();
-                $(`#settings_debug`).css(`display`, `flex`);
+                $('#settings_debug').css('display', 'flex');
             })
         }
     });

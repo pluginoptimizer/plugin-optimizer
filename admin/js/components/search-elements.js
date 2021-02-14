@@ -30,10 +30,10 @@ let searchElements;
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
                     data: {
-                        action: 'sos_search_elements',
+                        action          : 'sos_search_elements',
                         'name_post_type': name_post_type,
-                        'type_elements': type_elements,
-                        'keyword': $('#search_elements').val(),
+                        'type_elements' : type_elements,
+                        'keyword'       : $('#search_elements').val(),
                     },
                     success: function (response) {
                         $('#the-list').html(response.data);

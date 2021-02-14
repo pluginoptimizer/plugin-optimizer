@@ -31,10 +31,10 @@ let deleteRestoreElement;
                         url: plugin_optimizer_groups.ajax_url,
                         type: 'POST',
                         data: {
-                            action: 'sos_delete_elements',
+                            action          : 'sos_delete_elements',
                             'name_post_type': name_post_type,
-                            'type_elements': type_elements,
-                            'id_elements': $('input:checked').toArray().map(item => item.id).join(','),
+                            'type_elements' : type_elements,
+                            'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
                         },
                         success: function (response) {
                             $('#the-list').html(response.data);
@@ -51,9 +51,9 @@ let deleteRestoreElement;
                         url: plugin_optimizer_groups.ajax_url,
                         type: 'POST',
                         data: {
-                            action: 'sos_publish_elements',
+                            action          : 'sos_publish_elements',
                             'name_post_type': name_post_type,
-                            'id_elements': $('input:checked').toArray().map(item => item.id).join(','),
+                            'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
                         },
                         success: function (response) {
                             $('#the-list').html(response.data);

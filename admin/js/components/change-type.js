@@ -8,11 +8,11 @@ let changeType;
         /*     Change the selected type    */
         changeType = () => {
 
-            $(`.data-type`).on(`input`, function (){
+            $('.data-type').on('input', function (){
                 const text_type = $(this).text();
-                const filter_id = $(this).attr(`filter_id`);
+                const filter_id = $(this).attr('filter_id');
 
-                $(`#type_filter`).val(text_type.trim());
+                $('#type_filter').val(text_type.trim());
 
                 $(`tr#filter-${filter_id}>.data-type-filter`).text(text_type);
 

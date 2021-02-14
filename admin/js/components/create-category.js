@@ -10,9 +10,9 @@ let createCat;
     $(document).ready(function () {
         //change plugins
         createCat = () => {
-            $(`.save-category`).click(function () {
+            $('.save-category').click(function () {
                 let result = true;
-                $(`.content-new-element input`).toArray().some(function (item) {
+                $('.content-new-element input').toArray().some(function (item) {
                     if ($(item).val().trim() === "" && result) {
                         $(item).focus();
                         return result = false;
@@ -27,14 +27,14 @@ let createCat;
                     type: 'POST',
                     data: {
                         action: 'sos_create_cat_subcat',
-                        'name_category': $(`#set_title`).val(),
-                        'description_category': $(`#set_description`).val(),
+                        'name_category': $('#set_title').val(),
+                        'description_category': $('#set_description').val(),
                         'parent_category': $('.parent-category-wrapper .block span').toArray().map(item => $(item).attr('value')).join(', '),
                     },
                     success: function ({data}) {
                         $('#the-list').html(data);
                         $('.content-new-element').css('display', 'none');
-                        $(`#set_title`).val('');
+                        $('#set_title').val('');
                         allElements.count_element('cat');
                         allElements.check_all_element();
                         hiddenInfoFilter();

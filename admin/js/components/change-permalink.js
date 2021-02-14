@@ -8,9 +8,9 @@ let changePermalink;
         /*     Change the selected links    */
         changePermalink = () => {
 
-            $(`.data-link`).on(`input`, function (){
+            $('.data-link').on('input', function (){
                 const text_link = $(this).text();
-                const filter_id = $(this).attr(`filter_id`);
+                const filter_id = $(this).attr('filter_id');
 
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
