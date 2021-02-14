@@ -46,25 +46,25 @@ let changeGroups;
                     block_link_plugins.val(block_link_plugins.val().split(', ').filter(item => item !== plugins_links).join(', '))
                 }
                 
-                console.log( "aAjax: change-groups.js" );
+                // console.log( "aAjax: change-groups.js" );
                 
-                $.ajax({
-                    url: plugin_optimizer_groups.ajax_url,
-                    type: 'POST',
-                    data: {
-                        action: 'sos_change_groups_to_filter',
-                        'group_name'   : group_name,
-                        'filter_id'    : filter_id,
-                        'plugins_names': plugins_names,
-                        'plugins_links': plugins_links,
-                        'change_groups': change_groups,
-                    },
-                    success: function (response) {
-                        $(`tr#filter-${response.data.filter_id}`).next('.hidden_info').children().children().children('.content-plugins').html(response.data.content_plugins);
-                        $(`tr#filter-${response.data.filter_id}`).next('.hidden_info').children().children().children('.group-wrapper').html(response.data.content_groups);
-                        changeGroups();
-                    }
-                });
+                // $.ajax({
+                    // url: plugin_optimizer_groups.ajax_url,
+                    // type: 'POST',
+                    // data: {
+                        // action: 'sos_change_groups_to_filter',
+                        // 'group_name'   : group_name,
+                        // 'filter_id'    : filter_id,
+                        // 'plugins_names': plugins_names,
+                        // 'plugins_links': plugins_links,
+                        // 'change_groups': change_groups,
+                    // },
+                    // success: function (response) {
+                        // $(`tr#filter-${response.data.filter_id}`).next('.hidden_info').children().children().children('.content-plugins').html(response.data.content_plugins);
+                        // $(`tr#filter-${response.data.filter_id}`).next('.hidden_info').children().children().children('.group-wrapper').html(response.data.content_groups);
+                        // changeGroups();
+                    // }
+                // });
             })
         }
     });
