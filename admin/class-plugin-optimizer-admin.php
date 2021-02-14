@@ -331,27 +331,27 @@ class Plugin_Optimizer_Admin {
 
 		wp_nonce_field( plugin_basename( __FILE__ ), 'nonce_sos_filter_options' );
 
-		$value_block_plugins       = get_post_meta( $post->ID, 'block_plugins', 1 );
-		$value_link_block_plugins       = get_post_meta( $post->ID, 'block_value_plugins', 1 );
-		$value_block_group_plugins = get_post_meta( $post->ID, 'block_group_plugins', 1 );
-//		$value_selected_post_type  = get_post_meta( $post->ID, 'selected_post_type', 1 );
-		$value_selected_page   = get_post_meta( $post->ID, 'selected_page', 1 );
-		$value_type_filter     = get_post_meta( $post->ID, 'type_filter', 1 );
-		$value_category_filter = get_post_meta( $post->ID, 'category_filter', 1 );
+		$value_block_plugins        = get_post_meta( $post->ID, 'block_plugins', 1 );
+		$value_link_block_plugins   = array_unique( get_post_meta( $post->ID, 'block_value_plugins', 1 ) );
+		$value_block_group_plugins  = get_post_meta( $post->ID, 'block_group_plugins', 1 );
+//		$value_selected_post_type   = get_post_meta( $post->ID, 'selected_post_type', 1 );
+		$value_selected_page        = get_post_meta( $post->ID, 'selected_page', 1 );
+		$value_type_filter          = get_post_meta( $post->ID, 'type_filter', 1 );
+		$value_category_filter      = get_post_meta( $post->ID, 'category_filter', 1 );
 
 		?><div style="display: none">
             <label for="block_plugins"> <?= "Select block plugins" ?> </label>
-            <input type="text" id="block_plugins" name="block_plugins" value=" <?= implode(', ', $value_block_plugins ); ?>" size="25"/>
+            <input type="text" id="block_plugins" name="block_plugins" value="<?= implode(', ', $value_block_plugins ); ?>" size="25"/>
             <br>
             <br>
 
             <label for="block_link_plugins"> <?= "Select link block plugins" ?> </label>
-            <input type="text" id="block_link_plugins" name="block_link_plugins" value=" <?= implode(', ', $value_link_block_plugins ); ?>" size="25"/>
+            <input type="text" id="block_link_plugins" name="block_link_plugins" value="<?= implode(', ', $value_link_block_plugins ); ?>" size="25"/>
             <br>
             <br>
 
             <label for="block_plugins"> <?= "Select block group plugins" ?> </label>
-            <input type="text" id="block_group_plugins" name="block_group_plugins" value=" <?= implode(', ', $value_block_group_plugins); ?>"
+            <input type="text" id="block_group_plugins" name="block_group_plugins" value="<?= implode(', ', $value_block_group_plugins); ?>"
                    size="25"/>
             <br>
             <br>
@@ -438,7 +438,7 @@ class Plugin_Optimizer_Admin {
                                     </div>
                                     <div class="row content-plugins">
                                         <?php
-                                        $this->content_plugin_to_filter( $post );
+                                        Plugin_Optimizer_Helper::content_plugin_to_filter( $post );
                                         ?>
                                     </div>
                                     <div class="row group-wrapper">
@@ -491,7 +491,7 @@ class Plugin_Optimizer_Admin {
                                                             foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
                                                                 ?>
                                                                 <div class="hidden_content content">
-                                                                    <span value="<?= $content_plugins[ $block_plugin_in_group ]; ?>"><?= $block_plugin_in_group; ?></span>
+                                                                    <span value="<?= isset( $content_plugins[ $block_plugin_in_group ] ) ? $content_plugins[ $block_plugin_in_group ] : "" ?>"><?= $block_plugin_in_group; ?></span>
                                                                 </div>
                                                             <?php
                                                             endforeach;
@@ -513,7 +513,7 @@ class Plugin_Optimizer_Admin {
                                             </div>
                                             <div class="plugin-wrapper">
                                                 <?php
-                                                $this->ajax_create_category( $post );
+                                                Plugin_Optimizer_Helper::create_category( $post );
                                                 ?>
                                             </div>
                                         </div>
@@ -532,6 +532,8 @@ class Plugin_Optimizer_Admin {
 	 * Save the edited filter
 	 */
 	function save_filter_options( $post_id ) {
+        
+        po_mu_plugin()->write_log( $_POST, "save_filter_options-_POST" );
 
 //		if ( ! isset( $_POST['block_plugins'] ) && ! isset( $_POST['block_group_plugins'] ) && ! isset( $_POST['selected_post_type'] ) && ! isset( $_POST['selected_page'] ) && ! isset( $_POST['type_filter'] ) ) {
 		if ( ! isset( $_POST['block_plugins'] ) && ! isset( $_POST['block_group_plugins'] ) && ! isset( $_POST['selected_page'] ) && ! isset( $_POST['type_filter'] ) ) {
@@ -550,21 +552,21 @@ class Plugin_Optimizer_Admin {
 			return;
 		}
 
-		$block_plugins       = explode(', ', sanitize_text_field( $_POST['block_plugins'] ));
-		$block_link_plugins       = explode(', ', sanitize_text_field( $_POST['block_link_plugins'] ));
-		$block_group_plugins = explode(', ', sanitize_text_field( $_POST['block_group_plugins'] ));
+		$block_plugins       = array_unique( explode( ', ', sanitize_text_field( $_POST['block_plugins']         ) ) );
+		$block_link_plugins  = array_unique( explode( ', ', sanitize_text_field( $_POST['block_link_plugins']    ) ) );
+		$block_group_plugins = array_unique( explode( ', ', sanitize_text_field( $_POST['block_group_plugins']   ) ) );
 //		$selected_post_type  = sanitize_text_field( $_POST['selected_post_type'] );
-		$selected_page   = sanitize_text_field( $_POST['selected_page'] );
-		$type_filter     = sanitize_text_field( $_POST['type_filter'] );
-		$category_filter = sanitize_text_field( $_POST['category_filter'] );
+		$selected_page       = sanitize_text_field( $_POST['selected_page'] );
+		$type_filter         = sanitize_text_field( $_POST['type_filter'] );
+		$category_filter     = sanitize_text_field( $_POST['category_filter'] );
 
-		update_post_meta( $post_id, 'block_plugins', $block_plugins );
-		update_post_meta( $post_id, 'block_link_plugins', $block_link_plugins );
-		update_post_meta( $post_id, 'block_group_plugins', $block_group_plugins );
-//		update_post_meta( $post_id, 'selected_post_type', $selected_post_type );
-		update_post_meta( $post_id, 'selected_page', $selected_page );
-		update_post_meta( $post_id, 'type_filter', $type_filter );
-		update_post_meta( $post_id, 'category_filter', $category_filter );
+		update_post_meta( $post_id, 'block_plugins',        $block_plugins );
+		update_post_meta( $post_id, 'block_link_plugins',   $block_link_plugins );
+		update_post_meta( $post_id, 'block_group_plugins',  $block_group_plugins );
+//		update_post_meta( $post_id, 'selected_post_type',   $selected_post_type );
+		update_post_meta( $post_id, 'selected_page',        $selected_page );
+		update_post_meta( $post_id, 'type_filter',          $type_filter );
+		update_post_meta( $post_id, 'category_filter',      $category_filter );
 	}
 
 	/**
@@ -843,213 +845,6 @@ class Plugin_Optimizer_Admin {
 			wp_send_json_error( $post_id->get_error_message() );
 		}
 		add_post_meta( $post_id, 'post_link', $post_link );
-	}
-
-
-
-    // TODO These 2 functions exist in admin ajax class too!
-
-	function content_plugin_to_filter( $post ) {
-		$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
-		$activate_plugins   = array();
-		$deactivate_plugins = array();
-		foreach ( $all_plugins as $plugin ) {
-			foreach ( $plugin as $key => $value ) {
-				if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-					if ( $value ) {
-						$activate_plugins[ $plugin['name'] ] = $plugin['file'];
-					} else {
-						$deactivate_plugins[ $plugin['name'] ] = $plugin['file'];
-					}
-				}
-			}
-		}
-		$block_plugins = get_post_meta( $post->ID, 'block_plugins', true );
-		?><div class="col-12">
-            <div class="header">
-                <div class="title">
-					<?php $count_plugins = 0;
-					if ( $activate_plugins ) {
-						foreach ( $activate_plugins as $activate_plugin ) {
-							if ( in_array( $activate_plugin, $block_plugins ) ) {
-								$count_plugins ++;
-							}
-						}
-					}
-					?>
-                    Plugins <span
-                            class="disabled">- Disabled: <?= $count_plugins; ?>/<?= count( $activate_plugins ); ?></span>
-                </div>
-                <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
-            </div>
-			<?php
-			if ( $activate_plugins ):
-				?>
-                <div class="header attribute-plugin">Active plugins</div>
-                <div class="plugin-wrapper">
-					<?php
-					foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
-						?>
-                        <div class="content<?= ( in_array( $activate_plugin, $block_plugins ) ) ? ' block' : '' ?>">
-							<?php
-							if ( in_array( $activate_plugin, $block_plugins ) ):
-								?>
-                                <span class="close" id="<?= $activate_plugin; ?>" value="<?= $post->ID; ?>"
-                                      link="<?= $activate_plugin_link; ?>">×</span>
-							<?php
-							else:
-								?>
-                                <span class="close pluse_plugin" id="<?= $activate_plugin; ?>"
-                                      value="<?= $post->ID; ?>" link="<?= $activate_plugin_link; ?>">+</span>
-							<?php
-							endif;
-							?>
-							<?php
-							$groups_plugins = get_post_meta( $post->ID, 'block_group_plugins', true );
-                            
-                            if( empty( $groups_plugins ) ){
-                                $groups_plugins = [];
-                            } elseif ( ! is_array( $groups_plugins ) ){
-                                $groups_plugins = [ $groups_plugins ];
-                            }
-
-							$groups = get_posts( array(
-								'post_type'   => 'sos_group',
-								'numberposts' => - 1,
-							) );
-							if ( $groups ) :
-								?>
-                                <div class="groups-names">
-									<?php
-									foreach ( $groups as $group ):
-										if ( in_array( $group->post_title, $groups_plugins ) && in_array( $activate_plugin, explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ) ) ):
-
-											?>
-                                            <span><?= $group->post_title; ?></span>
-										<?php
-										endif;
-									endforeach;
-									?>
-                                </div>
-							<?php
-							endif;
-							?>
-                            <span><?= $activate_plugin; ?></span>
-                        </div>
-					<?php
-					endforeach;
-					?>
-                </div>
-                <div class="header attribute-plugin">Inactive plugins</div>
-                <div class="plugin-wrapper">
-					<?php
-					foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):
-						?>
-                        <div class="content deactivate-plugin<?= in_array( $deactivate_plugin, $block_plugins ) ? ' block' : ''; ?>">
-							<?php
-							$groups_plugins = get_post_meta( $post->ID, 'block_group_plugins', true );
-
-							$groups = get_posts( array(
-								'post_type'   => 'sos_group',
-								'numberposts' => - 1,
-							) );
-							if ( $groups ) :
-								?>
-                                <div class="groups-names">
-									<?php
-									foreach ( $groups as $group ):
-										if ( in_array( $group->post_title, $groups_plugins ) && in_array( $deactivate_plugin, explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ) ) ):
-
-											?>
-                                            <span class="group-name"><?= $group->post_title; ?></span>
-										<?php
-										endif;
-									endforeach;
-									?>
-                                </div>
-							<?php
-							endif;
-							?>
-                            <span><?= $deactivate_plugin; ?></span>
-							<?php
-							if ( in_array( $deactivate_plugin, $block_plugins ) ):
-								?>
-                                <span class="close" id="<?= $deactivate_plugin; ?>" value="<?= $post->ID; ?>"
-                                      link="<?= $deactivate_plugin_link; ?>">×</span>
-							<?php
-							else:
-								?>
-                                <span class="close pluse_plugin" id="<?= $deactivate_plugin; ?>"
-                                      value="<?= $post->ID; ?>" link="<?= $deactivate_plugin_link; ?>">+</span>
-							<?php
-							endif;
-							?>
-                        </div>
-					<?php
-					endforeach;
-					?>
-                </div>
-			<?php
-			else:
-				?>
-                <div class="plugin-wrapper no-plugins">
-                    <div class="content">
-                        <span>No activate plugins for blocking</span>
-                    </div>
-                </div>
-			<?php
-			endif;
-			?>
-        </div><?php
-	}
-
-	/**
-	 * Create new category
-	 */
-	function ajax_create_category( $post ) {
-        
-		if ( $post && ! is_numeric( $post ) ) {
-			$id_filter = $post->ID;
-		} elseif ( is_numeric( $post ) ) {
-			$id_filter = $post;
-		} else {
-			$id_filter     = htmlspecialchars( $_POST['id_filter'] );
-			$name_category = htmlspecialchars( $_POST['name_category'] );
-
-			wp_set_object_terms( $id_filter, $name_category, 'сategories_filters' );
-		}
-
-
-		ob_start();
-
-		$categories = get_categories( [
-			'taxonomy'   => 'сategories_filters',
-			'type'       => 'sos_filter',
-			'hide_empty' => 0,
-		] );
-
-		if ( $categories ){
-			foreach ( $categories as $cat ){
-				?>
-                <div class="content filter-category <?= ( has_term( $cat->cat_name, 'сategories_filters', $id_filter ) ) ? 'block' : ''; ?>">
-                    <span><?= $cat->cat_name; ?></span>
-                    <span class="close" id="<?= $cat->cat_ID; ?>">×</span>
-                </div>
-			<?php
-			}
-		}
-        
-		?><input type="text" placeholder="Name category"><?php
-        ?><button class="add-filter add-permalink add-category" id="post-<?= $id_filter; ?>">
-            <span class="pluse">+</span> Category
-        </button><?php
-        
-		if ( $post && ! is_numeric( $post ) ) {
-			echo ob_get_clean();
-		} else {
-			wp_send_json_success( ob_get_clean() );
-		}
-
 	}
 
 }

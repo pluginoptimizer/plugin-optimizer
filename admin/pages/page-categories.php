@@ -130,7 +130,7 @@
                         </thead>
                         <tbody id="the-list">
 						<?php
-						$this->content_filters_categories( $categories );
+						Plugin_Optimizer_Helper::content_filters_categories( $categories );
 						?>
                         </tbody>
                     </table>

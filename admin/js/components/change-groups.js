@@ -5,7 +5,10 @@ let changeGroups;
 
     $(document).ready(function () {
         changeGroups = () => {
-            $('.group-wrapper>.content').click(function () {
+            $('body').on('click', '.group-wrapper > .content', function () {
+                
+                console.log( "change-groups.js" );
+                
                 const group_name    = $(this).children('span').text();
                 const filter_id     = $(this).attr('value');
                 const change_groups = $(this).is('.block') ? 'remove' : 'add';
@@ -13,17 +16,17 @@ let changeGroups;
                 const plugins_links = $(this).children('.hidden_content').children().toArray().map(item => $(item).attr('value')).join(', ');
 
 
-                const block_plugins      = $(`#block_plugins`);
-                const block_link_plugins = $(`#block_link_plugins`);
-                const block_group        = $(`#block_group_plugins`);
+                const block_plugins      = $('#block_plugins');
+                const block_link_plugins = $('#block_link_plugins');
+                const block_group        = $('#block_group_plugins');
 
 
-                if(!$(this).hasClass(`block`)){
+                if(!$(this).hasClass('block')){
                     /* Change appearance */
-                    $(this).parent().addClass(`block`);
+                    $(this).parent().addClass('block');
 
                     /* Record data of group plugins */
-                    block_group.val() !== `None` ? block_group.val(`${block_group.val()}, ${group_name}`) : block_group.val(group_name);
+                    block_group.val() !== 'None' ? block_group.val(`${block_group.val()}, ${group_name}`) : block_group.val(group_name);
 
                     /* Record data of selected plugins */
                     block_plugins.val() ? block_plugins.val(`${block_plugins.val()}, ${plugins_names}`) : block_plugins.val(plugins_names);
@@ -32,7 +35,7 @@ let changeGroups;
                     block_link_plugins.val() ? block_link_plugins.val(`${block_link_plugins.val()}, ${plugins_links}`) : block_link_plugins.val(plugins_links);
                 } else {
                     /* Change appearance */
-                    $(this).parent().removeClass(`block`);
+                    $(this).parent().removeClass('block');
                     /* Delete data of selected plugins */
                     block_group.val(block_group.val().split(', ').filter(item => item !== group_name).join(', '))
 

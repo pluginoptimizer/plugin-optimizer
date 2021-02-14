@@ -98,7 +98,7 @@
                                 </thead>
                                 <tbody id="the-list">
 								<?php
-								$this->content_activate_plugins_to_settings( $activate_plugins );
+								Plugin_Optimizer_Helper::content_activate_plugins_to_settings( $activate_plugins );
 								?>
                                 </tbody>
                             </table>

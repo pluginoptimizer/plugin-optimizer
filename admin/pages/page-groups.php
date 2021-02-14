@@ -70,7 +70,7 @@ $posts = get_posts( array(
                             </thead>
                             <tbody id="the-list">
 							<?php
-							$this->content_groups( $posts );
+							Plugin_Optimizer_Helper::content_groups( $posts );
 							?>
                             </tbody>
                         </table>

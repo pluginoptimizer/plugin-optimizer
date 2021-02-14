@@ -66,7 +66,7 @@
                         </thead>
                         <tbody id="the-list">
 						<?php
-						$this->content_works( $posts );
+						Plugin_Optimizer_Helper::content_works( $posts );
 						?>
                         </tbody>
                     </table>

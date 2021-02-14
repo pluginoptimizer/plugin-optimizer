@@ -5,24 +5,25 @@ let changePluginsGroup;
     'use strict';
 
     $(document).ready(function () {
-        /*
-        * Change plugins to group
-        * */
+        
+        // Change plugins to group
         changePluginsGroup = () => {
-            $('.wrapper-group-plugins .content').click(function () {
-                console.log('click')
-                const plugin_name = $(this).children().text();
-                const block_plugins = $(`#block_plugins`);
+            $('body').on('click', '.wrapper-group-plugins .content', function () {
+                
+                console.log( "change-plugins-group.js" );
+                
+                const plugin_name   = $(this).children().text();
+                const block_plugins = $('#block_plugins');
 
-                if(!$(this).hasClass(`block`)){
+                if(!$(this).hasClass('block')){
                     /* Change appearance */
-                    $(this).addClass(`block`);
+                    $(this).addClass('block');
 
                     /* Record data of selected plugins */
                     block_plugins.val() ? block_plugins.val(`${block_plugins.val()}, ${plugin_name}`) : block_plugins.val(plugin_name);
                 } else {
                     /* Change appearance */
-                    $(this).removeClass(`block`);
+                    $(this).removeClass('block');
 
                     /* Delete data of selected plugins */
                     block_plugins.val(block_plugins.val().split(', ').filter(item => item !== plugin_name).join(', '))
@@ -34,7 +35,7 @@ let changePluginsGroup;
                         action: 'sos_change_plugins_to_group',
                         'group_id': $(this).attr('group_id'),
                         'plugin_name':  $(this).children().text(),
-                        'trigger': $(this).hasClass(`block`) ? `delete` : `add`,
+                        'trigger': $(this).hasClass('block') ? 'delete' : 'add',
                     },
                     success: function (response) {
                         $('#the-list').html(response.data.return);

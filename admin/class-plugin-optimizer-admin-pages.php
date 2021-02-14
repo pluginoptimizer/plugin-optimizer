@@ -23,10 +23,10 @@ class Plugin_Optimizer_Admin_Menu_Pages {
         
 		add_submenu_page( 'plugin_optimizer', 'Overview',           'Overview',             'manage_options', 'plugin_optimizer',                    [ $this, 'render_overview_page'           ] );
 		add_submenu_page( 'plugin_optimizer', 'Filters',            'Filters',              'manage_options', 'plugin_optimizer_filters',            [ $this, 'render_filters_page'            ] );
-		add_submenu_page( 'plugin_optimizer', 'Add Filters',        'Add Filters',          'manage_options', 'plugin_optimizer_add_filters',        [ $this, 'render_add_filters_page'        ] );
-		add_submenu_page( 'plugin_optimizer', 'Filters Categories', 'Filters Categories',   'manage_options', 'plugin_optimizer_filters_categories', [ $this, 'render_filters_categories_page' ] );
-		add_submenu_page( 'plugin_optimizer', 'Groups plugin',      'Groups plugin',        'manage_options', 'plugin_optimizer_groups',             [ $this, 'render_groups_page'             ] );
-		add_submenu_page( 'plugin_optimizer', 'Add groups plugin',  'Add groups plugin',    'manage_options', 'plugin_optimizer_add_groups',         [ $this, 'render_add_groups_page'         ] );
+		add_submenu_page( 'plugin_optimizer', 'Add New Filter',     'Add New Filter',       'manage_options', 'plugin_optimizer_add_filters',        [ $this, 'render_add_filters_page'        ] );
+		add_submenu_page( 'plugin_optimizer', 'Filter Categories',  'Filter Categories',    'manage_options', 'plugin_optimizer_filters_categories', [ $this, 'render_filters_categories_page' ] );
+		add_submenu_page( 'plugin_optimizer', 'Groups',             'Groups',               'manage_options', 'plugin_optimizer_groups',             [ $this, 'render_groups_page'             ] );
+		add_submenu_page( 'plugin_optimizer', 'Add New Group',      'Add New Group',        'manage_options', 'plugin_optimizer_add_groups',         [ $this, 'render_add_groups_page'         ] );
 		add_submenu_page( 'plugin_optimizer', 'Worklist',           'Worklist',             'manage_options', 'plugin_optimizer_worklist',           [ $this, 'render_worklist_page'           ] );
 		add_submenu_page( 'plugin_optimizer', 'Settings',           'Settings',             'manage_options', 'plugin_optimizer_settings',           [ $this, 'render_settings_page'           ] );
 		add_submenu_page( 'plugin_optimizer', 'Support',            'Support',              'manage_options', 'plugin_optimizer_support',            [ $this, 'render_support_page'            ] );

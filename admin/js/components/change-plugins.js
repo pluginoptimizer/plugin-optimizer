@@ -12,19 +12,28 @@ let changePlugins;
         * @const      text change_plugins ('+' or '×') add or delete to filter
         * */
         changePlugins = () => {
-            $('.close').click(function () {
-                const filter_id = $(this).attr('value');
-                const plugin_name = $(this).attr('id');
-                const plugin_link = $(this).attr('link');
-                const change_plugins = $(this).text();
+            $('body').on('click', '.plugin-wrapper:not(.group-wrapper) > .content', function () {
+                
+                console.log( "change-plugins.js" );
+                
+                let   $close = $(this).find('span.close');
+                
+                if( $close.length < 1 ){
+                    return;
+                }
+                
+                const filter_id      = $close.attr('value');
+                const plugin_name    = $close.attr('id');
+                const plugin_link    = $close.attr('link');
+                const change_plugins = $close.text();
 
-                const block_plugins = $(`#block_plugins`);
-                const block_link_plugins = $(`#block_link_plugins`);
+                const block_plugins      = $('#block_plugins');
+                const block_link_plugins = $('#block_link_plugins');
 
-                if(change_plugins === `+`){
+                if(change_plugins === '+'){
                     /* Change appearance */
-                    $(this).parent().addClass(`block`);
-                    $(this).text(`×`);
+                    $(this).addClass('block');
+                    $close.text('×');
                     /* Record data of selected plugins */
                     block_plugins.val() ? block_plugins.val(`${block_plugins.val()}, ${plugin_name}`) : block_plugins.val(plugin_name);
 
@@ -32,8 +41,8 @@ let changePlugins;
                     block_link_plugins.val() ? block_link_plugins.val(`${block_link_plugins.val()}, ${plugin_link}`) : block_link_plugins.val(plugin_link);
                 } else {
                     /* Change appearance */
-                    $(this).parent().removeClass(`block`);
-                    $(this).text(`+`);
+                    $(this).removeClass('block');
+                    $close.text('+');
                     /* Delete data of selected plugins */
                     block_plugins.val(block_plugins.val().split(', ').filter(item => item !== plugin_name).join(', '))
 

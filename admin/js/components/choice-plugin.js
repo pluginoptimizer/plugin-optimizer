@@ -5,12 +5,12 @@ let choicePlugins;
     $(document).ready(function () {
 
 
-        /*  Select a plugins for a new filter
-        *   or select plugins for a new group
-        * */
+        // Select a plugins for a new filter or select plugins for a new group
         choicePlugins = () => {
+            $('body').on('click', '.block-plugin-wrapper .content', function(){
 
-            $(`.block-plugin-wrapper .content`).click(function(){
+                console.log( "choice-plugin.js" );
+                
                 if($(this).hasClass('block')){
                     $(this).removeClass('block');
                 } else {

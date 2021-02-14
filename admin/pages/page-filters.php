@@ -73,7 +73,7 @@
                         </thead>
                         <tbody id="the-list">
 						<?php
-						$this->content_filters( $posts );
+						Plugin_Optimizer_Helper::content_filters( $posts );
 						?>
                         </tbody>
                     </table>

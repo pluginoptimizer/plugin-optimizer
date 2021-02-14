@@ -5,11 +5,12 @@ let choiceCategories;
     $(document).ready(function () {
 
 
-        /*  Select a category for a new filter   */
+        // Select a category for a new filter
         choiceCategories = () => {
+            $('body').on('click', '.category-wrapper .content', function(){
 
-
-            $(`.category-wrapper .content`).click(function(){
+                console.log( "choice-category.js" );
+                
                 if($(this).hasClass('block')){
                     $(this).removeClass('block');
                 } else {
