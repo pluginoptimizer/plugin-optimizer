@@ -27,6 +27,9 @@ let deleteRestoreElement;
                     } else {
                         type_elements = 'trash';
                     }
+                
+                console.log( "aAjax: delete-restore-element.js 111" );
+                
                     $.ajax({
                         url: plugin_optimizer_groups.ajax_url,
                         type: 'POST',
@@ -47,6 +50,9 @@ let deleteRestoreElement;
                         }
                     });
                 } else if($('#check_all_elements option:selected').text() === 'Restore'){
+                
+                console.log( "aAjax: delete-restore-element.js 222" );
+                
                     $.ajax({
                         url: plugin_optimizer_groups.ajax_url,
                         type: 'POST',

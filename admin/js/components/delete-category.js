@@ -9,6 +9,9 @@ let deleteCategory;
         deleteCategory = () => {
             $('.filter-category .close').click(function () {
                 let selfDelete = this;
+                
+                console.log( "aAjax: delete-category.js" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

@@ -21,7 +21,9 @@ let createCat;
                 if (!result) {
                     return false;
                 }
-
+                
+                console.log( "aAjax: create-category.js 111" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
@@ -38,6 +40,9 @@ let createCat;
                         allElements.count_element('cat');
                         allElements.check_all_element();
                         hiddenInfoFilter();
+                
+                console.log( "aAjax: create-category.js 222" );
+                
                         $.ajax({
                             url: plugin_optimizer_groups.ajax_url,
                             type: 'POST',

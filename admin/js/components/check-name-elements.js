@@ -13,6 +13,9 @@ let checkNameElements;
             $('#set_title').change(function () {
                 const name_element = $(this).val();
                 const type_element = $('#name_page').attr('class');
+                
+                console.log( "aAjax: check-name-elements.js" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

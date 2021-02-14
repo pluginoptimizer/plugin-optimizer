@@ -9,6 +9,9 @@ let showPluginsSettings;
         showPluginsSettings = () => {
             $('#activate_plugins, #deactivate_plugins').click(function (){
                 const self = this;
+                
+                console.log( "aAjax: show-plugins-to-settings.js" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

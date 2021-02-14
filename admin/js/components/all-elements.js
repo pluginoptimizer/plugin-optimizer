@@ -22,6 +22,9 @@ let showAllElements;
                 }
                 /* Remove the ability to recover if we are out of the cart */
                 $('select#check_all_elements option[value="restore"]').remove();
+                
+                console.log( "aAjax: all-elements.js" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

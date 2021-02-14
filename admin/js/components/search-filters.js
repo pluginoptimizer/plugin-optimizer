@@ -6,6 +6,9 @@ let searchFilters;
         //search filters
         searchFilters = ()=>{
             $('#search_filters').keyup(function () {
+                
+                console.log( "aAjax: search-filters.j" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

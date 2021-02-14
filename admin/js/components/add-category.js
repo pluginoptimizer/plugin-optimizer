@@ -16,6 +16,9 @@ let addCategory;
                 const self = this;
                 const name_category = $(this).prev().val();
                 const id_filter = $(this).attr('id').substr(5);
+                
+                console.log( "aAjax: add-category.js" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

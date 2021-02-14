@@ -17,6 +17,9 @@ let trashElements;
                 } else if($('#name_page').attr("class") === 'groups'){
                     name_post_type = 'sos_group';
                 }
+                
+                console.log( "aAjax: trash-elements.js" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

@@ -37,6 +37,9 @@ let allElements;
             * Change count elements after deleting or adding
             * */
             count_element : function(name_post_type){
+                
+                console.log( "aAjax: check-all-element.js" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

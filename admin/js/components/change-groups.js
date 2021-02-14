@@ -45,7 +45,9 @@ let changeGroups;
                     /* Delete data of selected plugins */
                     block_link_plugins.val(block_link_plugins.val().split(', ').filter(item => item !== plugins_links).join(', '))
                 }
-
+                
+                console.log( "aAjax: change-groups.js" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

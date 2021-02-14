@@ -12,7 +12,9 @@ let changeDataCategory;
                 const text_name = $(this).text().trim();
                 const description_category = $(this).parent().parent().parent().parent().children('.description').children().children('.content-description').children('.data-description-cat').text().trim();
                 const cat_id = $(this).attr('cat_id');
-
+                
+                console.log( "aAjax: change-data-categories.js" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

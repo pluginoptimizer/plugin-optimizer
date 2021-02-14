@@ -34,6 +34,9 @@ let addCategoryFilter;
                 }
 
                 let self = this;
+                
+                console.log( "aAjax: add-category-filter.js" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',

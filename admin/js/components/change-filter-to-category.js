@@ -10,6 +10,8 @@ let changeFilterToCategory;
                 
                 let self = this;
                 
+                console.log( "aAjax: change-filter-to-category.js" );
+                
                 $.ajax({
                     url : plugin_optimizer_groups.ajax_url,
                     type: 'POST',

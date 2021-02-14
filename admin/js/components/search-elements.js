@@ -26,6 +26,9 @@ let searchElements;
                 } else {
                     type_elements = 'trash';
                 }
+                
+                console.log( "aAjax: search-elements.js" );
+                
                 $.ajax({
                     url: plugin_optimizer_groups.ajax_url,
                     type: 'POST',
