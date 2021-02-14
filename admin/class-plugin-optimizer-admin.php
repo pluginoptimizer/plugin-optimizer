@@ -56,7 +56,10 @@ class Plugin_Optimizer_Admin {
 	 */
 	function enqueue_scripts() {
 
-		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-optimizer-admin.js', array( 'jquery' ), $this->version, false );
+		// wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-optimizer-admin.js', array( 'jquery' ), $this->version, false );
+        
+		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-optimizer-admin2.js', array( 'jquery' ), $this->version, false );
+        
 		wp_localize_script( $this->plugin_name, 'plugin_optimizer_groups', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 		wp_enqueue_script( $this->plugin_name );
 
