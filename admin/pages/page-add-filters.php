@@ -1,32 +1,29 @@
+<?php
+$posts = get_posts( array(
+	'post_type'   => 'sos_filter',
+	'numberposts' => - 1,
+) );
+?>
 <div class="wrap wrapper-filter">
-
-	<?php
-	$posts = get_posts( array(
-		'post_type'   => 'sos_filter',
-		'numberposts' => - 1,
-	) );
-	?>
 
 	<div class="sos-wrap container">
 		<div class="row col-12">
 			<h1>Plugin Optimizer</h1>
 		</div>
 		<div class="row col-12">
-			<h2 id="name_page" class="add-filters">Add Filters</h2>
+			<h2 id="name_page" class="add-filters">Create a new Filter</h2>
 		</div>
-
 
 		<div class="row col-12 justify-content-between wrap-tabs">
 			<div class="col-10 row">
-				<div id="window_filters" class="tabs col-2">filters</div>
-				<div id="window_categories" class="tabs col-2">categories</div>
-				<div id="window_groups" class="tabs col-2">groups</div>
-				<div id="window_worklist" class="tabs col-2">worklist</div>
-				<div id="window_settings" class="tabs col-2">settings</div>
+                <div id="window_filters"    class="tabs col-2">Filters</div>
+                <div id="window_categories" class="tabs col-2">Categories</div>
+                <div id="window_groups"     class="tabs col-2">Groups</div>
+                <div id="window_worklist"   class="tabs col-2">Worklist</div>
+                <div id="window_settings"   class="tabs col-2">Settings</div>
 			</div>
 			<div class="row col-2">
-				<input class="search" type="search" id="search_elements" name="s" value=""
-				       placeholder="Search filters">
+				<input class="search" type="search" id="search_elements" name="s" value="" placeholder="Search filters">
 			</div>
 		</div>
 		<div class="row sos-content">
