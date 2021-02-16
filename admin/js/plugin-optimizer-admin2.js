@@ -491,10 +491,10 @@
                 url: plugin_optimizer_groups.ajax_url,
                 type: 'POST',
                 data: {
-                    action: 'sos_create_cat_subcat',
-                    'name_category': $('#set_title').val(),
-                    'description_category': $('#set_description').val(),
-                    'parent_category': $('.parent-category-wrapper .block span').toArray().map(item => $(item).attr('value')).join(', '),
+                    action                  : 'sos_create_cat_subcat',
+                    'name_category'         : $('#set_title').val(),
+                    'description_category'  : $('#set_description').val(),
+                    'parent_category'       : $('.parent-category-wrapper .block span').toArray().map(item => $(item).attr('value')).join(', '),
                 },
                 success: function ({data}) {
                     $('#the-list').html(data);
@@ -574,7 +574,7 @@
 
         // Check the name of the elements when creating them, filters, groups and categories should use already existing name
         // WTF is this code
-        $('body').on('click', '#set_title', function(){
+        $('body').on('change', '#set_title', function(){
             const name_element = $(this).val();
             const type_element = $('#name_page').attr('class');
             
