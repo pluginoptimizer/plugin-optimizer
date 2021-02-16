@@ -96,7 +96,7 @@ foreach ( $all_plugins as $plugin ) {
                             </thead>
                             <tbody id="the-list">
 							<?php
-							Plugin_Optimizer_Helper::content_activate_plugins_to_settings( $activate_plugins );
+							Plugin_Optimizer_Helper::content_list_plugins( $activate_plugins );
 							?>
                             </tbody>
                         </table>

@@ -249,7 +249,7 @@ class Plugin_Optimizer_Helper {
         </div><?php
 	}
 
-	public static function content_activate_plugins_to_settings( $activate_plugins ) {
+	public static function content_list_plugins( $activate_plugins ) {
 
 		if ( $activate_plugins ){
             foreach ( $activate_plugins as $activate_plugin ){
@@ -303,7 +303,7 @@ class Plugin_Optimizer_Helper {
 										?>
                                         <div class="plugin-wrapper no-plugins">
                                             <div class="content">
-                                                <span>No activate plugins</span>
+                                                <span>No plugins</span>
                                             </div>
                                         </div>
 									<?php
@@ -319,7 +319,7 @@ class Plugin_Optimizer_Helper {
             <tr class="plugin-wrapper no-plugins">
                 <td colspan="2">
                     <div class="content">
-                        <span>No activate plugins for blocking</span>
+                        <span>No plugins on this list.</span>
                     </div>
                 </td>
             </tr>

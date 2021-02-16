@@ -273,7 +273,7 @@ class Plugin_Optimizer_Ajax {
 
 				$activate_plugins = preg_grep( '~^' . $filter_plugins . '~i', $activate_plugins );
 
-				$this->content_plugins_to_settings( $activate_plugins );
+				$this->content_list_plugins( $activate_plugins );
 			}
 		} else {
 			$posts = get_posts( array(
@@ -860,9 +860,9 @@ class Plugin_Optimizer_Ajax {
 		ob_start();
 
 		if ( $type_plugins === 'activate_plugins' ) {
-			Plugin_Optimizer_Helper::content_activate_plugins_to_settings( $activate_plugins );
+			Plugin_Optimizer_Helper::content_list_plugins( $activate_plugins );
 		} else {
-			$this->content_deactive_plugins_to_settings( $deactivate_plugins );
+			Plugin_Optimizer_Helper::content_list_plugins( $deactivate_plugins );
 		}
 
 		wp_send_json_success( ob_get_clean() );
