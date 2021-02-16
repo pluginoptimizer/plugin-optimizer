@@ -23,7 +23,7 @@
         }
 
         
-        // main??
+        // TODO This element doesn't exist in the repository
         $('body').on('click', '.change_content_data', function(){
             if($(this).children('option:selected').val() === 'type'){
                 $('.content-type').css('display', 'block');
@@ -34,7 +34,7 @@
             }
         });
         
-        // trash elements
+        // trash CPTs
         $('body').on('click', '#trash_elements', function(){
             let name_post_type;
             if($('#name_page').attr("class") === 'worklist'){
@@ -63,7 +63,7 @@
             });
         });
         
-        // transitionElements
+        // menu switching pages
         $('body').on('click', '#window_filters, #window_categories, #window_groups, #window_worklist, #window_settings', function(){
             $('.tabs').css('background', '#1e4d7d');
 
