@@ -168,7 +168,7 @@ $posts = get_posts( array(
 													groups <span
 														class="disabled">- <?= count( $groups ); ?></span>
 												</div>
-												<span class="all-check">All disable</span>
+												<span class="all-check">Disable All</span>
 											</div>
 											<div class="plugin-wrapper">
 												<?php

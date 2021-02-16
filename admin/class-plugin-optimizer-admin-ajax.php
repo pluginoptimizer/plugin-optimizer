@@ -551,6 +551,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Check name group
 	 */
+    // WTF is this code
 	function ajax_check_name_elements() {
         
         // po_mu_plugin()->write_log( $_POST, "ajax_check_name_elements-post" );

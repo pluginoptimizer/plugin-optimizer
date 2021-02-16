@@ -63,7 +63,7 @@
             });
         });
         
-        // menu switching pages
+        // switch between tabs menu pages
         $('body').on('click', '#window_filters, #window_categories, #window_groups, #window_worklist, #window_settings', function(){
             $('.tabs').css('background', '#1e4d7d');
 
@@ -91,7 +91,7 @@
 
         });
         
-        // showPluginsSettings
+        // on the list of plugins, switch between active and inactive ones
         $('body').on('click', '#activate_plugins, #deactivate_plugins', function(){
             const self = this;
             
@@ -116,8 +116,11 @@
             });
         });
         
-        // showHiddenOverview
+        // Overview page - switch between accordion elements
         $('body').on('click', '.tab-overview', function(){
+            
+            // TODO - the page doesn't remember the current state of completed tasks
+            
             if($(this).next('.hidden-info_overview').css('display') !== 'block'){
                 $(this).next('.hidden-info_overview').css('display', 'block');
                 $(this).children('.trigger').removeClass('trigger_exit');
@@ -130,7 +133,7 @@
             }
         })
         
-        // Select a group plugins for a new filter or select parent for a new group
+        // Clicking on a group in the Add New Filter page
         $('body').on('click', '.block-group-plugin-wrapper .content', function(){
             
             console.log( "select-parent-group.js" );
@@ -153,13 +156,13 @@
                     if(countItem === 0){
                         $('.none_group').addClass('block');
                     }
-                }
+                }zvezda 
             } else {
                 $(this).addClass('block');
             }
         });
         
-        // Select a parent for a new category
+        // Select a parent category on the Add New Category screen
         $('body').on('click', '.select_parent_to_category', function(){
             const selfText = $(this).text();
             if($(this).hasClass('block')){
@@ -177,7 +180,7 @@
 
         });
 
-        // Select all plugins for a new filter
+        // On a new Filter or new Group pages: disable/enable all in a section
         $('body').on('click', '.all-check', function(){
             if($(this).text() === 'Disable All'){
                 $(this).text('Enable All');
@@ -188,6 +191,7 @@
             }
         });
 
+        // TODO This element doesn't exist in the repository
         // search filters
         $('body').on('keyup', '#search_filters', function(){
             
@@ -205,8 +209,8 @@
                 }
             });
         });
-
-        // search elements
+        
+        // search elements, a box on most of the PO pages
         $('body').on('keyup', '#search_elements', function(){
             let name_post_type;
             if($('#name_page').attr("class") === 'worklist'){
@@ -244,7 +248,7 @@
             });
         });
 
-        // delete or restore element
+        // Bulk actions button (usually delete or restore element)
         $('body').on('click', '#btn_apply', function(){
             let name_post_type;
             if($('#name_page').attr("class") === 'worklist'){
@@ -308,7 +312,7 @@
 
         });
 
-        // create plugins
+        // #add_elements is a button used to get the Create New XYZ form
         $('body').on('click', '#add_elements', function(){
             if($('#name_page').hasClass('filters')){
                 location.href='/wp-admin/admin.php?page=plugin_optimizer_add_filters';
@@ -323,11 +327,13 @@
                 }
             }
         });
+
+        // TODO - both of these elements don't exist in the repository
         $('body').on('click', '.wrapper_create-elements > .popup-close', function(){
             $('#create_elements').css('display', 'none');
         });
 
-        // all elements
+        // TODO - this elements never has the class .close
         $('body').on('click', '.filter-category .close', function(){
             let selfDelete = this;
             
@@ -347,7 +353,7 @@
             });
         });
 
-        // create group plugins
+        // Save New Group button on the Create New Filter Group page
         $('body').on('click', '.save-group', function(){
             let result = true;
             $('.content-new-element input#set_title').toArray().some(function (item) {
@@ -401,7 +407,7 @@
 
         });
 
-        // created filters
+        // Save New Filter button on the Create New Filter page
         $('body').on('click', '.save-filter', function(){
             let result = true;
             $('.content-new-element input#set_title').toArray().some(function (item) {
@@ -466,7 +472,7 @@
             }
         });
 
-        // change plugins
+        // #add_elements.save-category is a button used to get the Create New Category form
         $('body').on('click', '.save-category', function(){
             let result = true;
             $('.content-new-element input').toArray().some(function (item) {
@@ -524,12 +530,15 @@
             }
         });
 
+        // On the Add New Filter page, #search_pages is the input field where you put the initial permalink/endpoint for the filter
         $('body').on('keypress', '#search_pages', function(e){
             if (e.keyCode == 13) {
                 $('.add-permalink').click();
             }
         });
 
+        // On the Add New Filter page, the button .add-permalink is used to add new endpoint to the filter
+        // TODO Beware, the same class is added to the "+ Category" button too!
         $('body').on('click', '.add-permalink', function(){
             let linkClient = $('#search_pages').val();
             linkClient = get_hostname(linkClient)               ? linkClient.replace(get_hostname(linkClient), '')  : linkClient;
@@ -541,7 +550,7 @@
             $(this).parent().after(`
                 <div class="link">
                     <span class="data-interaction text_link" contenteditable>${linkClient}</span>
-                    <span class="close-selected-link">×</span>
+                    <span class="close-selected-link">Ã—</span>
                 </div>
             `);
             $('#search_pages').val('');
@@ -551,7 +560,7 @@
             })
         });
 
-        // Select a category for a new filter
+        // Select a category for a new filter, does nothing but marks the selected category
         $('body').on('click', '.category-wrapper .content', function(){
 
             console.log( "choice-category.js" );
@@ -563,7 +572,8 @@
             }
         });
 
-        // Check the name of the elements when creating them
+        // Check the name of the elements when creating them, filters, groups and categories should use already existing name
+        // WTF is this code
         $('body').on('click', '#set_title', function(){
             const name_element = $(this).val();
             const type_element = $('#name_page').attr('class');
@@ -714,7 +724,7 @@
             if(change_plugins === '+'){
                 /* Change appearance */
                 $(this).addClass('block');
-                $close.text('×');
+                $close.text('Ã—');
                 /* Record data of selected plugins */
                 block_plugins.val() ? block_plugins.val(`${block_plugins.val()}, ${plugin_name}`) : block_plugins.val(plugin_name);
 
