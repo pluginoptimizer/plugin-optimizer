@@ -289,9 +289,6 @@
     text-align: left;
 }
 
-.sos-wrap .hidden_info .content-filter .content-permalinks .link{
-    margin: 0;
-}
 .sos-wrap .content-filter .content-permalinks{
     margin-top: 10px;
 }
@@ -359,13 +356,6 @@
     color: #212529;
 }
 
-.inside .sos-wrap .hidden_info{
-    display: table-row;
-}
-
-.sos-wrap .hidden_info{
-    display: none;
-}
 .sos-wrap .block_info{
     cursor: pointer;
 }

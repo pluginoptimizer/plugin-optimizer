@@ -483,6 +483,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Add category to filter
 	 */
+    // TODO - no need to output anything
 	function ajax_add_category_to_filter() {
 		$cat_ID    = htmlspecialchars( $_POST['id_category'] );
 		$filter_ID = htmlspecialchars( $_POST['id_filter'] );

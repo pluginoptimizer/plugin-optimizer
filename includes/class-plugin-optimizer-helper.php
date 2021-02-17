@@ -264,57 +264,7 @@ class Plugin_Optimizer_Helper {
                         'numberposts' => - 1,
                     ) );
 				?>
-                <tr class="hidden_info">
-                    <td colspan="2">
-                        <div class="content-filter">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="header">
-                                        <div class="title">
-                                            Filters
-                                        </div>
-                                        <span class="count-plugin">( All: <?= wp_count_posts( 'sos_filter' )->publish; ?>   |   Trash: <?= wp_count_posts( 'sos_filter' )->trash; ?> )</span>
-                                    </div>
-									<?php
-									if ( $posts ):
-										?>
-                                        <div class="plugin-wrapper">
-											<?php
-											foreach ( $posts as $post ):
-												$group_plugins = get_post_meta( $post->ID, 'block_plugins', true );
-												?>
-                                                <a href="<?= esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_filters&filter_title=' . urlencode( $post->post_title ) ) ); ?>">
-                                                    <div class="content
-                                             <?php
-													if ( in_array( $activate_plugin, $group_plugins ) ) {
-														echo 'block';
-													}
-													?>
-                                             ">
-                                                        <span><?= $post->post_title; ?></span>
-                                                    </div>
-                                                </a>
-											<?php
-											endforeach;
-											?>
-                                        </div>
-									<?php
-									else:
-										?>
-                                        <div class="plugin-wrapper no-plugins">
-                                            <div class="content">
-                                                <span>No plugins</span>
-                                            </div>
-                                        </div>
-									<?php
-									endif;
-									?>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-			<?php } ?>
+            <?php } ?>
 		<?php } else { ?>
             <tr class="plugin-wrapper no-plugins">
                 <td colspan="2">
@@ -336,6 +286,8 @@ class Plugin_Optimizer_Helper {
                     <td><?= get_post_meta( $post->ID, 'post_link', true ); ?></td>
                     <td><?= substr( str_replace( '-', '/', str_replace( " ", " at ", $post->post_date ) ), 0, - 3 ) . ' pm'; ?></td>
                     <td>
+                    
+                    <?php /* TODO Check next line because we got rid of work_title */ ?>
                         <a class="row-title"
                            href="<?= get_admin_url( null, 'admin.php?page=plugin_optimizer_filters&work_title=' . urlencode( str_replace( ' ', '_', str_replace( 'Add filter to ', '', $post->post_title ) ) ) . '&work_link=' . urlencode( get_post_meta( $post->ID, 'post_link', true ) ) ); ?>">
                             <button class="add-filter"><span class="pluse">+</span> add new filter</button>
@@ -379,69 +331,6 @@ class Plugin_Optimizer_Helper {
                     <td><?= $group_plugins; ?></td>
                     <td><?= $group_plugins ? count( explode( ',', $group_plugins ) ) : 0; ?></td>
                 </tr>
-                <tr class="hidden_info">
-                    <td colspan="6">
-                        <div class="content-filter">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="header">
-                                        <div class="title">
-											<?php
-											$count_block_plugins = 0;
-
-											foreach ( $all_plugins as $plugin ) {
-												foreach ( $plugin as $key => $value ) {
-													if ( $key === 'name' ) {
-														if ( substr_count( $group_plugins, $plugin['name'] ) ) {
-															$count_block_plugins ++;
-														}
-													}
-												}
-											}
-											?>
-                                            Plugins <span
-                                                    class="disabled">- Disabled: <?= $count_block_plugins ?>/<?= count( $activate_plugins ); ?></span>
-                                        </div>
-                                        <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
-                                    </div>
-									<?php
-									if ( $activate_plugins ):
-										?>
-                                        <div class="plugin-wrapper wrapper-group-plugins">
-											<?php
-											foreach ( $activate_plugins as $activate_plugin ):
-												?>
-                                                <div class="content<?= substr_count( $group_plugins, $activate_plugin ) ? ' block' : ''; ?>"
-                                                     group_id="<?= $post->ID; ?>">
-                                                    <span><?= $activate_plugin; ?></span>
-                                                </div>
-											<?php
-											endforeach;
-											foreach ( $deactivate_plugins as $deactivate_plugin ):
-												?>
-                                                <div class="content deactivate-plugin<?= substr_count( $group_plugins, $deactivate_plugin ) ? ' block' : ''; ?>">
-                                                    <span><?= $deactivate_plugin; ?></span>
-                                                </div>
-											<?php
-											endforeach;
-											?>
-                                        </div>
-									<?php
-									else:
-										?>
-                                        <div class="plugin-wrapper no-plugins">
-                                            <div class="content">
-                                                <span>No activate plugins</span>
-                                            </div>
-                                        </div>
-									<?php
-									endif;
-									?>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
 				<?php
 				if ( $post->post_status === 'publish' ) {
 					$posts_chidren = get_posts( array(
@@ -481,56 +370,6 @@ class Plugin_Optimizer_Helper {
                             <td><?= $children_group_plugins; ?></td>
                             <td><?= substr_count( $children_group_plugins, ',' ) + 1; ?></td>
                         </tr>
-                        <tr class="hidden_info">
-                            <td colspan="6">
-                                <div class="content-filter">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="header">
-                                                <div class="title">
-													<?php
-													$count_block_plugins = 0;
-													foreach ( $activate_plugins as $activate_plugin ) {
-														if ( substr_count( $children_group_plugins, $activate_plugin ) ) {
-															$count_block_plugins ++;
-														}
-													}
-													?>
-                                                    Plugins <span
-                                                            class="disabled">- Disabled: <?= $count_block_plugins ?>/<?= count( $activate_plugins ); ?></span>
-                                                </div>
-                                                <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
-                                            </div>
-											<?php
-											if ( $activate_plugins ):
-												?>
-                                                <div class="plugin-wrapper wrapper-group-plugins">
-													<?php
-													foreach ( $activate_plugins as $activate_plugin ):
-														?>
-                                                        <div class="content <?= substr_count( $children_group_plugins, $activate_plugin ) ? 'block' : ''; ?>">
-                                                            <span><?= $activate_plugin; ?></span>
-                                                        </div>
-													<?php
-													endforeach;
-													?>
-                                                </div>
-											<?php
-											else:
-												?>
-                                                <div class="plugin-wrapper no-plugins">
-                                                    <div class="content">
-                                                        <span>No activate plugins</span>
-                                                    </div>
-                                                </div>
-											<?php
-											endif;
-											?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
 					<?php endforeach;
 				endif;
 
@@ -552,85 +391,6 @@ class Plugin_Optimizer_Helper {
                     <td><input type="checkbox" id="<?= $cat->cat_ID ?>"></td>
                     <td class="data-title-category"><?= $cat->cat_name; ?></td>
                 </tr>
-                <tr class="hidden_info">
-                    <td colspan="2">
-                        <div class="content-filter">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="header">
-                                        <div class="title">
-                                            Name
-                                        </div>
-                                    </div>
-                                    <div class="content-description">
-                                        <span class="data-interaction data-title-cat" cat_id="<?= $cat->cat_ID ?>"
-                                              contenteditable>
-                                            <?= $cat->cat_name; ?>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row description">
-                                <div class="col-12">
-                                    <div class="header">
-                                        <div class="title">
-                                            Description
-                                        </div>
-                                    </div>
-                                    <div class="content-description">
-                                        <span class="data-interaction data-description-cat" cat_id="<?= $cat->cat_ID ?>"
-                                              contenteditable>
-                                            <?= $cat->category_description ? $cat->category_description : 'None description'; ?>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="header">
-                                        <div class="title">
-											<?php
-											$count_filters = 0;
-											$posts         = get_posts( array(
-												'post_type'   => 'sos_filter',
-												'numberposts' => - 1,
-											) );
-											if ( $posts ) {
-												foreach ( $posts as $post ) {
-													if ( has_term( $cat->cat_ID, '?ategories_filters', $post->ID ) ) {
-														$count_filters ++;
-													}
-												}
-											}
-											?>
-                                            Filters <span
-                                                    class="disabled">- Used: <?= $count_filters; ?>/<?= wp_count_posts( 'sos_filter' )->publish; ?></span>
-                                        </div>
-                                    </div>
-                                    <div class="plugin-wrapper wrapper_filter_to_category">
-										<?php
-										$posts = get_posts( array(
-											'post_type'   => 'sos_filter',
-											'numberposts' => - 1,
-										) );
-										if ( $posts ) :
-											foreach ( $posts as $post ) :
-												?>
-                                                <div class="content <?= has_term( $cat->cat_ID, '?ategories_filters', $post->ID ) ? 'block' : ''; ?>"
-                                                     id="<?= $post->ID; ?>" cat_id="cat_<?= $cat->cat_ID; ?>">
-                                                    <span><?= $post->post_title; ?></span>
-                                                </div>
-											<?php
-											endforeach;
-										endif;
-										?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </td>
-                </tr>
 				<?php
 				$difference    = $cat->cat_ID;
 				$subcategories = get_categories( array(
@@ -644,56 +404,6 @@ class Plugin_Optimizer_Helper {
                         <tr class="block_info block_children">
                             <td><input type="checkbox" id="<?= $subcategory->cat_ID ?>"></td>
                             <td> — <?= $subcategory->cat_name; ?></td>
-                        </tr>
-                        <tr class="hidden_info">
-                            <td colspan="2">
-                                <div class="content-filter">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="header">
-                                                <div class="title">
-													<?php
-													$count_filters = 0;
-													$posts         = get_posts( array(
-														'post_type'   => 'sos_filter',
-														'numberposts' => - 1,
-													) );
-													if ( $posts ) {
-														foreach ( $posts as $post ) {
-															if ( has_term( $subcategory->cat_ID, '?ategories_filters', $post->ID ) ) {
-																$count_filters ++;
-															}
-														}
-													}
-													?>
-                                                    Filters <span
-                                                            class="disabled">- Used: <?= $count_filters; ?>/<?= wp_count_posts( 'sos_filter' )->publish; ?></span>
-                                                </div>
-                                            </div>
-                                            <div class="plugin-wrapper wrapper_filter_to_category">
-												<?php
-												$posts = get_posts( array(
-													'post_type'   => 'sos_filter',
-													'numberposts' => - 1,
-												) );
-												if ( $posts ) :
-													foreach ( $posts as $post ) :
-														?>
-                                                        <div class="content <?= has_term( $subcategory->cat_ID, '?ategories_filters', $post->ID ) ? 'block' : ''; ?>"
-                                                             id="<?= $post->ID; ?>"
-                                                             cat_id="cat_<?= $subcategory->cat_ID; ?>">
-                                                            <span><?= $post->post_title; ?></span>
-                                                        </div>
-													<?php
-													endforeach;
-												endif;
-												?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </td>
                         </tr>
 					<?php endforeach;
 				endif;
@@ -721,130 +431,6 @@ class Plugin_Optimizer_Helper {
                     <td class="data-type-filter"><?= get_post_meta( $post->ID, 'type_filter', true ); ?></td>
                     <td class="data-link-filter"><?= get_post_meta( $post->ID, 'selected_page', true ); ?></td>
                     <td class="expandable"><span class="no_hover"><?= count( $blocking_plugins ) ?></span><span class="yes_hover"><?= implode( ',<br/>', $blocking_plugins ); ?></span></td>
-                </tr>
-                <tr class="hidden_info">
-                    <td colspan="6">
-                        <div class="content-filter">
-                            <div class="row">
-                                <div class="col-12">
-									<?php
-									$type_filter = get_post_meta( $post->ID, 'type_filter', true );
-									if ( $type_filter === 'none' ):
-										?>
-                                        <div class="header">Permalinks</div>
-                                        <div class="content-permalinks">
-                                            <div class="link">
-                                            <span class="data-interaction data-link" filter_id="<?= $post->ID ?>"
-                                                  contenteditable>
-                                            <?= get_post_meta( $post->ID, 'selected_page', true ) ?>
-                                            </span>
-                                            </div>
-                                        </div>
-									<?php
-
-									else:
-										?>
-                                        <div class="header">Type</div>
-                                        <div>
-                                            <div class="content">
-                                            <span class="data-interaction data-type" filter_id="<?= $post->ID ?>"
-                                                  contenteditable>
-                                                <?= $type_filter ?>
-                                            </span>
-                                            </div>
-                                        </div>
-
-									<?php
-									endif;
-									?>
-                                </div>
-
-                            </div>
-                            <div class="row content-plugins">
-								<?php
-								Plugin_Optimizer_Helper::content_plugin_to_filter( $post );
-								?>
-                            </div>
-                            <div class="row group-wrapper">
-                                <div class="col-12">
-                                    <div class="header">
-                                        <div class="title">
-											<?php
-											$groups_plugins = get_post_meta( $post->ID, 'block_group_plugins', true );
-											$count_groups   = 0;
-											$groups         = get_posts( array(
-												'post_type'   => 'sos_group',
-												'numberposts' => - 1,
-											) );
-											if ( $groups ) {
-												foreach ( $groups as $group ) {
-													if ( in_array( $group->post_title, $groups_plugins ) ) {
-														$count_groups ++;
-													}
-												}
-											}
-											?>
-                                            groups <span
-                                                    class="disabled">- Disabled: <?= $count_groups; ?>/<?= count( $groups ); ?></span>
-                                        </div>
-                                    </div>
-                                    <div class="plugin-wrapper group-wrapper">
-										<?php
-										$all_plugins     = Plugin_Optimizer_Helper::get_plugins_with_status();
-										$content_plugins = array();
-										foreach ( $all_plugins as $plugin ) {
-											foreach ( $plugin as $key => $value ) {
-												if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-													$content_plugins[ $plugin['name'] ] = $plugin['file'];
-												}
-											}
-										}
-
-										$groups = get_posts( array(
-											'post_type'   => 'sos_group',
-											'numberposts' => - 1,
-										) );
-										if ( $groups ) :
-											foreach ( $groups as $group ) :
-												?>
-                                                <div id="<?= $group->ID; ?>" value="<?= $post->ID; ?>"
-                                                     class="content <?= in_array( $group->post_title, $groups_plugins ) ? 'block' : ''; ?> ">
-                                                    <span><?= $group->post_title; ?></span>
-													<?php
-													$block_plugins_in_group = explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) );
-													foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
-														?>
-                                                        <div class="hidden_content content">
-                                                            <span value="<?= isset( $content_plugins[ $block_plugin_in_group ] ) ? $content_plugins[ $block_plugin_in_group ] : "" ?>"><?= $block_plugin_in_group; ?></span>
-                                                        </div>
-													<?php
-													endforeach;
-													?>
-                                                </div>
-											<?php
-											endforeach;
-										endif;
-										?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="header">
-                                        <div class="title">
-                                            categories
-                                        </div>
-                                    </div>
-                                    <div class="plugin-wrapper">
-										<?php
-										self::create_category( $post );
-										?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </td>
                 </tr>
 			<?php
 			}

@@ -7,22 +7,6 @@
         namePage = namePage === 'filters_categories' ? 'categories' : namePage;
         $(`#window_${namePage}`).css('background-color', '#d7b70a');
 
-        
-        const params = window.location.search.replace('?','').split('&').reduce( function(p,e){
-            const a = e.split('=');
-            p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
-            return p;
-        }, {});
-        if(params['work_title']){
-            $('input#set_title').val(`Optimization for ${params['work_title'].replace('_', ' ')}`);
-            params['work_link'].includes('http') ? $('#search_pages').val(params['work_link']) : $(`span[value="${params['work_link']}"]`).parent().addClass(`block`);
-            $('.content-new-element').css('display', 'block');
-        } else if(params['filter_title']) {
-            $(`tr.block_info > td:nth-child(2):contains(${params['filter_title'].replace('+', ' ')})`).parent().next('.hidden_info').css('display', 'table-row');
-            $('html').animate({ scrollTop: $(`tr.block_info > td:nth-child(2):contains(${params['filter_title'].replace('+', ' ')})`).parent().next('.hidden_info').children().children().children('.block-plugin-wrapper').children().children('.plugin-wrapper').offset().top - 100 }, 1000);
-        }
-
-        
         // TODO This element doesn't exist in the repository
         $('body').on('click', '.change_content_data', function(){
             if($(this).children('option:selected').val() === 'type'){
@@ -603,14 +587,16 @@
             });
         });
 
+        // TODO this element doesn't exist in the repository
         $('body').on('click', '#group_name_error .popup-close', function(){
             $('#set_title').css('border', '1px solid red');
             $('#set_title').val('');
             $('#set_title').focus();
         });
 
-        // hidden info filter
+        // Clicking on element on the list (filter, group, category) redirects to the edit page
         $('body').on('click', '.block_info > td:not(:nth-child(1))', function(){
+            
             const element_id = $(this).parent().children('td:nth-child(1)').children().attr('id');
 
             if($('#name_page').attr("class") === 'filters_categories'){
@@ -619,16 +605,10 @@
                 location.href=`/wp-admin/post.php?post=${element_id}&action=edit`;
             }
 
-            /*if($(this).parent().next('.hidden_info').css('display') === 'none'){
-                $(this).parent().next('.hidden_info').css('display', 'table-row');
-            } else{
-                $(this).parent().next('.hidden_info').css('display', 'none');
-            }*/
         });
 
-        // Change the appearance of the tab selection
-        
-        // Hidden appearance settings
+
+        // Switch submenu on the Settings page
         function hidden_settings(){
             if($('#settings_plugins').css('display') === 'block'){
                 $('#settings_plugins').css('display', 'none');
@@ -646,26 +626,29 @@
             }
         }
 
-        // Hidden appearance settings
+        // Switch submenu on the Settings page
         $('body').on('click', '#show_settings_general', function(){
             $(this).css('font-weight', 600);
             hidden_settings();
             $('#settings_general').css('display', 'flex');
         });
 
+        // Switch submenu on the Settings page
         $('body').on('click', '#show_settings_plugins', function(){
             $(this).css('font-weight', 600);
             hidden_settings();
             $('#settings_plugins').css('display', 'block');
         });
 
+        // Switch submenu on the Settings page
         $('body').on('click', '#show_settings_debug', function(){
             $(this).css('font-weight', 600);
             hidden_settings();
             $('#settings_debug').css('display', 'flex');
         });
         
-        // Change plugins to group
+        
+        // Change plugins on the group edit screen
         $('body').on('click', '.wrapper-group-plugins .content', function(){
             
             console.log( "change-plugins-group.js" );
@@ -697,12 +680,12 @@
                 },
                 success: function (response) {
                     $('#the-list').html(response.data.return);
-                    $(`tr#group_${response.data.group_id}`).next('.hidden_info').css('display', 'table-row');
                 }
             });*/
         });
         
-        // Change plugins to filter
+        // Change plugins for a filter and a group??
+        // TODO check because those actions run multiple triggers
         $('body').on('click', '.plugin-wrapper:not(.group-wrapper) > .content', function(){
             
             console.log( "change-plugins.js" );
@@ -752,13 +735,12 @@
                     'change_plugins': change_plugins,
                 },
                 success: function (response) {
-                    /!* Change the content of the block plugins *!/
-                    $(`tr#filter-${response.data.filter_id}`).next('.hidden_info').children().children().children('.content-plugins').html(response.data.return);
                 }
             });*/
         });
         
-        // Change the selected links
+        // .data-link is an already selected Permalink/Endpoint for the filter
+        // WTF is this code? We don't want Ajax running while we type the permalink
         $('body').on('input', '.data-link', function(){
             const text_link = $(this).text();
             const filter_id = $(this).attr('filter_id');
@@ -779,7 +761,7 @@
             });
         });
         
-        // changeGroups
+        // Groups section on the filter edit page
         $('body').on('click', '.group-wrapper > .content', function(){
             
             console.log( "change-groups.js" );
@@ -821,27 +803,25 @@
                 block_link_plugins.val(block_link_plugins.val().split(', ').filter(item => item !== plugins_links).join(', '))
             }
             
-            // console.log( "aAjax: change-groups.js" );
+            console.log( "aAjax: change-groups.js" );
             
-            // $.ajax({
-                // url: plugin_optimizer_groups.ajax_url,
-                // type: 'POST',
-                // data: {
-                    // action: 'sos_change_groups_to_filter',
-                    // 'group_name'   : group_name,
-                    // 'filter_id'    : filter_id,
-                    // 'plugins_names': plugins_names,
-                    // 'plugins_links': plugins_links,
-                    // 'change_groups': change_groups,
-                // },
-                // success: function (response) {
-                    // $(`tr#filter-${response.data.filter_id}`).next('.hidden_info').children().children().children('.content-plugins').html(response.data.content_plugins);
-                    // $(`tr#filter-${response.data.filter_id}`).next('.hidden_info').children().children().children('.group-wrapper').html(response.data.content_groups);
-                    // changeGroups();
-                // }
-            // });
+            $.ajax({
+                url: plugin_optimizer_groups.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'sos_change_groups_to_filter',
+                    'group_name'   : group_name,
+                    'filter_id'    : filter_id,
+                    'plugins_names': plugins_names,
+                    'plugins_links': plugins_links,
+                    'change_groups': change_groups,
+                },
+                success: function (response) {
+                }
+            });
         });
         
+        // TODO - the element can exist only in the hidden content
         $('body').on('click', '.wrapper_filter_to_category .content', function(){
             
             console.log( "change-filter-to-category.js" );
@@ -867,7 +847,8 @@
         });
         
         // Change the category name
-        $('.data-title-cat').on('input change', function(){
+        // TODO - the element can exist only in the hidden content
+        $('body').on('input change', '.data-title-cat', function(){
             const text_name = $(this).text().trim();
             const description_category = $(this).parent().parent().parent().parent().children('.description').children().children('.content-description').children('.data-description-cat').text().trim();
             const cat_id = $(this).attr('cat_id');
@@ -889,7 +870,8 @@
             });
         });
 
-        $('.data-description-cat').on('input', function(){
+        // TODO - the element can exist only in the hidden content
+        $('body').on('input', '.data-description-cat', function(){
             $('.data-title-cat').change();
         });
 
