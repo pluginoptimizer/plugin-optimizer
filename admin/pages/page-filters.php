@@ -29,7 +29,7 @@ $posts = get_posts( array(
         <div class="row sos-content">
             <div class="row col-12 justify-content-between global-information">
                 <div class="col-3">
-                    <button class="add-filter" id="add_elements"><span class="pluse">+</span> add new filter
+                    <button class="add-filter" id="add_elements"><span class="pluse">+</span> Add New Filter
                     </button>
                 </div>
                 <div class="col-2 quantity">
@@ -69,9 +69,7 @@ $posts = get_posts( array(
                         </tr>
                         </thead>
                         <tbody id="the-list">
-						<?php
-						Plugin_Optimizer_Helper::content_filters( $posts );
-						?>
+						<?php Plugin_Optimizer_Helper::content__filters( $posts ); ?>
                         </tbody>
                     </table>
                 </div>

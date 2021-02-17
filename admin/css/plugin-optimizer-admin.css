@@ -405,6 +405,10 @@ td.expandable:not(:hover) .yes_hover{
     display: none;
 }
 
+td.expandable.list_of_plugins *{
+    text-transform: none;
+}
+
 
 .sos-wrap.container{
     max-width: 100%;

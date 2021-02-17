@@ -346,49 +346,37 @@ class Plugin_Optimizer_Admin {
 		?><div style="display: none">
             <label for="block_plugins"> <?= "Select block plugins" ?> </label>
             <input type="text" id="block_plugins" name="block_plugins" value="<?= implode(', ', $value_block_plugins ); ?>" size="25"/>
-            <br>
-            <br>
 
             <label for="block_link_plugins"> <?= "Select link block plugins" ?> </label>
             <input type="text" id="block_link_plugins" name="block_link_plugins" value="<?= implode(', ', $value_link_block_plugins ); ?>" size="25"/>
-            <br>
-            <br>
 
             <label for="block_plugins"> <?= "Select block group plugins" ?> </label>
-            <input type="text" id="block_group_plugins" name="block_group_plugins" value="<?= implode(', ', $value_block_group_plugins); ?>"
-                   size="25"/>
-            <br>
-            <br>
+            <input type="text" id="block_group_plugins" name="block_group_plugins" value="<?= implode(', ', $value_block_group_plugins); ?>" size="25"/>
 
-            <!-- <label for="selected_post_type"> <?/*= "Add post type" */ ?> </label>
-            <input type="text" id="selected_post_type" name="selected_post_type" value=" <?/*= $value_selected_post_type */ ?>"
-                   size="25"/>
-            <br>
-            <br>-->
+            <!--
+            <label for="selected_post_type"> <?/*= "Add post type" */ ?> </label>
+            <input type="text" id="selected_post_type" name="selected_post_type" value=" <?/*= $value_selected_post_type */ ?>" size="25"/>
+            -->
 
             <label for="selected_page"> <?= "Add Permalinks" ?> </label>
             <input type="text" id="selected_page" name="selected_page" value=" <?= $value_selected_page ?>" size="25"/>
-            <br>
-            <br>
 
             <label for="type_filter"> <?= "Set Type" ?></label>
             <input type="text" id="type_filter" name="type_filter" value=" <?= $value_type_filter ?>" size="25"/>
-            <br>
-            <br>
 
 
             <label for="category_filter"> <?= "Category Type" ?></label>
             <input type="text" id="category_filter" name="category_filter" value=" <?= $value_category_filter ?>" size="25"/>
-            <br>
-            <br>
-        </div><div class="sos-wrap">
+        </div><?php
+        
+        ?><div class="sos-wrap">
             <table>
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="check_all"></th>
                         <th>TITLE</th>
                         <th>cATEGORIES</th>
-                        <th>type</th>
+                        <th>Type</th>
                         <th>permalinks</th>
                         <th>Block plugins</th>
                     </tr>

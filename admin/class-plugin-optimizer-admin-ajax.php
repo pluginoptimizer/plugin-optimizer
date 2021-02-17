@@ -27,37 +27,36 @@ class Plugin_Optimizer_Ajax {
 	 */
 	function load_hooks() {
 
-		add_action( 'wp_ajax_sos_add_plugin_to_filter',    [ $this, 'ajax_add_plugin_to_filter'     ] ); // sos_add_plugin_to_filter',   
-		add_action( 'wp_ajax_sos_search_pages',            [ $this, 'ajax_search_pages'             ] ); // sos_search_pages',           
-		add_action( 'wp_ajax_sos_search_filters',          [ $this, 'ajax_search_filters'           ] ); // sos_search_filters',         
-		add_action( 'wp_ajax_sos_search_elements',         [ $this, 'ajax_search_elements'          ] ); // sos_search_elements',        
-		add_action( 'wp_ajax_sos_all_elements',            [ $this, 'ajax_all_elements'             ] ); // sos_all_elements',           
-		add_action( 'wp_ajax_sos_trash_elements',          [ $this, 'ajax_trash_elements'           ] ); // sos_trash_elements',         
-		add_action( 'wp_ajax_sos_delete_elements',         [ $this, 'ajax_delete_elements'          ] ); // sos_delete_elements',        
-		add_action( 'wp_ajax_sos_publish_elements',        [ $this, 'ajax_publish_elements'         ] ); // sos_publish_elements',       
-		add_action( 'wp_ajax_sos_count_elements',          [ $this, 'ajax_count_elements'           ] ); // sos_count_elements',         
-		add_action( 'wp_ajax_sos_add_group_plugins',       [ $this, 'ajax_add_group_plugins'        ] ); // sos_add_group_plugins',      
-		add_action( 'wp_ajax_sos_create_category',         [ $this, 'ajax_create_category'          ] ); // sos_create_category',        
-		add_action( 'wp_ajax_sos_create_cat_subcat',       [ $this, 'ajax_create_cat_subcat'        ] ); // sos_create_cat_subcat',      
-		add_action( 'wp_ajax_sos_delete_category',         [ $this, 'ajax_delete_category'          ] ); // sos_delete_category',        
-		add_action( 'wp_ajax_sos_check_name_elements',     [ $this, 'ajax_check_name_elements'      ] ); // sos_check_name_elements',    
-		add_action( 'wp_ajax_sos_change_plugins_to_filter',[ $this, 'ajax_change_plugins_to_filter' ] ); // sos_change_plugins_to_filter'
-		add_action( 'wp_ajax_sos_add_category_to_filter',  [ $this, 'ajax_add_category_to_filter'   ] ); // sos_add_category_to_filter', 
-		add_action( 'wp_ajax_sos_get_parent_cat',          [ $this, 'ajax_get_parent_cat'           ] ); // sos_get_parent_cat',         
-		add_action( 'wp_ajax_sos_get_parent_group',        [ $this, 'ajax_get_parent_group'         ] ); // sos_get_parent_group',       
-		add_action( 'wp_ajax_sos_change_plugins_to_group', [ $this, 'ajax_change_plugins_to_group'  ] ); // sos_change_plugins_to_group',
-		add_action( 'wp_ajax_sos_show_plugins',            [ $this, 'ajax_show_plugins'             ] ); // sos_show_plugins',           
-		add_action( 'wp_ajax_sos_change_permalink',        [ $this, 'ajax_change_permalink'         ] ); // sos_change_permalink',       
-		add_action( 'wp_ajax_sos_change_type',             [ $this, 'ajax_change_type'              ] ); // sos_change_type',            
-		add_action( 'wp_ajax_sos_change_data_category',    [ $this, 'ajax_change_data_category'     ] ); // sos_change_data_category',   
-		add_action( 'wp_ajax_sos_change_groups_to_filter', [ $this, 'ajax_change_groups_to_filter'  ] ); // sos_change_groups_to_filter',
+		add_action( 'wp_ajax_sos_add_plugin_to_filter',    [ $this, 'sos_add_plugin_to_filter'      ] );
+		add_action( 'wp_ajax_sos_search_pages',            [ $this, 'sos_search_pages'              ] );
+		add_action( 'wp_ajax_sos_search_elements',         [ $this, 'sos_search_elements'           ] );
+		add_action( 'wp_ajax_sos_all_elements',            [ $this, 'sos_all_elements'              ] );
+		add_action( 'wp_ajax_sos_trash_elements',          [ $this, 'sos_trash_elements'            ] );
+		add_action( 'wp_ajax_sos_delete_elements',         [ $this, 'sos_delete_elements'           ] );
+		add_action( 'wp_ajax_sos_publish_elements',        [ $this, 'sos_publish_elements'          ] );
+		add_action( 'wp_ajax_sos_count_elements',          [ $this, 'sos_count_elements'            ] );
+		add_action( 'wp_ajax_sos_add_group_plugins',       [ $this, 'sos_add_group_plugins'         ] );
+		add_action( 'wp_ajax_sos_create_category',         [ $this, 'sos_create_category'           ] );
+		add_action( 'wp_ajax_sos_create_cat_subcat',       [ $this, 'sos_create_cat_subcat'         ] );
+		add_action( 'wp_ajax_sos_delete_category',         [ $this, 'sos_delete_category'           ] );
+		add_action( 'wp_ajax_sos_check_name_elements',     [ $this, 'sos_check_name_elements'       ] );
+		add_action( 'wp_ajax_sos_change_plugins_to_filter',[ $this, 'sos_change_plugins_to_filter'  ] );
+		add_action( 'wp_ajax_sos_add_category_to_filter',  [ $this, 'sos_add_category_to_filter'    ] );
+		add_action( 'wp_ajax_sos_get_parent_cat',          [ $this, 'sos_get_parent_cat'            ] );
+		add_action( 'wp_ajax_sos_get_parent_group',        [ $this, 'sos_get_parent_group'          ] );
+		add_action( 'wp_ajax_sos_change_plugins_to_group', [ $this, 'sos_change_plugins_to_group'   ] );
+		add_action( 'wp_ajax_sos_show_plugins',            [ $this, 'sos_show_plugins'              ] );
+		add_action( 'wp_ajax_sos_change_permalink',        [ $this, 'sos_change_permalink'          ] );
+		add_action( 'wp_ajax_sos_change_type',             [ $this, 'sos_change_type'               ] );
+		add_action( 'wp_ajax_sos_change_data_category',    [ $this, 'sos_change_data_category'      ] );
+		add_action( 'wp_ajax_sos_change_groups_to_filter', [ $this, 'sos_change_groups_to_filter'   ] );
 
 	}
 
 	/**
 	 * Create filter
 	 */
-	function ajax_add_plugin_to_filter() {
+	function sos_add_plugin_to_filter() {
 		$block_group = htmlspecialchars( $_POST['block_group_plugins'] );
 		if ( $block_group !== 'None' ) {
 			$block_group_plugins_get = explode( ',', htmlspecialchars( $_POST['block_group_plugins'] ) );
@@ -129,7 +128,7 @@ class Plugin_Optimizer_Ajax {
 			'numberposts' => - 1,
 		) );
 
-		Plugin_Optimizer_Helper::content_filters( $posts );
+		Plugin_Optimizer_Helper::content__filters( $posts );
 
 		wp_send_json_success( ob_get_clean() );
 
@@ -138,7 +137,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Search for pages when creating a filter
 	 */
-	function ajax_search_pages() {
+	function sos_search_pages() {
 		ob_start();
 
 		$posts = get_posts( array(
@@ -170,7 +169,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Create group
 	 */
-	function ajax_add_group_plugins() {
+	function sos_add_group_plugins() {
 
 		$title_group   = htmlspecialchars( $_POST['title_group'] );
 		$group_plugins = htmlspecialchars( $_POST['group_plugins'] );
@@ -213,7 +212,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Search elements
 	 */
-	function ajax_search_elements() {
+	function sos_search_elements() {
 		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
 		$type_elements  = htmlspecialchars( $_POST['type_elements'] );
 
@@ -228,7 +227,7 @@ class Plugin_Optimizer_Ajax {
 			if ( $name_post_type === 'sos_work' ) {
 				Plugin_Optimizer_Helper::content_works( $posts );
 			} elseif ( $name_post_type === 'sos_filter' ) {
-				Plugin_Optimizer_Helper::content_filters( $posts );
+				Plugin_Optimizer_Helper::content__filters( $posts );
 			} elseif ( $name_post_type === 'sos_group' ) {
 				$posts = get_posts( array(
 					'post_type'   => 'sos_group',
@@ -285,7 +284,7 @@ class Plugin_Optimizer_Ajax {
 			if ( $name_post_type === 'sos_work' ) {
 				Plugin_Optimizer_Helper::content_works( $posts );
 			} elseif ( $name_post_type === 'sos_filter' ) {
-				Plugin_Optimizer_Helper::content_filters( $posts );
+				Plugin_Optimizer_Helper::content__filters( $posts );
 			} elseif ( $name_post_type === 'sos_group' ) {
 				Plugin_Optimizer_Helper::content_groups( $posts );
 			}
@@ -298,7 +297,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Show all elements
 	 */
-	function ajax_all_elements() {
+	function sos_all_elements() {
 		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
 		ob_start();
 
@@ -310,7 +309,7 @@ class Plugin_Optimizer_Ajax {
 		if ( $name_post_type === 'sos_work' ) {
 			Plugin_Optimizer_Helper::content_works( $posts );
 		} elseif ( $name_post_type === 'sos_filter' ) {
-			Plugin_Optimizer_Helper::content_filters( $posts );
+			Plugin_Optimizer_Helper::content__filters( $posts );
 		} elseif ( $name_post_type === 'sos_group' ) {
 			$posts = get_posts( array(
 				'post_type'   => 'sos_group',
@@ -332,7 +331,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Show trash elements
 	 */
-	function ajax_trash_elements() {
+	function sos_trash_elements() {
 		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
 		ob_start();
 
@@ -345,7 +344,7 @@ class Plugin_Optimizer_Ajax {
 		if ( $name_post_type === 'sos_work' ) {
 			Plugin_Optimizer_Helper::content_works( $posts );
 		} elseif ( $name_post_type === 'sos_filter' ) {
-			Plugin_Optimizer_Helper::content_filters( $posts );
+			Plugin_Optimizer_Helper::content__filters( $posts );
 		} elseif ( $name_post_type === 'sos_group' ) {
 			$posts = get_posts( array(
 				'post_type'   => 'sos_group',
@@ -368,7 +367,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Delete elements
 	 */
-	function ajax_delete_elements() {
+	function sos_delete_elements() {
 		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
 		$id_elements    = htmlspecialchars( $_POST['id_elements'] );
 		$type_elements  = htmlspecialchars( $_POST['type_elements'] );
@@ -402,7 +401,7 @@ class Plugin_Optimizer_Ajax {
 				foreach ( $posts as $post ) {
 					wp_trash_post( $post->ID );
 				}
-				$this->ajax_all_elements();
+				$this->sos_all_elements();
 			}
 		} else {
 			$posts = get_posts( array(
@@ -414,14 +413,14 @@ class Plugin_Optimizer_Ajax {
 			foreach ( $posts as $post ) {
 				wp_delete_post( $post->ID, true );
 			}
-			$this->ajax_trash_elements();
+			$this->sos_trash_elements();
 		}
 	}
 
 	/**
 	 * Restore works
 	 */
-	function ajax_publish_elements() {
+	function sos_publish_elements() {
 		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
 		$id_elements    = htmlspecialchars( $_POST['id_elements'] );
 
@@ -434,13 +433,13 @@ class Plugin_Optimizer_Ajax {
 		foreach ( $posts as $post ) {
 			wp_publish_post( $post->ID );
 		}
-		$this->ajax_trash_elements();
+		$this->sos_trash_elements();
 	}
 
 	/**
 	 * Show count elements
 	 */
-	function ajax_count_elements() {
+	function sos_count_elements() {
 		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
 
 		if ( $name_post_type === 'cat' ) {
@@ -462,7 +461,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Create new category
 	 */
-	function ajax_create_category( $post ) {
+	function sos_create_category( $post ) {
         
         return Plugin_Optimizer_Helper::create_category( $post );
 	}
@@ -470,7 +469,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Delete category
 	 */
-	function ajax_delete_category() {
+	function sos_delete_category() {
 		$cat_ID    = htmlspecialchars( $_POST['id_category'] );
 		$id_filter = htmlspecialchars( $_POST['id_filter'] );
 
@@ -482,7 +481,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Add category to filter
 	 */
-    function ajax_add_category_to_filter() {
+    function sos_add_category_to_filter() {
 		$cat_ID    = htmlspecialchars( $_POST['id_category'] );
 		$filter_ID = htmlspecialchars( $_POST['id_filter'] );
 		$trigger   = htmlspecialchars( $_POST['trigger'] );
@@ -507,7 +506,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Check name group
 	 */
-    function ajax_check_name_elements() {
+    function sos_check_name_elements() {
         
         // po_mu_plugin()->write_log( $_POST, "ajax_check_name_elements-post" );
 		$name_element = htmlspecialchars( $_POST['name_element'] );
@@ -557,7 +556,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Create new category for page category
 	 */
-	function ajax_create_cat_subcat() {
+	function sos_create_cat_subcat() {
 		$name_category        = htmlspecialchars( $_POST['name_category'] );
 		$description_category = htmlspecialchars( $_POST['description_category'] );
 		$parent_category      = htmlspecialchars( $_POST['parent_category'] );
@@ -597,7 +596,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * After create category add select parents category
 	 */
-	function ajax_get_parent_cat() {
+	function sos_get_parent_cat() {
 
 		ob_start();
 
@@ -627,7 +626,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Add plugin to filter
 	 */
-	function ajax_change_plugins_to_filter() {
+	function sos_change_plugins_to_filter() {
 		$filter_id      = htmlspecialchars( $_POST['filter_id'] );
 		$plugin_name    = htmlspecialchars( $_POST['plugin_name'] );
 		$plugin_link    = htmlspecialchars( $_POST['plugin_link'] );
@@ -674,7 +673,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * After create group add select parents group
 	 */
-	function ajax_get_parent_group() {
+	function sos_get_parent_group() {
 
 		ob_start();
 
@@ -713,7 +712,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Add plugin to group
 	 */
-	function ajax_change_plugins_to_group() {
+	function sos_change_plugins_to_group() {
 		$group_id    = htmlspecialchars( $_POST['group_id'] );
 		$plugin_name = htmlspecialchars( $_POST['plugin_name'] );
 		$trigger     = htmlspecialchars( $_POST['trigger'] );
@@ -768,7 +767,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Ajax show plugins on settings
 	 */
-	function ajax_show_plugins() {
+	function sos_show_plugins() {
 		$type_plugins = htmlspecialchars( $_POST['type_plugins'] );
 
 		$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
@@ -800,7 +799,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Ajax change permalink
 	 */
-	function ajax_change_permalink() {
+	function sos_change_permalink() {
 		$text_link = htmlspecialchars( $_POST['text_link'] );
 		$filter_id = htmlspecialchars( $_POST['filter_id'] );
 
@@ -812,7 +811,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Ajax change type
 	 */
-	function ajax_change_type() {
+	function sos_change_type() {
 		$text_type = htmlspecialchars( $_POST['text_type'] );
 		$filter_id = htmlspecialchars( $_POST['filter_id'] );
 
@@ -824,7 +823,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Ajax change description category
 	 */
-	function ajax_change_data_category() {
+	function sos_change_data_category() {
 		$text_name            = htmlspecialchars( $_POST['text_name'] );
 		$description_category = htmlspecialchars( $_POST['description_category'] );
 		$cat_id               = htmlspecialchars( $_POST['cat_id'] );
@@ -858,7 +857,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Add group to filter
 	 */
-	function ajax_change_groups_to_filter() {
+	function sos_change_groups_to_filter() {
         
 		$group_name    = htmlspecialchars( $_POST['group_name'] );
 		$filter_id     = htmlspecialchars( $_POST['filter_id'] );

@@ -202,9 +202,13 @@ jQuery( document ).ready( function($){
         // });
     });
 
+// FIXED
     // Bulk actions button (usually delete or restore element)
     $('body').on('click', '#btn_apply', function(){
+        
         let name_post_type;
+        let data = false;
+        
         if($('#name_page').attr("class") === 'worklist'){
             name_post_type = 'sos_work';
         } else if($('#name_page').attr("class") === 'filters'){
@@ -215,58 +219,47 @@ jQuery( document ).ready( function($){
             name_post_type = 'cat';
         }
 
+        console.log( "aAjax: delete-restore-element.js 222" );
+        
         if($('#check_all_elements option:selected').text() === 'Delete'){
             
-            let type_elements;
-            
-            if($('#all_elements').css('font-weight') === '700'){
-                type_elements = 'all';
-            } else {
-                type_elements = 'trash';
-            }
-        
-            console.log( "aAjax: delete-restore-element.js 111" );
-        
-            // $.ajax({
-                // url: plugin_optimizer_groups.ajax_url,
-                // type: 'POST',
-                // data: {
-                    // action          : 'sos_delete_elements',
-                    // 'name_post_type': name_post_type,
-                    // 'type_elements' : type_elements,
-                    // 'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
-                // },
-                // success: function (response) {
-                    // $('#the-list').html(response.data);
-                    // if($('#check_all').is( ":checked" )){
-                        // $('#check_all').prop('checked', false);
-                    // }
-                    // allElements.count_element(name_post_type);
-                // }
-            // });
+            data = {
+                action          : 'sos_delete_elements',
+                'name_post_type': name_post_type,
+                'type_elements' : ( $('#all_elements').css('font-weight') === '700' ? 'all' : 'trash' ),
+                'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
+            };
             
         } else if($('#check_all_elements option:selected').text() === 'Restore'){
         
-            console.log( "aAjax: delete-restore-element.js 222" );
-        
-            // $.ajax({
-                // url: plugin_optimizer_groups.ajax_url,
-                // type: 'POST',
-                // data: {
-                    // action          : 'sos_publish_elements',
-                    // 'name_post_type': name_post_type,
-                    // 'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
-                // },
-                // success: function (response) {
-                    // $('#the-list').html(response.data);
-                    // if($('#check_all').is( ":checked" )){
-                        // $('#check_all').prop('checked', false);
-                    // }
-                    // allElements.count_element(name_post_type);
-                // }
-            // });
+            data = {
+                action          : 'sos_publish_elements',
+                'name_post_type': name_post_type,
+                'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
+            };
+            
         }
-
+        
+        if( data ){
+            
+            $.ajax({
+                url     : plugin_optimizer_groups.ajax_url,
+                type    : 'POST',
+                data    : data,
+                success : function (response) {
+                    
+                    $('#the-list').html( response.data );
+                    
+                    if($('#check_all').is( ":checked" )){
+                        $('#check_all').prop('checked', false);
+                    }
+                    
+                    allElements.count_element(name_post_type);
+                }
+            });
+            
+        }
+        
     });
 
     // #add_elements is a button used to get the Create New XYZ form
