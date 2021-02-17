@@ -18,20 +18,20 @@ jQuery( document ).ready( function($){
         
         console.log( "aAjax: trash-elements.js" );
         
-        $.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'sos_trash_elements',
-                'name_post_type': name_post_type,
-            },
-            success: function (response) {
-                $('#trash_elements').css('font-weight', '700');
-                $('#all_elements').css('font-weight', '400');
-                $('#the-list').html(response.data);
-                $('select#check_all_elements option[value="delete"]').before('<option value="restore">Restore</option>');
-            }
-        });
+        // $.ajax({
+            // url: plugin_optimizer_groups.ajax_url,
+            // type: 'POST',
+            // data: {
+                // action: 'sos_trash_elements',
+                // 'name_post_type': name_post_type,
+            // },
+            // success: function (response) {
+                // $('#trash_elements').css('font-weight', '700');
+                // $('#all_elements').css('font-weight', '400');
+                // $('#the-list').html(response.data);
+                // $('select#check_all_elements option[value="delete"]').before('<option value="restore">Restore</option>');
+            // }
+        // });
     });
     
     // switch between tabs menu pages
@@ -68,23 +68,23 @@ jQuery( document ).ready( function($){
         
         console.log( "aAjax: show-plugins-to-settings.js" );
         
-        $.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'sos_show_plugins',
-                type_plugins: $(self).attr('id'),
-            },
-            success: function (response) {
-                $(self).css('font-weight', 600);
-                if($(self).attr('id') === 'activate_plugins'){
-                    $('#deactivate_plugins').css('font-weight', 400);
-                } else {
-                    $('#activate_plugins').css('font-weight', 400);
-                }
-                $('#the-list').html(response.data);
-            }
-        });
+        // $.ajax({
+            // url: plugin_optimizer_groups.ajax_url,
+            // type: 'POST',
+            // data: {
+                // action: 'sos_show_plugins',
+                // type_plugins: $(self).attr('id'),
+            // },
+            // success: function (response) {
+                // $(self).css('font-weight', 600);
+                // if($(self).attr('id') === 'activate_plugins'){
+                    // $('#deactivate_plugins').css('font-weight', 400);
+                // } else {
+                    // $('#activate_plugins').css('font-weight', 400);
+                // }
+                // $('#the-list').html(response.data);
+            // }
+        // });
     });
     
     // Overview page - switch between accordion elements
@@ -185,19 +185,19 @@ jQuery( document ).ready( function($){
         
         console.log( "aAjax: search-elements.js" );
         
-        $.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action          : 'sos_search_elements',
-                'name_post_type': name_post_type,
-                'type_elements' : type_elements,
-                'keyword'       : $('#search_elements').val(),
-            },
-            success: function (response) {
-                $('#the-list').html(response.data);
-            }
-        });
+        // $.ajax({
+            // url: plugin_optimizer_groups.ajax_url,
+            // type: 'POST',
+            // data: {
+                // action          : 'sos_search_elements',
+                // 'name_post_type': name_post_type,
+                // 'type_elements' : type_elements,
+                // 'keyword'       : $('#search_elements').val(),
+            // },
+            // success: function (response) {
+                // $('#the-list').html(response.data);
+            // }
+        // });
     });
 
     // Bulk actions button (usually delete or restore element)
@@ -214,52 +214,55 @@ jQuery( document ).ready( function($){
         }
 
         if($('#check_all_elements option:selected').text() === 'Delete'){
+            
             let type_elements;
+            
             if($('#all_elements').css('font-weight') === '700'){
                 type_elements = 'all';
             } else {
                 type_elements = 'trash';
             }
         
-        console.log( "aAjax: delete-restore-element.js 111" );
+            console.log( "aAjax: delete-restore-element.js 111" );
         
-            $.ajax({
-                url: plugin_optimizer_groups.ajax_url,
-                type: 'POST',
-                data: {
-                    action          : 'sos_delete_elements',
-                    'name_post_type': name_post_type,
-                    'type_elements' : type_elements,
-                    'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
-                },
-                success: function (response) {
-                    $('#the-list').html(response.data);
-                    if($('#check_all').is( ":checked" )){
-                        $('#check_all').prop('checked', false);
-                    }
-                    allElements.count_element(name_post_type);
-                }
-            });
+            // $.ajax({
+                // url: plugin_optimizer_groups.ajax_url,
+                // type: 'POST',
+                // data: {
+                    // action          : 'sos_delete_elements',
+                    // 'name_post_type': name_post_type,
+                    // 'type_elements' : type_elements,
+                    // 'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
+                // },
+                // success: function (response) {
+                    // $('#the-list').html(response.data);
+                    // if($('#check_all').is( ":checked" )){
+                        // $('#check_all').prop('checked', false);
+                    // }
+                    // allElements.count_element(name_post_type);
+                // }
+            // });
+            
         } else if($('#check_all_elements option:selected').text() === 'Restore'){
         
-        console.log( "aAjax: delete-restore-element.js 222" );
+            console.log( "aAjax: delete-restore-element.js 222" );
         
-            $.ajax({
-                url: plugin_optimizer_groups.ajax_url,
-                type: 'POST',
-                data: {
-                    action          : 'sos_publish_elements',
-                    'name_post_type': name_post_type,
-                    'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
-                },
-                success: function (response) {
-                    $('#the-list').html(response.data);
-                    if($('#check_all').is( ":checked" )){
-                        $('#check_all').prop('checked', false);
-                    }
-                    allElements.count_element(name_post_type);
-                }
-            });
+            // $.ajax({
+                // url: plugin_optimizer_groups.ajax_url,
+                // type: 'POST',
+                // data: {
+                    // action          : 'sos_publish_elements',
+                    // 'name_post_type': name_post_type,
+                    // 'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
+                // },
+                // success: function (response) {
+                    // $('#the-list').html(response.data);
+                    // if($('#check_all').is( ":checked" )){
+                        // $('#check_all').prop('checked', false);
+                    // }
+                    // allElements.count_element(name_post_type);
+                // }
+            // });
         }
 
     });
@@ -286,18 +289,18 @@ jQuery( document ).ready( function($){
         
         console.log( "aAjax: delete-category.js" );
         
-        $.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action          : 'sos_delete_category',
-                'id_category'   : $(this).attr('id'),
-                'id_filter'     : $(this).parent().parent().children('button').attr('id').substr(5),
-            },
-            success: function (response) {
-                $(selfDelete).parent().parent().html(response.data);
-            }
-        });
+        // $.ajax({
+            // url: plugin_optimizer_groups.ajax_url,
+            // type: 'POST',
+            // data: {
+                // action          : 'sos_delete_category',
+                // 'id_category'   : $(this).attr('id'),
+                // 'id_filter'     : $(this).parent().parent().children('button').attr('id').substr(5),
+            // },
+            // success: function (response) {
+                // $(selfDelete).parent().parent().html(response.data);
+            // }
+        // });
     });
 
     // Save New Group button on the Create New Filter Group page
@@ -317,38 +320,38 @@ jQuery( document ).ready( function($){
             return false;
         } else {
         
-        console.log( "aAjax: create-groups.js 111" );
+            console.log( "aAjax: create-groups.js 111" );
         
-            $.ajax({
-                url: plugin_optimizer_groups.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'sos_add_group_plugins',
-                    'title_group': $('#set_title').val(),
-                    'group_plugins': $('.block-plugin-wrapper .block span').toArray().map(item => $(item).text()).join(', '),
-                },
-                success: function (response) {
-                    $('#the-list').html(response.data);
-                    // $('.content-new-element').css('display', 'none');
-                    $('#set_title').val('');
-                    $('#set_type').val('');
-                    $('.block-plugin-wrapper .block').toArray().map(item => $(item).removeClass('block'));
-                    allElements.count_element('sos_group');
+            // $.ajax({
+                // url: plugin_optimizer_groups.ajax_url,
+                // type: 'POST',
+                // data: {
+                    // action: 'sos_add_group_plugins',
+                    // 'title_group': $('#set_title').val(),
+                    // 'group_plugins': $('.block-plugin-wrapper .block span').toArray().map(item => $(item).text()).join(', '),
+                // },
+                // success: function (response) {
+                    // $('#the-list').html(response.data);
+                    // // $('.content-new-element').css('display', 'none');
+                    // $('#set_title').val('');
+                    // $('#set_type').val('');
+                    // $('.block-plugin-wrapper .block').toArray().map(item => $(item).removeClass('block'));
+                    // allElements.count_element('sos_group');
         
-        console.log( "aAjax: create-groups.js 222" );
+                    // console.log( "aAjax: create-groups.js 222" );
         
-                    $.ajax({
-                        url: plugin_optimizer_groups.ajax_url,
-                        type: 'POST',
-                        data: {
-                            action: 'sos_get_parent_group',
-                        },
-                        success: function ({data}) {
-                            $('.block-group-plugin-wrapper').children().html(data);
-                        }
-                    })
-                }
-            })
+                    // $.ajax({
+                        // url: plugin_optimizer_groups.ajax_url,
+                        // type: 'POST',
+                        // data: {
+                            // action: 'sos_get_parent_group',
+                        // },
+                        // success: function ({data}) {
+                            // $('.block-group-plugin-wrapper').children().html(data);
+                        // }
+                    // });
+                // }
+            // });
         }
 
 
@@ -384,37 +387,37 @@ jQuery( document ).ready( function($){
             return false;
         } else {
         
-        console.log( "aAjax: created-filters.js" );
+            console.log( "aAjax: created-filters.js" );
         
-            $.ajax({
-                url: plugin_optimizer_groups.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'sos_add_plugin_to_filter',
-                    'block_plugins': $('.block-plugin-wrapper .block span').toArray().map(item => $(item).text()).join(', '),
-                    'block_value_plugins': $('.block-plugin-wrapper .block span').toArray().map(item => $(item).attr('value')).join(', '),
-                    'block_group_plugins': $('.block-group-plugin-wrapper .block>span').toArray().map(item => $(item).text()).join(', ') ? $('.block-group-plugin-wrapper .block>span').toArray().map(item => $(item).text()).join(', ') : 'None',
-                    'pages': $('.content-permalinks .link span.text_link').toArray().map(item => $(item).text()).join(', '),
-                    'title_filter': $('input#set_title').val(),
-                    'type_filter': $('#set_type').val(),
-                    'category_filter': $('.category-wrapper .block span').toArray().map(item => $(item).text()).join(', '),
-                    'category_id_filter': $('.category-wrapper .block span').toArray().map(item => $(item).attr('value')).join(', '),
-                },
-                success: function (response) {
-                    $('#the-list').html(response.data);
-                    // $('.content-new-element').css('display', 'none');
-                    allElements.count_element('sos_filter');
+            // $.ajax({
+                // url: plugin_optimizer_groups.ajax_url,
+                // type: 'POST',
+                // data: {
+                    // action                  : 'sos_add_plugin_to_filter',
+                    // 'block_plugins'         : $('.block-plugin-wrapper .block span').toArray().map(item => $(item).text()).join(', '),
+                    // 'block_value_plugins'   : $('.block-plugin-wrapper .block span').toArray().map(item => $(item).attr('value')).join(', '),
+                    // 'block_group_plugins'   : $('.block-group-plugin-wrapper .block>span').toArray().map(item => $(item).text()).join(', ') ? $('.block-group-plugin-wrapper .block>span').toArray().map(item => $(item).text()).join(', ') : 'None',
+                    // 'pages'                 : $('.content-permalinks .link span.text_link').toArray().map(item => $(item).text()).join(', '),
+                    // 'title_filter'          : $('input#set_title').val(),
+                    // 'type_filter'           : $('#set_type').val(),
+                    // 'category_filter'       : $('.category-wrapper .block span').toArray().map(item => $(item).text()).join(', '),
+                    // 'category_id_filter'    : $('.category-wrapper .block span').toArray().map(item => $(item).attr('value')).join(', '),
+                // },
+                // success: function (response) {
+                    // $('#the-list').html(response.data);
+                    $('.content-new-element').css('display', 'none');
+                    // allElements.count_element('sos_filter');
 
-                    if($('.content-new-element *').is('.block')){
-                        $('.content-new-element *').removeClass('block');
-                    }
+                    // if($('.content-new-element *').is('.block')){
+                        // $('.content-new-element *').removeClass('block');
+                    // }
 
-                    $('#set_title').val('');
-                    $('#search_pages').val('');
-                    $('.link').remove();
-                    $('#set_type option:first').prop('selected', true);
-                }
-            })
+                    // $('#set_title').val('');
+                    // $('#search_pages').val('');
+                    // $('.link').remove();
+                    // $('#set_type option:first').prop('selected', true);
+                // }
+            // });
         }
     });
 
@@ -433,35 +436,35 @@ jQuery( document ).ready( function($){
         
         console.log( "aAjax: create-category.js 111" );
         
-        $.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action                  : 'sos_create_cat_subcat',
-                'name_category'         : $('#set_title').val(),
-                'description_category'  : $('#set_description').val(),
-                'parent_category'       : $('.parent-category-wrapper .block span').toArray().map(item => $(item).attr('value')).join(', '),
-            },
-            success: function ({data}) {
-                $('#the-list').html(data);
-                $('.content-new-element').css('display', 'none');
-                $('#set_title').val('');
-                allElements.count_element('cat');
+        // $.ajax({
+            // url: plugin_optimizer_groups.ajax_url,
+            // type: 'POST',
+            // data: {
+                // action                  : 'sos_create_cat_subcat',
+                // 'name_category'         : $('#set_title').val(),
+                // 'description_category'  : $('#set_description').val(),
+                // 'parent_category'       : $('.parent-category-wrapper .block span').toArray().map(item => $(item).attr('value')).join(', '),
+            // },
+            // success: function ({data}) {
+                // $('#the-list').html(data);
+                // $('.content-new-element').css('display', 'none');
+                // $('#set_title').val('');
+                // allElements.count_element('cat');
         
-        console.log( "aAjax: create-category.js 222" );
+                // console.log( "aAjax: create-category.js 222" );
         
-                $.ajax({
-                    url: plugin_optimizer_groups.ajax_url,
-                    type: 'POST',
-                    data: {
-                        action: 'sos_get_parent_cat',
-                    },
-                    success: function ({data}) {
-                        $('.content-new-element .plugin-wrapper').html(data);
-                    }
-                });
-            }
-        });
+                // $.ajax({
+                    // url: plugin_optimizer_groups.ajax_url,
+                    // type: 'POST',
+                    // data: {
+                        // action: 'sos_get_parent_cat',
+                    // },
+                    // success: function ({data}) {
+                        // $('.content-new-element .plugin-wrapper').html(data);
+                    // }
+                // });
+            // }
+        // });
     });
 
     // Select a plugins for a new filter or select plugins for a new group
@@ -526,27 +529,27 @@ jQuery( document ).ready( function($){
         
         console.log( "aAjax: check-name-elements.js" );
         
-        $.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'sos_check_name_elements',
-                'name_element': name_element,
-                'type_element': type_element,
-            },
-            success: function (response) {
-                if( response.data === true && response.data !== 'nothing' ){
-                    $('#set_title').css('border', '1px solid red');
-                    $('#set_title').val('');
-                    $('#set_title').focus();
-                } else {
-                    $('#set_title').css('border-top', '0');
-                    $('#set_title').css('border-right', '0');
-                    $('#set_title').css('border-left', '0');
-                    $('#set_title').css('border-bottom', '1px solid #000');
-                }
-            }
-        });
+        // $.ajax({
+            // url: plugin_optimizer_groups.ajax_url,
+            // type: 'POST',
+            // data: {
+                // action: 'sos_check_name_elements',
+                // 'name_element': name_element,
+                // 'type_element': type_element,
+            // },
+            // success: function (response) {
+                // if( response.data === true && response.data !== 'nothing' ){
+                    // $('#set_title').css('border', '1px solid red');
+                    // $('#set_title').val('');
+                    // $('#set_title').focus();
+                // } else {
+                    // $('#set_title').css('border-top', '0');
+                    // $('#set_title').css('border-right', '0');
+                    // $('#set_title').css('border-left', '0');
+                    // $('#set_title').css('border-bottom', '1px solid #000');
+                // }
+            // }
+        // });
     });
 
     // Clicking on element on the list (filter, group, category) redirects to the edit page
@@ -702,18 +705,18 @@ jQuery( document ).ready( function($){
         
         console.log( "aAjax: change-permalink.js" );
         
-        $.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'sos_change_permalink',
-                'text_link': text_link,
-                'filter_id': filter_id,
-            },
-            success: function ({data}) {
-                $(`tr#filter-${filter_id}>.data-link-filter`).text(data);
-            }
-        });
+        // $.ajax({
+            // url: plugin_optimizer_groups.ajax_url,
+            // type: 'POST',
+            // data: {
+                // action: 'sos_change_permalink',
+                // 'text_link': text_link,
+                // 'filter_id': filter_id,
+            // },
+            // success: function ({data}) {
+                // $(`tr#filter-${filter_id}>.data-link-filter`).text(data);
+            // }
+        // });
     });
     
     // Groups section on the filter edit page
@@ -760,20 +763,20 @@ jQuery( document ).ready( function($){
         
         console.log( "aAjax: change-groups.js" );
         
-        $.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'sos_change_groups_to_filter',
-                'group_name'   : group_name,
-                'filter_id'    : filter_id,
-                'plugins_names': plugins_names,
-                'plugins_links': plugins_links,
-                'change_groups': change_groups,
-            },
-            success: function (response) {
-            }
-        });
+        // $.ajax({
+            // url: plugin_optimizer_groups.ajax_url,
+            // type: 'POST',
+            // data: {
+                // action: 'sos_change_groups_to_filter',
+                // 'group_name'   : group_name,
+                // 'filter_id'    : filter_id,
+                // 'plugins_names': plugins_names,
+                // 'plugins_links': plugins_links,
+                // 'change_groups': change_groups,
+            // },
+            // success: function (response) {
+            // }
+        // });
     });
     
     // Add or delete category that already exists for filters on filters page
@@ -803,24 +806,24 @@ jQuery( document ).ready( function($){
         
         console.log( "aAjax: add-category-filter.js" );
         
-        $.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'sos_add_category_to_filter',
-                /* ID category that have chosen */
-                'id_category': $(this).children('span.close').attr('id'),
-                /* ID filter for which add or delete a category */
-                'id_filter': $(this).parent().children('button').attr('id').substr(5),
-                /* Depending on whether the filter belongs to this category, we remove or add it */
-                'trigger': $(this).hasClass('block') ? 'delete' : 'add',
-                'page': $('#name_page').attr('class'),
-            },
-            success: function (response) {
-                /* Change the content of the block of categories */
-                // $(self).parent().html(response.data);
-            }
-        });
+        // $.ajax({
+            // url: plugin_optimizer_groups.ajax_url,
+            // type: 'POST',
+            // data: {
+                // action: 'sos_add_category_to_filter',
+                // /* ID category that have chosen */
+                // 'id_category': $(this).children('span.close').attr('id'),
+                // /* ID filter for which add or delete a category */
+                // 'id_filter': $(this).parent().children('button').attr('id').substr(5),
+                // /* Depending on whether the filter belongs to this category, we remove or add it */
+                // 'trigger': $(this).hasClass('block') ? 'delete' : 'add',
+                // 'page': $('#name_page').attr('class'),
+            // },
+            // success: function (response) {
+                // /* Change the content of the block of categories */
+                $(self).parent().html(response.data);
+            // }
+        // });
     });
 
     // Show the available items on their pages after updating the data
@@ -838,22 +841,22 @@ jQuery( document ).ready( function($){
         
         console.log( "aAjax: all-elements.js" );
         
-        $.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'sos_all_elements',
-                'name_post_type': name_post_type,
-            },
-            success: function (response) {
-                /* change the weight of the font to a larger one for the "ALL" link */
-                $('#all_elements').css('font-weight', '700');
-                /* change the font weight to a smaller one for the "TRASH" link */
-                $('#trash_elements').css('font-weight', '400');
-                /* Change the content of the page */
-                $('#the-list').html(response.data);
-            }
-        });
+        // $.ajax({
+            // url: plugin_optimizer_groups.ajax_url,
+            // type: 'POST',
+            // data: {
+                // action: 'sos_all_elements',
+                // 'name_post_type': name_post_type,
+            // },
+            // success: function (response) {
+                // /* change the weight of the font to a larger one for the "ALL" link */
+                // $('#all_elements').css('font-weight', '700');
+                // /* change the font weight to a smaller one for the "TRASH" link */
+                // $('#trash_elements').css('font-weight', '400');
+                // /* Change the content of the page */
+                // $('#the-list').html(response.data);
+            // }
+        // });
     });
     
     // Add new category for filters on Edit Filter? page
@@ -864,19 +867,19 @@ jQuery( document ).ready( function($){
         
         console.log( "aAjax: add-category.js" );
         
-        $.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'sos_create_category',
-                'name_category': name_category,
-                'id_filter': id_filter,
-            },
-            success: function (response) {
-                /* Change the content of the block of categories already with a new category */
-                $( self ).parent().html( response.data );
-            }
-        });
+        // $.ajax({
+            // url: plugin_optimizer_groups.ajax_url,
+            // type: 'POST',
+            // data: {
+                // action: 'sos_create_category',
+                // 'name_category': name_category,
+                // 'id_filter': id_filter,
+            // },
+            // success: function (response) {
+                // /* Change the content of the block of categories already with a new category */
+                // $( self ).parent().html( response.data );
+            // }
+        // });
     });
 
     // Select all elements
@@ -906,22 +909,22 @@ jQuery( document ).ready( function($){
             
             console.log( "aAjax: check-all-element.js" );
             
-            $.ajax({
-                url: plugin_optimizer_groups.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'sos_count_elements',
-                    'name_post_type': name_post_type,
-                },
-                success: function (response) {
-                    try {
-                        $('#count_all_elements').text(response.data.all);
-                        $('#count_trash_elements').text(response.data.trash);
-                    } catch (err) {
-                        console.error(err.message);
-                    }
-                },
-            });
+            // $.ajax({
+                // url: plugin_optimizer_groups.ajax_url,
+                // type: 'POST',
+                // data: {
+                    // action: 'sos_count_elements',
+                    // 'name_post_type': name_post_type,
+                // },
+                // success: function (response) {
+                    // try {
+                        // $('#count_all_elements').text(response.data.all);
+                        // $('#count_trash_elements').text(response.data.trash);
+                    // } catch (err) {
+                        // console.error(err.message);
+                    // }
+                // },
+            // });
         },
     };
 
