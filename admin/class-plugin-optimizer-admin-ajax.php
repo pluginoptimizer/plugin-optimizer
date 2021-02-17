@@ -43,7 +43,6 @@ class Plugin_Optimizer_Ajax {
 		add_action( 'wp_ajax_sos_check_name_elements',     [ $this, 'ajax_check_name_elements'      ] ); // sos_check_name_elements',    
 		add_action( 'wp_ajax_sos_change_plugins_to_filter',[ $this, 'ajax_change_plugins_to_filter' ] ); // sos_change_plugins_to_filter'
 		add_action( 'wp_ajax_sos_add_category_to_filter',  [ $this, 'ajax_add_category_to_filter'   ] ); // sos_add_category_to_filter', 
-		add_action( 'wp_ajax_sos_transition_viewed',       [ $this, 'ajax_transition_viewed'        ] ); // sos_transition_viewed',      
 		add_action( 'wp_ajax_sos_get_parent_cat',          [ $this, 'ajax_get_parent_cat'           ] ); // sos_get_parent_cat',         
 		add_action( 'wp_ajax_sos_get_parent_group',        [ $this, 'ajax_get_parent_group'         ] ); // sos_get_parent_group',       
 		add_action( 'wp_ajax_sos_change_plugins_to_group', [ $this, 'ajax_change_plugins_to_group'  ] ); // sos_change_plugins_to_group',
@@ -483,8 +482,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Add category to filter
 	 */
-    // TODO - no need to output anything
-	function ajax_add_category_to_filter() {
+    function ajax_add_category_to_filter() {
 		$cat_ID    = htmlspecialchars( $_POST['id_category'] );
 		$filter_ID = htmlspecialchars( $_POST['id_filter'] );
 		$trigger   = htmlspecialchars( $_POST['trigger'] );
@@ -501,50 +499,7 @@ class Plugin_Optimizer_Ajax {
 		if ( $page === 'filters' ){
 			Plugin_Optimizer_Helper::create_category( $filter_ID );
 		} else {
-			ob_start();
-			?>
-            <div class="col-12">
-                <div class="header">
-                    <div class="title">
-						<?php
-						$count_filters = 0;
-						$posts         = get_posts( array(
-							'post_type'   => 'sos_filter',
-							'numberposts' => - 1,
-						) );
-						if ( $posts ) {
-							foreach ( $posts as $post ) {
-								if ( has_term( $cat_ID, 'сategories_filters', $post->ID ) ) {
-									$count_filters ++;
-								}
-							}
-						}
-						?>
-                        Filters <span
-                                class="disabled">- Used: <?= $count_filters; ?>/<?= wp_count_posts( 'sos_filter' )->publish; ?></span>
-                    </div>
-                </div>
-                <div class="plugin-wrapper wrapper_filter_to_category">
-					<?php
-					$posts = get_posts( array(
-						'post_type'   => 'sos_filter',
-						'numberposts' => - 1,
-					) );
-					if ( $posts ) :
-						foreach ( $posts as $post ) :
-							?>
-                            <div class="content <?= has_term( $cat_ID, 'сategories_filters', $post->ID ) ? 'block' : ''; ?>"
-                                 id="<?= $post->ID; ?>" cat_id="cat_<?= $cat_ID; ?>">
-                                <span><?= $post->post_title; ?></span>
-                            </div>
-						<?php
-						endforeach;
-					endif;
-					?>
-                </div>
-            </div>
-			<?php
-			wp_send_json_success( ob_get_clean() );
+			wp_send_json_success();
 		}
 
 	}
@@ -552,8 +507,7 @@ class Plugin_Optimizer_Ajax {
 	/**
 	 * Check name group
 	 */
-    // WTF is this code
-	function ajax_check_name_elements() {
+    function ajax_check_name_elements() {
         
         // po_mu_plugin()->write_log( $_POST, "ajax_check_name_elements-post" );
 		$name_element = htmlspecialchars( $_POST['name_element'] );
@@ -714,33 +668,6 @@ class Plugin_Optimizer_Ajax {
 		);
 
 		wp_send_json_success( $return );
-
-	}
-
-	/**
-	 * Create new category for page category
-	 */
-	function ajax_transition_viewed() {
-		$self_id = htmlspecialchars( $_POST['selfId'] );
-
-		ob_start();
-
-		switch ( $self_id ) {
-			case 'window_filters':
-				include 'pages/page-filters.php';
-				break;
-			case 'window_categories':
-				include 'pages/page-categories.php';
-				break;
-			case 'window_groups':
-				include 'pages/page-groups.php';
-				break;
-			case 'window_worklist':
-				include 'pages/page-worklist.php';
-				break;
-		}
-
-		wp_send_json_success( ob_get_clean() );
 
 	}
 

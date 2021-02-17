@@ -62,19 +62,6 @@
     font-size: 18px;
 }
 
-.popup-close {
-    font-size: 35px;
-    position: absolute;
-    top: -10px;
-    right: 20px;
-    color: rgb(0,191,255);
-    cursor: pointer;
-}
-
-.popup-close:hover {
-    color: #0073aa;
-}
-
 
 
 /*New design*/
@@ -408,31 +395,6 @@
     position: relative !important;
 }*/
 
-#group_name_error{
-    display: none;
-    margin-top: 35px;
-    box-shadow: 0 3px 5px rgba(0,191,255,0.5);
-    border-radius: 8px;
-    width: 250px;
-    height: auto;
-    padding: 10px;
-    position: absolute;
-    background: #fff;
-    z-index: 9;
-}
-
-.wrapper_group_name_error{
-    position: relative;
-}
-
-.wrapper_group_name_error .popup-close {
-    font-size: 30px;
-    position: absolute;
-    top: -20px;
-    right: 0;
-    color: rgb(0,191,255);
-    cursor: pointer;
-}
 #result_search > *{
     font-size: 18px;
 }
@@ -568,23 +530,6 @@ input:checked + .slider:before {
     left: 25%;
     top: 25%;
     text-align: center;
-}
-
-.wrapper_create-elements{
-    position: relative;
-}
-
-.wrapper_create-elements input, .wrapper_create-elements select{
-    width: 100%;
-}
-
-.wrapper_create-elements .popup-close {
-    font-size: 35px;
-    position: absolute;
-    top: -10px;
-    right: 10px;
-    color: rgb(0,191,255);
-    cursor: pointer;
 }
 
 #create_elements.create_filter{
@@ -818,13 +763,6 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     position: relative;
 }*/
 
-.change_content > .change_content_data{
-    background: none;
-    color: #fff;
-    border: none;
-    outline: none;
-    width: 100%;
-}
 .change_content:after {
     position: absolute;
     content: "";
@@ -835,23 +773,6 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     border: 6px solid transparent;
     border-color: #fff transparent transparent transparent;
 }
-.change_content > .change_content_data > option{
-    color: #fff;
-    background-color: #535353;
-}
-
-.change_content > .change_content_data:focus{
-    background: none;
-    color: #fff;
-    border: none;
-    outline: none;
-    box-shadow: none;
-}
-
-.change_content > .change_content_data:hover{
-    color: #fff;
-}
-
 .content-type{
     display: none;
 }

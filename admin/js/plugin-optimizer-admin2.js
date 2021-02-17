@@ -7,17 +7,6 @@
         namePage = namePage === 'filters_categories' ? 'categories' : namePage;
         $(`#window_${namePage}`).css('background-color', '#d7b70a');
 
-        // TODO This element doesn't exist in the repository
-        $('body').on('click', '.change_content_data', function(){
-            if($(this).children('option:selected').val() === 'type'){
-                $('.content-type').css('display', 'block');
-                $('.content-permalinks').css('display', 'none');
-            } else {
-                $('.content-permalinks').css('display', 'block');
-                $('.content-type').css('display', 'none');
-            }
-        });
-        
         // trash CPTs
         $('body').on('click', '#trash_elements', function(){
             let name_post_type;
@@ -175,25 +164,6 @@
             }
         });
 
-        // TODO This element doesn't exist in the repository
-        // search filters
-        $('body').on('keyup', '#search_filters', function(){
-            
-            console.log( "aAjax: search-filters.j" );
-            
-            $.ajax({
-                url: plugin_optimizer_groups.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'sos_search_filters',
-                    keyword: $('#search_filters').val()
-                },
-                success: function (response) {
-                    $('#the-list').html(response.data);
-                }
-            });
-        });
-        
         // search elements, a box on most of the PO pages
         $('body').on('keyup', '#search_elements', function(){
             let name_post_type;
@@ -312,12 +282,7 @@
             }
         });
 
-        // TODO - both of these elements don't exist in the repository
-        $('body').on('click', '.wrapper_create-elements > .popup-close', function(){
-            $('#create_elements').css('display', 'none');
-        });
-
-        // TODO - this elements never has the class .close
+        //
         $('body').on('click', '.filter-category .close', function(){
             let selfDelete = this;
             
@@ -449,7 +414,6 @@
                         $('#set_title').val('');
                         $('#search_pages').val('');
                         $('.link').remove();
-                        $('.change_content_data option:first').prop('selected', true);
                         $('#set_type option:first').prop('selected', true);
                     }
                 })
@@ -585,13 +549,6 @@
                     }
                 }
             });
-        });
-
-        // TODO this element doesn't exist in the repository
-        $('body').on('click', '#group_name_error .popup-close', function(){
-            $('#set_title').css('border', '1px solid red');
-            $('#set_title').val('');
-            $('#set_title').focus();
         });
 
         // Clicking on element on the list (filter, group, category) redirects to the edit page
@@ -821,60 +778,6 @@
             });
         });
         
-        // TODO - the element can exist only in the hidden content
-        $('body').on('click', '.wrapper_filter_to_category .content', function(){
-            
-            console.log( "change-filter-to-category.js" );
-            
-            let self = this;
-            
-            console.log( "aAjax: change-filter-to-category.js" );
-            
-            $.ajax({
-                url : plugin_optimizer_groups.ajax_url,
-                type: 'POST',
-                data: {
-                    action          : 'sos_add_category_to_filter',
-                    'id_category'   : $(this).attr('cat_id').substr(4),
-                    'id_filter'     : $(this).attr('id'),
-                    'trigger'       : $(this).hasClass('block') ? 'delete' : 'add',
-                    'page'          : $('#name_page').attr('class'),
-                },
-                success: function (response) {
-                    $(self).parent().parent().parent().html(response.data);
-                }
-            });
-        });
-        
-        // Change the category name
-        // TODO - the element can exist only in the hidden content
-        $('body').on('input change', '.data-title-cat', function(){
-            const text_name = $(this).text().trim();
-            const description_category = $(this).parent().parent().parent().parent().children('.description').children().children('.content-description').children('.data-description-cat').text().trim();
-            const cat_id = $(this).attr('cat_id');
-            
-            console.log( "aAjax: change-data-categories.js" );
-            
-            $.ajax({
-                url: plugin_optimizer_groups.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'sos_change_data_category',
-                    'text_name': text_name,
-                    'description_category': description_category,
-                    'cat_id': cat_id,
-                },
-                success: function ({data}) {
-                    $(`tr#cat-${cat_id}>.data-title-category`).text(data);
-                }
-            });
-        });
-
-        // TODO - the element can exist only in the hidden content
-        $('body').on('input', '.data-description-cat', function(){
-            $('.data-title-cat').change();
-        });
-
         // Add or delete category that already exists for filters on filters page
         $('body').on('click', '.filter-category', function() {
 
@@ -955,30 +858,7 @@
             });
         });
         
-        // Change the selected type
-        $('body').on('input', '.data-type', function(){
-            const text_type = $(this).text();
-            const filter_id = $(this).attr('filter_id');
-
-            $('#type_filter').val(text_type.trim());
-
-            $(`tr#filter-${filter_id}>.data-type-filter`).text(text_type);
-
-            /*$.ajax({
-                url: plugin_optimizer_groups.ajax_url,
-                type: 'POST',
-                data: {
-                    action: 'sos_change_type',
-                    'text_type': text_type,
-                    'filter_id': filter_id,
-                },
-                success: function ({data}) {
-                    $(`tr#filter-${filter_id}>.data-type-filter`).text(data);
-                }
-            });*/
-        });
-        
-        // Add new category for filters on filters page
+        // Add new category for filters on Edit Filter? page
         $('body').on('click', '.add-category', function (e) {
             const self = this;
             const name_category = $(this).prev().val();
