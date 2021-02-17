@@ -7,7 +7,9 @@ jQuery( document ).ready( function($){
 
     // trash CPTs
     $('body').on('click', '#trash_elements', function(){
+        
         let name_post_type;
+        
         if($('#name_page').attr("class") === 'worklist'){
             name_post_type = 'sos_work';
         } else if($('#name_page').attr("class") === 'filters'){
@@ -127,7 +129,7 @@ jQuery( document ).ready( function($){
                 if(countItem === 0){
                     $('.none_group').addClass('block');
                 }
-            }zvezda 
+            } 
         } else {
             $(this).addClass('block');
         }
