@@ -5,11 +5,14 @@
  */
 class Plugin_Optimizer_Helper {
 
-	public static function get_plugins_with_status() {
+    // if $all == false -> return array( "active" => [], "inactive" => [] )
+    // if $all == true  -> return []
+	public static function get_plugins_with_status( $all = false, $remove_po = true ){
         
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		
-		$plugins = [];
+		$plugins             = [];
+		$plugins_simple_list = [ "active" => [], "inactive" => [], "all" => [] ];
         
         if( empty( po_mu_plugin()->all_plugins ) ){
             
@@ -26,24 +29,37 @@ class Plugin_Optimizer_Helper {
         // po_mu_plugin()->write_log( $active_plugins, "get_plugins_with_status-active_plugins" );
         // po_mu_plugin()->write_log( $all_plugins,    "get_plugins_with_status-all_plugins" );
 
-		foreach ( $active_plugins as $active_plugin_file ) {
+		foreach ( $active_plugins as $plugin_id ) {
+            
+            if( $plugin_id != "plugin-optimizer/plugin-optimizer.php" || ! $remove_po ){
+                $plugins_simple_list["active"][ $plugin_id ] = $all_plugins[ $plugin_id ][ 'Name' ];
+                $plugins_simple_list["all"][ $plugin_id ]    = $all_plugins[ $plugin_id ][ 'Name' ];
+            }
+            
 			$plugins[] = [
-				'name'      => $all_plugins[ $active_plugin_file ][ 'Name' ],
-				'file'      => $active_plugin_file,
+				'name'      => $all_plugins[ $plugin_id ][ 'Name' ],
+				'file'      => $plugin_id,
 				'is_active' => 1,
 			];
-			unset( $all_plugins[ $active_plugin_file ] );
+            
+			unset( $all_plugins[ $plugin_id ] );
 		}
 
-		foreach ( $all_plugins as $file => $plugin_data ) {
+		foreach ( $all_plugins as $plugin_id => $plugin_data ) {
+            
+            if( $plugin_id != "plugin-optimizer/plugin-optimizer.php" || ! $remove_po ){
+                $plugins_simple_list["inactive"][ $plugin_id ] = $all_plugins[ $plugin_id ][ 'Name' ];
+                $plugins_simple_list["all"][ $plugin_id ]      = $all_plugins[ $plugin_id ][ 'Name' ];
+            }
+            
 			$plugins[] = [
 				'name'      => $plugin_data[ 'Name' ],
-				'file'      => $file,
+				'file'      => $plugin_id,
 				'is_active' => 0,
 			];
 		}
         
-		return $plugins;
+		return $all ? $plugins : $plugins_simple_list;
 
 	}
 
@@ -95,58 +111,44 @@ class Plugin_Optimizer_Helper {
 
 	public static function content_plugin_to_filter( $post ) {
         
-		$all_plugins        = self::get_plugins_with_status();
-        
-		$activate_plugins   = array();
-		$deactivate_plugins = array();
-        
-		foreach ( $all_plugins as $plugin ) {
-			foreach ( $plugin as $key => $value ) {
-				if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-					if ( $value ) {
-						$activate_plugins[ $plugin['name'] ] = $plugin['file'];
-					} else {
-						$deactivate_plugins[ $plugin['name'] ] = $plugin['file'];
-					}
+		$plugins       = self::get_plugins_with_status();
+		$block_plugins = get_post_meta( $post->ID, 'block_plugins', true );
+        $count_plugins = 0;
+		
+        if ( $plugins["active"] ) {
+			foreach ( $plugins["active"] as $plugin_name ) {
+				if ( in_array( $plugin_name, $block_plugins ) ) {
+					$count_plugins ++;
 				}
 			}
 		}
-		$block_plugins = get_post_meta( $post->ID, 'block_plugins', true );
-		?><div class="col-12">
+		
+        ?><div class="col-12">
             <div class="header">
                 <div class="title">
-					<?php $count_plugins = 0;
-					if ( $activate_plugins ) {
-						foreach ( $activate_plugins as $activate_plugin ) {
-							if ( in_array( $activate_plugin, $block_plugins ) ) {
-								$count_plugins ++;
-							}
-						}
-					}
-					?>
-                    Plugins <span class="disabled">- Disabled: <?= $count_plugins; ?>/<?= count( $activate_plugins ); ?></span>
+                    Plugins <span class="disabled">- Disabled: <?= $count_plugins; ?>/<?= count( $plugins["active"] ); ?></span>
                 </div>
-                <span class="count-plugin">( Active: <?= count( $activate_plugins ); ?>   |   Inactive: <?= count( $deactivate_plugins ); ?> )</span>
+                <span class="count-plugin">( Active: <?= count( $plugins["active"] ); ?>   |   Inactive: <?= count( $plugins["inactive"] ); ?> )</span>
             </div>
 			<?php
-			if ( $activate_plugins ):
+			if ( $plugins["active"] ):
 				?>
                 <div class="header attribute-plugin">Active plugins</div>
                 <div class="plugin-wrapper">
 					<?php
-					foreach ( $activate_plugins as $activate_plugin => $activate_plugin_link ):
+					foreach ( $plugins["active"] as $plugin_id => $plugin_name ):
 						?>
-                        <div class="content<?= ( in_array( $activate_plugin, $block_plugins ) ) ? ' block' : '' ?>">
+                        <div class="content<?= ( in_array( $plugin_name, $block_plugins ) ) ? ' block' : '' ?>">
 							<?php
-							if ( in_array( $activate_plugin, $block_plugins ) ):
+							if ( in_array( $plugin_name, $block_plugins ) ):
 								?>
-                                <span class="close" id="<?= $activate_plugin; ?>" value="<?= $post->ID; ?>"
-                                      link="<?= $activate_plugin_link; ?>">×</span>
+                                <span class="close" id="<?= $plugin_name; ?>" value="<?= $post->ID; ?>"
+                                      link="<?= $plugin_id; ?>">×</span>
 							<?php
 							else:
 								?>
-                                <span class="close pluse_plugin" id="<?= $activate_plugin; ?>"
-                                      value="<?= $post->ID; ?>" link="<?= $activate_plugin_link; ?>">+</span>
+                                <span class="close pluse_plugin" id="<?= $plugin_name; ?>"
+                                      value="<?= $post->ID; ?>" link="<?= $plugin_id; ?>">+</span>
 							<?php
 							endif;
 							?>
@@ -189,9 +191,9 @@ class Plugin_Optimizer_Helper {
                 <div class="header attribute-plugin">Inactive plugins</div>
                 <div class="plugin-wrapper">
 					<?php
-					foreach ( $deactivate_plugins as $deactivate_plugin => $deactivate_plugin_link ):
+					foreach ( $plugins["inactive"] as $plugin_id => $plugin_name ):
 						?>
-                        <div class="content deactivate-plugin<?= in_array( $deactivate_plugin, $block_plugins ) ? ' block' : ''; ?>">
+                        <div class="content deactivate-plugin<?= in_array( $plugin_name, $block_plugins ) ? ' block' : ''; ?>">
 							<?php
 							$groups_plugins = get_post_meta( $post->ID, 'block_group_plugins', true );
 
@@ -204,7 +206,7 @@ class Plugin_Optimizer_Helper {
                                 <div class="groups-names">
 									<?php
 									foreach ( $groups as $group ):
-										if ( in_array( $group->post_title, $groups_plugins ) && in_array( $deactivate_plugin, explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ) ) ):
+										if ( in_array( $group->post_title, $groups_plugins ) && in_array( $plugin_name, explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ) ) ):
 
 											?>
                                             <span class="group-name"><?= $group->post_title; ?></span>
@@ -216,17 +218,17 @@ class Plugin_Optimizer_Helper {
 							<?php
 							endif;
 							?>
-                            <span><?= $deactivate_plugin; ?></span>
+                            <span><?= $plugin_name; ?></span>
 							<?php
-							if ( in_array( $deactivate_plugin, $block_plugins ) ):
+							if ( in_array( $plugin_name, $block_plugins ) ):
 								?>
-                                <span class="close" id="<?= $deactivate_plugin; ?>" value="<?= $post->ID; ?>"
-                                      link="<?= $deactivate_plugin_link; ?>">×</span>
+                                <span class="close" id="<?= $plugin_name; ?>" value="<?= $post->ID; ?>"
+                                      link="<?= $plugin_id; ?>">×</span>
 							<?php
 							else:
 								?>
-                                <span class="close pluse_plugin" id="<?= $deactivate_plugin; ?>"
-                                      value="<?= $post->ID; ?>" link="<?= $deactivate_plugin_link; ?>">+</span>
+                                <span class="close pluse_plugin" id="<?= $plugin_name; ?>"
+                                      value="<?= $post->ID; ?>" link="<?= $plugin_id; ?>">+</span>
 							<?php
 							endif;
 							?>
@@ -240,7 +242,7 @@ class Plugin_Optimizer_Helper {
 				?>
                 <div class="plugin-wrapper no-plugins">
                     <div class="content">
-                        <span>No activate plugins for blocking</span>
+                        <span>No active plugins for blocking</span>
                     </div>
                 </div>
 			<?php
@@ -258,12 +260,6 @@ class Plugin_Optimizer_Helper {
                     <td><input type="checkbox"></td>
                     <td><?= $activate_plugin; ?></td>
                 </tr>
-				<?php
-                    $posts = get_posts( array(
-                        'post_type'   => 'sos_filter',
-                        'numberposts' => - 1,
-                    ) );
-				?>
             <?php } ?>
 		<?php } else { ?>
             <tr class="plugin-wrapper no-plugins">
@@ -306,20 +302,7 @@ class Plugin_Optimizer_Helper {
 	}
 
 	public static function content_groups( $posts ) {
-		$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
-		$activate_plugins   = array();
-		$deactivate_plugins = array();
-		foreach ( $all_plugins as $plugin ) {
-			foreach ( $plugin as $key => $value ) {
-				if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-					if ( $value ) {
-						array_push( $activate_plugins, $plugin['name'] );
-					} else {
-						array_push( $deactivate_plugins, $plugin['name'] );
-					}
-				}
-			}
-		}
+        
 		if ( $posts ){
 			foreach ( $posts as $post ) :
 				$group_plugins = get_post_meta( $post->ID, 'group_plugins', true );

@@ -451,22 +451,6 @@ class Plugin_Optimizer_Admin {
             <br>
         </div><?php
 
-		$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
-		$activate_plugins   = array();
-		$deactivate_plugins = array();
-        
-		foreach ( $all_plugins as $plugin ) {
-			foreach ( $plugin as $key => $value ) {
-				if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-					if ( $value ) {
-						array_push( $activate_plugins, $plugin['name'] );
-					} else {
-						array_push( $deactivate_plugins, $plugin['name'] );
-					}
-				}
-			}
-		}
-
 		$group_plugins = get_post_meta( $post->ID, 'group_plugins', true );
 
 		?><div class="sos-wrap">
@@ -474,7 +458,7 @@ class Plugin_Optimizer_Admin {
             <thead>
                 <tr>
                     <th><input type="checkbox" id="check_all"></th>
-                    <th>TITLE</th>
+                    <th>Title</th>
                     <th>Plugins</th>
                     <th>Count</th>
                 </tr>

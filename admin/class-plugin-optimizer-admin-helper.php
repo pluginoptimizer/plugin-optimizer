@@ -99,11 +99,11 @@ EOF;
                 
                 $class = "single_plugin";
                 
-                if( ! empty( $data["blocked"] ) ){
+                if( ! empty( $data["blocked"][ $plugin_id ] ) ){
                     $class .= " blocked";
                 }
                 
-                if( ! empty( $data["inactive"] ) ){
+                if( ! empty( $data["inactive"][ $plugin_id ] ) ){
                     $class .= " inactive";
                 }
                 

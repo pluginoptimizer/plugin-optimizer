@@ -1,26 +1,7 @@
 <?php
-$all_plugins      = Plugin_Optimizer_Helper::get_plugins_with_status();
+$plugins = Plugin_Optimizer_Helper::get_plugins_with_status();
 
-$active_plugins   = array();
-$inactive_plugins = array();
-
-foreach ( $all_plugins as $plugin ) {
-    
-    if ( $plugin['name'] == 'Plugin Optimizer' ) {
-        continue;
-    }
-    
-    if ( $plugin['is_active'] ) {
-        $active_plugins[ $plugin['file'] ]   = $plugin['name'];
-    } else {
-        $inactive_plugins[ $plugin['file'] ] = $plugin['name'];
-    }
-    
-}
-
-// po_mu_plugin()->write_log( $all_plugins, "page-add-filters-all_plugins" );
-// po_mu_plugin()->write_log( $active_plugins, "page-add-filters-active_plugins" );
-// po_mu_plugin()->write_log( $inactive_plugins, "page-add-filters-inactive_plugins" );
+// po_mu_plugin()->write_log( $plugins, "page-add-filters-plugins" );
 
 $groups = get_posts( [
 	'post_type'   => 'sos_group',
@@ -107,18 +88,18 @@ $categories = get_categories( [
 										<div class="col-12">
                                         
 											<div class="header">
-												<div class="title">Plugins <span class="disabled">- <?= count( $all_plugins ) - 1; ?></span></div>
-												<span class="count-plugin">( Active: <?= count( $active_plugins ); ?>   |   Inactive: <?= count( $inactive_plugins ); ?> )</span>
+												<div class="title">Plugins <span class="disabled">- <?= count( $plugins["all"] ); ?></span></div>
+												<span class="count-plugin">( Active: <?= count( $plugins["active"] ); ?>   |   Inactive: <?= count( $plugins["inactive"] ); ?> )</span>
 												<span class="all-check">Disable All</span>
 											</div>
                                             
                                             <div class="header attribute-plugin">Active plugins</div>
                                                 
-											<?php Plugin_Optimizer_Admin_Helper::content_part__plugins( [ "plugins" => $active_plugins ] ) ?>
+											<?php Plugin_Optimizer_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["active"] ] ); ?>
                                             
                                             <div class="header attribute-plugin">Inactive plugins</div>
                                             
-											<?php Plugin_Optimizer_Admin_Helper::content_part__plugins( [ "plugins" => $inactive_plugins, "inactive" => $inactive_plugins ] ) ?>
+											<?php Plugin_Optimizer_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["inactive"], "inactive" => $plugins["inactive"] ] ); ?>
                                             
 										</div>
 									</div>
@@ -159,15 +140,15 @@ $categories = get_categories( [
 											</div>
 											<div class="plugin-wrapper">
 												<?php
-												if ( $categories ):
-													foreach ( $categories as $cat ):
+												if ( $categories ){
+													foreach ( $categories as $cat ){
 														?>
 														<div class="content">
 															<span value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></span>
 														</div>
 													<?php
-													endforeach;
-												endif;
+													}
+												}
 												?>
 											</div>
 										</div>

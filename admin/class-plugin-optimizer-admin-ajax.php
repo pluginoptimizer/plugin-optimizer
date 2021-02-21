@@ -77,7 +77,7 @@ class Plugin_Optimizer_Ajax {
 			$block_plugins = explode( ', ', $block_plugins );
 			$block_plugins = array_unique( $block_plugins );
 
-			$all_plugins         = Plugin_Optimizer_Helper::get_plugins_with_status();
+			$all_plugins         = Plugin_Optimizer_Helper::get_plugins_with_status( true );
 			$block_value_plugins = array();
 			foreach ( $all_plugins as $plugin ) {
 				if ( in_array( $plugin['name'], $block_plugins ) ) {
@@ -252,26 +252,14 @@ class Plugin_Optimizer_Ajax {
 
 				Plugin_Optimizer_Helper::content_filters_categories( $categories );
 			} elseif ( $name_post_type === 'plugins' ) {
+                
 				$filter_plugins = htmlspecialchars( $_POST['keyword'] );
 
-				$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
-				$activate_plugins   = array();
-				$deactivate_plugins = array();
-				foreach ( $all_plugins as $plugin ) {
-					foreach ( $plugin as $key => $value ) {
-						if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-							if ( $value ) {
-								array_push( $activate_plugins, $plugin['name'] );
-							} else {
-								array_push( $deactivate_plugins, $plugin['name'] );
-							}
-						}
-					}
-				}
+				$plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
 
-				$activate_plugins = preg_grep( '~^' . $filter_plugins . '~i', $activate_plugins );
+				$active_plugins = preg_grep( '~^' . $filter_plugins . '~i', $plugins["active"] );
 
-				$this->content_list_plugins( $activate_plugins );
+				$this->content_list_plugins( $active_plugins );
 			}
 		} else {
 			$posts = get_posts( array(
@@ -768,29 +756,17 @@ class Plugin_Optimizer_Ajax {
 	 * Ajax show plugins on settings
 	 */
 	function sos_show_plugins() {
-		$type_plugins = htmlspecialchars( $_POST['type_plugins'] );
+        
+		$type_plugins   = htmlspecialchars( $_POST['type_plugins'] );
 
-		$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
-		$activate_plugins   = array();
-		$deactivate_plugins = array();
-		foreach ( $all_plugins as $plugin ) {
-			foreach ( $plugin as $key => $value ) {
-				if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-					if ( $value ) {
-						array_push( $activate_plugins, $plugin['name'] );
-					} else {
-						array_push( $deactivate_plugins, $plugin['name'] );
-					}
-				}
-			}
-		}
+		$plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
 
 		ob_start();
 
 		if ( $type_plugins === 'activate_plugins' ) {
-			Plugin_Optimizer_Helper::content_list_plugins( $activate_plugins );
+			Plugin_Optimizer_Helper::content_list_plugins( $plugins["active"] );
 		} else {
-			Plugin_Optimizer_Helper::content_list_plugins( $deactivate_plugins );
+			Plugin_Optimizer_Helper::content_list_plugins( $plugins["inactive"] );
 		}
 
 		wp_send_json_success( ob_get_clean() );
@@ -947,21 +923,12 @@ class Plugin_Optimizer_Ajax {
 						}
 					}
 					?>
-                    groups <span
-                            class="disabled">- Disabled: <?= $count_groups; ?>/<?= count( $groups ); ?></span>
+                    Groups <span class="disabled">- Disabled: <?= $count_groups; ?>/<?= count( $groups ); ?></span>
                 </div>
             </div>
             <div class="plugin-wrapper group-wrapper">
 				<?php
-				$all_plugins     = Plugin_Optimizer_Helper::get_plugins_with_status();
-				$content_plugins = array();
-				foreach ( $all_plugins as $plugin ) {
-					foreach ( $plugin as $key => $value ) {
-						if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-							$content_plugins[ $plugin['name'] ] = $plugin['file'];
-						}
-					}
-				}
+				$plugins = Plugin_Optimizer_Helper::get_plugins_with_status();
 
 				$groups = get_posts( array(
 					'post_type'   => 'sos_group',
@@ -978,7 +945,10 @@ class Plugin_Optimizer_Ajax {
 							foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
 								?>
                                 <div class="hidden_content content">
-                                    <span value="<?= isset( $content_plugins[ $block_plugin_in_group ] ) ? $content_plugins[ $block_plugin_in_group ] : "" ?>"><?= $block_plugin_in_group; ?></span>
+                                <?php
+                                // WTF is this?
+                                ?>
+                                    <span value="<?= in_array( $block_plugin_in_group, $plugins["active"] ) ? array_keys( $plugins["active"], $block_plugin_in_group )[0] : "" ?>"><?= $block_plugin_in_group; ?></span>
                                 </div>
 							<?php
 							endforeach;

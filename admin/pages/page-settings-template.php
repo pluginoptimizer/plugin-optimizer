@@ -1,18 +1,5 @@
 <?php
-$all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
-$activate_plugins   = array();
-$deactivate_plugins = array();
-foreach ( $all_plugins as $plugin ) {
-	foreach ( $plugin as $key => $value ) {
-		if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
-			if ( $value ) {
-				array_push( $activate_plugins, $plugin['name'] );
-			} else {
-				array_push( $deactivate_plugins, $plugin['name'] );
-			}
-		}
-	}
-}
+$plugins = Plugin_Optimizer_Helper::get_plugins_with_status();
 ?>
 <div class="wrap">
 
@@ -44,9 +31,9 @@ foreach ( $all_plugins as $plugin ) {
                 <div class="row col-12 justify-content-end">
                     <div class="col-8 quantity">
                         <span class="active-plugin" id="activate_plugins">Active</span> (<span
-                              class="count-active-plugin"><?= count( $activate_plugins ); ?>)</span> | <span
+                              class="count-active-plugin"><?= count( $plugins["active"] ); ?>)</span> | <span
                               class="inactive-plugin" id="deactivate_plugins">Inactive</span> (<span
-                              class="count-trash-plugin"><?= count( $deactivate_plugins ); ?></span>)
+                              class="count-trash-plugin"><?= count( $plugins["inactive"] ); ?></span>)
                     </div>
                 </div>
                 
@@ -60,7 +47,7 @@ foreach ( $all_plugins as $plugin ) {
                             </tr>
                             </thead>
                             <tbody id="the-list">
-							<?php Plugin_Optimizer_Helper::content_list_plugins( $activate_plugins ); ?>
+							<?php Plugin_Optimizer_Helper::content_list_plugins( $plugins["active"] ); ?>
                             </tbody>
                         </table>
                     </div>
