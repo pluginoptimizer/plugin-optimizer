@@ -19,7 +19,7 @@ class Plugin_Optimizer_Deactivator {
 	 *
 	 */
 	public static function deactivate() {
-		unlink( WPMU_PLUGIN_DIR . '/class-plugin-optimizer-mu.php' );
+		unlink( WPMU_PLUGIN_DIR . '/class-po-mu.php' );
 	}
 
 }

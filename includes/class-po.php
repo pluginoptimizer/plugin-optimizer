@@ -83,35 +83,35 @@ class Plugin_Optimizer {
 
 		
 		// The class responsible for orchestrating the actions and filters of the core plugin.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-plugin-optimizer-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-po-loader.php';
 
 		
 		// The class responsible for defining internationalization functionality of the plugin.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-plugin-optimizer-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-po-i18n.php';
 
 		
 		// The class responsible for defining helper functionality of the plugin.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-plugin-optimizer-helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-po-helper.php';
 
 		
 		// The class responsible for defining helper functionality of the plugin.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-optimizer-admin-helper.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin-helper.php';
 
 		
 		// The class responsible for defining all actions that occur in the admin area.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-optimizer-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin.php';
 
 		
 		// The class responsible for menu pages of the admin area.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-optimizer-admin-pages.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin-pages.php';
 
 		
 		// The class responsible for defining all Ajax actions that occur in the admin area.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-optimizer-admin-ajax.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin-ajax.php';
 
 		
 		// The class responsible for defining all actions that occur in the public-facing side of the site.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-plugin-optimizer-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-po-public.php';
 
 		$this->loader = new Plugin_Optimizer_Loader();
 

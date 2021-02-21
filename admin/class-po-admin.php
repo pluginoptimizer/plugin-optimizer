@@ -44,10 +44,10 @@ class Plugin_Optimizer_Admin {
 	 * Register the stylesheets for the admin area.
 	 */
 	function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name . '-public', plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name . '-public', plugin_dir_url( __FILE__ ) . 'css/po-admin-public.css', array(), $this->version, 'all' );
 		if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) || stripos( $_SERVER["QUERY_STRING"], "action=edit" ) ) {
-			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin.css', array(), $this->version, 'all' );
-			wp_enqueue_style( $this->plugin_name . '_bootstrap', plugin_dir_url( __FILE__ ) . 'css/plugin-optimizer-admin-bootstrap.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/po-admin.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name . '_bootstrap', plugin_dir_url( __FILE__ ) . 'css/po-admin-bootstrap.css', array(), $this->version, 'all' );
 		}
 	}
 
@@ -56,8 +56,8 @@ class Plugin_Optimizer_Admin {
 	 */
 	function enqueue_scripts() {
 
-        $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/plugin-optimizer-admin.js' ));
-		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/plugin-optimizer-admin.js', array( 'jquery' ), $version, false );
+        $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/po-admin.js' ));
+		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/po-admin.js', array( 'jquery' ), $version, false );
         
 		wp_localize_script( $this->plugin_name, 'plugin_optimizer_groups', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 		wp_enqueue_script( $this->plugin_name );
@@ -388,6 +388,128 @@ class Plugin_Optimizer_Admin {
                         <td class="data-link-filter"><?= get_post_meta( $post->ID, 'selected_page', true ); ?></td>
                         <td><?= implode( ', ', get_post_meta( $post->ID, 'block_plugins', true ) ); ?></td>
                     </tr>
+                <tr class="hidden_info">
+                    <td colspan="6">
+                        <div class="content-filter">
+                            <div class="row">
+                                <div class="col-12">
+									<?php
+									$type_filter = get_post_meta( $post->ID, 'type_filter', true );
+									if ( $type_filter === 'none' ):
+										?>
+                                        <div class="header">Permalinks</div>
+                                        <div class="content-permalinks">
+                                            <div class="link">
+                                            <span class="data-interaction data-link" filter_id="<?= $post->ID ?>"
+                                                  contenteditable>
+                                            <?= get_post_meta( $post->ID, 'selected_page', true ) ?>
+                                            </span>
+                                            </div>
+                                        </div>
+									<?php
+
+									else:
+										?>
+                                        <div class="header">Type</div>
+                                        <div>
+                                            <div class="content">
+                                            <span class="data-interaction data-type" filter_id="<?= $post->ID ?>"
+                                                  contenteditable>
+                                                <?= $type_filter ?>
+                                            </span>
+                                            </div>
+                                        </div>
+
+									<?php
+									endif;
+									?>
+                                </div>
+
+                            </div>
+                            <div class="row content-plugins">
+								<?php Plugin_Optimizer_Helper::content_plugin_to_filter( $post ); ?>
+                            </div>
+                            <div class="row group-wrapper">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
+											<?php
+											$groups_plugins = get_post_meta( $post->ID, 'block_group_plugins', true );
+											$count_groups   = 0;
+											$groups         = get_posts( array(
+												'post_type'   => 'sos_group',
+												'numberposts' => - 1,
+											) );
+											if ( $groups ) {
+												foreach ( $groups as $group ) {
+													if ( in_array( $group->post_title, $groups_plugins ) ) {
+														$count_groups ++;
+													}
+												}
+											}
+											?>
+                                            groups <span
+                                                    class="disabled">- Disabled: <?= $count_groups; ?>/<?= count( $groups ); ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="plugin-wrapper group-wrapper">
+										<?php
+										$all_plugins     = Plugin_Optimizer_Helper::get_plugins_with_status();
+										$content_plugins = array();
+										foreach ( $all_plugins as $plugin ) {
+											foreach ( $plugin as $key => $value ) {
+												if ( $key === 'is_active' && $plugin['name'] !== 'Plugin Optimizer' ) {
+													$content_plugins[ $plugin['name'] ] = $plugin['file'];
+												}
+											}
+										}
+
+										$groups = get_posts( array(
+											'post_type'   => 'sos_group',
+											'numberposts' => - 1,
+										) );
+										if ( $groups ) :
+											foreach ( $groups as $group ) :
+												?>
+                                                <div id="<?= $group->ID; ?>" value="<?= $post->ID; ?>"
+                                                     class="content <?= in_array( $group->post_title, $groups_plugins ) ? 'block' : ''; ?> ">
+                                                    <span><?= $group->post_title; ?></span>
+													<?php
+													$block_plugins_in_group = explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) );
+													foreach ( $block_plugins_in_group as $block_plugin_in_group ) :
+														?>
+                                                        <div class="hidden_content content">
+                                                            <span value="<?= $content_plugins[ $block_plugin_in_group ]; ?>"><?= $block_plugin_in_group; ?></span>
+                                                        </div>
+													<?php
+													endforeach;
+													?>
+                                                </div>
+											<?php
+											endforeach;
+										endif;
+										?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="header">
+                                        <div class="title">
+                                            categories
+                                        </div>
+                                    </div>
+                                    <div class="plugin-wrapper">
+										<?php
+										// $this->ajax_create_category( $post );
+										?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div><?php

@@ -29,19 +29,19 @@ define( 'SIMPLE_ONLINE_SYSTEMS_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-plugin-optimizer-activator.php
+ * This action is documented in includes/class-po-activator.php
  */
 function activate_plugin_optimizer() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-plugin-optimizer-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-activator.php';
 	Plugin_Optimizer_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-plugin-optimizer-deactivator.php
+ * This action is documented in includes/class-po-deactivator.php
  */
 function deactivate_plugin_optimizer() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-plugin-optimizer-deactivator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-deactivator.php';
 	Plugin_Optimizer_Deactivator::deactivate();
 }
 
@@ -49,7 +49,7 @@ register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
 register_deactivation_hook( __FILE__, 'deactivate_plugin_optimizer' );
 
 
-if( ! file_exists( WPMU_PLUGIN_DIR . '/class-plugin-optimizer-mu.php') ){
+if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') ){
     
     return;
 }
@@ -59,7 +59,7 @@ if( ! file_exists( WPMU_PLUGIN_DIR . '/class-plugin-optimizer-mu.php') ){
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-plugin-optimizer.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-po.php';
 
 /**
  * Begins execution of the plugin.
