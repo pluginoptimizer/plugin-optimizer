@@ -204,10 +204,11 @@ class Plugin_Optimizer_MU {
             if( ! is_admin() ){
                 
                 
+                // TODO we need to add endpoints to the Worklist here
                 
             }
             
-            $this->write_log( ( is_admin() ? "Back end" : "Front end" ) . ": " . var_export( trim( $_SERVER["REQUEST_URI"] ), true ), "update_worklist_if_needed-REQUEST_URI" );
+            // $this->write_log( ( is_admin() ? "Back end" : "Front end" ) . ": " . var_export( trim( $_SERVER["REQUEST_URI"] ), true ), "update_worklist_if_needed-REQUEST_URI" );
         }
         
     }

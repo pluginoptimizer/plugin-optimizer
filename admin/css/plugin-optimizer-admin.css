@@ -329,12 +329,12 @@
 }
 
 .sos-wrap .content-filter .plugin-wrapper.no-plugins{
-    display: grid;
-    grid-template-columns: 1fr;
-    column-gap: 0;
+    /* display: grid; */
+    /* grid-template-columns: 1fr; */
+    /* column-gap: 0; */
 }
 .sos-wrap .content-filter .plugin-wrapper.no-plugins *{
-    text-align: center;
+    /* text-align: center; */
 }
 
 .select-filter .block{
@@ -621,6 +621,23 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     color: #fff;
 }
 
+.sos-wrap .plugin-wrapper .single_plugin{
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #ffffff;
+    text-align: left;
+}
+.sos-wrap .plugin-wrapper .single_plugin.inactive{
+    background: gray;
+    color: #fff;
+}
+.sos-wrap .plugin-wrapper .single_plugin.blocked{
+    background-color: #ffc4c4;
+    color: #212529;
+}
+
 
 .all-check{
     cursor: pointer;
@@ -639,7 +656,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 
 .hidden_content{
     display: none;
-    box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0; */
 }
 
 .content:hover .hidden_content{

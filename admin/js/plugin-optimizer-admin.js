@@ -106,33 +106,28 @@ jQuery( document ).ready( function($){
         }
     })
     
-    // Clicking on a group in the Add New Filter page
-    $('body').on('click', '.block-group-plugin-wrapper .content', function(){
+    // NEW: Clicking on a group in the Add New Filter page
+    $('body').on('click', '.block-group-plugin-wrapper .toggle_group', function(){
         
-        console.log( "select-parent-group.js" );
+        $(this).toggleClass('blocked');
         
-        if($(this).text() !== 'None' && $('.none_group').hasClass('block')){
-            $('.none_group').removeClass('block');
+        if( $(this).hasClass('blocked') ){
+            
+            let plugins_to_block = $(this).data("plugins");
+            let group_name = $(this).children("span").text();
+            
+            // console.log( "Name: ", group_name );
+            // console.log( "Plugins: ", plugins_to_block );
+            
+            $.each( plugins_to_block, function( index, plugin_name ){
+                
+                console.log( "Block: ", plugin_name );
+                
+                $(`.single_plugin[data-name="{plugin_name}"]`).css("background", "cyan");
+                
+            });
         }
         
-        if($(this).hasClass('block')){
-            
-            $(this).removeClass('block');
-            
-            if($(this).text() !== 'None'){
-                let countItem = 0;
-                $( '.block-group-plugin-wrapper .content' ).each(function( item ) {
-                    if($(this).hasClass('block')){
-                        countItem++;
-                    }
-                });
-                if(countItem === 0){
-                    $('.none_group').addClass('block');
-                }
-            } 
-        } else {
-            $(this).addClass('block');
-        }
     });
     
     // Select a parent category on the Add New Category screen
@@ -158,9 +153,13 @@ jQuery( document ).ready( function($){
         if($(this).text() === 'Disable All'){
             $(this).text('Enable All');
             $(this).parent().parent().children('.plugin-wrapper').children('.content').addClass('block');
+            
+            $(this).parents('.row.block-plugin-wrapper').find('.plugin-wrapper .single_plugin').addClass('blocked');
         } else {
             $(this).text('Disable All');
             $(this).parent().parent().children('.plugin-wrapper').children('.content').removeClass('block');
+            
+            $(this).parents('.row.block-plugin-wrapper').find('.plugin-wrapper .single_plugin').removeClass('blocked');
         }
     });
 
@@ -474,6 +473,12 @@ jQuery( document ).ready( function($){
         }
     });
 
+    // NEW: Toggle plugins for a new/edit filter or select plugins for a new group
+    $('body').on('click', '.block-plugin-wrapper .single_plugin', function(){
+
+        $(this).toggleClass('blocked');
+    });
+
     // On the Add New Filter page, #search_pages is the input field where you put the initial permalink/endpoint for the filter
     $('body').on('keypress', '#search_pages', function(e){
         if (e.keyCode == 13) {
@@ -639,7 +644,7 @@ jQuery( document ).ready( function($){
     
     // Change plugins for a filter and a group??
     // TODO check because those actions run multiple triggers
-    $('body').on('click', '.plugin-wrapper:not(.group-wrapper) > .content', function(){
+    $('body').on('click', '.plugin-wrapper:not(.group-wrapper) > .content:not(.toggle_group)', function(){
         
         console.log( "change-plugins.js" );
         

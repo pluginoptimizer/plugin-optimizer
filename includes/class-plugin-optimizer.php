@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The core plugin class.
  *
@@ -14,6 +13,7 @@
  * @subpackage Plugin_Optimizer/includes
  * @author     Web Dev <some@some.com>
  */
+
 class Plugin_Optimizer {
 
 	/**
@@ -81,43 +81,36 @@ class Plugin_Optimizer {
 	 */
 	private function load_dependencies() {
 
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
+		
+		// The class responsible for orchestrating the actions and filters of the core plugin.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-plugin-optimizer-loader.php';
 
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
+		
+		// The class responsible for defining internationalization functionality of the plugin.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-plugin-optimizer-i18n.php';
 
-		/**
-		 * The class responsible for defining helper functionality
-		 * of the plugin.
-		 */
+		
+		// The class responsible for defining helper functionality of the plugin.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-plugin-optimizer-helper.php';
 
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
+		
+		// The class responsible for defining helper functionality of the plugin.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-optimizer-admin-helper.php';
+
+		
+		// The class responsible for defining all actions that occur in the admin area.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-optimizer-admin.php';
 
-		/**
-		 * The class responsible for menu pages of the admin area.
-		 */
+		
+		// The class responsible for menu pages of the admin area.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-optimizer-admin-pages.php';
 
-		/**
-		 * The class responsible for defining all Ajax actions that occur in the admin area.
-		 */
+		
+		// The class responsible for defining all Ajax actions that occur in the admin area.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-plugin-optimizer-admin-ajax.php';
 
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
+		
+		// The class responsible for defining all actions that occur in the public-facing side of the site.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-plugin-optimizer-public.php';
 
 		$this->loader = new Plugin_Optimizer_Loader();

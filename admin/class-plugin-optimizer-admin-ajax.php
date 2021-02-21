@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin ajax functionality of the plugin.
  *
@@ -7,6 +6,7 @@
  * @subpackage Plugin_Optimizer/admin
  * @author     Web Dev <some@some.com>
  */
+
 class Plugin_Optimizer_Ajax {
 
 	/**
