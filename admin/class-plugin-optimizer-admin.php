@@ -303,9 +303,9 @@ class Plugin_Optimizer_Admin {
 				'new_item_name'     => __( 'New Category Name' ),
 				'menu_name'         => __( 'Categories' ),
 			),
-			'show_ui'      => true,
-			'query_var'    => true,
-			'default_term'    => 'Uncategorized',
+			'show_ui'       => true,
+			'query_var'     => true,
+			'default_term'  => 'Uncategorized',
 		) );
 
 	}
@@ -372,10 +372,10 @@ class Plugin_Optimizer_Admin {
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="check_all"></th>
-                        <th>TITLE</th>
-                        <th>cATEGORIES</th>
+                        <th>Title</th>
+                        <th>Categories</th>
                         <th>Type</th>
-                        <th>permalinks</th>
+                        <th>Permalinks</th>
                         <th>Block plugins</th>
                     </tr>
                 </thead>
