@@ -39,11 +39,11 @@ class Plugin_Optimizer_Admin_Menu_Pages {
 	}
 
 	function render_filters_page() {
-		include 'pages/page-filters.php';
+		include 'pages/page-filters-list.php';
 	}
 
 	function render_add_filters_page() {
-		include 'pages/page-add-filters.php';
+		include 'pages/page-filters-new.php';
 	}
 
 	function render_filters_categories_page() {
@@ -51,11 +51,11 @@ class Plugin_Optimizer_Admin_Menu_Pages {
 	}
 
 	function render_groups_page() {
-		include 'pages/page-groups.php';
+		include 'pages/page-groups-list.php';
 	}
 
 	function render_add_groups_page() {
-		include 'pages/page-add-groups.php';
+		include 'pages/page-groups-new.php';
 	}
 
 	function render_settings_page() {
