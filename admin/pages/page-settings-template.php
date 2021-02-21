@@ -18,7 +18,7 @@ foreach ( $all_plugins as $plugin ) {
 
     <div class="sos-wrap container">
     
-        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Settings"); ?>
+        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Settings", "settings"); ?>
         
         <div class="row sos-content">
             <div class="row col-12 justify-content-end">

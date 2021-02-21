@@ -8,7 +8,7 @@ $worklists = get_posts( array(
 	
     <div class="sos-wrap container">
     
-        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Worklist"); ?>
+        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Worklist", "worklist"); ?>
         
         <div class="row sos-content">
             <div class="row col-12 justify-content-end">

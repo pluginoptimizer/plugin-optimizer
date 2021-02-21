@@ -8,7 +8,7 @@ $posts = get_posts( array(
 
     <div class="sos-wrap container">
     
-        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Create a new filter group"); ?>
+        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Create a new filter group", "add-groups"); ?>
         
         <div class="row sos-content">
             <div class="row content-new-element">

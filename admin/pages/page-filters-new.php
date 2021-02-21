@@ -38,7 +38,7 @@ $categories = get_categories( [
 
 	<div class="sos-wrap container">
     
-        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Create a new Filter"); ?>
+        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Create a new Filter", "add-filters"); ?>
         
 		<div class="row sos-content">
 			<div class="row content-new-element">

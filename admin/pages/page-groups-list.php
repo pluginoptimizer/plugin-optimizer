@@ -8,7 +8,7 @@ $groups = get_posts( array(
 
     <div class="sos-wrap container">
     
-        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Groups"); ?>
+        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Groups", "groups"); ?>
         
         <div class="row sos-content">
             <div class="row col-12 justify-content-between global-information">

@@ -1,9 +1,11 @@
 jQuery( document ).ready( function($){
     'use strict';
 
-    let namePage = $('#name_page').attr('class');
-    namePage = namePage === 'filters_categories' ? 'categories' : namePage;
-    $(`#window_${namePage}`).css('background-color', '#d7b70a');
+    let current_page = $('#name_page').attr('class');
+    current_page = current_page === 'filters_categories' ? 'categories' : current_page;
+    current_page = current_page === 'add-filters'        ? 'filters'    : current_page;
+    current_page = current_page === 'add-groups'         ? 'groups'     : current_page;
+    $(`#window_${current_page}`).css('background-color', '#d7b70a');
 
     // trash CPTs
     $('body').on('click', '#trash_elements', function(){

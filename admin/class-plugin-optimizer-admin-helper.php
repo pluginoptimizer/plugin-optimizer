@@ -5,7 +5,7 @@
 
 class Plugin_Optimizer_Admin_Helper {
 
-	public static function content_part__header( $page_title ) {
+	public static function content_part__header( $page_title, $class = "default" ) {
         
         echo <<<EOF
         
@@ -13,7 +13,7 @@ class Plugin_Optimizer_Admin_Helper {
             <h1>Plugin Optimizer</h1>
         </div>
         <div class="row col-12">
-            <h2 id="name_page" class="add-groups">$page_title</h2>
+            <h2 id="name_page" class="$class">$page_title</h2>
         </div>
 
         <div class="row col-12 justify-content-between wrap-tabs">
