@@ -32,7 +32,55 @@ class Plugin_Optimizer_Admin_Helper {
 EOF;
         
     }
+    
+	public static function content_part__bulk_actions( $posts ) {
         
+        $months      = [];
+        $months_html = "";
+        
+        foreach( $posts as $post ){
+            
+            $date = $post->post_date;
+            
+            $date_value = date("Ym",  strtotime( $date ) );// 202109
+            $date_label = date("F Y", strtotime( $date ) );// September 2021
+            
+            $months[ $date_value ] = $date_label;
+            
+            // po_mu_plugin()->write_log( $post, "content_part__bulk_actions-post" );
+            // break;
+        }
+        
+        ksort( $months );
+        
+        foreach( $months as $value => $label ){
+            
+            $months_html .= '<option value="' . $value . '">' . $label . '</option>';
+        }
+        
+        echo <<<EOF
+        
+            <div class="row col-12">
+                <div class="col-3">
+                    <select id="check_all_elements">
+                        <option value="default">Bulk actions</option>
+                        <option value="delete">Delete</option>
+                    </select>
+                    <button id="btn_apply">Apply</button>
+                </div>
+                <div class="col-3">
+                    <select id="filter_all_elements">
+                        <option value="default">All dates</option>
+                        $months_html
+                    </select>
+                    <button id="btn_filter">Filter</button>
+                </div>
+            </div>
+            
+EOF;
+        
+    }
+    
 	public static function content_part__plugins( $args = [] ) {
         
         $defaults = [

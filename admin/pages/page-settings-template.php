@@ -1,8 +1,4 @@
 <?php
-$posts              = get_posts( array(
-	'post_type'   => 'sos_work',
-	'numberposts' => - 1,
-) );
 $all_plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
 $activate_plugins   = array();
 $deactivate_plugins = array();
@@ -48,27 +44,12 @@ foreach ( $all_plugins as $plugin ) {
                 <div class="row col-12 justify-content-end">
                     <div class="col-8 quantity">
                         <span class="active-plugin" id="activate_plugins">Active</span> (<span
-                                class="count-active-plugin"><?= count( $activate_plugins ); ?>)</span> | <span
-                                class="inactive-plugin" id="deactivate_plugins">Inactive</span> (<span
-                                class="count-trash-plugin"><?= count( $deactivate_plugins ); ?></span>)
+                              class="count-active-plugin"><?= count( $activate_plugins ); ?>)</span> | <span
+                              class="inactive-plugin" id="deactivate_plugins">Inactive</span> (<span
+                              class="count-trash-plugin"><?= count( $deactivate_plugins ); ?></span>)
                     </div>
                 </div>
-                <div class="row col-12">
-                    <div class="col-3">
-                        <select id="check_all_elements">
-                            <option value="default">Bulk actions</option>
-                            <option value="delete">Delete</option>
-                        </select>
-                        <button id="btn_apply">Apply</button>
-                    </div>
-                    <div class="col-3">
-                        <select id="filter_all_elements">
-                            <option value="default">All dates</option>
-                            <option value="delete">November</option>
-                        </select>
-                        <button id="btn_filter">Filter</button>
-                    </div>
-                </div>
+                
                 <div class="row col-12">
                     <div class="col-12">
                         <table>
@@ -79,9 +60,7 @@ foreach ( $all_plugins as $plugin ) {
                             </tr>
                             </thead>
                             <tbody id="the-list">
-							<?php
-							Plugin_Optimizer_Helper::content_list_plugins( $activate_plugins );
-							?>
+							<?php Plugin_Optimizer_Helper::content_list_plugins( $activate_plugins ); ?>
                             </tbody>
                         </table>
                     </div>

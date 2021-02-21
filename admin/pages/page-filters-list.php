@@ -1,5 +1,5 @@
 <?php
-$posts = get_posts( array(
+$filters = get_posts( array(
 	'post_type'   => 'sos_filter',
 	'numberposts' => - 1,
 ) );
@@ -13,8 +13,7 @@ $posts = get_posts( array(
         <div class="row sos-content">
             <div class="row col-12 justify-content-between global-information">
                 <div class="col-3">
-                    <button class="add-filter" id="add_elements"><span class="pluse">+</span> Add New Filter
-                    </button>
+                    <button class="add-filter" id="add_elements"><span class="pluse">+</span> Add New Filter</button>
                 </div>
                 <div class="col-2 quantity">
                     <span id="all_elements">all</span> (<span
@@ -23,22 +22,9 @@ $posts = get_posts( array(
                             id="count_trash_elements"><?= wp_count_posts( 'sos_filter' )->trash; ?></span>)
                 </div>
             </div>
-            <div class="row col-12 ">
-                <div class="col-3">
-                    <select id="check_all_elements">
-                        <option value="default">Bulk actions</option>
-                        <option value="delete">Delete</option>
-                    </select>
-                    <button id="btn_apply">Apply</button>
-                </div>
-                <div class="col-3">
-                    <select id="filter_all_elements">
-                        <option value="default">All dates</option>
-                        <option value="delete">November</option>
-                    </select>
-                    <button id="btn_filter">Filter</button>
-                </div>
-            </div>
+            
+            <?php Plugin_Optimizer_Admin_Helper::content_part__bulk_actions( $filters ); ?>
+            
             <div class="row col-12">
                 <div class="col-12">
                     <table>
@@ -53,7 +39,7 @@ $posts = get_posts( array(
                         </tr>
                         </thead>
                         <tbody id="the-list">
-						<?php Plugin_Optimizer_Helper::content__filters( $posts ); ?>
+						<?php Plugin_Optimizer_Helper::content__filters( $filters ); ?>
                         </tbody>
                     </table>
                 </div>

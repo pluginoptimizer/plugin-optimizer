@@ -41,7 +41,6 @@ $categories = get_categories( [
         <?php Plugin_Optimizer_Admin_Helper::content_part__header("Create a new Filter"); ?>
         
 		<div class="row sos-content">
-
 			<div class="row content-new-element">
 				<div class="col-12">
 					<table>

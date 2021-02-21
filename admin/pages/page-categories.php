@@ -40,7 +40,6 @@ $categories = get_categories( [
                                             <div class="header">Description</div>
                                             <div>
                                                 <div class="content">
-                                                    <!--                                                    <span><textarea class="content-text" id="set_title" type="text"></span>-->
                                                     <span><textarea id="set_description" name="text"></textarea></span>
                                                 </div>
                                             </div>

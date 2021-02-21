@@ -1,5 +1,5 @@
 <?php
-$posts = get_posts( array(
+$worklists = get_posts( array(
 	'post_type'   => 'sos_work',
 	'numberposts' => - 1,
 ) );
@@ -13,28 +13,15 @@ $posts = get_posts( array(
         <div class="row sos-content">
             <div class="row col-12 justify-content-end">
                 <div class="quantity">
-                    <span id="all_elements">all</span> (<span
-                            id="count_all_elements"><?= wp_count_posts( 'sos_work' )->publish; ?></span>) | <span
-                            id="trash_elements">TRASH</span> (<span
-                            id="count_trash_elements"><?= wp_count_posts( 'sos_work' )->trash; ?></span>)
+                    <span id="all_elements">All</span> (<span
+                          id="count_all_elements"><?= wp_count_posts( 'sos_work' )->publish; ?></span>) | <span
+                          id="trash_elements">TRASH</span> (<span
+                          id="count_trash_elements"><?= wp_count_posts( 'sos_work' )->trash; ?></span>)
                 </div>
             </div>
-            <div class="row col-12">
-                <div class="col-3">
-                    <select id="check_all_elements">
-                        <option value="default">Bulk actions</option>
-                        <option value="delete">Delete</option>
-                    </select>
-                    <button id="btn_apply">Apply</button>
-                </div>
-                <div class="col-3">
-                    <select id="filter_all_elements">
-                        <option value="default">All dates</option>
-                        <option value="delete">November</option>
-                    </select>
-                    <button id="btn_filter">Filter</button>
-                </div>
-            </div>
+            
+            <?php Plugin_Optimizer_Admin_Helper::content_part__bulk_actions( $worklists ); ?>
+            
             <div class="row col-12">
                 <div class="col-12">
                     <table>
@@ -42,13 +29,13 @@ $posts = get_posts( array(
                         <tr>
                             <th><input type="checkbox" id="check_all"></th>
                             <th>PAGE TITLE</th>
-                            <th>permalink</th>
+                            <th>Permalink</th>
                             <th>Date Created</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody id="the-list">
-						<?php Plugin_Optimizer_Helper::content_works( $posts ); ?>
+						<?php Plugin_Optimizer_Helper::content_works( $worklists ); ?>
                         </tbody>
                     </table>
                 </div>
