@@ -178,6 +178,31 @@
     padding: 10px;
 }
 
+.sos-wrap thead th.data-title {
+    text-align: left;
+    padding-left: 10px;
+}
+.sos-wrap thead th.data-categories {
+    text-align: left;
+    padding-left: 10px;
+}
+.sos-wrap tbody td.data-title {
+    text-transform: none;
+    text-align: left;
+}
+.sos-wrap tbody td.data-categories {
+    text-transform: none;
+    text-align: left;
+}
+.sos-wrap tbody td.data-trigger {
+    text-transform: none;
+    text-align: left;
+}
+.sos-wrap tbody td.data-trigger b{
+    text-transform: none;
+    font-weight: bold;
+}
+
 .sos-wrap button.add-filter {
     padding: 5px;
     text-transform: uppercase;

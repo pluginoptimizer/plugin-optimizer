@@ -438,13 +438,23 @@ class Plugin_Optimizer_Helper {
                 
                 sort( $blocking_plugins );
                 
+                $data_type      = get_post_meta( $filter->ID, 'type_filter',   true );
+                $data_endpoints = get_post_meta( $filter->ID, 'selected_page', true );
+                
+                if( empty( $data_type ) || $data_type == "none" ){
+                    $trigger = implode( ',<br>', explode( ',', $data_endpoints ) );
+                } else {
+                    $trigger = "Backend editing of custom post type: <b>" . $data_type . "</b>";
+                }
+                
+                $categories = implode( ',<br>', explode( ',', get_post_meta( $filter->ID, 'category_filter', true ) ) );
+                
 				?>
-                <tr class="block_info" id="filter-<?= $filter->ID; ?>" data-status="<?= $filter->post_status ?>">
-                    <td><input type="checkbox" id="<?= $filter->ID; ?>"></td>
-                    <td><?= $filter->post_title; ?></td>
-                    <td><?= get_post_meta( $filter->ID, 'category_filter', true ); ?></td>
-                    <td class="data-type-filter"><?= get_post_meta( $filter->ID, 'type_filter', true ); ?></td>
-                    <td class="data-link-filter"><?= get_post_meta( $filter->ID, 'selected_page', true ); ?></td>
+                <tr class="block_info" id="filter-<?=  $filter->ID ?>" data-status="<?= $filter->post_status ?>">
+                    <td><input type="checkbox" id="<?= $filter->ID ?>"></td>
+                    <td class="data-title"><?= $filter->post_title ?></td>
+                    <td class="data-categories"><?= $categories ?></td>
+                    <td class="data-trigger"><?= $trigger ?></td>
                     <td class="expandable list_of_plugins"><span class="no_hover"><?= count( $blocking_plugins ) ?></span><span class="yes_hover"><?= implode( ',<br/>', $blocking_plugins ); ?></span></td>
                 </tr>
 			<?php

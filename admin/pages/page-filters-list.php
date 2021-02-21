@@ -31,10 +31,9 @@ $filters = get_posts( array(
                         <thead>
                         <tr>
                             <th><input type="checkbox" id="check_all"></th>
-                            <th>TITLE</th>
-                            <th>cATEGORIES</th>
-                            <th>Type</th>
-                            <th>Permalinks</th>
+                            <th class="data-title">Title</th>
+                            <th class="data-categories">Categories</th>
+                            <th>Triggers</th>
                             <th>Blocked plugins</th>
                         </tr>
                         </thead>
