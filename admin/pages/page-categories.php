@@ -11,7 +11,7 @@ $categories = get_categories( [
 
     <div class="sos-wrap container">
     
-        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Filter categories", "filters_categories"); ?>
+        <?php PO_Admin_Helper::content_part__header("Filter categories", "filters_categories"); ?>
         
         <div class="row sos-content">
             <div class="row col-12 justify-content-between global-information">
@@ -112,7 +112,7 @@ $categories = get_categories( [
                             </tr>
                         </thead>
                         <tbody id="the-list">
-                            <?php Plugin_Optimizer_Helper::content_filters_categories( $categories ); ?>
+                            <?php PO_Helper::content_filters_categories( $categories ); ?>
                         </tbody>
                     </table>
                 </div>

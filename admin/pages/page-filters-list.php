@@ -8,7 +8,7 @@ $filters = get_posts( array(
 
     <div class="sos-wrap container">
     
-        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Filters", "filters"); ?>
+        <?php PO_Admin_Helper::content_part__header("Filters", "filters"); ?>
         
         <div class="row sos-content">
             <div class="row col-12 justify-content-between global-information">
@@ -23,7 +23,7 @@ $filters = get_posts( array(
                 </div>
             </div>
             
-            <?php Plugin_Optimizer_Admin_Helper::content_part__bulk_actions( $filters ); ?>
+            <?php PO_Admin_Helper::content_part__bulk_actions( $filters ); ?>
             
             <div class="row col-12">
                 <div class="col-12">
@@ -38,7 +38,7 @@ $filters = get_posts( array(
                         </tr>
                         </thead>
                         <tbody id="the-list">
-						<?php Plugin_Optimizer_Helper::content__filters( $filters ); ?>
+						<?php PO_Helper::content__filters( $filters ); ?>
                         </tbody>
                     </table>
                 </div>

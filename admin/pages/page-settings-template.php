@@ -1,11 +1,11 @@
 <?php
-$plugins = Plugin_Optimizer_Helper::get_plugins_with_status();
+$plugins = PO_Helper::get_plugins_with_status();
 ?>
 <div class="wrap">
 
     <div class="sos-wrap container">
     
-        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Settings", "settings"); ?>
+        <?php PO_Admin_Helper::content_part__header("Settings", "settings"); ?>
         
         <div class="row sos-content">
             <div class="row col-12 justify-content-end">
@@ -47,7 +47,7 @@ $plugins = Plugin_Optimizer_Helper::get_plugins_with_status();
                             </tr>
                             </thead>
                             <tbody id="the-list">
-							<?php Plugin_Optimizer_Helper::content_list_plugins( $plugins["active"] ); ?>
+							<?php PO_Helper::content_list_plugins( $plugins["active"] ); ?>
                             </tbody>
                         </table>
                     </div>

@@ -8,8 +8,8 @@
  * @link       author-uri.com
  * @since      1.0.0
  *
- * @package    Plugin_Optimizer
- * @subpackage Plugin_Optimizer/public/partials
+ * @package    PluginOptimizer
+ * @subpackage PluginOptimizer/public/partials
  */
 ?>
 

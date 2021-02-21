@@ -7,11 +7,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Plugin_Optimizer
- * @subpackage Plugin_Optimizer/includes
+ * @package    PluginOptimizer
+ * @subpackage PluginOptimizer/includes
  * @author     Web Dev <some@some.com>
  */
-class Plugin_Optimizer_Loader {
+class PO_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

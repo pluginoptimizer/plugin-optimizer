@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class Plugin_Optimizer_Helper
+ * Class PO_Helper
  */
-class Plugin_Optimizer_Helper {
+class PO_Helper {
 
     // if $all == false -> return array( "active" => [], "inactive" => [] )
     // if $all == true  -> return []

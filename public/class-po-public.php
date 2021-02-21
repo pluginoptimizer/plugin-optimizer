@@ -6,8 +6,8 @@
  * @link       author-uri.com
  * @since      1.0.0
  *
- * @package    Plugin_Optimizer
- * @subpackage Plugin_Optimizer/public
+ * @package    PluginOptimizer
+ * @subpackage PluginOptimizer/public
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
- * @package    Plugin_Optimizer
- * @subpackage Plugin_Optimizer/public
+ * @package    PluginOptimizer
+ * @subpackage PluginOptimizer/public
  * @author     Web Dev <some@some.com>
  */
-class Plugin_Optimizer_Public {
+class PO_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -61,10 +61,10 @@ class Plugin_Optimizer_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Optimizer_Loader as all of the hooks are defined
+		 * defined in PO_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Plugin_Optimizer_Loader will then create the relationship
+		 * The PO_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
@@ -83,10 +83,10 @@ class Plugin_Optimizer_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Optimizer_Loader as all of the hooks are defined
+		 * defined in PO_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Plugin_Optimizer_Loader will then create the relationship
+		 * The PO_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */

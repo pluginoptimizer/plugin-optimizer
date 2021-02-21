@@ -6,11 +6,11 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    Plugin_Optimizer
- * @subpackage Plugin_Optimizer/includes
+ * @package    PluginOptimizer
+ * @subpackage PluginOptimizer/includes
  * @author     Web Dev <some@some.com>
  */
-class Plugin_Optimizer_Activator {
+class PO_Activator {
 
 	/**
 	 * Short Description. (use period)

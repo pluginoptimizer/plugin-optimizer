@@ -33,7 +33,7 @@ define( 'SIMPLE_ONLINE_SYSTEMS_VERSION', '1.0.0' );
  */
 function activate_plugin_optimizer() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-activator.php';
-	Plugin_Optimizer_Activator::activate();
+	PO_Activator::activate();
 }
 
 /**
@@ -42,7 +42,7 @@ function activate_plugin_optimizer() {
  */
 function deactivate_plugin_optimizer() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-deactivator.php';
-	Plugin_Optimizer_Deactivator::deactivate();
+	PO_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
@@ -66,7 +66,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-po.php';
  */
 function run_plugin_optimizer() {
 
-	$plugin = new Plugin_Optimizer();
+	$plugin = new PluginOptimizer();
 	$plugin->run();
 
 }

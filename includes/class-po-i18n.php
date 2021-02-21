@@ -7,11 +7,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Plugin_Optimizer
- * @subpackage Plugin_Optimizer/includes
+ * @package    PluginOptimizer
+ * @subpackage PluginOptimizer/includes
  * @author     Web Dev <some@some.com>
  */
-class Plugin_Optimizer_i18n {
+class PO_i18n {
 
 
 	/**

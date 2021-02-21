@@ -3,11 +3,11 @@
 /**
  * The admin menu pages
  *
- * @package    Plugin_Optimizer
- * @subpackage Plugin_Optimizer/admin
+ * @package    PluginOptimizer
+ * @subpackage PluginOptimizer/admin
  * @author     Web Dev <some@some.com>
  */
-class Plugin_Optimizer_Admin_Menu_Pages {
+class PO_Admin_Menu_Pages {
 
 	function __construct() {
         

@@ -10,7 +10,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
-class Plugin_Optimizer_MU {
+class PO_MU {
     
     protected static $instance      = null;
     
@@ -276,6 +276,6 @@ class Plugin_Optimizer_MU {
 }
 
 function po_mu_plugin(){
-     return Plugin_Optimizer_MU::get_instance();
+     return PO_MU::get_instance();
 }
 po_mu_plugin();

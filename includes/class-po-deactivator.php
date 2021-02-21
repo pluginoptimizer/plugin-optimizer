@@ -6,11 +6,11 @@
  * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      1.0.0
- * @package    Plugin_Optimizer
- * @subpackage Plugin_Optimizer/includes
+ * @package    PluginOptimizer
+ * @subpackage PluginOptimizer/includes
  * @author     Web Dev <some@some.com>
  */
-class Plugin_Optimizer_Deactivator {
+class PO_Deactivator {
 
 	/**
 	 * Short Description. (use period)

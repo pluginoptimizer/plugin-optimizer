@@ -2,12 +2,12 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @package    Plugin_Optimizer
- * @subpackage Plugin_Optimizer/admin
+ * @package    PluginOptimizer
+ * @subpackage PluginOptimizer/admin
  * @author     Web Dev <some@some.com>
  */
 
-class Plugin_Optimizer_Admin {
+class PO_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -427,7 +427,7 @@ class Plugin_Optimizer_Admin {
 
                             </div>
                             <div class="row content-plugins">
-								<?php Plugin_Optimizer_Helper::content_plugin_to_filter( $post ); ?>
+								<?php PO_Helper::content_plugin_to_filter( $post ); ?>
                             </div>
                             <div class="row group-wrapper">
                                 <div class="col-12">
@@ -454,7 +454,7 @@ class Plugin_Optimizer_Admin {
                                     </div>
                                     <div class="plugin-wrapper group-wrapper">
 										<?php
-										$all_plugins     = Plugin_Optimizer_Helper::get_plugins_with_status();
+										$all_plugins     = PO_Helper::get_plugins_with_status();
 										$content_plugins = array();
 										foreach ( $all_plugins as $plugin ) {
 											foreach ( $plugin as $key => $value ) {

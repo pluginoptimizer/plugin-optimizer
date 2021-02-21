@@ -2,12 +2,12 @@
 /**
  * The admin ajax functionality of the plugin.
  *
- * @package    Plugin_Optimizer
- * @subpackage Plugin_Optimizer/admin
+ * @package    PluginOptimizer
+ * @subpackage PluginOptimizer/admin
  * @author     Web Dev <some@some.com>
  */
 
-class Plugin_Optimizer_Ajax {
+class PO_Ajax {
 
 	/**
 	 * Initialize the class and set its properties.
@@ -77,7 +77,7 @@ class Plugin_Optimizer_Ajax {
 			$block_plugins = explode( ', ', $block_plugins );
 			$block_plugins = array_unique( $block_plugins );
 
-			$all_plugins         = Plugin_Optimizer_Helper::get_plugins_with_status( true );
+			$all_plugins         = PO_Helper::get_plugins_with_status( true );
 			$block_value_plugins = array();
 			foreach ( $all_plugins as $plugin ) {
 				if ( in_array( $plugin['name'], $block_plugins ) ) {
@@ -128,7 +128,7 @@ class Plugin_Optimizer_Ajax {
 			'numberposts' => - 1,
 		) );
 
-		Plugin_Optimizer_Helper::content__filters( $posts );
+		PO_Helper::content__filters( $posts );
 
 		wp_send_json_success( ob_get_clean() );
 
@@ -202,7 +202,7 @@ class Plugin_Optimizer_Ajax {
 			),
 		) );
 
-		Plugin_Optimizer_Helper::content_groups( $posts );
+		PO_Helper::content_groups( $posts );
 
 		wp_send_json_success( ob_get_clean() );
 
@@ -225,9 +225,9 @@ class Plugin_Optimizer_Ajax {
 			) );
 
 			if ( $name_post_type === 'sos_work' ) {
-				Plugin_Optimizer_Helper::content_works( $posts );
+				PO_Helper::content_works( $posts );
 			} elseif ( $name_post_type === 'sos_filter' ) {
-				Plugin_Optimizer_Helper::content__filters( $posts );
+				PO_Helper::content__filters( $posts );
 			} elseif ( $name_post_type === 'sos_group' ) {
 				$posts = get_posts( array(
 					'post_type'   => 'sos_group',
@@ -240,7 +240,7 @@ class Plugin_Optimizer_Ajax {
 						)
 					),
 				) );
-				Plugin_Optimizer_Helper::content_groups( $posts );
+				PO_Helper::content_groups( $posts );
 			} elseif ( $name_post_type === 'cat' ) {
 				$categories = get_categories( [
 					'taxonomy'   => 'сategories_filters',
@@ -250,12 +250,12 @@ class Plugin_Optimizer_Ajax {
 					'name__like' => esc_attr( $_POST['keyword'] ),
 				] );
 
-				Plugin_Optimizer_Helper::content_filters_categories( $categories );
+				PO_Helper::content_filters_categories( $categories );
 			} elseif ( $name_post_type === 'plugins' ) {
                 
 				$filter_plugins = htmlspecialchars( $_POST['keyword'] );
 
-				$plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
+				$plugins        = PO_Helper::get_plugins_with_status();
 
 				$active_plugins = preg_grep( '~^' . $filter_plugins . '~i', $plugins["active"] );
 
@@ -270,11 +270,11 @@ class Plugin_Optimizer_Ajax {
 			) );
 
 			if ( $name_post_type === 'sos_work' ) {
-				Plugin_Optimizer_Helper::content_works( $posts );
+				PO_Helper::content_works( $posts );
 			} elseif ( $name_post_type === 'sos_filter' ) {
-				Plugin_Optimizer_Helper::content__filters( $posts );
+				PO_Helper::content__filters( $posts );
 			} elseif ( $name_post_type === 'sos_group' ) {
-				Plugin_Optimizer_Helper::content_groups( $posts );
+				PO_Helper::content_groups( $posts );
 			}
 		}
 
@@ -295,9 +295,9 @@ class Plugin_Optimizer_Ajax {
 		) );
 
 		if ( $name_post_type === 'sos_work' ) {
-			Plugin_Optimizer_Helper::content_works( $posts );
+			PO_Helper::content_works( $posts );
 		} elseif ( $name_post_type === 'sos_filter' ) {
-			Plugin_Optimizer_Helper::content__filters( $posts );
+			PO_Helper::content__filters( $posts );
 		} elseif ( $name_post_type === 'sos_group' ) {
 			$posts = get_posts( array(
 				'post_type'   => 'sos_group',
@@ -309,7 +309,7 @@ class Plugin_Optimizer_Ajax {
 					)
 				),
 			) );
-			Plugin_Optimizer_Helper::content_groups( $posts );
+			PO_Helper::content_groups( $posts );
 		}
 
 		wp_send_json_success( ob_get_clean() );
@@ -330,9 +330,9 @@ class Plugin_Optimizer_Ajax {
 		) );
 
 		if ( $name_post_type === 'sos_work' ) {
-			Plugin_Optimizer_Helper::content_works( $posts );
+			PO_Helper::content_works( $posts );
 		} elseif ( $name_post_type === 'sos_filter' ) {
-			Plugin_Optimizer_Helper::content__filters( $posts );
+			PO_Helper::content__filters( $posts );
 		} elseif ( $name_post_type === 'sos_group' ) {
 			$posts = get_posts( array(
 				'post_type'   => 'sos_group',
@@ -345,7 +345,7 @@ class Plugin_Optimizer_Ajax {
 					)
 				),
 			) );
-			Plugin_Optimizer_Helper::content_groups( $posts );
+			PO_Helper::content_groups( $posts );
 		}
 
 		wp_send_json_success( ob_get_clean() );
@@ -377,7 +377,7 @@ class Plugin_Optimizer_Ajax {
 					'hide_empty' => 0,
 				] );
 
-				Plugin_Optimizer_Helper::content_filters_categories( $categories );
+				PO_Helper::content_filters_categories( $categories );
 
 				wp_send_json_success( ob_get_clean() );
 			} else {
@@ -451,7 +451,7 @@ class Plugin_Optimizer_Ajax {
 	 */
 	function sos_create_category( $post ) {
         
-        return Plugin_Optimizer_Helper::create_category( $post );
+        return PO_Helper::create_category( $post );
 	}
 
 	/**
@@ -463,7 +463,7 @@ class Plugin_Optimizer_Ajax {
 
 		wp_delete_term( $cat_ID, 'сategories_filters' );
 
-		Plugin_Optimizer_Helper::create_category( $id_filter );
+		PO_Helper::create_category( $id_filter );
 	}
 
 	/**
@@ -484,7 +484,7 @@ class Plugin_Optimizer_Ajax {
 
 
 		if ( $page === 'filters' ){
-			Plugin_Optimizer_Helper::create_category( $filter_ID );
+			PO_Helper::create_category( $filter_ID );
 		} else {
 			wp_send_json_success();
 		}
@@ -575,7 +575,7 @@ class Plugin_Optimizer_Ajax {
 			'hide_empty' => 0,
 		] );
 
-		Plugin_Optimizer_Helper::content_filters_categories( $categories );
+		PO_Helper::content_filters_categories( $categories );
 
 		wp_send_json_success( ob_get_clean() );
 
@@ -645,7 +645,7 @@ class Plugin_Optimizer_Ajax {
 
 		if ( $posts ) {
 			foreach ( $posts as $post ) {
-				Plugin_Optimizer_Helper::content_plugin_to_filter( $post );
+				PO_Helper::content_plugin_to_filter( $post );
 			}
 		}
 
@@ -741,7 +741,7 @@ class Plugin_Optimizer_Ajax {
 			),
 		) );
 
-		Plugin_Optimizer_Helper::content_groups( $posts );
+		PO_Helper::content_groups( $posts );
 
 		$return = array(
 			'group_id' => $group_id,
@@ -759,14 +759,14 @@ class Plugin_Optimizer_Ajax {
         
 		$type_plugins   = htmlspecialchars( $_POST['type_plugins'] );
 
-		$plugins        = Plugin_Optimizer_Helper::get_plugins_with_status();
+		$plugins        = PO_Helper::get_plugins_with_status();
 
 		ob_start();
 
 		if ( $type_plugins === 'activate_plugins' ) {
-			Plugin_Optimizer_Helper::content_list_plugins( $plugins["active"] );
+			PO_Helper::content_list_plugins( $plugins["active"] );
 		} else {
-			Plugin_Optimizer_Helper::content_list_plugins( $plugins["inactive"] );
+			PO_Helper::content_list_plugins( $plugins["inactive"] );
 		}
 
 		wp_send_json_success( ob_get_clean() );
@@ -898,7 +898,7 @@ class Plugin_Optimizer_Ajax {
 
 		if ( $posts ) {
 			foreach ( $posts as $post ) {
-				Plugin_Optimizer_Helper::content_plugin_to_filter( $post );
+				PO_Helper::content_plugin_to_filter( $post );
 			}
 		}
 
@@ -928,7 +928,7 @@ class Plugin_Optimizer_Ajax {
             </div>
             <div class="plugin-wrapper group-wrapper">
 				<?php
-				$plugins = Plugin_Optimizer_Helper::get_plugins_with_status();
+				$plugins = PO_Helper::get_plugins_with_status();
 
 				$groups = get_posts( array(
 					'post_type'   => 'sos_group',

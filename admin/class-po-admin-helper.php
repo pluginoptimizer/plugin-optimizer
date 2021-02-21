@@ -1,9 +1,9 @@
 <?php
 /**
- * Class Plugin_Optimizer_Admin_Helper
+ * Class PO_Admin_Helper
  */
 
-class Plugin_Optimizer_Admin_Helper {
+class PO_Admin_Helper {
 
 	public static function content_part__header( $page_title, $class = "default" ) {
         
