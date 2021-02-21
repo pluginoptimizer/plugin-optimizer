@@ -170,7 +170,7 @@ class Plugin_Optimizer_Helper {
                                 <div class="groups-names">
 									<?php
 									foreach ( $groups as $group ):
-										if ( in_array( $group->post_title, $groups_plugins ) && in_array( $activate_plugin, explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ) ) ):
+										if ( in_array( $group->post_title, $groups_plugins ) && in_array( $plugin_name, explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ) ) ):
 
 											?>
                                             <span><?= $group->post_title; ?></span>
@@ -182,7 +182,7 @@ class Plugin_Optimizer_Helper {
 							<?php
 							endif;
 							?>
-                            <span><?= $activate_plugin; ?></span>
+                            <span><?= $plugin_name; ?></span>
                         </div>
 					<?php
 					endforeach;
