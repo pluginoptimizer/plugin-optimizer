@@ -10,25 +10,9 @@ $categories = get_categories( [
 <div class="wrap wrapper-filter">
 
     <div class="sos-wrap container">
-        <div class="row col-12">
-            <h1>Plugin Optimizer</h1>
-        </div>
-        <div class="row col-12">
-            <h2 id="name_page" class="filters_categories">Filter categories</h2>
-        </div>
-
-        <div class="row col-12 justify-content-between wrap-tabs">
-            <div class="col-10 row">
-                <div id="window_filters"    class="tabs col-2">Filters</div>
-                <div id="window_categories" class="tabs col-2">Categories</div>
-                <div id="window_groups"     class="tabs col-2">Groups</div>
-                <div id="window_worklist"   class="tabs col-2">Worklist</div>
-                <div id="window_settings"   class="tabs col-2">Settings</div>
-            </div>
-            <div class="row col-2">
-                <input class="search" type="search" id="search_elements" name="s" value="" placeholder="Search categories">
-            </div>
-        </div>
+    
+        <?php Plugin_Optimizer_Admin_Helper::content_part__header("Filter categories"); ?>
+        
         <div class="row sos-content">
             <div class="row col-12 justify-content-between global-information">
                 <div class="col-3">
@@ -66,7 +50,7 @@ $categories = get_categories( [
                                         <div class="col-12">
                                             <div class="header">
                                                 <div class="title">
-                                                    categories
+                                                    Categories
                                                 </div>
                                             </div>
                                             <div class="plugin-wrapper">
@@ -92,7 +76,7 @@ $categories = get_categories( [
 
                                 <div class="row">
                                     <button class="add-filter save save-category" id="add_elements"><span class="pluse">+</span>
-                                        save new category
+                                        Save new category
                                     </button>
                                 </div>
 
@@ -123,15 +107,13 @@ $categories = get_categories( [
                 <div class="col-12">
                     <table>
                         <thead>
-                        <tr>
-                            <th><input type="checkbox" id="check_all"></th>
-                            <th>TITLE</th>
-                        </tr>
+                            <tr>
+                                <th><input type="checkbox" id="check_all"></th>
+                                <th>TITLE</th>
+                            </tr>
                         </thead>
                         <tbody id="the-list">
-						<?php
-						Plugin_Optimizer_Helper::content_filters_categories( $categories );
-						?>
+                            <?php Plugin_Optimizer_Helper::content_filters_categories( $categories ); ?>
                         </tbody>
                     </table>
                 </div>
