@@ -1,8 +1,6 @@
 <?php
 $plugins = PO_Helper::get_plugins_with_status();
 
-// po_mu_plugin()->write_log( $plugins, "page-add-filters-plugins" );
-
 $groups = get_posts( [
 	'post_type'   => 'sos_group',
 	'numberposts' => - 1,
@@ -14,12 +12,46 @@ $categories = get_categories( [
 	'hide_empty' => 0,
 ] );
 
+$post_types = get_post_types( [ 'publicly_queryable' => 1 ] );
+$post_types['page'] = 'page';
+unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ], $post_types[ 'sos_work' ] );
+
+natcasesort( $post_types );
+
+// po_mu_plugin()->write_log( $post_types, "page-add-filters-post_types" );
+
+$page_title = "Create a new Filter";
+$plugins_to_block  = [];
+$groups_to_block   = [];
+$endpoint          = [];
+$filter_categories = [];
+
+// Editing existing filter?
+
+$filter_id = ! empty( $_GET["filter_id"] )  ? $_GET["filter_id"]        : false;
+$filter    = $filter_id                     ? get_post( $filter_id )    : false;
+
+if( $filter ){
+    
+    // po_mu_plugin()->write_log( $filter, "page-add-filters-post_types" );
+    
+    $page_title = "Editing filter: " . $filter->post_title;
+
+    $plugins_to_block   = get_post_meta( $filter->ID, "block_value_plugins", true );
+    $groups_to_block    = get_post_meta( $filter->ID, "block_group_plugins", true );
+    $filter_categories  = explode( ", ", get_post_meta( $filter->ID, "category_filter", true ) );
+    
+    $endpoints = PO_Admin_Helper::get_filter_endpoints( $filter );
+    
+}
+
+
 ?>
 <div class="wrap wrapper-filter">
 
 	<div class="sos-wrap container">
     
-        <?php PO_Admin_Helper::content_part__header("Create a new Filter", "add-filters"); ?>
+        <?php PO_Admin_Helper::content_part__header( $page_title, "add-filters"); ?>
         
 		<div class="row sos-content">
 			<div class="row content-new-element">
@@ -35,7 +67,7 @@ $categories = get_categories( [
 											<div class="header">Title</div>
 											<div>
 												<div class="content enter-data">
-													<span><input class="content-text" id="set_title" type="text"></span>
+													<span><input class="content-text" id="set_title" type="text" value="<?= $filter ? $filter->post_title : "" ?>"></span>
 												</div>
 											</div>
 										</div>
@@ -50,18 +82,13 @@ $categories = get_categories( [
 												<div class="content enter-data">
                                                     <span>
                                                         <select name="" id="set_type">
-                                                        <option value="none">Choose type post</option>
+                                                        <option value="none">Choose trigger type</option>
                                                         <?php
-                                                        $post_types         = get_post_types( [ 'publicly_queryable' => 1 ] );
-                                                        $post_types['page'] = 'page';
-                                                        // unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ], $post_types[ 'sos_work' ] );
-
                                                         foreach ( $post_types as $post_type ) {
-	                                                        ?>
-	                                                        <option value="<?= str_replace( ' ', "_", $post_type ); ?>"><?= $post_type; ?></option>
-	                                                        <?php
+                                                            
+	                                                        echo '<option value="' . $post_type . '">' . $post_type . '</option>';
+                                                            
                                                         }
-
                                                         ?>
                                                     </select>
                                                     </span>
@@ -95,11 +122,11 @@ $categories = get_categories( [
                                             
                                             <div class="header attribute-plugin">Active plugins</div>
                                                 
-											<?php PO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["active"] ] ); ?>
+											<?php PO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["active"],   "inactive" => [],                   "blocked" => $plugins_to_block ] ); ?>
                                             
                                             <div class="header attribute-plugin">Inactive plugins</div>
                                             
-											<?php PO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["inactive"], "inactive" => $plugins["inactive"] ] ); ?>
+											<?php PO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["inactive"], "inactive" => $plugins["inactive"], "blocked" => $plugins_to_block ] ); ?>
                                             
 										</div>
 									</div>
@@ -115,9 +142,10 @@ $categories = get_categories( [
 												<?php
 												if ( $groups ){
 													foreach ( $groups as $group ){
+                                                        $block_plugins_in_group = explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) );
+                                                        $blocked = in_array( $group->post_title, $groups_to_block ) ? " blocked" : "";
 														?>
-														<?php $block_plugins_in_group = explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ); ?>
-														<div class="toggle_group content" data-plugins="<?= htmlspecialchars(json_encode($block_plugins_in_group)) ?>">
+														<div class="toggle_group content<?= $blocked ?>" data-plugins="<?= htmlspecialchars(json_encode($block_plugins_in_group)) ?>">
 															<span><?= $group->post_title; ?></span>
 															<?php foreach ( $block_plugins_in_group as $block_plugin_in_group ){ ?>
 																<div class="hidden_content">
@@ -143,7 +171,7 @@ $categories = get_categories( [
 												if ( $categories ){
 													foreach ( $categories as $cat ){
 														?>
-														<div class="content">
+														<div class="content<?= in_array( $cat->cat_name, $filter_categories ) ? " block" : "" ?>">
 															<span value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></span>
 														</div>
 													<?php

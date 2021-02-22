@@ -5,6 +5,20 @@
 
 class PO_Admin_Helper {
 
+	public static function get_filter_endpoints( $filter ) {
+        
+        $endpoints = get_post_meta( $filter->ID, "selected_page", true );
+        
+        $endpoints = explode( ",", $endpoints );
+        
+        foreach( $endpoints as $index => $value ){
+            
+            $endpoints[ $index ] = trim( $value );
+        }
+        
+        return $endpoints;
+    }
+    
 	public static function content_part__header( $page_title, $class = "default" ) {
         
         echo <<<EOF
@@ -91,6 +105,8 @@ EOF;
         
         $data = wp_parse_args( $args, $defaults );
         
+        // po_mu_plugin()->write_log( $data, "content_part__plugins-data" );
+        
 		if( $data["plugins"] ){
             
             echo '<div class="plugin-wrapper">';
@@ -99,11 +115,11 @@ EOF;
                 
                 $class = "single_plugin";
                 
-                if( ! empty( $data["blocked"][ $plugin_id ] ) ){
+                if( ! empty( $data["blocked"][ $plugin_id ] ) || in_array( $plugin_id, $data["blocked"] ) ){
                     $class .= " blocked";
                 }
                 
-                if( ! empty( $data["inactive"][ $plugin_id ] ) ){
+                if( ! empty( $data["inactive"][ $plugin_id ] ) || in_array( $plugin_id, $data["inactive"] ) ){
                     $class .= " inactive";
                 }
                 

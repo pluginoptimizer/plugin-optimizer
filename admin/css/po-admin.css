@@ -662,6 +662,10 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     background-color: #ffc4c4;
     color: #212529;
 }
+.sos-wrap .plugin-wrapper .toggle_group.blocked{
+    background-color: #ffc4c4;
+    color: #212529;
+}
 
 
 .all-check{

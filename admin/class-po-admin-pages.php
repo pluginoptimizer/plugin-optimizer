@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin menu pages
  *
@@ -7,6 +6,7 @@
  * @subpackage PluginOptimizer/admin
  * @author     Web Dev <some@some.com>
  */
+
 class PO_Admin_Menu_Pages {
 
 	function __construct() {
@@ -23,9 +23,9 @@ class PO_Admin_Menu_Pages {
         
 		add_submenu_page( 'plugin_optimizer', 'Overview',           'Overview',             'manage_options', 'plugin_optimizer',                    [ $this, 'render_overview_page'           ] );
 		add_submenu_page( 'plugin_optimizer', 'Filters',            'Filters',              'manage_options', 'plugin_optimizer_filters',            [ $this, 'render_filters_page'            ] );
-		add_submenu_page( 'plugin_optimizer', 'Create Filter',      'Create Filter',        'manage_options', 'plugin_optimizer_add_filters',        [ $this, 'render_add_filters_page'        ] );
+		add_submenu_page( 'plugin_optimizer', 'Filter',              'Create Filter',        'manage_options', 'plugin_optimizer_add_filters',        [ $this, 'render_add_filters_page'        ] );
 		add_submenu_page( 'plugin_optimizer', 'Groups',             'Groups',               'manage_options', 'plugin_optimizer_groups',             [ $this, 'render_groups_page'             ] );
-		add_submenu_page( 'plugin_optimizer', 'Create Group',       'Create Group',         'manage_options', 'plugin_optimizer_add_groups',         [ $this, 'render_add_groups_page'         ] );
+		add_submenu_page( 'plugin_optimizer', 'Group',               'Create Group',         'manage_options', 'plugin_optimizer_add_groups',         [ $this, 'render_add_groups_page'         ] );
 		add_submenu_page( 'plugin_optimizer', 'Filter Categories',  'Filter Categories',    'manage_options', 'plugin_optimizer_filters_categories', [ $this, 'render_filters_categories_page' ] );
 		add_submenu_page( 'plugin_optimizer', 'Worklist',           'Worklist',             'manage_options', 'plugin_optimizer_worklist',           [ $this, 'render_worklist_page'           ] );
 		add_submenu_page( 'plugin_optimizer', 'Settings',           'Settings',             'manage_options', 'plugin_optimizer_settings',           [ $this, 'render_settings_page'           ] );

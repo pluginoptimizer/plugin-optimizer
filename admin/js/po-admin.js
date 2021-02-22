@@ -561,6 +561,8 @@ jQuery( document ).ready( function($){
 
         if($('#name_page').attr("class") === 'filters_categories'){
             location.href=`/wp-admin/term.php?taxonomy&tag_ID=${element_id}&post_type=sos_filter`;
+        } else if($('#name_page').hasClass('filters')){
+            location.href=`/wp-admin/admin.php?page=plugin_optimizer_add_filters&filter_id=${element_id}`;
         } else {
             location.href=`/wp-admin/post.php?post=${element_id}&action=edit`;
         }
