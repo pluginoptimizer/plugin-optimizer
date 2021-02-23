@@ -108,7 +108,7 @@ jQuery( document ).ready( function($){
         }
     })
     
-    // NEW: Toggle plugins for a new/edit filter or select plugins for a new group
+    // NEW: Clicking on a group in the Edit Filter page template or Edit Group page template
     $('body').on('click', '.block-plugin-wrapper .single_plugin', function(){
 
         $(this).toggleClass('blocked');
@@ -118,8 +118,8 @@ jQuery( document ).ready( function($){
         
     });
 
-    // NEW: Clicking on a group in the Add New Filter page
-    $('body').on('click', '.block-group-plugin-wrapper .toggle_group', function(){
+    // NEW: Clicking on a group in the Edit Filter page template
+    $('body').on('click', '.block-group-plugin-wrapper .single_group', function(){
         
         $(this).toggleClass('blocked');
         
@@ -155,6 +155,16 @@ jQuery( document ).ready( function($){
         
     }
     
+    // Select a category for a new filter, does nothing but marks the selected category
+    $('body').on('click', '.category-wrapper .single_category', function(){
+
+        $(this).toggleClass('blocked');
+        
+        let $checkbox = $(this).find('input[type="checkbox"]');
+        $checkbox.prop( "checked", ! $checkbox.prop("checked") );
+        
+    });
+
     // Select a parent category on the Add New Category screen
     $('body').on('click', '.select_parent_to_category', function(){
         const selfText = $(this).text();
@@ -528,18 +538,6 @@ jQuery( document ).ready( function($){
         })
     });
 
-    // Select a category for a new filter, does nothing but marks the selected category
-    $('body').on('click', '.category-wrapper .content', function(){
-
-        console.log( "choice-category.js" );
-        
-        if($(this).hasClass('block')){
-            $(this).removeClass('block');
-        } else {
-            $(this).addClass('block');
-        }
-    });
-
     // Check the name of the elements when creating them, filters, groups and categories should use already existing name
     // WTF is this code
     $('body').on('change', '#set_title', function(){
@@ -665,7 +663,7 @@ jQuery( document ).ready( function($){
     
     // Change plugins for a filter and a group??
     // TODO check because those actions run multiple triggers
-    $('body').on('click', '.plugin-wrapper:not(.group-wrapper) > .content:not(.toggle_group)', function(){
+    $('body').on('click', 'DISABLED ------------------------- .plugin-wrapper:not(.group-wrapper) > .content:not(.single_group)', function(){
         
         console.log( "change-plugins.js" );
         

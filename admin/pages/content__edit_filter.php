@@ -117,7 +117,7 @@ $categories = get_categories( [
 													foreach ( $groups as $group ){
 														?>
 														<?php $block_plugins_in_group = explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) ); ?>
-														<div class="toggle_group content" data-plugins="<?= htmlspecialchars(json_encode($block_plugins_in_group)) ?>">
+														<div class="single_group content" data-plugins="<?= htmlspecialchars(json_encode($block_plugins_in_group)) ?>">
 															<span><?= $group->post_title; ?></span>
 															<?php foreach ( $block_plugins_in_group as $block_plugin_in_group ){ ?>
 																<div class="hidden_content">

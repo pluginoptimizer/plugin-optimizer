@@ -646,6 +646,12 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     color: #fff;
 }
 
+
+
+.sos-wrap .noeyes{
+    /* display: none; */
+}
+
 .sos-wrap .plugin-wrapper .single_plugin{
     cursor: pointer;
     padding: 10px;
@@ -665,9 +671,6 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     background-color: #ffc4c4;
     color: #212529;
 }
-.sos-wrap .plugin-wrapper .single_plugin .noeyes{
-    display: none;
-}
 .sos-wrap .plugin-wrapper .single_plugin .group_name{
     font-size: 12px;
     font-weight: bold;
@@ -677,7 +680,12 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     justify-content: space-between;
 }
 
-.sos-wrap .plugin-wrapper .toggle_group.blocked{
+.sos-wrap .plugin-wrapper .single_group.blocked{
+    background-color: #ffc4c4;
+    color: #212529;
+}
+
+.sos-wrap .plugin-wrapper .single_category.blocked{
     background-color: #ffc4c4;
     color: #212529;
 }

@@ -49,7 +49,7 @@ if( $filter ){
 ?>
 <div class="wrap wrapper-filter">
 
-	<div class="sos-wrap container">
+	<form id="edit_filter" class="sos-wrap container">
     
         <?php PO_Admin_Helper::content_part__header( $page_title, "add-filters"); ?>
         
@@ -143,9 +143,12 @@ if( $filter ){
 												if ( $groups ){
 													foreach ( $groups as $group ){
                                                         $block_plugins_in_group = explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) );
-                                                        $blocked = in_array( $group->post_title, $groups_to_block ) ? " blocked" : "";
+                                                        $selected = in_array( $group->post_title, $groups_to_block );
+                                                        $blocked  = $selected ? " blocked" : "";
+                                                        $checked  = $selected ? ' checked="checked"' : '';
 														?>
-														<div class="toggle_group content<?= $blocked ?>" data-plugins="<?= htmlspecialchars(json_encode($block_plugins_in_group)) ?>">
+														<div class="single_group content<?= $blocked ?>" data-plugins="<?= htmlspecialchars(json_encode($block_plugins_in_group)) ?>">
+                                                            <input class="noeyes" type="checkbox" name="[PO_filter_data][groups][<?= $group->ID ?>]" value="<?= $group->post_title ?>"<?= $checked ?>/>
 															<span><?= $group->post_title; ?></span>
 															<?php foreach ( $block_plugins_in_group as $block_plugin_in_group ){ ?>
 																<div class="hidden_content">
@@ -170,8 +173,11 @@ if( $filter ){
 												<?php
 												if ( $categories ){
 													foreach ( $categories as $cat ){
+                                                        $selected = in_array( $cat->cat_name, $filter_categories );
+                                                        $checked  = $selected ? ' checked="checked"' : '';
 														?>
-														<div class="content<?= in_array( $cat->cat_name, $filter_categories ) ? " block" : "" ?>">
+														<div class="single_category content<?= $selected ? " blocked" : "" ?>">
+                                                            <input class="noeyes" type="checkbox" name="[PO_filter_data][categories][<?= $cat->cat_ID ?>]" value="<?= $cat->cat_name ?>"<?= $checked ?>/>
 															<span value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></span>
 														</div>
 													<?php
@@ -184,8 +190,8 @@ if( $filter ){
 								</div>
 
 								<div class="row">
-									<button class="add-filter save save-filter" id="add_elements"><span
-											class="pluse">+</span> save new filter
+									<button class="add-filter save save-filter" id="save_filter"><span
+											class="pluse">+</span> Save Filter
 									</button>
 								</div>
 
@@ -195,7 +201,7 @@ if( $filter ){
 				</div>
 			</div>
 		</div>
-	</div>
+	</form>
 </div>
 
 
