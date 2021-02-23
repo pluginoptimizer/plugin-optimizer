@@ -76,6 +76,47 @@ jQuery( document ).ready( function($){
     });
     
 
+    // Switch submenu on the Settings page
+    function hidden_settings(){
+        if($('#settings_plugins').css('display') === 'block'){
+            $('#settings_plugins').css('display', 'none');
+            $('#show_settings_plugins').css('font-weight', 400);
+        }
+        switch ('flex') {
+            case $('#settings_general').css('display'):
+                $('#settings_general').css('display', 'none');
+                $('#show_settings_general').css('font-weight', 400);
+                break;
+            case $('#settings_debug').css('display'):
+                $('#settings_debug').css('display', 'none');
+                $('#show_settings_debug').css('font-weight', 400);
+                break;
+        }
+    }
+
+    // Switch submenu on the Settings page
+    $('body').on('click', '#show_settings_general', function(){
+        $(this).css('font-weight', 600);
+        hidden_settings();
+        $('#settings_general').css('display', 'flex');
+    });
+
+    // Switch submenu on the Settings page
+    $('body').on('click', '#show_settings_plugins', function(){
+        $(this).css('font-weight', 600);
+        hidden_settings();
+        $('#settings_plugins').css('display', 'block');
+    });
+
+    // Switch submenu on the Settings page
+    $('body').on('click', '#show_settings_debug', function(){
+        $(this).css('font-weight', 600);
+        hidden_settings();
+        $('#settings_debug').css('display', 'flex');
+    });
+    
+    
+
 
 
 
@@ -604,47 +645,6 @@ jQuery( document ).ready( function($){
 
     });
 
-
-    // Switch submenu on the Settings page
-    function hidden_settings(){
-        if($('#settings_plugins').css('display') === 'block'){
-            $('#settings_plugins').css('display', 'none');
-            $('#show_settings_plugins').css('font-weight', 400);
-        }
-        switch ('flex') {
-            case $('#settings_general').css('display'):
-                $('#settings_general').css('display', 'none');
-                $('#show_settings_general').css('font-weight', 400);
-                break;
-            case $('#settings_debug').css('display'):
-                $('#settings_debug').css('display', 'none');
-                $('#show_settings_debug').css('font-weight', 400);
-                break;
-        }
-    }
-
-    // Switch submenu on the Settings page
-    $('body').on('click', '#show_settings_general', function(){
-        $(this).css('font-weight', 600);
-        hidden_settings();
-        $('#settings_general').css('display', 'flex');
-    });
-
-    // Switch submenu on the Settings page
-    $('body').on('click', '#show_settings_plugins', function(){
-        $(this).css('font-weight', 600);
-        hidden_settings();
-        $('#settings_plugins').css('display', 'block');
-    });
-
-    // Switch submenu on the Settings page
-    $('body').on('click', '#show_settings_debug', function(){
-        $(this).css('font-weight', 600);
-        hidden_settings();
-        $('#settings_debug').css('display', 'flex');
-    });
-    
-    
     // Change plugins on the group edit screen
     $('body').on('click', '.wrapper-group-plugins .content', function(){
         
