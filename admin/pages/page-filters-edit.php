@@ -121,7 +121,7 @@ if( $filter ){
 											<div class="header">
 												<div class="title">Plugins <span class="disabled">- <?= count( $plugins["all"] ); ?></span></div>
 												<span class="count-plugin">( Active: <?= count( $plugins["active"] ); ?>   |   Inactive: <?= count( $plugins["inactive"] ); ?> )</span>
-												<span class="all-check">Disable All</span>
+												<span class="all-check toggle_plugins">Disable All</span>
 											</div>
                                             
                                             <div class="header attribute-plugin">Active plugins</div>
@@ -140,7 +140,7 @@ if( $filter ){
 											<div class="header">
 												<div class="title">Groups <span class="disabled">- <?= count( $groups ); ?></span>
 												</div>
-												<span class="all-check">Disable All</span>
+												<span class="all-check toggle_groups">Disable All</span>
 											</div>
 											<div class="plugin-wrapper">
 												<?php

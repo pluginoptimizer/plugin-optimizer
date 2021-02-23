@@ -103,9 +103,54 @@ jQuery( document ).ready( function($){
         
     });
     
-    // TODO list:
-    // - 'Disable All' on sections - doesn't work, and groups should trigger plugins
-    
+    // NEW: On a new Filter or new Group pages: disable/enable all in a section
+    $('body').on('click', '.all-check', function(){
+        
+        if( $(this).text() === 'Disable All'){
+            
+            $(this).text('Enable All');
+            
+            if( $(this).hasClass("toggle_plugins") ){
+                
+                $(this).parents('.row.block-plugin-wrapper').find('.single_plugin').addClass('blocked');
+                $(this).parents('.row.block-plugin-wrapper').find('.single_plugin input[type="checkbox"]').prop( "checked", true );
+                
+            } else if( $(this).hasClass("toggle_groups") ){
+                
+                $(this).parents('.row.block-group-plugin-wrapper').find('.single_group').addClass('blocked');
+                $(this).parents('.row.block-group-plugin-wrapper').find('.single_group input[type="checkbox"]').prop( "checked", true );
+                
+                $(this).parents('.row.block-group-plugin-wrapper').find('.single_group').each(function(){
+                    
+                    toggle_plugins_by_group( $(this) );
+                });
+                
+            }
+            
+        } else {
+            
+            $(this).text('Disable All');
+            
+            if( $(this).hasClass("toggle_plugins") ){
+                
+                $(this).parents('.row.block-plugin-wrapper').find('.single_plugin').removeClass('blocked');
+                $(this).parents('.row.block-plugin-wrapper').find('.single_plugin input[type="checkbox"]').prop( "checked", false );
+                
+            } else if( $(this).hasClass("toggle_groups") ){
+                
+                $(this).parents('.row.block-group-plugin-wrapper').find('.single_group').removeClass('blocked');
+                $(this).parents('.row.block-group-plugin-wrapper').find('.single_group input[type="checkbox"]').prop( "checked", false );
+                
+                $(this).parents('.row.block-group-plugin-wrapper').find('.single_group').each(function(){
+                    
+                    toggle_plugins_by_group( $(this) );
+                });
+                
+            }
+            
+        }
+    });
+
     
     
     
@@ -293,24 +338,6 @@ jQuery( document ).ready( function($){
             $(this).addClass('block');
         }
 
-    });
-
-    // On a new Filter or new Group pages: disable/enable all in a section
-    $('body').on('click', '.all-check', function(){
-        
-        console.log( "OLD: On a new Filter or new Group pages: disable/enable all in a section" );
-        
-        if($(this).text() === 'Disable All'){
-            $(this).text('Enable All');
-            $(this).parent().parent().children('.plugin-wrapper').children('.content').addClass('block');
-            
-            $(this).parents('.row.block-plugin-wrapper').find('.plugin-wrapper .single_plugin').addClass('blocked');
-        } else {
-            $(this).text('Disable All');
-            $(this).parent().parent().children('.plugin-wrapper').children('.content').removeClass('block');
-            
-            $(this).parents('.row.block-plugin-wrapper').find('.plugin-wrapper .single_plugin').removeClass('blocked');
-        }
     });
 
     // search elements, a box on most of the PO pages
