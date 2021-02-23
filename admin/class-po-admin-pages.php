@@ -43,7 +43,7 @@ class PO_Admin_Menu_Pages {
 	}
 
 	function render_add_filters_page() {
-		include 'pages/page-filters-new.php';
+		include 'pages/page-filters-edit.php';
 	}
 
 	function render_filters_categories_page() {
