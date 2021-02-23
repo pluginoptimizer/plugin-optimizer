@@ -7,8 +7,8 @@ jQuery( document ).ready( function($){
     current_page = current_page === 'add-groups'         ? 'groups'     : current_page;
     $(`#window_${current_page}`).css('background-color', '#d7b70a');
 
-    // NEW: Clicking on a group in the Edit Filter page template or Edit Group page template
-    $('body').on('click', '.block-plugin-wrapper .single_plugin', function(){
+    // NEW: Edit Filter page template, Edit Group page template - Clicking on a plugin
+    $('#edit_filter, #edit_group').on('click', '.block-plugin-wrapper .single_plugin', function(){
 
         $(this).toggleClass('blocked');
         
@@ -17,10 +17,13 @@ jQuery( document ).ready( function($){
         
     });
 
-    // NEW: Clicking on a group in the Edit Filter page template
-    $('body').on('click', '.block-group-plugin-wrapper .single_group', function(){
+    // NEW: Edit Filter page template - Clicking on a group
+    $('#edit_filter').on('click', '.block-group-plugin-wrapper .single_group', function(){
         
         $(this).toggleClass('blocked');
+        
+        let $checkbox = $(this).find('input[type="checkbox"]');
+        $checkbox.prop( "checked", ! $checkbox.prop("checked") );
         
         toggle_plugins_by_group( $(this) );
     });
@@ -58,8 +61,8 @@ jQuery( document ).ready( function($){
         
     }
     
-    // NEW: Select a category for a new filter, does nothing but marks the selected category
-    $('body').on('click', '.category-wrapper .single_category', function(){
+    // NEW: Edit Filter page template - Select a category for a new filter, does nothing but marks the selected category
+    $('#edit_filter').on('click', '.category-wrapper .single_category', function(){
 
         $(this).toggleClass('blocked');
         
@@ -68,14 +71,49 @@ jQuery( document ).ready( function($){
         
     });
     
-    // NEW: Toggle plugins for already selected groups on page load
-    $('.block-group-plugin-wrapper .single_group.blocked').each(function(){
+    // NEW: Edit Filter page template - Toggle plugins for already selected groups on page load
+    $('#edit_filter .block-group-plugin-wrapper .single_group.blocked').each(function(){
         
         toggle_plugins_by_group( $(this), true );
         
     });
     
-
+    // NEW: Edit Filter page template - Change filter type
+    $('#edit_filter').on('change', '#set_type', function(){
+        
+        let type = $(this).val();
+        
+        if( type == "endpoint" ){
+            $('#edit_filter #endpoints_wrapper').slideDown();
+        } else {
+            $('#edit_filter #endpoints_wrapper').slideUp();
+        }
+        
+        
+    }).change();
+    
+    // NEW: Edit Filter page template - Save filter
+    $('#edit_filter').on('click', '#save_filter', function(){
+        
+        let data = $('#edit_filter').find('select, textarea, input').serialize();
+        let data_log = $('#edit_filter').find('select, textarea, input').serializeArray();
+        
+        // console.log( "Data: ", data );
+        console.log( "Data: ", data_log );
+        
+    });
+    
+    // TODO list:
+    // - 'Disable All' on sections - doesn't work, and groups should trigger plugins
+    
+    
+    
+    
+    
+    
+    
+    
+    // TODO normalize this, use classes instead styles, doh
     // Switch submenu on the Settings page
     function hidden_settings(){
         if($('#settings_plugins').css('display') === 'block'){
@@ -478,7 +516,7 @@ jQuery( document ).ready( function($){
     });
 
     // Save New Filter button on the Create New Filter page
-    $('body').on('click', '.save-filter', function(){
+    $('body').on('click', 'DISABLED ----------------------------       .save-filter', function(){
         
         console.log( "OLD: Save New Filter button on the Create New Filter page" );
         
@@ -528,7 +566,7 @@ jQuery( document ).ready( function($){
                 // },
                 // success: function (response) {
                     // $('#the-list').html(response.data);
-                    $('.content-new-element').css('display', 'none');
+                    // // $('.content-new-element').css('display', 'none');
                     // allElements.count_element('sos_filter');
 
                     // if($('.content-new-element *').is('.block')){

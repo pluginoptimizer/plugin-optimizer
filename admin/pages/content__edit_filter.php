@@ -74,7 +74,7 @@ $categories = get_categories( [
 											<div class="content-permalinks">
 												<div class="set_link">
 													<input id="search_pages" type="text">
-													<button class="add-filter add-permalink">
+													<button class="po_green_button add-permalink">
                                                         <span class="pluse">+</span>
 														Permalink
 													</button>
@@ -156,7 +156,7 @@ $categories = get_categories( [
 								</div>
 
 								<div class="row">
-									<button class="add-filter save save-filter" id="add_elements"><span
+									<button class="po_green_button save save-filter" id="add_elements"><span
 											class="pluse">+</span> save new filter
 									</button>
 								</div>

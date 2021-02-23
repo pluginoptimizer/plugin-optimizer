@@ -39,7 +39,7 @@ $plugins     = PO_Helper::get_plugins_with_status();
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <button class="add-filter save save-group" id="add_elements"><span class="pluse">+</span> Save new group
+                                    <button class="po_green_button save save-group" id="add_elements"><span class="pluse">+</span> Save new group
                                     </button>
                                 </div>
 

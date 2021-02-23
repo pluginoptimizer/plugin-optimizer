@@ -35,6 +35,9 @@
     font-size: 16px;
     text-transform: none;
 }
+#search_pages:placeholder{
+    text-transform: none;
+}
 
 #search_pages:focus{
     outline: none;
@@ -203,7 +206,7 @@
     font-weight: bold;
 }
 
-.sos-wrap button.add-filter {
+.sos-wrap button.po_green_button{
     padding: 5px;
     text-transform: uppercase;
     box-shadow: -1px 1px 0 rgba(255, 255, 255, 0.55), inset 0 0 0 2px rgba(255, 255, 255, 0.3);
@@ -212,6 +215,11 @@
     background-image: linear-gradient(to top, rgba(0, 0, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 100%);
     color: white;
     cursor: pointer;
+}
+.sos-wrap button#save_filter{
+    width: 50%;
+    margin-left: 25%;
+    height: 50px;
 }
 
 .sos-wrap .pluse {
@@ -268,16 +276,6 @@
     cursor: pointer;
 }
 
-.sos-wrap .content-permalinks{
-    display: flex;
-    flex-direction: column;
-}
-
-.sos-wrap .content-permalinks *{
-    align-items: center;
-    justify-content: space-between;
-    padding: 0;
-}
 .sos-wrap .content-filter .header{
     margin-bottom: 5px;
     padding: 5px;
@@ -293,17 +291,6 @@
     text-transform: none;
 }
 
-.sos-wrap .content-filter .content-permalinks .link{
-    padding: 10px;
-    margin: 2% 0;
-    /* Style for "Validated" */
-    background-color: #ffffff;
-    text-align: left;
-}
-
-.sos-wrap .content-filter .content-permalinks{
-    margin-top: 10px;
-}
 .sos-wrap .content-filter .content{
     margin-top: 10px;
     margin-bottom: 10px;
@@ -316,13 +303,6 @@
     /* Style for "Validated" */
     background-color: #ffffff;
     text-align: left;
-}
-.sos-wrap .content-filter .content-permalinks .link:before{
-    content: url(../img/check_mark.png);
-    display: inline-block;
-    /* Style for "V" */
-    width: 17px;
-    height: 14px;
 }
 
 .sos-wrap .content-filter span.disabled{
@@ -610,11 +590,6 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     height: 50px;
 }
 
-.sos-wrap .content-permalinks .link span{
-    text-transform: none;
-    margin-left: 2%;
-}
-
 .sos-wrap .content-new-element .content{
     cursor: pointer;
 }
@@ -689,7 +664,9 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     background-color: #ffc4c4;
     color: #212529;
 }
-
+#edit_filter #endpoints_wrapper{
+    /* display: none; */
+}
 
 .all-check{
     cursor: pointer;

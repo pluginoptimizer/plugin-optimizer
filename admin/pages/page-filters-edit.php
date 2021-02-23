@@ -12,6 +12,7 @@ $categories = get_categories( [
 	'hide_empty' => 0,
 ] );
 
+// TODO If all plugins are blocked on this page, this will return only posts and pages
 $post_types = get_post_types( [ 'publicly_queryable' => 1 ] );
 $post_types['page'] = 'page';
 unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ], $post_types[ 'sos_work' ] );
@@ -49,11 +50,11 @@ if( $filter ){
 ?>
 <div class="wrap wrapper-filter">
 
-	<form id="edit_filter" class="sos-wrap container">
+	<div class="sos-wrap container">
     
         <?php PO_Admin_Helper::content_part__header( $page_title, "add-filters"); ?>
         
-		<div class="row sos-content">
+		<div id="edit_filter" class="row sos-content">
 			<div class="row content-new-element">
 				<div class="col-12">
 					<table>
@@ -63,50 +64,53 @@ if( $filter ){
                                 
 									<div class="row filter_title">
                                     
-										<div class="col-12">
+										<div class="col-9">
 											<div class="header">Title</div>
 											<div>
 												<div class="content enter-data">
-													<span><input class="content-text" id="set_title" type="text" value="<?= $filter ? $filter->post_title : "" ?>"></span>
+													<span><input class="content-text" id="set_title" type="text"  name="[PO_filter_data][title]"value="<?= $filter ? $filter->post_title : "" ?>" placeholder="The title of this filter"></span>
+												</div>
+											</div>
+										</div>
+                                        
+										<div class="col-3">
+											<div class="header">Type</div>
+											<div>
+												<div class="content enter-data">
+                                                    <span>
+                                                        <select name="[PO_filter_data][type]" id="set_type">
+                                                            <optgroup label="Default:">
+                                                                <option value="endpoint">Endpoint(s)</option>
+                                                            </optgroup>
+                                                            <optgroup label="Edit page of a Post Type:">
+                                                                <?php
+                                                                foreach ( $post_types as $post_type ) {
+                                                                    
+                                                                    echo '<option value="' . $post_type . '">' . $post_type . '</option>';
+                                                                    
+                                                                }
+                                                                ?>
+                                                            </optgroup>
+                                                        </select>
+                                                    </span>
 												</div>
 											</div>
 										</div>
                                         
 									</div>
 									
-                                    <div class="row select_trigger">
+                                    <div class="row select_trigger" id="endpoints_wrapper">
                                     
-										<div class="col-3">
-											<div class="header">Type</div>
-											<div>
-												<div class="content enter-data">
-                                                    <span>
-                                                        <select name="" id="set_type">
-                                                        <option value="none">Choose trigger type</option>
-                                                        <?php
-                                                        foreach ( $post_types as $post_type ) {
-                                                            
-	                                                        echo '<option value="' . $post_type . '">' . $post_type . '</option>';
-                                                            
-                                                        }
-                                                        ?>
-                                                    </select>
-                                                    </span>
-												</div>
-											</div>
+										<div class="col-12">
+											<div class="header">Endpoints</div>
 										</div>
-                                        
 										<div class="col-9">
-											<div class="header">Permalinks</div>
-											<div class="content-permalinks">
-												<div class="set_link">
-													<input id="search_pages" type="text">
-													<button class="add-filter add-permalink">
-                                                        <span class="pluse">+</span>
-														Permalink
-													</button>
-												</div>
-											</div>
+                                            <input id="search_pages" type="text" name="[PO_filter_data][endpoints][]" placeholder="Put your URL here" style="width: 100%;"/>
+										</div>
+										<div class="col-3">
+                                            <button class="add-permalink po_green_button" style="width: 100%;">
+                                                <span class="pluse">+</span> Endpoint
+                                            </button>
 										</div>
                                         
 									</div>
@@ -187,12 +191,11 @@ if( $filter ){
 											</div>
 										</div>
 									</div>
+
 								</div>
 
 								<div class="row">
-									<button class="add-filter save save-filter" id="save_filter"><span
-											class="pluse">+</span> Save Filter
-									</button>
+									<button id="save_filter" class="po_green_button"><span class="pluse">+</span> Save Filter</button>
 								</div>
 
 							</td>
@@ -201,7 +204,7 @@ if( $filter ){
 				</div>
 			</div>
 		</div>
-	</form>
+	</div>
 </div>
 
 

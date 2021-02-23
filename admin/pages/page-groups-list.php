@@ -13,7 +13,7 @@ $groups = get_posts( array(
         <div class="row sos-content">
             <div class="row col-12 justify-content-between global-information">
                 <div class="col-3">
-                    <button class="add-filter" id="add_elements"><span class="pluse">+</span> Add New Group</button>
+                    <button class="po_green_button" id="add_elements"><span class="pluse">+</span> Add New Group</button>
                 </div>
                 <div class="col-8 quantity">
                     <span id="all_elements">all</span> (<span

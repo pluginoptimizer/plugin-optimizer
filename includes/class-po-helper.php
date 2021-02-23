@@ -97,7 +97,7 @@ class PO_Helper {
 		}
         
 		?><input type="text" placeholder="Name category"><?php
-        ?><button class="add-filter add-permalink add-category" id="post-<?= $id_filter; ?>">
+        ?><button class="po_green_button add-permalink add-category" id="post-<?= $id_filter; ?>">
             <span class="pluse">+</span> Category
         </button><?php
         
@@ -286,7 +286,7 @@ class PO_Helper {
                     <?php /* TODO Check next line because we got rid of work_title */ ?>
                         <a class="row-title"
                            href="<?= get_admin_url( null, 'admin.php?page=plugin_optimizer_filters&work_title=' . urlencode( str_replace( ' ', '_', str_replace( 'Add filter to ', '', $post->post_title ) ) ) . '&work_link=' . urlencode( get_post_meta( $post->ID, 'post_link', true ) ) ); ?>">
-                            <button class="add-filter"><span class="pluse">+</span> add new filter</button>
+                            <button class="po_green_button"><span class="pluse">+</span> add new filter</button>
                         </a>
                     </td>
                 </tr>
