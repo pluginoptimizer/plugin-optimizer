@@ -7,6 +7,83 @@ jQuery( document ).ready( function($){
     current_page = current_page === 'add-groups'         ? 'groups'     : current_page;
     $(`#window_${current_page}`).css('background-color', '#d7b70a');
 
+    // NEW: Clicking on a group in the Edit Filter page template or Edit Group page template
+    $('body').on('click', '.block-plugin-wrapper .single_plugin', function(){
+
+        $(this).toggleClass('blocked');
+        
+        let $checkbox = $(this).find('input[type="checkbox"]');
+        $checkbox.prop( "checked", ! $checkbox.prop("checked") );
+        
+    });
+
+    // NEW: Clicking on a group in the Edit Filter page template
+    $('body').on('click', '.block-group-plugin-wrapper .single_group', function(){
+        
+        $(this).toggleClass('blocked');
+        
+        toggle_plugins_by_group( $(this) );
+    });
+    
+    // NEW: Toggles plugins for a group if it is being selected for blocking
+    function toggle_plugins_by_group( $group_element, only_labels = false ){
+        
+        let plugins_to_block = $group_element.data("plugins");
+        let group_name       = $group_element.children("span").text();
+        
+        if( $group_element.hasClass('blocked') ){
+            
+            // console.log( "Name: ", group_name );
+            // console.log( "Plugins: ", plugins_to_block );
+            
+            $.each( plugins_to_block, function( index, plugin_name ){
+                
+                // console.log( "Block: ", plugin_name );
+                
+                if( ! only_labels ){
+                
+                    $(`.single_plugin[data-name="${plugin_name}"]`).addClass("blocked");
+                    $(`.single_plugin[data-name="${plugin_name}"] input[type="checkbox"]`).prop("checked", true);
+                
+                }
+                
+                $(`.single_plugin[data-name="${plugin_name}"] span.group_name`).append(`<span data-name="${group_name}">${group_name}</span>`);
+                
+            });
+            
+        } else {
+            
+            $(`.single_plugin span.group_name span[data-name="${group_name}"]`).remove();
+        }
+        
+    }
+    
+    // NEW: Select a category for a new filter, does nothing but marks the selected category
+    $('body').on('click', '.category-wrapper .single_category', function(){
+
+        $(this).toggleClass('blocked');
+        
+        let $checkbox = $(this).find('input[type="checkbox"]');
+        $checkbox.prop( "checked", ! $checkbox.prop("checked") );
+        
+    });
+    
+    // NEW: Toggle plugins for already selected groups on page load
+    $('.block-group-plugin-wrapper .single_group.blocked').each(function(){
+        
+        toggle_plugins_by_group( $(this), true );
+        
+    });
+    
+
+
+
+
+
+
+
+
+
     // trash CPTs
     $('body').on('click', '#trash_elements', function(){
         
@@ -108,63 +185,6 @@ jQuery( document ).ready( function($){
         }
     })
     
-    // NEW: Clicking on a group in the Edit Filter page template or Edit Group page template
-    $('body').on('click', '.block-plugin-wrapper .single_plugin', function(){
-
-        $(this).toggleClass('blocked');
-        
-        let $checkbox = $(this).find('input[type="checkbox"]');
-        $checkbox.prop( "checked", ! $checkbox.prop("checked") );
-        
-    });
-
-    // NEW: Clicking on a group in the Edit Filter page template
-    $('body').on('click', '.block-group-plugin-wrapper .single_group', function(){
-        
-        $(this).toggleClass('blocked');
-        
-        toggle_plugins_by_group( $(this) );
-    });
-    
-    function toggle_plugins_by_group( $group_element ){
-        
-        let plugins_to_block = $group_element.data("plugins");
-        let group_name       = $group_element.children("span").text();
-        
-        if( $group_element.hasClass('blocked') ){
-            
-            // console.log( "Name: ", group_name );
-            // console.log( "Plugins: ", plugins_to_block );
-            
-            $.each( plugins_to_block, function( index, plugin_name ){
-                
-                // console.log( "Block: ", plugin_name );
-                
-                $(`.single_plugin[data-name="${plugin_name}"]`).addClass("blocked");
-                
-                $(`.single_plugin[data-name="${plugin_name}"] span.group_name`).append(`<span data-name="${group_name}">${group_name}</span>`);
-            
-                $(`.single_plugin[data-name="${plugin_name}"] input[type="checkbox"]`).prop("checked", true);
-                
-            });
-            
-        } else {
-            
-            $(`.single_plugin span.group_name span[data-name="${group_name}"]`).remove();
-        }
-        
-    }
-    
-    // Select a category for a new filter, does nothing but marks the selected category
-    $('body').on('click', '.category-wrapper .single_category', function(){
-
-        $(this).toggleClass('blocked');
-        
-        let $checkbox = $(this).find('input[type="checkbox"]');
-        $checkbox.prop( "checked", ! $checkbox.prop("checked") );
-        
-    });
-
     // Select a parent category on the Add New Category screen
     $('body').on('click', '.select_parent_to_category', function(){
         const selfText = $(this).text();
