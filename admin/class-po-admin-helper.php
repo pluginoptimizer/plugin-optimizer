@@ -113,17 +113,20 @@ EOF;
             
 			foreach( $data["plugins"] as $plugin_id => $plugin_name ){
                 
-                $class = "single_plugin";
+                $class   = "single_plugin";
+                $checked = '';
                 
                 if( ! empty( $data["blocked"][ $plugin_id ] ) || in_array( $plugin_id, $data["blocked"] ) ){
-                    $class .= " blocked";
+                    $class  .= " blocked";
+                    $checked = ' checked="checked"';
                 }
                 
                 if( ! empty( $data["inactive"][ $plugin_id ] ) || in_array( $plugin_id, $data["inactive"] ) ){
-                    $class .= " inactive";
+                    $class  .= " inactive";
                 }
                 
                 echo '<div class="' . $class . '" data-id="' . $plugin_id . '" data-name="' . $plugin_name . '">';
+                echo    '<input class="noeyes" type="checkbox" name="[PO_data][plugins_to_block][]" value="' . $plugin_id . '"' . $checked . '/>';
                 echo    '<span value="' . $plugin_id . '">' . $plugin_name . '</span>';
                 echo '</div>';
                 
