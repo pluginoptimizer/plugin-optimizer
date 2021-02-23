@@ -653,6 +653,9 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     margin-bottom: 5px;
     background-color: #ffffff;
     text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 .sos-wrap .plugin-wrapper .single_plugin.inactive{
     background: gray;
@@ -662,6 +665,18 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     background-color: #ffc4c4;
     color: #212529;
 }
+.sos-wrap .plugin-wrapper .single_plugin .noeyes{
+    display: none;
+}
+.sos-wrap .plugin-wrapper .single_plugin .group_name{
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
 .sos-wrap .plugin-wrapper .toggle_group.blocked{
     background-color: #ffc4c4;
     color: #212529;

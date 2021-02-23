@@ -108,29 +108,52 @@ jQuery( document ).ready( function($){
         }
     })
     
+    // NEW: Toggle plugins for a new/edit filter or select plugins for a new group
+    $('body').on('click', '.block-plugin-wrapper .single_plugin', function(){
+
+        $(this).toggleClass('blocked');
+        
+        let $checkbox = $(this).find('input[type="checkbox"]');
+        $checkbox.prop( "checked", ! $checkbox.prop("checked") );
+        
+    });
+
     // NEW: Clicking on a group in the Add New Filter page
     $('body').on('click', '.block-group-plugin-wrapper .toggle_group', function(){
         
         $(this).toggleClass('blocked');
         
-        if( $(this).hasClass('blocked') ){
-            
-            let plugins_to_block = $(this).data("plugins");
-            let group_name = $(this).children("span").text();
+        toggle_plugins_by_group( $(this) );
+    });
+    
+    function toggle_plugins_by_group( $group_element ){
+        
+        let plugins_to_block = $group_element.data("plugins");
+        let group_name       = $group_element.children("span").text();
+        
+        if( $group_element.hasClass('blocked') ){
             
             // console.log( "Name: ", group_name );
             // console.log( "Plugins: ", plugins_to_block );
             
             $.each( plugins_to_block, function( index, plugin_name ){
                 
-                console.log( "Block: ", plugin_name );
+                // console.log( "Block: ", plugin_name );
                 
-                $(`.single_plugin[data-name="{plugin_name}"]`).css("background", "cyan");
+                $(`.single_plugin[data-name="${plugin_name}"]`).addClass("blocked");
+                
+                $(`.single_plugin[data-name="${plugin_name}"] span.group_name`).append(`<span data-name="${group_name}">${group_name}</span>`);
+            
+                $(`.single_plugin[data-name="${plugin_name}"] input[type="checkbox"]`).prop("checked", true);
                 
             });
+            
+        } else {
+            
+            $(`.single_plugin span.group_name span[data-name="${group_name}"]`).remove();
         }
         
-    });
+    }
     
     // Select a parent category on the Add New Category screen
     $('body').on('click', '.select_parent_to_category', function(){
@@ -473,12 +496,6 @@ jQuery( document ).ready( function($){
         } else {
             $(this).addClass('block');
         }
-    });
-
-    // NEW: Toggle plugins for a new/edit filter or select plugins for a new group
-    $('body').on('click', '.block-plugin-wrapper .single_plugin', function(){
-
-        $(this).toggleClass('blocked');
     });
 
     // On the Add New Filter page, #search_pages is the input field where you put the initial permalink/endpoint for the filter
