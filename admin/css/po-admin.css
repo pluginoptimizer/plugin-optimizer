@@ -624,7 +624,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 
 
 .sos-wrap .noeyes{
-    /* display: none; */
+    display: none;
 }
 
 .sos-wrap .plugin-wrapper .single_plugin{
