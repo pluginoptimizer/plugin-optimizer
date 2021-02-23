@@ -128,6 +128,8 @@ jQuery( document ).ready( function($){
     // trash CPTs
     $('body').on('click', '#trash_elements', function(){
         
+        console.log( "OLD: trash CPTs" );
+        
         let name_post_type;
         
         if($('#name_page').attr("class") === 'worklist'){
@@ -158,6 +160,9 @@ jQuery( document ).ready( function($){
     
     // switch between tabs menu pages
     $('body').on('click', '#window_filters, #window_categories, #window_groups, #window_worklist, #window_settings', function(){
+        
+        console.log( "OLD: switch between tabs menu pages" );
+        
         $('.tabs').css('background', '#1e4d7d');
 
         const selfId = $(this).attr('id');
@@ -186,6 +191,9 @@ jQuery( document ).ready( function($){
     
     // on the list of plugins, switch between active and inactive ones
     $('body').on('click', '#activate_plugins, #deactivate_plugins', function(){
+        
+        console.log( "OLD: on the list of plugins, switch between active and inactive ones" );
+        
         const self = this;
         
         console.log( "aAjax: show-plugins-to-settings.js" );
@@ -212,6 +220,8 @@ jQuery( document ).ready( function($){
     // Overview page - switch between accordion elements
     $('body').on('click', '.tab-overview', function(){
         
+        console.log( "OLD: Overview page - switch between accordion elements" );
+        
         // TODO - the page doesn't remember the current state of completed tasks
         
         if($(this).next('.hidden-info_overview').css('display') !== 'block'){
@@ -228,6 +238,9 @@ jQuery( document ).ready( function($){
     
     // Select a parent category on the Add New Category screen
     $('body').on('click', '.select_parent_to_category', function(){
+        
+        console.log( "OLD: Select a parent category on the Add New Category screen" );
+        
         const selfText = $(this).text();
         if($(this).hasClass('block')){
             $(this).removeClass('block');
@@ -246,6 +259,9 @@ jQuery( document ).ready( function($){
 
     // On a new Filter or new Group pages: disable/enable all in a section
     $('body').on('click', '.all-check', function(){
+        
+        console.log( "OLD: On a new Filter or new Group pages: disable/enable all in a section" );
+        
         if($(this).text() === 'Disable All'){
             $(this).text('Enable All');
             $(this).parent().parent().children('.plugin-wrapper').children('.content').addClass('block');
@@ -261,6 +277,9 @@ jQuery( document ).ready( function($){
 
     // search elements, a box on most of the PO pages
     $('body').on('keyup', '#search_elements', function(){
+        
+        console.log( "OLD: search elements, a box on most of the PO pages" );
+        
         let name_post_type;
         if($('#name_page').attr("class") === 'worklist'){
             name_post_type = 'sos_work';
@@ -300,6 +319,8 @@ jQuery( document ).ready( function($){
 // FIXED
     // Bulk actions button (usually delete or restore element)
     $('body').on('click', '#btn_apply', function(){
+        
+        console.log( "OLD: Bulk actions button (usually delete or restore element)" );
         
         let name_post_type;
         let data = false;
@@ -359,6 +380,9 @@ jQuery( document ).ready( function($){
 
     // #add_elements is a button used to get the Create New XYZ form
     $('body').on('click', '#add_elements', function(){
+        
+        console.log( "OLD: #add_elements is a button used to get the Create New XYZ form" );
+        
         if($('#name_page').hasClass('filters')){
             location.href='/wp-admin/admin.php?page=plugin_optimizer_add_filters';
         } else if($('#name_page').hasClass('groups')){
@@ -375,6 +399,9 @@ jQuery( document ).ready( function($){
 
     //
     $('body').on('click', '.filter-category .close', function(){
+        
+        console.log( "OLD: delete-category.js" );
+        
         let selfDelete = this;
         
         console.log( "aAjax: delete-category.js" );
@@ -395,6 +422,9 @@ jQuery( document ).ready( function($){
 
     // Save New Group button on the Create New Filter Group page
     $('body').on('click', '.save-group', function(){
+        
+        console.log( "OLD: Save New Group button on the Create New Filter Group page" );
+        
         let result = true;
         $('.content-new-element input#set_title').toArray().some(function (item) {
             if ($(item).val().trim() === "" && result) {
@@ -449,6 +479,9 @@ jQuery( document ).ready( function($){
 
     // Save New Filter button on the Create New Filter page
     $('body').on('click', '.save-filter', function(){
+        
+        console.log( "OLD: Save New Filter button on the Create New Filter page" );
+        
         let result = true;
         $('.content-new-element input#set_title').toArray().some(function (item) {
             if ($(item).val().trim() === "" && result) {
@@ -513,6 +546,9 @@ jQuery( document ).ready( function($){
 
     // #add_elements.save-category is a button used to get the Create New Category form
     $('body').on('click', '.save-category', function(){
+        
+        console.log( "OLD: #add_elements.save-category is a button used to get the Create New Category form" );
+        
         let result = true;
         $('.content-new-element input').toArray().some(function (item) {
             if ($(item).val().trim() === "" && result) {
@@ -560,6 +596,8 @@ jQuery( document ).ready( function($){
     // Select a plugins for a new filter or select plugins for a new group
     $('body').on('click', '.block-plugin-wrapper .content', function(){
 
+        console.log( "OLD: Select a plugins for a new filter or select plugins for a new group" );
+        
         console.log( "choice-plugin.js" );
         
         if($(this).hasClass('block')){
@@ -571,6 +609,9 @@ jQuery( document ).ready( function($){
 
     // On the Add New Filter page, #search_pages is the input field where you put the initial permalink/endpoint for the filter
     $('body').on('keypress', '#search_pages', function(e){
+        
+        console.log( "OLD: On the Add New Filter page, #search_pages is the input field where you put the initial permalink/endpoint for the filter" );
+        
         if (e.keyCode == 13) {
             $('.add-permalink').click();
         }
@@ -579,6 +620,9 @@ jQuery( document ).ready( function($){
     // On the Add New Filter page, the button .add-permalink is used to add new endpoint to the filter
     // TODO Beware, the same class is added to the "+ Category" button too!
     $('body').on('click', '.add-permalink', function(){
+        
+        console.log( "OLD: On the Add New Filter page, the button .add-permalink is used to add new endpoint to the filter" );
+        
         let linkClient = $('#search_pages').val();
         linkClient = get_hostname(linkClient)               ? linkClient.replace(get_hostname(linkClient), '')  : linkClient;
         linkClient = linkClient.indexOf('/') === 0          ? linkClient.replace('/', '')                       : linkClient;
@@ -602,6 +646,9 @@ jQuery( document ).ready( function($){
     // Check the name of the elements when creating them, filters, groups and categories should use already existing name
     // WTF is this code
     $('body').on('change', '#set_title', function(){
+        
+        console.log( "OLD: Check the name of the elements when creating them, filters, groups and categories should use already existing name" );
+        
         const name_element = $(this).val();
         const type_element = $('#name_page').attr('class');
         
@@ -633,6 +680,8 @@ jQuery( document ).ready( function($){
     // Clicking on element on the list (filter, group, category) redirects to the edit page
     $('body').on('click', '.block_info > td:not(:nth-child(1))', function(){
         
+        console.log( "OLD: Clicking on element on the list (filter, group, category) redirects to the edit page" );
+        
         const element_id = $(this).parent().children('td:nth-child(1)').children().attr('id');
 
         if($('#name_page').attr("class") === 'filters_categories'){
@@ -647,6 +696,8 @@ jQuery( document ).ready( function($){
 
     // Change plugins on the group edit screen
     $('body').on('click', '.wrapper-group-plugins .content', function(){
+        
+        console.log( "OLD: Change plugins on the group edit screen" );
         
         console.log( "change-plugins-group.js" );
         
@@ -684,6 +735,8 @@ jQuery( document ).ready( function($){
     // Change plugins for a filter and a group??
     // TODO check because those actions run multiple triggers
     $('body').on('click', 'DISABLED ------------------------- .plugin-wrapper:not(.group-wrapper) > .content:not(.single_group)', function(){
+        
+        console.log( "OLD: Change plugins for a filter and a group??" );
         
         console.log( "change-plugins.js" );
         
@@ -739,6 +792,9 @@ jQuery( document ).ready( function($){
     // .data-link is an already selected Permalink/Endpoint for the filter
     // WTF is this code? We don't want Ajax running while we type the permalink
     $('body').on('input', '.data-link', function(){
+        
+        console.log( "OLD: .data-link is an already selected Permalink/Endpoint for the filter" );
+        
         const text_link = $(this).text();
         const filter_id = $(this).attr('filter_id');
         
@@ -760,6 +816,8 @@ jQuery( document ).ready( function($){
     
     // Groups section on the filter edit page
     $('body').on('click', '.group-wrapper > .content', function(){
+        
+        console.log( "OLD: Groups section on the filter edit page" );
         
         console.log( "change-groups.js" );
         
@@ -821,6 +879,8 @@ jQuery( document ).ready( function($){
     // Add or delete category that already exists for filters on filters page
     $('body').on('click', '.filter-category', function() {
 
+        console.log( "OLD: Add or delete category that already exists for filters on filters page" );
+        
         console.log( "add-category-filter.js" );
         
         const name_category = $(this).children('span:nth-child(1)').text();
@@ -867,6 +927,9 @@ jQuery( document ).ready( function($){
 
     // Show the available items on their pages after updating the data
     $('body').on('click', '#all_elements', function(){
+        
+        console.log( "OLD: Show the available items on their pages after updating the data" );
+        
         let name_post_type;
         if($('#name_page').attr("class") === 'worklist'){
             name_post_type = 'sos_work';
@@ -900,6 +963,9 @@ jQuery( document ).ready( function($){
     
     // Add new category for filters on Edit Filter? page
     $('body').on('click', '.add-category', function (e) {
+        
+        console.log( "OLD: Add new category for filters on Edit Filter? page" );
+        
         const self = this;
         const name_category = $(this).prev().val();
         const id_filter = $(this).attr('id').substr(5);
@@ -923,6 +989,9 @@ jQuery( document ).ready( function($){
 
     // Select all elements
     $('body').on('change', '#check_all', function(){
+        
+        console.log( "OLD: Select all elements" );
+        
         if($(this).is( ":checked" )){
             $('tbody input:checkbox').prop('checked', true);
         } else {
@@ -931,6 +1000,9 @@ jQuery( document ).ready( function($){
     });
     // Change appearance checkbox all elements
     $('body').on('change', 'tbody input:checkbox', function(){
+        
+        console.log( "OLD: Change appearance checkbox all elements" );
+        
         if($('#check_all').is( ":checked" )){
             $('#check_all').prop('checked', false);
         }
