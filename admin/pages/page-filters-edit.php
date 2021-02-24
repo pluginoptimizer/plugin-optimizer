@@ -26,7 +26,7 @@ $page_title = "Create a new Filter";
 $plugins_to_block  = [];
 $groups_to_block   = [];
 $filter_categories = [];
-$filter_type       = "endpoint";
+$filter_type       = "_endpoint";
 $endpoints         = [];
 
 $show_endpoints_wrapper = '';
@@ -50,7 +50,7 @@ if( $filter ){
     
     if( ! in_array( $filter_type, $post_types ) ){
         
-        $filter_type = "endpoint";
+        $filter_type = "_endpoint";
         $endpoints   = PO_Admin_Helper::get_filter_endpoints( $filter );
         
     } else {
@@ -75,6 +75,10 @@ if( $filter ){
                     
 						<div class="row filter_title">
                         
+                        <?php if( $filter ){ ?>
+                            <input type="hidden" name="[PO_filter_data][ID]" value="<?= $filter->ID ?>"/>
+                        <?php } ?>
+                        
 							<div class="col-9">
 								<div class="header">Title</div>
 								<div>
@@ -91,7 +95,7 @@ if( $filter ){
                                         <span>
                                             <select name="[PO_filter_data][type]" id="set_type">
                                                 <optgroup label="Default:">
-                                                    <option value="endpoint"<?= $filter_type == "endpoint" ? ' selected="selected"' : "" ?>>Endpoint(s)</option>
+                                                    <option value="_endpoint"<?= $filter_type == "_endpoint" ? ' selected="selected"' : "" ?>>Endpoint(s)</option>
                                                 </optgroup>
                                                 <optgroup label="Edit page of a Post Type:">
                                                     <?php

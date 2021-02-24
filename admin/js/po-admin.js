@@ -83,7 +83,7 @@ jQuery( document ).ready( function($){
         
         let type = $(this).val();
         
-        if( type == "endpoint" ){
+        if( type == "_endpoint" ){
             $('#edit_filter #endpoints_wrapper').slideDown();
         } else {
             $('#edit_filter #endpoints_wrapper').slideUp();
@@ -434,11 +434,10 @@ jQuery( document ).ready( function($){
         // });
     });
 
-// FIXED
     // Bulk actions button (usually delete or restore element)
     $('body').on('click', '#btn_apply', function(){
         
-        console.log( "OLD: Bulk actions button (usually delete or restore element)" );
+        console.log( "FIXED: Bulk actions button (usually delete or restore element)" );
         
         let name_post_type;
         let data = false;
