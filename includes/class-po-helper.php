@@ -97,7 +97,7 @@ class PO_Helper {
 		}
         
 		?><input type="text" placeholder="Name category"><?php
-        ?><button class="po_green_button add-permalink add-category" id="post-<?= $id_filter; ?>">
+        ?><button class="po_green_button add_endpoint add-category" id="post-<?= $id_filter; ?>">
             <span class="pluse">+</span> Category
         </button><?php
         

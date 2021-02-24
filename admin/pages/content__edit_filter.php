@@ -73,8 +73,8 @@ $categories = get_categories( [
 											<div class="header">Permalinks</div>
 											<div class="content-permalinks">
 												<div class="set_link">
-													<input id="search_pages" type="text">
-													<button class="po_green_button add-permalink">
+													<input id="first_endpoint" type="text">
+													<button class="po_green_button add_endpoint">
                                                         <span class="pluse">+</span>
 														Permalink
 													</button>

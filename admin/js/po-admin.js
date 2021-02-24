@@ -150,6 +150,59 @@ jQuery( document ).ready( function($){
             
         }
     });
+    
+    // NEW: Potentially replace the domain in the link with the local domain
+    function force_local_domain( link ){
+        
+        let new_link = link;
+            new_link = get_hostname(new_link)               ? new_link.replace(get_hostname(new_link), '')  : new_link;
+            new_link = new_link.indexOf('/') === 0          ? new_link.replace('/', '')                       : new_link;
+            new_link = new_link.includes(location.hostname) ? new_link                                        : `${location.hostname}/${new_link}`;
+            new_link = new_link.includes('https://')        ? new_link                                        : `https://${new_link}`;
+        
+        // TODO what if the site runs on http:// ?
+        
+        return new_link;
+    }
+    
+    // NEW: On the Add New Filter page, the button #add_endpoint is used to add a new endpoint to the filter
+    $('body').on('click', '#add_endpoint', function(){
+        
+        let link = force_local_domain( $('#first_endpoint').val() );
+
+        $(this).parent().after(`
+			<div class="col-12 additional_endpoint_wrapper">
+                <input class="additional_endpoint" type="text" name="[PO_filter_data][endpoints][]" placeholder="Put your URL here" value="${link}"/>
+                <div class="remove_additional_endpoint circle_button remove_something">-</div>
+			</div>
+        `);
+        
+        $('#first_endpoint').val('');
+        $('#first_endpoint').focus();
+        
+    });
+
+    // NEW: On the Add New Filter page, the button #add_endpoint is used to add new endpoint to the filter
+    $('body').on('click', '.remove_additional_endpoint', function(){
+        
+        $(this).parent().remove();
+    });
+
+    // NEW: On the Add New Filter page, we need to force to local domain, can't filter plugins for other domains
+    $('body').on('focusout', '.additional_endpoint_wrapper input', function(){
+        
+        let link = force_local_domain( $(this).val() );
+
+        $(this).val( link );
+    });
+
+    // On the Add New Filter page, #first_endpoint is the input field where you put the initial permalink/endpoint for the filter
+    $('body').on('keypress', '#first_endpoint', function(e){
+        
+        if (e.keyCode == 13) {
+            $('#add_endpoint').click();
+        }
+    });
 
     
     
@@ -553,13 +606,13 @@ jQuery( document ).ready( function($){
                 $(item).focus();
                 return result = false;
             }
-            /*if ($(item).val().trim() === "" && result && item.id !== 'search_pages') {
+            /*if ($(item).val().trim() === "" && result && item.id !== 'first_endpoint') {
                 $(item).focus();
                 return result = false;
-            } else if ($(item).val().trim() === "" && result && item.id === 'search_pages' && !$('span').is('.text_link')) {
+            } else if ($(item).val().trim() === "" && result && item.id === 'first_endpoint' && !$('span').is('.text_link')) {
                 $(item).focus();
                 return result = false;
-            } else if ($(item).val().trim() !== "" && item.id === 'search_pages' && !$('span').is('.text_link')) {
+            } else if ($(item).val().trim() !== "" && item.id === 'first_endpoint' && !$('span').is('.text_link')) {
                 $(item).focus();
                 return result = false;
             }*/
@@ -601,7 +654,7 @@ jQuery( document ).ready( function($){
                     // }
 
                     // $('#set_title').val('');
-                    // $('#search_pages').val('');
+                    // $('#first_endpoint').val('');
                     // $('.link').remove();
                     // $('#set_type option:first').prop('selected', true);
                 // }
@@ -670,42 +723,6 @@ jQuery( document ).ready( function($){
         } else {
             $(this).addClass('block');
         }
-    });
-
-    // On the Add New Filter page, #search_pages is the input field where you put the initial permalink/endpoint for the filter
-    $('body').on('keypress', '#search_pages', function(e){
-        
-        console.log( "OLD: On the Add New Filter page, #search_pages is the input field where you put the initial permalink/endpoint for the filter" );
-        
-        if (e.keyCode == 13) {
-            $('.add-permalink').click();
-        }
-    });
-
-    // On the Add New Filter page, the button .add-permalink is used to add new endpoint to the filter
-    // TODO Beware, the same class is added to the "+ Category" button too!
-    $('body').on('click', '.add-permalink', function(){
-        
-        console.log( "OLD: On the Add New Filter page, the button .add-permalink is used to add new endpoint to the filter" );
-        
-        let linkClient = $('#search_pages').val();
-        linkClient = get_hostname(linkClient)               ? linkClient.replace(get_hostname(linkClient), '')  : linkClient;
-        linkClient = linkClient.indexOf('/') === 0          ? linkClient.replace('/', '')                       : linkClient;
-        linkClient = linkClient.includes(location.hostname) ? linkClient                                        : `${location.hostname}/${linkClient}`;
-        linkClient = linkClient.includes('https://')        ? linkClient                                        : `https://${linkClient}`;
-
-
-        $(this).parent().after(`
-            <div class="link">
-                <span class="data-interaction text_link" contenteditable>${linkClient}</span>
-                <span class="close-selected-link">×</span>
-            </div>
-        `);
-        $('#search_pages').val('');
-        $('#search_pages').focus();
-        $('.close-selected-link').click(function(){
-            $(this).parent().remove();
-        })
     });
 
     // Check the name of the elements when creating them, filters, groups and categories should use already existing name

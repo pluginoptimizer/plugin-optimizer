@@ -21,11 +21,15 @@ natcasesort( $post_types );
 
 // po_mu_plugin()->write_log( $post_types, "page-add-filters-post_types" );
 
+// defaults
 $page_title = "Create a new Filter";
 $plugins_to_block  = [];
 $groups_to_block   = [];
-$endpoint          = [];
 $filter_categories = [];
+$filter_type       = "endpoint";
+$endpoints         = [];
+
+$show_endpoints_wrapper = '';
 
 // Editing existing filter?
 
@@ -34,15 +38,25 @@ $filter    = $filter_id                     ? get_post( $filter_id )    : false;
 
 if( $filter ){
     
-    // po_mu_plugin()->write_log( $filter, "page-add-filters-post_types" );
-    
     $page_title = "Editing filter: " . $filter->post_title;
 
     $plugins_to_block   = get_post_meta( $filter->ID, "block_value_plugins", true );
     $groups_to_block    = get_post_meta( $filter->ID, "block_group_plugins", true );
     $filter_categories  = explode( ", ", get_post_meta( $filter->ID, "category_filter", true ) );
     
-    $endpoints = PO_Admin_Helper::get_filter_endpoints( $filter );
+    $filter_type = get_post_meta( $filter->ID, "type_filter", true );
+    
+    // po_mu_plugin()->write_log( $filter_type, "page-filters-edit-filter_type" );
+    
+    if( ! in_array( $filter_type, $post_types ) ){
+        
+        $filter_type = "endpoint";
+        $endpoints   = PO_Admin_Helper::get_filter_endpoints( $filter );
+        
+    } else {
+        
+        $show_endpoints_wrapper = ' style="display: none;"';
+    }
     
 }
 
@@ -77,13 +91,15 @@ if( $filter ){
                                         <span>
                                             <select name="[PO_filter_data][type]" id="set_type">
                                                 <optgroup label="Default:">
-                                                    <option value="endpoint">Endpoint(s)</option>
+                                                    <option value="endpoint"<?= $filter_type == "endpoint" ? ' selected="selected"' : "" ?>>Endpoint(s)</option>
                                                 </optgroup>
                                                 <optgroup label="Edit page of a Post Type:">
                                                     <?php
                                                     foreach ( $post_types as $post_type ) {
                                                         
-                                                        echo '<option value="' . $post_type . '">' . $post_type . '</option>';
+                                                        $selected = $filter_type == $post_type ? ' selected="selected"' : "";
+                                                        
+                                                        echo '<option value="' . $post_type . '"' . $selected . '>' . $post_type . '</option>';
                                                         
                                                     }
                                                     ?>
@@ -96,21 +112,25 @@ if( $filter ){
                             
 						</div>
 						
-                        <div class="row select_trigger" id="endpoints_wrapper">
+                        <div class="row select_trigger" id="endpoints_wrapper"<?= $show_endpoints_wrapper ?>>
                         
 							<div class="col-12">
 								<div class="header">Endpoints</div>
 							</div>
                             
-							<div class="col-9">
-                                <input id="first_endpoint" type="text" name="[PO_filter_data][endpoints][]" placeholder="Put your URL here"/>
+							<div class="col-12 additional_endpoint_wrapper">
+                                <input id="first_endpoint" type="text" name="[PO_filter_data][endpoints][]" placeholder="Put your URL here" value="<?= ! empty( $endpoints ) ? $endpoints[0] : "" ?>"/>
+                                <div id="add_endpoint" class="circle_button add_something">+</div>
 							</div>
                             
-							<div class="col-3">
-                                <button id="add-permalink" class="add-permalink po_green_button" style="width: 100%;">
-                                    <span class="pluse">+</span> Endpoint
-                                </button>
-							</div>
+                            <?php for( $i = 1; $i < count( $endpoints ); $i++ ){ ?>
+                            
+                                <div class="col-12 additional_endpoint_wrapper">
+                                    <input class="additional_endpoint" type="text" name="[PO_filter_data][endpoints][]" placeholder="Put your URL here" value="<?= $endpoints[ $i ] ?>"/>
+                                    <div class="remove_additional_endpoint circle_button remove_something">-</div>
+                                </div>
+                                
+                            <?php } ?>
                             
 						</div>
 						

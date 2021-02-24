@@ -21,33 +21,6 @@
 }
 
 
-/*searck*/
-#search_pages{
-    border: none;
-    outline: none;
-    border-bottom: 1px solid #7e8993;
-    border-radius: 0;
-    min-width: 200px;
-    width: 74%;
-    padding: 5px;
-    /*box-shadow: 0 0 5px rgba(0,191,255,0.5);*/
-    color: #0073aa;
-    font-size: 16px;
-    text-transform: none;
-}
-#search_pages:placeholder{
-    text-transform: none;
-}
-
-#search_pages:focus{
-    outline: none;
-    box-shadow: none;
-}
-
-.add-permalink{
-    width: 25%;
-}
-
 #result{
     display: none;
     margin-top: 5px;
@@ -251,7 +224,7 @@
 #wpcontent{
     background-color: #f1f1f1;
 }
-.sos-wrap .sos-content{
+.sos-wrap .sos-content:not(#edit_filter){
     /*margin: 0;*/
     background-color: #fff !important;
     width: 100%;
@@ -624,7 +597,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 
 
 .sos-wrap .noeyes{
-    display: none;
+    /* display: none; */
 }
 
 .sos-wrap .plugin-wrapper .single_plugin{
@@ -639,8 +612,10 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     justify-content: space-between;
 }
 .sos-wrap .plugin-wrapper .single_plugin.inactive{
-    background: gray;
-    color: #fff;
+    /* background: gray; */
+    /* color: #fff; */
+    background: #ddd;
+    /* color: #fff; */
 }
 .sos-wrap .plugin-wrapper .single_plugin.blocked{
     background-color: #ffc4c4;
@@ -664,9 +639,79 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     background-color: #ffc4c4;
     color: #212529;
 }
+#edit_filter{
+    padding: 0;
+    background: none;
+}
+#edit_filter > .content-new-element{
+    padding: 0;
+    background: none;
+}
 #edit_filter #endpoints_wrapper{
     /* display: none; */
 }
+
+#edit_filter #endpoints_wrapper .additional_endpoint_wrapper{
+    position: relative;
+    /* padding-right: 50px; */
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    margin: 3px 0;
+}
+#first_endpoint,
+input[type="text"].additional_endpoint{
+    width: 100%;
+    /* height: 150px; */
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #7e8993;
+    border-radius: 0;
+    padding: 5px;
+    font-size: 16px;
+    text-transform: none;
+    display: block;
+}
+#first_endpoint:focus{
+    outline: none;
+    box-shadow: none;
+}
+
+.additional_endpoint_wrapper .circle_button{
+    cursor: pointer;
+    transition: all 300ms ease;
+    user-select: none;
+    
+    display: block;
+    width: 24px;
+    height: 24px;
+    margin: 0 5px 0 10px;
+    text-align: center;
+    padding: 0;
+    
+    box-shadow: -2px 1px 3px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+    background-color: #369451;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.09) 0%, rgba(255, 255, 255, 0.09) 100%);
+    color: #8fba51;
+    color: #ffffff;
+    
+    border: 1px solid #fff;
+    border-radius: 50%;
+    
+    line-height: 18px;
+    font-size: 24px;
+    font-weight: 600;
+    
+}
+.additional_endpoint_wrapper .circle_button.remove_something{
+    background-color: #ffc4c4;
+}
+.additional_endpoint_wrapper .circle_button:hover{
+    opacity: 0.6;
+}
+
 
 .all-check{
     cursor: pointer;
@@ -785,13 +830,6 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 
 .data-link{
     text-transform: lowercase;
-}
-
-.close-selected-link{
-    cursor: pointer;
-    font-size: 25px;
-    line-height: 20px;
-    float: right;
 }
 
 .sos-wrap .content-filter .header.attribute-plugin{
