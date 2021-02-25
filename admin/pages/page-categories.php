@@ -99,7 +99,7 @@ $categories = get_categories( [
                         <option value="default">All dates</option>
                         <option value="delete">November</option>
                     </select>
-                    <button id="btn_filter">Filter</button>
+                    <button id="btn_date_filter">Filter</button>
                 </div>
             </div>
             <div class="row col-12">

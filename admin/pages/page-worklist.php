@@ -1,6 +1,7 @@
 <?php
 $worklists = get_posts( array(
 	'post_type'   => 'sos_work',
+	'post_status' => [ 'publish', 'trash' ],
 	'numberposts' => - 1,
 ) );
 ?>
@@ -11,31 +12,36 @@ $worklists = get_posts( array(
         <?php PO_Admin_Helper::content_part__header("Worklist", "worklist"); ?>
         
         <div class="row sos-content">
-            <div class="row col-12 justify-content-end">
-                <div class="quantity">
-                    <span id="all_elements">All</span> (<span
-                          id="count_all_elements"><?= wp_count_posts( 'sos_work' )->publish; ?></span>) | <span
-                          id="trash_elements">TRASH</span> (<span
-                          id="count_trash_elements"><?= wp_count_posts( 'sos_work' )->trash; ?></span>)
-                </div>
-            </div>
+            <div class="row col-12 justify-content-between global-information">
             
-            <?php PO_Admin_Helper::content_part__bulk_actions( $worklists ); ?>
+                <div class="col-3">
+                    
+                </div>
+                
+                <?php PO_Admin_Helper::content_part__bulk_actions( $worklists ); ?>
+                
+                <div class="col-3 quantity">
+                    <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?= wp_count_posts( 'sos_work' )->publish; ?></span>)
+                    |
+                    <span id="trash_elements">Trashed</span> (<span id="count_trash_elements"><?= wp_count_posts( 'sos_work' )->trash; ?></span>)
+                </div>
+                
+            </div>
             
             <div class="row col-12">
                 <div class="col-12">
                     <table>
                         <thead>
-                        <tr>
-                            <th><input type="checkbox" id="check_all"></th>
-                            <th>PAGE TITLE</th>
-                            <th>Permalink</th>
-                            <th>Date Created</th>
-                            <th></th>
-                        </tr>
+                            <tr>
+                                <th><input type="checkbox" id="check_all"></th>
+                                <th class="left-10 align-left">Title</th>
+                                <th class="left-10 align-left">Permalink</th>
+                                <th>Date Created</th>
+                                <th></th>
+                            </tr>
                         </thead>
                         <tbody id="the-list">
-						<?php PO_Helper::content_works( $worklists ); ?>
+                            <?php PO_Admin_Helper::list_content__works( $worklists ); ?>
                         </tbody>
                     </table>
                 </div>

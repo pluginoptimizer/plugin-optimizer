@@ -196,7 +196,7 @@ jQuery( document ).ready( function($){
         $(this).val( link );
     });
 
-    // On the Add New Filter page, #first_endpoint is the input field where you put the initial permalink/endpoint for the filter
+    // NEW: On the Add New Filter page, #first_endpoint is the input field where you put the initial permalink/endpoint for the filter
     $('body').on('keypress', '#first_endpoint', function(e){
         
         if (e.keyCode == 13) {
@@ -204,6 +204,46 @@ jQuery( document ).ready( function($){
         }
     });
 
+    // NEW: Show only the published items
+    $('body').on('click', '#all_elements', function(){
+        
+        $('#all_elements').addClass("filtered");
+        $('#trash_elements').removeClass("filtered");
+        
+        $('#the-list > [data-status="trash"]').addClass("filtered_out__status");
+        $('#the-list > [data-status="publish"]').removeClass("filtered_out__status");
+        
+        $('select#check_all_elements option[value="restore"]').remove();
+        
+    });
+    
+    // NEW: Show only the trashed items
+    $('body').on('click', '#trash_elements', function(){
+        
+        $('#trash_elements').addClass("filtered");
+        $('#all_elements').removeClass("filtered");
+        
+        $('#the-list > [data-status="publish"]').addClass("filtered_out__status");
+        $('#the-list > [data-status="trash"]').removeClass("filtered_out__status");
+        
+        $('select#check_all_elements option[value="delete"]').before('<option value="restore">Restore</option>');
+        
+    });
+    
+    // NEW: Filter by date
+    $('body').on('click', '#btn_date_filter', function(){
+        
+        let date_filter = $('#filter_all_elements').val();
+        
+        $('#the-list > *').removeClass("filtered_out__date");
+        
+        if( date_filter != "default" ){
+            
+            $(`#the-list > *:not([data-date="${date_filter}"])`).addClass("filtered_out__date");
+        }
+        
+    });
+    
     
     
     
@@ -251,49 +291,6 @@ jQuery( document ).ready( function($){
         $('#settings_debug').css('display', 'flex');
     });
     
-    
-
-
-
-
-
-
-
-
-
-    // trash CPTs
-    $('body').on('click', '#trash_elements', function(){
-        
-        console.log( "OLD: trash CPTs" );
-        
-        let name_post_type;
-        
-        if($('#name_page').attr("class") === 'worklist'){
-            name_post_type = 'sos_work';
-        } else if($('#name_page').attr("class") === 'filters'){
-            name_post_type = 'sos_filter';
-        } else if($('#name_page').attr("class") === 'groups'){
-            name_post_type = 'sos_group';
-        }
-        
-        console.log( "aAjax: trash-elements.js" );
-        
-        // $.ajax({
-            // url: plugin_optimizer_groups.ajax_url,
-            // type: 'POST',
-            // data: {
-                // action: 'sos_trash_elements',
-                // 'name_post_type': name_post_type,
-            // },
-            // success: function (response) {
-                // $('#trash_elements').css('font-weight', '700');
-                // $('#all_elements').css('font-weight', '400');
-                // $('#the-list').html(response.data);
-                // $('select#check_all_elements option[value="delete"]').before('<option value="restore">Restore</option>');
-            // }
-        // });
-    });
-    
     // switch between tabs menu pages
     $('body').on('click', '#window_filters, #window_categories, #window_groups, #window_worklist, #window_settings', function(){
         
@@ -325,6 +322,77 @@ jQuery( document ).ready( function($){
 
     });
     
+    
+
+
+    // Bulk actions button (usually delete or restore element)
+    $('body').on('click', '#btn_apply', function(){
+        
+        console.log( "SOMEWHAT FIXED: Bulk actions button (usually delete or restore element)" );
+        
+        let name_post_type;
+        let data = false;
+        
+        if($('#name_page').attr("class") === 'worklist'){
+            name_post_type = 'sos_work';
+        } else if($('#name_page').attr("class") === 'filters'){
+            name_post_type = 'sos_filter';
+        } else if($('#name_page').attr("class") === 'groups'){
+            name_post_type = 'sos_group';
+        } else if($('#name_page').attr("class") === 'filters_categories'){
+            name_post_type = 'cat';
+        }
+
+        console.log( "aAjax: delete-restore-element.js 222" );
+        
+        if($('#check_all_elements option:selected').text() === 'Delete'){
+            
+            data = {
+                action          : 'sos_delete_elements',
+                'name_post_type': name_post_type,
+                'type_elements' : ( $('#all_elements').css('font-weight') === '700' ? 'all' : 'trash' ),
+                'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
+            };
+            
+        } else if($('#check_all_elements option:selected').text() === 'Restore'){
+        
+            data = {
+                action          : 'sos_publish_elements',
+                'name_post_type': name_post_type,
+                'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
+            };
+            
+        }
+        
+        if( data ){
+            
+            $.ajax({
+                url     : plugin_optimizer_groups.ajax_url,
+                type    : 'POST',
+                data    : data,
+                success : function (response) {
+                    
+                    $('#the-list').html( response.data );
+                    
+                    if($('#check_all').is( ":checked" )){
+                        $('#check_all').prop('checked', false);
+                    }
+                    
+                    allElements.count_element(name_post_type);
+                }
+            });
+            
+        }
+        
+    });
+
+
+
+
+
+
+
+
     // on the list of plugins, switch between active and inactive ones
     $('body').on('click', '#activate_plugins, #deactivate_plugins', function(){
         
@@ -432,67 +500,6 @@ jQuery( document ).ready( function($){
                 // $('#the-list').html(response.data);
             // }
         // });
-    });
-
-    // Bulk actions button (usually delete or restore element)
-    $('body').on('click', '#btn_apply', function(){
-        
-        console.log( "FIXED: Bulk actions button (usually delete or restore element)" );
-        
-        let name_post_type;
-        let data = false;
-        
-        if($('#name_page').attr("class") === 'worklist'){
-            name_post_type = 'sos_work';
-        } else if($('#name_page').attr("class") === 'filters'){
-            name_post_type = 'sos_filter';
-        } else if($('#name_page').attr("class") === 'groups'){
-            name_post_type = 'sos_group';
-        } else if($('#name_page').attr("class") === 'filters_categories'){
-            name_post_type = 'cat';
-        }
-
-        console.log( "aAjax: delete-restore-element.js 222" );
-        
-        if($('#check_all_elements option:selected').text() === 'Delete'){
-            
-            data = {
-                action          : 'sos_delete_elements',
-                'name_post_type': name_post_type,
-                'type_elements' : ( $('#all_elements').css('font-weight') === '700' ? 'all' : 'trash' ),
-                'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
-            };
-            
-        } else if($('#check_all_elements option:selected').text() === 'Restore'){
-        
-            data = {
-                action          : 'sos_publish_elements',
-                'name_post_type': name_post_type,
-                'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
-            };
-            
-        }
-        
-        if( data ){
-            
-            $.ajax({
-                url     : plugin_optimizer_groups.ajax_url,
-                type    : 'POST',
-                data    : data,
-                success : function (response) {
-                    
-                    $('#the-list').html( response.data );
-                    
-                    if($('#check_all').is( ":checked" )){
-                        $('#check_all').prop('checked', false);
-                    }
-                    
-                    allElements.count_element(name_post_type);
-                }
-            });
-            
-        }
-        
     });
 
     // #add_elements is a button used to get the Create New XYZ form
@@ -724,40 +731,6 @@ jQuery( document ).ready( function($){
         }
     });
 
-    // Check the name of the elements when creating them, filters, groups and categories should use already existing name
-    // WTF is this code
-    $('body').on('change', '#set_title', function(){
-        
-        console.log( "OLD: Check the name of the elements when creating them, filters, groups and categories should use already existing name" );
-        
-        const name_element = $(this).val();
-        const type_element = $('#name_page').attr('class');
-        
-        console.log( "aAjax: check-name-elements.js" );
-        
-        // $.ajax({
-            // url: plugin_optimizer_groups.ajax_url,
-            // type: 'POST',
-            // data: {
-                // action: 'sos_check_name_elements',
-                // 'name_element': name_element,
-                // 'type_element': type_element,
-            // },
-            // success: function (response) {
-                // if( response.data === true && response.data !== 'nothing' ){
-                    // $('#set_title').css('border', '1px solid red');
-                    // $('#set_title').val('');
-                    // $('#set_title').focus();
-                // } else {
-                    // $('#set_title').css('border-top', '0');
-                    // $('#set_title').css('border-right', '0');
-                    // $('#set_title').css('border-left', '0');
-                    // $('#set_title').css('border-bottom', '1px solid #000');
-                // }
-            // }
-        // });
-    });
-
     // Clicking on element on the list (filter, group, category) redirects to the edit page
     $('body').on('click', '.block_info > td:not(:nth-child(1))', function(){
         
@@ -811,88 +784,6 @@ jQuery( document ).ready( function($){
                 $('#the-list').html(response.data.return);
             }
         });*/
-    });
-    
-    // Change plugins for a filter and a group??
-    // TODO check because those actions run multiple triggers
-    $('body').on('click', 'DISABLED ------------------------- .plugin-wrapper:not(.group-wrapper) > .content:not(.single_group)', function(){
-        
-        console.log( "OLD: Change plugins for a filter and a group??" );
-        
-        console.log( "change-plugins.js" );
-        
-        let   $close = $(this).find('span.close');
-        
-        if( $close.length < 1 ){
-            return;
-        }
-        
-        const filter_id      = $close.attr('value');
-        const plugin_name    = $close.attr('id');
-        const plugin_link    = $close.attr('link');
-        const change_plugins = $close.text();
-
-        const block_plugins      = $('#block_plugins');
-        const block_link_plugins = $('#block_link_plugins');
-
-        if(change_plugins === '+'){
-            /* Change appearance */
-            $(this).addClass('block');
-            $close.text('×');
-            /* Record data of selected plugins */
-            block_plugins.val() ? block_plugins.val(`${block_plugins.val()}, ${plugin_name}`) : block_plugins.val(plugin_name);
-
-            /* Record data of selected link plugins */
-            block_link_plugins.val() ? block_link_plugins.val(`${block_link_plugins.val()}, ${plugin_link}`) : block_link_plugins.val(plugin_link);
-        } else {
-            /* Change appearance */
-            $(this).removeClass('block');
-            $close.text('+');
-            /* Delete data of selected plugins */
-            block_plugins.val(block_plugins.val().split(', ').filter(item => item !== plugin_name).join(', '))
-
-            /* Delete data of selected plugins */
-            block_link_plugins.val(block_link_plugins.val().split(', ').filter(item => item !== plugin_link).join(', '))
-        }
-
-        /*$.ajax({
-            url: plugin_optimizer_groups.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'sos_change_plugins_to_filter',
-                'filter_id': filter_id,
-                'plugin_name': plugin_name,
-                'plugin_link': plugin_link,
-                'change_plugins': change_plugins,
-            },
-            success: function (response) {
-            }
-        });*/
-    });
-    
-    // .data-link is an already selected Permalink/Endpoint for the filter
-    // WTF is this code? We don't want Ajax running while we type the permalink
-    $('body').on('input', '.data-link', function(){
-        
-        console.log( "OLD: .data-link is an already selected Permalink/Endpoint for the filter" );
-        
-        const text_link = $(this).text();
-        const filter_id = $(this).attr('filter_id');
-        
-        console.log( "aAjax: change-permalink.js" );
-        
-        // $.ajax({
-            // url: plugin_optimizer_groups.ajax_url,
-            // type: 'POST',
-            // data: {
-                // action: 'sos_change_permalink',
-                // 'text_link': text_link,
-                // 'filter_id': filter_id,
-            // },
-            // success: function ({data}) {
-                // $(`tr#filter-${filter_id}>.data-link-filter`).text(data);
-            // }
-        // });
     });
     
     // Groups section on the filter edit page
@@ -957,6 +848,7 @@ jQuery( document ).ready( function($){
         // });
     });
     
+    // DELETE ?
     // Add or delete category that already exists for filters on filters page
     $('body').on('click', '.filter-category', function() {
 
@@ -1001,47 +893,11 @@ jQuery( document ).ready( function($){
             // },
             // success: function (response) {
                 // /* Change the content of the block of categories */
-                $(self).parent().html(response.data);
+                // // $(self).parent().html(response.data);
             // }
         // });
     });
 
-    // Show the available items on their pages after updating the data
-    $('body').on('click', '#all_elements', function(){
-        
-        console.log( "OLD: Show the available items on their pages after updating the data" );
-        
-        let name_post_type;
-        if($('#name_page').attr("class") === 'worklist'){
-            name_post_type = 'sos_work';
-        } else if($('#name_page').attr("class") === 'filters'){
-            name_post_type = 'sos_filter';
-        } else if($('#name_page').attr("class") === 'groups'){
-            name_post_type = 'sos_group';
-        }
-        /* Remove the ability to recover if we are out of the cart */
-        $('select#check_all_elements option[value="restore"]').remove();
-        
-        console.log( "aAjax: all-elements.js" );
-        
-        // $.ajax({
-            // url: plugin_optimizer_groups.ajax_url,
-            // type: 'POST',
-            // data: {
-                // action: 'sos_all_elements',
-                // 'name_post_type': name_post_type,
-            // },
-            // success: function (response) {
-                // /* change the weight of the font to a larger one for the "ALL" link */
-                // $('#all_elements').css('font-weight', '700');
-                // /* change the font weight to a smaller one for the "TRASH" link */
-                // $('#trash_elements').css('font-weight', '400');
-                // /* Change the content of the page */
-                // $('#the-list').html(response.data);
-            // }
-        // });
-    });
-    
     // Add new category for filters on Edit Filter? page
     $('body').on('click', '.add-category', function (e) {
         
@@ -1068,6 +924,7 @@ jQuery( document ).ready( function($){
         // });
     });
 
+    // TODO Needs a better selector
     // Select all elements
     $('body').on('change', '#check_all', function(){
         
@@ -1079,6 +936,8 @@ jQuery( document ).ready( function($){
             $('tbody input:checkbox').prop('checked', false);
         }
     });
+    
+    // TODO Needs a better selector
     // Change appearance checkbox all elements
     $('body').on('change', 'tbody input:checkbox', function(){
         
@@ -1091,6 +950,7 @@ jQuery( document ).ready( function($){
             $('#check_all').prop('checked', true);
         }
     });
+    
     
     // Actions for all elements
     let allElements = {
