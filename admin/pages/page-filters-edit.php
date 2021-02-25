@@ -19,14 +19,14 @@ unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 's
 
 natcasesort( $post_types );
 
-// po_mu_plugin()->write_log( $post_types, "page-add-filters-post_types" );
+// po_mu_plugin()->write_log( $categories, "page-add-filters-categories" );
 
 // defaults
 $page_title = "Create a new Filter";
+$filter_type       = "_endpoint";
 $plugins_to_block  = [];
 $groups_to_block   = [];
 $filter_categories = [];
-$filter_type       = "_endpoint";
 $endpoints         = [];
 
 $show_endpoints_wrapper = '';
@@ -40,15 +40,26 @@ if( $filter ){
     
     $page_title = "Editing filter: " . $filter->post_title;
 
-    $plugins_to_block   = get_post_meta( $filter->ID, "block_value_plugins", true );
-    $groups_to_block    = get_post_meta( $filter->ID, "block_group_plugins", true );
-    $filter_categories  = explode( ", ", get_post_meta( $filter->ID, "category_filter", true ) );
+    $filter_type        = get_post_meta( $filter->ID, "filter_type", true );
+    $plugins_to_block   = get_post_meta( $filter->ID, "plugins_to_block", true );
+    $groups_to_block    = get_post_meta( $filter->ID, "groups_used", true );
+    $filter_categories  = get_post_meta( $filter->ID, "categories", true );
     
-    $filter_type = get_post_meta( $filter->ID, "type_filter", true );
+    if( ! empty( $plugins_to_block ) ){
+        $plugins_to_block   = array_keys( $plugins_to_block );
+    }
+    
+    if( ! empty( $groups_to_block ) ){
+        $groups_to_block    = array_keys( $groups_to_block );
+    }
+    
+    if( ! empty( $filter_categories ) ){
+        $filter_categories  = array_keys( $filter_categories );
+    }
     
     // po_mu_plugin()->write_log( $filter_type, "page-filters-edit-filter_type" );
     
-    if( ! in_array( $filter_type, $post_types ) ){
+    if( $filter_type == "_endpoint" || ! in_array( $filter_type, $post_types ) ){
         
         $filter_type = "_endpoint";
         $endpoints   = PO_Admin_Helper::get_filter_endpoints( $filter );
@@ -170,7 +181,7 @@ if( $filter ){
 									if ( $groups ){
 										foreach ( $groups as $group ){
                                             $block_plugins_in_group = explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) );
-                                            $selected = in_array( $group->post_title, $groups_to_block );
+                                            $selected = in_array( $group->ID, $groups_to_block );
                                             $blocked  = $selected ? " blocked" : "";
                                             $checked  = $selected ? ' checked="checked"' : '';
 											?>
@@ -200,12 +211,12 @@ if( $filter ){
 									<?php
 									if ( $categories ){
 										foreach ( $categories as $cat ){
-                                            $selected = in_array( $cat->cat_name, $filter_categories );
+                                            $selected = in_array( $cat->term_id, $filter_categories );
                                             $checked  = $selected ? ' checked="checked"' : '';
 											?>
 											<div class="single_category content<?= $selected ? " blocked" : "" ?>">
-                                                <input class="noeyes" type="checkbox" name="PO_filter_data[categories][<?= $cat->cat_ID ?>]" value="<?= $cat->cat_name ?>"<?= $checked ?>/>
-												<span value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></span>
+                                                <input class="noeyes" type="checkbox" name="PO_filter_data[categories][<?= $cat->term_id ?>]" value="<?= $cat->cat_name ?>"<?= $checked ?>/>
+												<span value="<?= $cat->term_id; ?>"><?= $cat->cat_name; ?></span>
 											</div>
 										<?php
 										}
