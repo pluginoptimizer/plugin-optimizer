@@ -95,11 +95,15 @@ jQuery( document ).ready( function($){
     // NEW: Edit Filter page template - Save filter
     $('#edit_filter').on('click', '#save_filter', function(){
         
-        let data = $('#edit_filter').find('select, textarea, input').serialize();
-        let data_log = $('#edit_filter').find('select, textarea, input').serializeArray();
+        let filter_data = $('#edit_filter').find('select, textarea, input').serialize();
         
-        // console.log( "Data: ", data );
-        console.log( "Data: ", data_log );
+        $.post( po_object.ajax_url, { action  : 'po_save_filter', data : filter_data }, function( response ) {
+            console.log( "po_save_filter: ", response );
+            
+            alert( response.data.message );
+            
+        }, "json");
+        
         
     });
     
@@ -172,7 +176,7 @@ jQuery( document ).ready( function($){
 
         $(this).parent().after(`
 			<div class="col-12 additional_endpoint_wrapper">
-                <input class="additional_endpoint" type="text" name="[PO_filter_data][endpoints][]" placeholder="Put your URL here" value="${link}"/>
+                <input class="additional_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value="${link}"/>
                 <div class="remove_additional_endpoint circle_button remove_something">-</div>
 			</div>
         `);
@@ -367,7 +371,7 @@ jQuery( document ).ready( function($){
         if( data ){
             
             $.ajax({
-                url     : plugin_optimizer_groups.ajax_url,
+                url     : po_object.ajax_url,
                 type    : 'POST',
                 data    : data,
                 success : function (response) {
@@ -403,7 +407,7 @@ jQuery( document ).ready( function($){
         console.log( "aAjax: show-plugins-to-settings.js" );
         
         // $.ajax({
-            // url: plugin_optimizer_groups.ajax_url,
+            // url: po_object.ajax_url,
             // type: 'POST',
             // data: {
                 // action: 'sos_show_plugins',
@@ -488,7 +492,7 @@ jQuery( document ).ready( function($){
         console.log( "aAjax: search-elements.js" );
         
         // $.ajax({
-            // url: plugin_optimizer_groups.ajax_url,
+            // url: po_object.ajax_url,
             // type: 'POST',
             // data: {
                 // action          : 'sos_search_elements',
@@ -531,7 +535,7 @@ jQuery( document ).ready( function($){
         console.log( "aAjax: delete-category.js" );
         
         // $.ajax({
-            // url: plugin_optimizer_groups.ajax_url,
+            // url: po_object.ajax_url,
             // type: 'POST',
             // data: {
                 // action          : 'sos_delete_category',
@@ -567,7 +571,7 @@ jQuery( document ).ready( function($){
             console.log( "aAjax: create-groups.js 111" );
         
             // $.ajax({
-                // url: plugin_optimizer_groups.ajax_url,
+                // url: po_object.ajax_url,
                 // type: 'POST',
                 // data: {
                     // action: 'sos_add_group_plugins',
@@ -585,7 +589,7 @@ jQuery( document ).ready( function($){
                     // console.log( "aAjax: create-groups.js 222" );
         
                     // $.ajax({
-                        // url: plugin_optimizer_groups.ajax_url,
+                        // url: po_object.ajax_url,
                         // type: 'POST',
                         // data: {
                             // action: 'sos_get_parent_group',
@@ -637,7 +641,7 @@ jQuery( document ).ready( function($){
             console.log( "aAjax: created-filters.js" );
         
             // $.ajax({
-                // url: plugin_optimizer_groups.ajax_url,
+                // url: po_object.ajax_url,
                 // type: 'POST',
                 // data: {
                     // action                  : 'sos_add_plugin_to_filter',
@@ -687,7 +691,7 @@ jQuery( document ).ready( function($){
         console.log( "aAjax: create-category.js 111" );
         
         // $.ajax({
-            // url: plugin_optimizer_groups.ajax_url,
+            // url: po_object.ajax_url,
             // type: 'POST',
             // data: {
                 // action                  : 'sos_create_cat_subcat',
@@ -704,7 +708,7 @@ jQuery( document ).ready( function($){
                 // console.log( "aAjax: create-category.js 222" );
         
                 // $.ajax({
-                    // url: plugin_optimizer_groups.ajax_url,
+                    // url: po_object.ajax_url,
                     // type: 'POST',
                     // data: {
                         // action: 'sos_get_parent_cat',
@@ -772,7 +776,7 @@ jQuery( document ).ready( function($){
             block_plugins.val(block_plugins.val().split(', ').filter(item => item !== plugin_name).join(', '))
         }
         /*$.ajax({
-            url: plugin_optimizer_groups.ajax_url,
+            url: po_object.ajax_url,
             type: 'POST',
             data: {
                 action: 'sos_change_plugins_to_group',
@@ -833,7 +837,7 @@ jQuery( document ).ready( function($){
         console.log( "aAjax: change-groups.js" );
         
         // $.ajax({
-            // url: plugin_optimizer_groups.ajax_url,
+            // url: po_object.ajax_url,
             // type: 'POST',
             // data: {
                 // action: 'sos_change_groups_to_filter',
@@ -879,7 +883,7 @@ jQuery( document ).ready( function($){
         console.log( "aAjax: add-category-filter.js" );
         
         // $.ajax({
-            // url: plugin_optimizer_groups.ajax_url,
+            // url: po_object.ajax_url,
             // type: 'POST',
             // data: {
                 // action: 'sos_add_category_to_filter',
@@ -910,7 +914,7 @@ jQuery( document ).ready( function($){
         console.log( "aAjax: add-category.js" );
         
         // $.ajax({
-            // url: plugin_optimizer_groups.ajax_url,
+            // url: po_object.ajax_url,
             // type: 'POST',
             // data: {
                 // action: 'sos_create_category',
@@ -962,7 +966,7 @@ jQuery( document ).ready( function($){
             console.log( "aAjax: check-all-element.js" );
             
             // $.ajax({
-                // url: plugin_optimizer_groups.ajax_url,
+                // url: po_object.ajax_url,
                 // type: 'POST',
                 // data: {
                     // action: 'sos_count_elements',

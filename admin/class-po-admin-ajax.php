@@ -50,8 +50,70 @@ class PO_Ajax {
 		add_action( 'wp_ajax_sos_change_type',             [ $this, 'sos_change_type'               ] );
 		add_action( 'wp_ajax_sos_change_data_category',    [ $this, 'sos_change_data_category'      ] );
 		add_action( 'wp_ajax_sos_change_groups_to_filter', [ $this, 'sos_change_groups_to_filter'   ] );
+        
+		add_action( 'wp_ajax_po_save_filter', [ $this, 'po_save_filter'   ] );
 
 	}
+
+	/** NEW
+	 * Create/Update filter
+	 */
+	function po_save_filter() {
+        
+        parse_str( $_POST['data'], $array);
+        
+        $data = $array['PO_filter_data'];
+        
+        // po_mu_plugin()->write_log( $_POST, "po_save_filter-_POST" );
+        // po_mu_plugin()->write_log( $data, "po_save_filter-data" );
+        
+        
+        if( empty( $data["title"] ) ){
+            
+            wp_send_json_error( [ "message" => "The title is a required field!" ] );
+        }
+        
+		$post_data = array(
+			'post_title'  => $data["title"],
+			'post_type'   => 'sos_filter',
+			'post_status' => 'publish',
+			'post_author' => 1,// TODO get_current_user_id() with localize_script in enqueue function
+			'tax_input'   => [ "сategories_filters" => ( ! empty( $data["categories"] ) ? $data["categories"] : [] ) ],
+		);
+        
+        foreach( $post_data["tax_input"] as $index => $id ){
+            
+            $post_data["tax_input"][ $index ] = (int) $id;
+        }
+        
+        if( ! empty( $data["ID"] ) ){
+            $post_data["ID"] = $data["ID"];
+        }
+
+		$post_id = wp_insert_post( $post_data, true );
+
+		if ( is_wp_error( $post_id ) ) {
+			wp_send_json_error( [ "message" => $post_id->get_error_message() ] );
+		}
+
+        $meta = [
+            "filter_type"       => ! empty( $data["type"] )             ? $data["type"]             : "",
+            "endpoints"         => ! empty( $data["endpoints"] )        ? $data["endpoints"]        : [],
+            "plugins_to_block"  => ! empty( $data["plugins_to_block"] ) ? $data["plugins_to_block"] : [],
+            "groups_used"       => ! empty( $data["groups"] )           ? $data["groups"]           : [],
+            "categories"        => ! empty( $data["categories"] )       ? $data["categories"]       : [],
+        ];
+        
+        foreach( $meta as $meta_key => $meta_value ){
+            
+            update_post_meta( $post_id, $meta_key, $meta_value );
+        }
+        
+        
+		wp_send_json_success( [ "message" => "All good, filter is saved." ] );
+
+	}
+
 
 	/**
 	 * Create filter

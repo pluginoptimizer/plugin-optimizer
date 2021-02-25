@@ -76,14 +76,14 @@ if( $filter ){
 						<div class="row filter_title">
                         
                         <?php if( $filter ){ ?>
-                            <input type="hidden" name="[PO_filter_data][ID]" value="<?= $filter->ID ?>"/>
+                            <input type="hidden" name="PO_filter_data[ID]" value="<?= $filter->ID ?>"/>
                         <?php } ?>
                         
 							<div class="col-9">
 								<div class="header">Title</div>
 								<div>
 									<div class="content enter-data">
-										<span><input class="content-text" id="set_title" type="text"  name="[PO_filter_data][title]"value="<?= $filter ? $filter->post_title : "" ?>" placeholder="The title of this filter"></span>
+										<span><input class="content-text" id="set_title" type="text"  name="PO_filter_data[title]"value="<?= $filter ? $filter->post_title : "" ?>" placeholder="The title of this filter"></span>
 									</div>
 								</div>
 							</div>
@@ -93,7 +93,7 @@ if( $filter ){
 								<div>
 									<div class="content enter-data">
                                         <span>
-                                            <select name="[PO_filter_data][type]" id="set_type">
+                                            <select name="PO_filter_data[type]" id="set_type">
                                                 <optgroup label="Default:">
                                                     <option value="_endpoint"<?= $filter_type == "_endpoint" ? ' selected="selected"' : "" ?>>Endpoint(s)</option>
                                                 </optgroup>
@@ -123,14 +123,14 @@ if( $filter ){
 							</div>
                             
 							<div class="col-12 additional_endpoint_wrapper">
-                                <input id="first_endpoint" type="text" name="[PO_filter_data][endpoints][]" placeholder="Put your URL here" value="<?= ! empty( $endpoints ) ? $endpoints[0] : "" ?>"/>
+                                <input id="first_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?= ! empty( $endpoints ) ? $endpoints[0] : "" ?>"/>
                                 <div id="add_endpoint" class="circle_button add_something">+</div>
 							</div>
                             
                             <?php for( $i = 1; $i < count( $endpoints ); $i++ ){ ?>
                             
                                 <div class="col-12 additional_endpoint_wrapper">
-                                    <input class="additional_endpoint" type="text" name="[PO_filter_data][endpoints][]" placeholder="Put your URL here" value="<?= $endpoints[ $i ] ?>"/>
+                                    <input class="additional_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?= $endpoints[ $i ] ?>"/>
                                     <div class="remove_additional_endpoint circle_button remove_something">-</div>
                                 </div>
                                 
@@ -175,7 +175,7 @@ if( $filter ){
                                             $checked  = $selected ? ' checked="checked"' : '';
 											?>
 											<div class="single_group content<?= $blocked ?>" data-plugins="<?= htmlspecialchars(json_encode($block_plugins_in_group)) ?>">
-                                                <input class="noeyes" type="checkbox" name="[PO_filter_data][groups][<?= $group->ID ?>]" value="<?= $group->post_title ?>"<?= $checked ?>/>
+                                                <input class="noeyes" type="checkbox" name="PO_filter_data[groups][<?= $group->ID ?>]" value="<?= $group->post_title ?>"<?= $checked ?>/>
 												<span><?= $group->post_title; ?></span>
 												<?php foreach ( $block_plugins_in_group as $block_plugin_in_group ){ ?>
 													<div class="hidden_content">
@@ -204,7 +204,7 @@ if( $filter ){
                                             $checked  = $selected ? ' checked="checked"' : '';
 											?>
 											<div class="single_category content<?= $selected ? " blocked" : "" ?>">
-                                                <input class="noeyes" type="checkbox" name="[PO_filter_data][categories][<?= $cat->cat_ID ?>]" value="<?= $cat->cat_name ?>"<?= $checked ?>/>
+                                                <input class="noeyes" type="checkbox" name="PO_filter_data[categories][<?= $cat->cat_ID ?>]" value="<?= $cat->cat_name ?>"<?= $checked ?>/>
 												<span value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></span>
 											</div>
 										<?php

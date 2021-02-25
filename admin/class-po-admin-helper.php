@@ -124,7 +124,7 @@ EOF;
                 }
                 
                 echo '<div class="' . $class . '" data-id="' . $plugin_id . '" data-name="' . $plugin_name . '">';
-                echo    '<input class="noeyes" type="checkbox" name="[PO_filter_data][plugins_to_block][' . $plugin_id . ']" value="' . $plugin_name . '"' . $checked . '/>';
+                echo    '<input class="noeyes" type="checkbox" name="PO_filter_data[plugins_to_block][' . $plugin_id . ']" value="' . $plugin_name . '"' . $checked . '/>';
                 echo    '<span value="' . $plugin_id . '">' . $plugin_name . '</span>';
                 echo    '<span class="group_name">' . '</span>';
                 echo '</div>';
@@ -232,7 +232,7 @@ EOF;
 
                         <tr class="block_info block_children">
                             <td><input type="checkbox" id="<?= $post_chidren->ID; ?>"></td>
-                            <td> — <?= $post_chidren->post_title; ?></td>
+                            <td> â€” <?= $post_chidren->post_title; ?></td>
                             <td><?= get_post_meta( $post_chidren->ID, 'type_group', true ); ?></td>
                             <td><?= $children_group_plugins; ?></td>
                             <td><?= substr_count( $children_group_plugins, ',' ) + 1; ?></td>
