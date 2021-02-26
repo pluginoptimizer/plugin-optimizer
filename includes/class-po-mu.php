@@ -161,20 +161,20 @@ class PO_MU {
 		foreach( $filters as $filter ){
             
             // If we're on the edit post screen, filter by post type
-			if( $filter->type_filter !== 'none' && $editing_post_type && $editing_post_type == $filter->type_filter ){
+			if( $filter->type_filter !== '_endpoint' && $editing_post_type && $editing_post_type == $filter->type_filter ){
                 
 				$this->use_filter( $filter );
 			}
 
             // Filter by URL
-			if( is_array( $filter->selected_page ) ){
+			if( is_array( $filter->endpoints ) ){
                 
-                if( in_array( $current_url, $filter->selected_page ) ){
+                if( in_array( $current_url, $filter->endpoints ) ){
                     
                     $this->use_filter( $filter );
                 }
                 
-			} elseif( $filter->selected_page == $current_url ){
+			} elseif( $filter->endpoints == $current_url ){
 
 				$this->use_filter( $filter );
 			}
@@ -188,11 +188,13 @@ class PO_MU {
         
         $this->is_being_filtered = true;
         
-        $this->plugins_to_block = array_merge( $this->plugins_to_block, $filter->block_value_plugins );
+        $plugins_to_block = ! empty( $filter->plugins_to_block ) ? array_keys( $filter->plugins_to_block ) : [];
+        
+        $this->plugins_to_block = array_merge( $this->plugins_to_block, $plugins_to_block );
         
         $this->filters_in_use[ $filter->ID ] = $filter->post_title;
         
-        return $filter->block_value_plugins;
+        return $plugins_to_block;
         
     }
     

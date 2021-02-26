@@ -73,6 +73,11 @@ class PO_Ajax {
             wp_send_json_error( [ "message" => "The title is a required field!" ] );
         }
         
+        if( ! empty( $data["type"] ) && $data["type"] == "_endpoint" && count( $data["endpoints"] ) === 1 && empty( $data["endpoints"][0] ) ){
+            
+            wp_send_json_error( [ "message" => "There has to be at least 1 endpoint defined for this filter type!" ] );
+        }
+        
 		$post_data = array(
 			'post_title'  => $data["title"],
 			'post_type'   => 'sos_filter',

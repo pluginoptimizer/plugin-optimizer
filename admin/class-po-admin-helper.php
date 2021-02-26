@@ -148,19 +148,19 @@ EOF;
             
 			foreach( $filters as $filter ){
                 
-                $data_type        = get_post_meta( $filter->ID, 'type_filter',   true );
-                $data_endpoints   = get_post_meta( $filter->ID, 'selected_page', true );
-                $blocking_plugins = get_post_meta( $filter->ID, 'block_plugins', true );
+                $data_type        = get_post_meta( $filter->ID, 'filter_type',      true );
+                $data_endpoints   = get_post_meta( $filter->ID, 'endpoints',        true );
+                $blocking_plugins = get_post_meta( $filter->ID, 'plugins_to_block', true );
                 
                 sort( $blocking_plugins );
                 
                 if( empty( $data_type ) || $data_type == "_endpoint" || $data_type == "none" ){
-                    $trigger = implode( ',<br>', explode( ',', $data_endpoints ) );
+                    $trigger = implode( ',<br>', $data_endpoints );
                 } else {
                     $trigger = "Backend editing of custom post type: <b>" . $data_type . "</b>";
                 }
                 
-                $categories = implode( ',<br>', explode( ',', get_post_meta( $filter->ID, 'category_filter', true ) ) );
+                $categories = implode( ',<br>', get_post_meta( $filter->ID, 'categories', true ) );
                 
                 $date = date("Ym",  strtotime( $filter->post_date ) );// 202109
                 
