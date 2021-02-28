@@ -38,9 +38,6 @@ class PO_Admin_Helper {
                 <div id="window_worklist"   class="tabs col-2">Worklist</div>
                 <div id="window_settings"   class="tabs col-2">Settings</div>
             </div>
-            <div class="row col-2">
-                <input class="search" type="search" id="search_elements" name="s" value="" placeholder="Search groups">
-            </div>
         </div>
         
 EOF;
