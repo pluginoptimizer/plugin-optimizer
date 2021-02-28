@@ -678,12 +678,12 @@ input[type="text"].additional_endpoint{
     box-shadow: none;
 }
 
-.additional_endpoint_wrapper .circle_button{
+.circle_button{
     cursor: pointer;
     transition: all 300ms ease;
     user-select: none;
     
-    display: block;
+    display: inline-block;
     width: 24px;
     height: 24px;
     margin: 0 5px 0 10px;
@@ -705,11 +705,18 @@ input[type="text"].additional_endpoint{
     font-weight: 600;
     
 }
-.additional_endpoint_wrapper .circle_button.remove_something{
+.circle_button.remove_something{
     background-color: #ffc4c4;
 }
-.additional_endpoint_wrapper .circle_button:hover{
+.circle_button:hover{
     opacity: 0.6;
+}
+
+#add_category.before_add .during_add{
+    display: none;
+}
+#add_category:not(.before_add) .before_add{
+    display: none;
 }
 
 

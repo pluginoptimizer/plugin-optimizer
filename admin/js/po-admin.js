@@ -71,6 +71,56 @@ jQuery( document ).ready( function($){
         
     });
     
+    // NEW: Edit Filter page template - Create new category, show input field
+    $('#edit_filter').on('click', '#add_category.before_add', function(){
+
+        $('#add_category').removeClass('before_add');
+        $('#add_category').addClass('during_add');
+        $('#add_category input').focus();
+        
+    });
+    
+    // NEW: Edit Filter page template - Create new category, Cancel
+    $('#edit_filter').on('click', '#add_category.during_add .cancel', function(){
+
+        $('#add_category').removeClass('during_add');
+        $('#add_category').addClass('before_add');
+        
+    });
+    
+    // NEW: Edit Filter page template - Create new category, OK
+    $('#edit_filter').on('click', '#add_category.during_add .ok', function(){
+
+        let category_name = $('#add_category input').val();
+        
+        if( ! category_name ){
+            return;
+        }
+        
+        $.post( po_object.ajax_url, { action  : 'po_create_category', category_name : category_name }, function( response ) {
+            console.log( "po_create_category: ", response );
+            
+            if( response.data.message ){
+                alert( response.data.message );
+            } else {
+                
+                $('#add_category').removeClass('during_add');
+                $('#add_category').addClass('before_add');
+                
+                $('#add_category input').val('');
+                
+                $('#add_category').before(`
+					<div class="single_category content blocked">
+                        <input class="noeyes" type="checkbox" name="PO_filter_data[categories][${response.data.category_id}]" value="${category_name}" checked="checked"/>
+						<span value="${response.data.category_id}">${category_name}</span>
+                    </div>
+                `);
+            }
+            
+        }, "json");
+        
+    });
+    
     // NEW: Edit Filter page template - Toggle plugins for already selected groups on page load
     $('#edit_filter .block-group-plugin-wrapper .single_group.blocked').each(function(){
         
@@ -103,7 +153,6 @@ jQuery( document ).ready( function($){
             alert( response.data.message );
             
         }, "json");
-        
         
     });
     

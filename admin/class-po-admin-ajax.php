@@ -27,31 +27,31 @@ class PO_Ajax {
 	 */
 	function load_hooks() {
 
-		add_action( 'wp_ajax_sos_add_plugin_to_filter',    [ $this, 'sos_add_plugin_to_filter'      ] );
-		add_action( 'wp_ajax_sos_search_pages',            [ $this, 'sos_search_pages'              ] );
-		add_action( 'wp_ajax_sos_search_elements',         [ $this, 'sos_search_elements'           ] );
-		add_action( 'wp_ajax_sos_all_elements',            [ $this, 'sos_all_elements'              ] );
-		add_action( 'wp_ajax_sos_trash_elements',          [ $this, 'sos_trash_elements'            ] );
-		add_action( 'wp_ajax_sos_delete_elements',         [ $this, 'sos_delete_elements'           ] );
-		add_action( 'wp_ajax_sos_publish_elements',        [ $this, 'sos_publish_elements'          ] );
-		add_action( 'wp_ajax_sos_count_elements',          [ $this, 'sos_count_elements'            ] );
-		add_action( 'wp_ajax_sos_add_group_plugins',       [ $this, 'sos_add_group_plugins'         ] );
-		add_action( 'wp_ajax_sos_create_category',         [ $this, 'sos_create_category'           ] );
-		add_action( 'wp_ajax_sos_create_cat_subcat',       [ $this, 'sos_create_cat_subcat'         ] );
-		add_action( 'wp_ajax_sos_delete_category',         [ $this, 'sos_delete_category'           ] );
-		add_action( 'wp_ajax_sos_check_name_elements',     [ $this, 'sos_check_name_elements'       ] );
-		add_action( 'wp_ajax_sos_change_plugins_to_filter',[ $this, 'sos_change_plugins_to_filter'  ] );
-		add_action( 'wp_ajax_sos_add_category_to_filter',  [ $this, 'sos_add_category_to_filter'    ] );
-		add_action( 'wp_ajax_sos_get_parent_cat',          [ $this, 'sos_get_parent_cat'            ] );
-		add_action( 'wp_ajax_sos_get_parent_group',        [ $this, 'sos_get_parent_group'          ] );
-		add_action( 'wp_ajax_sos_change_plugins_to_group', [ $this, 'sos_change_plugins_to_group'   ] );
-		add_action( 'wp_ajax_sos_show_plugins',            [ $this, 'sos_show_plugins'              ] );
-		add_action( 'wp_ajax_sos_change_permalink',        [ $this, 'sos_change_permalink'          ] );
-		add_action( 'wp_ajax_sos_change_type',             [ $this, 'sos_change_type'               ] );
-		add_action( 'wp_ajax_sos_change_data_category',    [ $this, 'sos_change_data_category'      ] );
-		add_action( 'wp_ajax_sos_change_groups_to_filter', [ $this, 'sos_change_groups_to_filter'   ] );
+		add_action( 'wp_ajax_sos_add_plugin_to_filter',     [ $this, 'sos_add_plugin_to_filter'     ] );
+		add_action( 'wp_ajax_sos_search_pages',             [ $this, 'sos_search_pages'             ] );
+		add_action( 'wp_ajax_sos_search_elements',          [ $this, 'sos_search_elements'          ] );
+		add_action( 'wp_ajax_sos_all_elements',             [ $this, 'sos_all_elements'             ] );
+		add_action( 'wp_ajax_sos_trash_elements',           [ $this, 'sos_trash_elements'           ] );
+		add_action( 'wp_ajax_sos_delete_elements',          [ $this, 'sos_delete_elements'          ] );
+		add_action( 'wp_ajax_sos_publish_elements',         [ $this, 'sos_publish_elements'         ] );
+		add_action( 'wp_ajax_sos_count_elements',           [ $this, 'sos_count_elements'           ] );
+		add_action( 'wp_ajax_sos_add_group_plugins',        [ $this, 'sos_add_group_plugins'        ] );
+		add_action( 'wp_ajax_sos_create_cat_subcat',        [ $this, 'sos_create_cat_subcat'        ] );
+		add_action( 'wp_ajax_sos_delete_category',          [ $this, 'sos_delete_category'          ] );
+		add_action( 'wp_ajax_sos_check_name_elements',      [ $this, 'sos_check_name_elements'      ] );
+		add_action( 'wp_ajax_sos_change_plugins_to_filter', [ $this, 'sos_change_plugins_to_filter' ] );
+		add_action( 'wp_ajax_sos_add_category_to_filter',   [ $this, 'sos_add_category_to_filter'   ] );
+		add_action( 'wp_ajax_sos_get_parent_cat',           [ $this, 'sos_get_parent_cat'           ] );
+		add_action( 'wp_ajax_sos_get_parent_group',         [ $this, 'sos_get_parent_group'         ] );
+		add_action( 'wp_ajax_sos_change_plugins_to_group',  [ $this, 'sos_change_plugins_to_group'  ] );
+		add_action( 'wp_ajax_sos_show_plugins',             [ $this, 'sos_show_plugins'             ] );
+		add_action( 'wp_ajax_sos_change_permalink',         [ $this, 'sos_change_permalink'         ] );
+		add_action( 'wp_ajax_sos_change_type',              [ $this, 'sos_change_type'              ] );
+		add_action( 'wp_ajax_sos_change_data_category',     [ $this, 'sos_change_data_category'     ] );
+		add_action( 'wp_ajax_sos_change_groups_to_filter',  [ $this, 'sos_change_groups_to_filter'  ] );
         
-		add_action( 'wp_ajax_po_save_filter', [ $this, 'po_save_filter'   ] );
+		add_action( 'wp_ajax_po_save_filter',               [ $this, 'po_save_filter'               ] );
+		add_action( 'wp_ajax_po_create_category',           [ $this, 'po_create_category'           ] );
 
 	}
 
@@ -117,6 +117,28 @@ class PO_Ajax {
         
 		wp_send_json_success( [ "message" => "All good, filter is saved." ] );
 
+	}
+
+	/** NEW
+	 * Create new category
+	 */
+	function po_create_category(){
+        
+        // po_mu_plugin()->write_log( $_POST, "po_create_category-_POST" );
+        
+        $category_name = htmlspecialchars( $_POST['category_name'] );
+        
+        if( term_exists( $category_name, "сategories_filters" ) ){
+            wp_send_json_error( [ "message" => "A category with that name already exists!" ] );
+        }
+        
+        $data = wp_create_term( $category_name, "сategories_filters" );
+        
+        if( is_wp_error( $data ) ){
+            wp_send_json_error( [ "message" => "An error occured: " . $data->get_error_message() ] );
+        }
+        
+        wp_send_json_success( [ "category_id" => $data['term_id'] ] );
 	}
 
 
@@ -512,14 +534,6 @@ class PO_Ajax {
 
 	}
 
-
-	/**
-	 * Create new category
-	 */
-	function sos_create_category( $post ) {
-        
-        return PO_Helper::create_category( $post );
-	}
 
 	/**
 	 * Delete category
