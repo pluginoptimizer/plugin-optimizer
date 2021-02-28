@@ -22,7 +22,8 @@ natcasesort( $post_types );
 // po_mu_plugin()->write_log( $categories, "page-add-filters-categories" );
 
 // defaults
-$page_title = "Create a new Filter";
+$page_title        = "Create a new Filter";
+$filter_title      = "";
 $filter_type       = "_endpoint";
 $plugins_to_block  = [];
 $groups_to_block   = [];
@@ -40,6 +41,7 @@ if( $filter ){
     
     $page_title = "Editing filter: " . $filter->post_title;
 
+    $filter_title       = $filter->post_title;
     $filter_type        = get_post_meta( $filter->ID, "filter_type", true );
     $plugins_to_block   = get_post_meta( $filter->ID, "plugins_to_block", true );
     $groups_to_block    = get_post_meta( $filter->ID, "groups_used", true );
@@ -69,6 +71,11 @@ if( $filter ){
         $show_endpoints_wrapper = ' style="display: none;"';
     }
     
+} elseif( ! empty( $_GET["work_title"] ) && ! empty( $_GET["work_link"] ) ){
+    
+    $filter_title = $_GET["work_title"];
+    $endpoints    = [ $_GET["work_link"] ];
+    
 }
 
 
@@ -94,7 +101,7 @@ if( $filter ){
 								<div class="header">Title</div>
 								<div>
 									<div class="content enter-data">
-										<span><input class="content-text" id="set_title" type="text"  name="PO_filter_data[title]"value="<?= $filter ? $filter->post_title : "" ?>" placeholder="The title of this filter"></span>
+										<span><input class="content-text" id="set_title" type="text"  name="PO_filter_data[title]"value="<?= $filter_title ?>" placeholder="The title of this filter"></span>
 									</div>
 								</div>
 							</div>
