@@ -15,14 +15,18 @@ $categories = get_categories( [
         
         <div class="row sos-content">
             <div class="row col-12 justify-content-between global-information">
+            
                 <div class="col-3">
-                    <button class="po_green_button" id="add_elements"><span class="pluse">+</span> add new category</button>
+                    <button class="po_green_button" id="add_elements"><span class="pluse">+</span> Add new Category</button>
                 </div>
-                <div class="col-8 quantity">
-                    <span id="all_elements">all</span> (<span
-                            id="count_all_elements"><?= wp_count_terms( 'сategories_filters' ); ?></span>)
+                
+                <?php PO_Admin_Helper::content_part__bulk_actions( $groups ); ?>
+                
+                <div class="col-3 quantity">
+                    <span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_terms( 'сategories_filters' ); ?></span>)
                 </div>
             </div>
+            
             <div class="row col-12 content-new-element create-categories">
                 <div class="col-12">
                     <table>
@@ -86,22 +90,7 @@ $categories = get_categories( [
 
 
             </div>
-            <div class="row col-12 ">
-                <div class="col-3">
-                    <select id="check_all_elements">
-                        <option value="default">Bulk actions</option>
-                        <option value="delete">Delete</option>
-                    </select>
-                    <button id="btn_apply">Apply</button>
-                </div>
-                <div class="col-3">
-                    <select id="filter_all_elements">
-                        <option value="default">All dates</option>
-                        <option value="delete">November</option>
-                    </select>
-                    <button id="btn_date_filter">Filter</button>
-                </div>
-            </div>
+            
             <div class="row col-12">
                 <div class="col-12">
                     <table>

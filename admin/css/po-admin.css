@@ -243,6 +243,7 @@
     font-weight: 700;
 }
 
+#the-list > .filtered_out__type,
 #the-list > .filtered_out__date,
 #the-list > .filtered_out__status{
     display: none;
@@ -398,7 +399,12 @@ td.expandable.list_of_plugins *{
 
 
 
-
+#bulk_actions{
+    display: flex;
+}
+#bulk_actions > div:not(:last-of-type){
+    margin-right: 20px;
+}
 
 
 

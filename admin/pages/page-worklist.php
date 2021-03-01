@@ -14,11 +14,9 @@ $worklists = get_posts( array(
         <div class="row sos-content">
             <div class="row col-12 justify-content-between global-information">
             
-                <div class="col-3">
-                    
-                </div>
-                
                 <?php PO_Admin_Helper::content_part__bulk_actions( $worklists ); ?>
+                
+                <div class="col-3"></div>
                 
                 <div class="col-3 quantity">
                     <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?= wp_count_posts( 'sos_work' )->publish; ?></span>)

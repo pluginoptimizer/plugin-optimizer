@@ -46,8 +46,10 @@ EOF;
     
 	static function content_part__bulk_actions( $posts ) {
         
-        $months      = [];
-        $months_html = "";
+        $months           = [];
+        $months_html      = '';
+        $filter_types     = [];
+        $filter_type_html = '';
         
         foreach( $posts as $post ){
             
@@ -58,7 +60,20 @@ EOF;
             
             $months[ $date_value ] = $date_label;
             
-            // po_mu_plugin()->write_log( $post, "content_part__bulk_actions-post" );
+            if( $post->post_type == "sos_filter" && ! in_array( $post->filter_type, array_keys( $types ) ) ){
+                
+                if( $post->filter_type == "_endpoint" ){
+                    
+                    $filter_types["_endpoint"] = "Endpoint";
+                    
+                } else {
+                    
+                    $filter_types["_edit_screen"] = "Edit screen";
+                    
+                }
+                
+            }
+            // po_mu_plugin()->write_log( $post->filter_type, "content_part__bulk_actions-post-filter_type" );
             // break;
         }
         
@@ -69,21 +84,42 @@ EOF;
             $months_html .= '<option value="' . $value . '">' . $label . '</option>';
         }
         
+        
+        if( count( $filter_types ) >= 2 ){
+            
+            $filter_type_html .= '<div>';
+            $filter_type_html .= '<select id="filter_by_type">';
+            $filter_type_html .= '    <option value="default">All types</option>';
+            
+            foreach( $filter_types as $filter_type => $filter_type_label ){
+                
+                $filter_type_html .= '<option value="' . $filter_type . '">' . $filter_type_label . '</option>';
+            }
+            
+            $filter_type_html .= '</select>';
+            $filter_type_html .= '<button id="btn_type_filter">Filter</button>';
+            $filter_type_html .= '</div>';
+            
+        }
+        
         echo <<<EOF
         
-                <div class="col-3">
-                    <select id="check_all_elements">
-                        <option value="default">Bulk actions</option>
-                        <option value="delete">Delete</option>
-                    </select>
-                    <button id="btn_apply">Apply</button>
-                </div>
-                <div class="col-3">
-                    <select id="filter_all_elements">
-                        <option value="default">All dates</option>
-                        $months_html
-                    </select>
-                    <button id="btn_date_filter">Filter</button>
+                <div id="bulk_actions" class="col-6">
+                    <div>
+                        <select id="check_all_elements">
+                            <option value="default">Bulk actions</option>
+                            <option value="delete">Delete</option>
+                        </select>
+                        <button id="btn_apply">Apply</button>
+                    </div>
+                    <div>
+                        <select id="filter_all_elements">
+                            <option value="default">All dates</option>
+                            $months_html
+                        </select>
+                        <button id="btn_date_filter">Filter</button>
+                    </div>
+                    $filter_type_html
                 </div>
             
 EOF;
@@ -153,8 +189,11 @@ EOF;
                 
                 if( empty( $data_type ) || $data_type == "_endpoint" || $data_type == "none" ){
                     $trigger = implode( ',<br>', $data_endpoints );
+                    $type    = "_endpoint";
                 } else {
-                    $trigger = "Backend editing of custom post type: <b>" . $data_type . "</b>";
+                    $trigger = "Edit screen of: <b>" . $data_type . "</b>";
+                    $type    = $data_type;
+                    $type    = "_edit_screen";
                 }
                 
                 $categories = implode( ',<br>', get_post_meta( $filter->ID, 'categories', true ) );
@@ -162,7 +201,7 @@ EOF;
                 $date = date("Ym",  strtotime( $filter->post_date ) );// 202109
                 
 				?>
-                <tr class="block_info" id="filter-<?=  $filter->ID ?>" data-status="<?= $filter->post_status ?>" data-date="<?= $date ?>">
+                <tr class="block_info" id="filter-<?=  $filter->ID ?>" data-status="<?= $filter->post_status ?>" data-date="<?= $date ?>" data-type="<?= $type ?>">
                     <td><input type="checkbox" id="<?= $filter->ID ?>"></td>
                     <td class="align-left normal-text"><?= $filter->post_title ?></td>
                     <td class="align-left normal-text"><?= $categories ?></td>

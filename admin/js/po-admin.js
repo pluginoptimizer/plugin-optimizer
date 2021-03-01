@@ -297,6 +297,20 @@ jQuery( document ).ready( function($){
         
     });
     
+    // NEW: Filter by type (filters only)
+    $('body').on('click', '#btn_type_filter', function(){
+        
+        let date_filter = $('#filter_by_type').val();
+        
+        $('#the-list > *').removeClass("filtered_out__type");
+        
+        if( date_filter != "default" ){
+            
+            $(`#the-list > *:not([data-type="${date_filter}"])`).addClass("filtered_out__type");
+        }
+        
+    });
+    
     
     
     
