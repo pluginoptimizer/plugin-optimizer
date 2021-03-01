@@ -203,7 +203,7 @@ EOF;
 				?>
                 <tr class="block_info" id="filter-<?=  $filter->ID ?>" data-status="<?= $filter->post_status ?>" data-date="<?= $date ?>" data-type="<?= $type ?>">
                     <td><input type="checkbox" id="<?= $filter->ID ?>"></td>
-                    <td class="align-left normal-text"><?= $filter->post_title ?></td>
+                    <td class="align-left normal-text"><?= $filter->post_title ?><br/><a class="edit_item" href="/wp-admin/admin.php?page=plugin_optimizer_add_filters&filter_id=<?= $filter->ID ?>">Edit</a><br/></td>
                     <td class="align-left normal-text"><?= $categories ?></td>
                     <td class="data-trigger align-left normal-text"><?= $trigger ?></td>
                     <td class="expandable list_of_plugins"><span class="no_hover"><?= count( $blocking_plugins ) ?></span><span class="yes_hover"><?= implode( ',<br/>', $blocking_plugins ); ?></span></td>

@@ -313,6 +313,23 @@ jQuery( document ).ready( function($){
     
     
     
+    // Clicking on element on the list (filter, group, category) redirects to the edit page
+    // $('body').on('click', '.block_info > td:not(:nth-child(1))', function(){
+        
+        // console.log( "OLD: Clicking on element on the list (filter, group, category) redirects to the edit page" );
+        
+        // const element_id = $(this).parent().children('td:nth-child(1)').children().attr('id');
+
+        // if($('#name_page').attr("class") === 'filters_categories'){
+            // location.href=`/wp-admin/term.php?taxonomy&tag_ID=${element_id}&post_type=sos_filter`;
+        // } else if($('#name_page').hasClass('filters')){
+            // location.href=`/wp-admin/admin.php?page=plugin_optimizer_add_filters&filter_id=${element_id}`;
+        // } else {
+            // location.href=`/wp-admin/post.php?post=${element_id}&action=edit`;
+        // }
+
+    // });
+
     
     
     
@@ -796,23 +813,6 @@ jQuery( document ).ready( function($){
         } else {
             $(this).addClass('block');
         }
-    });
-
-    // Clicking on element on the list (filter, group, category) redirects to the edit page
-    $('body').on('click', '.block_info > td:not(:nth-child(1))', function(){
-        
-        console.log( "OLD: Clicking on element on the list (filter, group, category) redirects to the edit page" );
-        
-        const element_id = $(this).parent().children('td:nth-child(1)').children().attr('id');
-
-        if($('#name_page').attr("class") === 'filters_categories'){
-            location.href=`/wp-admin/term.php?taxonomy&tag_ID=${element_id}&post_type=sos_filter`;
-        } else if($('#name_page').hasClass('filters')){
-            location.href=`/wp-admin/admin.php?page=plugin_optimizer_add_filters&filter_id=${element_id}`;
-        } else {
-            location.href=`/wp-admin/post.php?post=${element_id}&action=edit`;
-        }
-
     });
 
     // Change plugins on the group edit screen

@@ -325,7 +325,10 @@
 }
 
 .sos-wrap .block_info{
-    cursor: pointer;
+    /* cursor: pointer; */
+}
+.sos-wrap .block_info:not(:hover) .edit_item{
+    display: none;
 }
 
 .sos-registration{
