@@ -60,7 +60,7 @@ EOF;
             
             $months[ $date_value ] = $date_label;
             
-            if( $post->post_type == "sos_filter" && ! in_array( $post->filter_type, array_keys( $types ) ) ){
+            if( $post->post_type == "sos_filter" && ! in_array( $post->filter_type, array_keys( $filter_types ) ) ){
                 
                 if( $post->filter_type == "_endpoint" ){
                     
@@ -230,53 +230,10 @@ EOF;
 				?>
                 <tr class="block_info" id="group_<?= $group->ID; ?>" data-status="<?= $group->post_status ?>" data-date="<?= $date ?>">
                     <td><input type="checkbox" id="<?= $group->ID; ?>"></td>
-                    <td class="align-left normal-text"><?= $group->post_title; ?></td>
-                    <td><?= $group_plugins; ?></td>
-                    <td><?= $group_plugins ? count( explode( ',', $group_plugins ) ) : 0; ?></td>
+                    <td class="align-left normal-text"><?= $group->post_title; ?><br/><a class="edit_item" href="/wp-admin/admin.php?page=plugin_optimizer_add_groups&group_id=<?= $group->ID ?>">Edit</a><br/></td>
+                    <td><?= implode( '<br/>', $group_plugins ) ?></td>
+                    <td><?= $group_plugins ? count( $group_plugins ) : 0 ?></td>
                 </tr>
-				<?php
-				if ( $group->post_status === 'publish' ) {
-					$posts_chidren = get_posts( array(
-						'post_type'   => 'sos_group',
-						'numberposts' => - 1,
-						'meta_query'  => array(
-							array(
-								'key'   => 'group_parents',
-								'value' => $group->post_title,
-							)
-						),
-					) );
-				} else if ( $group->post_status === 'trash' ) {
-					$posts_chidren = get_posts( array(
-						'post_type'   => 'sos_group',
-						'numberposts' => - 1,
-						'post_status' => 'trash',
-						'meta_query'  => array(
-							array(
-								'key'   => 'group_parents',
-								'value' => $group->post_title,
-							)
-						),
-					) );
-				}
-
-
-				if ( $posts_chidren ) :
-					foreach ( $posts_chidren as $post_chidren ) :
-						$children_group_plugins = get_post_meta( $post_chidren->ID, 'group_plugins', true );
-						?>
-
-                        <tr class="block_info block_children">
-                            <td><input type="checkbox" id="<?= $post_chidren->ID; ?>"></td>
-                            <td> — <?= $post_chidren->post_title; ?></td>
-                            <td><?= get_post_meta( $post_chidren->ID, 'type_group', true ); ?></td>
-                            <td><?= $children_group_plugins; ?></td>
-                            <td><?= substr_count( $children_group_plugins, ',' ) + 1; ?></td>
-                        </tr>
-					<?php endforeach;
-				endif;
-
-				?>
 			<?php
             }
 		} else {

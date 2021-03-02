@@ -184,6 +184,11 @@
     margin-left: 25%;
     height: 50px;
 }
+.sos-wrap button#save_group{
+    width: 50%;
+    margin-left: 25%;
+    height: 50px;
+}
 
 .sos-wrap .pluse {
     display: inline-block;

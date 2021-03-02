@@ -156,6 +156,20 @@ jQuery( document ).ready( function($){
         
     });
     
+    // NEW: Edit Group page template - Save filter
+    $('#edit_group').on('click', '#save_group', function(){
+        
+        let group_data = $('#edit_group').find('select, textarea, input').serialize();
+        
+        $.post( po_object.ajax_url, { action  : 'po_save_group', data : group_data }, function( response ) {
+            console.log( "po_save_group: ", response );
+            
+            alert( response.data.message );
+            
+        }, "json");
+        
+    });
+    
     // NEW: On a new Filter or new Group pages: disable/enable all in a section
     $('body').on('click', '.all-check', function(){
         

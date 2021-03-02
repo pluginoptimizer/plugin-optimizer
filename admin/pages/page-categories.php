@@ -20,7 +20,7 @@ $categories = get_categories( [
                     <button class="po_green_button" id="add_elements"><span class="pluse">+</span> Add new Category</button>
                 </div>
                 
-                <?php PO_Admin_Helper::content_part__bulk_actions( $groups ); ?>
+                <?php PO_Admin_Helper::content_part__bulk_actions( $categories ); ?>
                 
                 <div class="col-3 quantity">
                     <span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_terms( 'сategories_filters' ); ?></span>)

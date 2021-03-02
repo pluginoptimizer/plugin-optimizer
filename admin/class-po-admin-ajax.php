@@ -51,6 +51,7 @@ class PO_Ajax {
 		add_action( 'wp_ajax_sos_change_groups_to_filter',  [ $this, 'sos_change_groups_to_filter'  ] );
         
 		add_action( 'wp_ajax_po_save_filter',               [ $this, 'po_save_filter'               ] );
+		add_action( 'wp_ajax_po_save_group',                [ $this, 'po_save_group'                ] );
 		add_action( 'wp_ajax_po_create_category',           [ $this, 'po_create_category'           ] );
 
 	}
@@ -115,7 +116,64 @@ class PO_Ajax {
         }
         
         
-		wp_send_json_success( [ "message" => "All good, filter is saved." ] );
+		wp_send_json_success( [ "message" => "All good, the filter is saved." ] );
+
+	}
+
+	/** NEW
+	 * Create/Update Group
+	 */
+	function po_save_group() {
+        
+        parse_str( $_POST['data'], $array);
+        
+        $data = $array['PO_filter_data'];
+        
+		// wp_send_json_success( $data );
+        // exit;
+        
+        // po_mu_plugin()->write_log( $_POST, "po_save_filter-_POST" );
+        // po_mu_plugin()->write_log( $data, "po_save_filter-data" );
+        
+        
+        if( empty( $data["title"] ) ){
+            
+            wp_send_json_error( [ "message" => "The title is a required field!" ] );
+        }
+        
+        if( empty( $data["plugins_to_block"] ) ){
+            
+            wp_send_json_error( [ "message" => "There has to be at least 1 plugin selected in order to save this group!" ] );
+        }
+        
+		$post_data = array(
+			'post_title'  => $data["title"],
+			'post_type'   => 'sos_group',
+			'post_status' => 'publish',
+			'post_author' => 1,// TODO get_current_user_id() with localize_script in enqueue function
+		);
+        
+        if( ! empty( $data["ID"] ) ){
+            $post_data["ID"] = $data["ID"];
+        }
+
+		$post_id = wp_insert_post( $post_data, true );
+
+		if ( is_wp_error( $post_id ) ) {
+			wp_send_json_error( [ "message" => $post_id->get_error_message() ] );
+		}
+
+        $meta = [
+            "group_plugins" => $data["plugins_to_block"],
+        ];
+        
+        foreach( $meta as $meta_key => $meta_value ){
+            
+            update_post_meta( $post_id, $meta_key, $meta_value );
+        }
+        
+        
+		wp_send_json_success( [ "message" => "All good, the group is saved." ] );
 
 	}
 

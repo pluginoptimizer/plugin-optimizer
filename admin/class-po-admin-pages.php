@@ -55,7 +55,7 @@ class PO_Admin_Menu_Pages {
 	}
 
 	function render_add_groups_page() {
-		include 'pages/page-groups-new.php';
+		include 'pages/page-groups-edit.php';
 	}
 
 	function render_settings_page() {

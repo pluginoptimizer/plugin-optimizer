@@ -84,7 +84,7 @@ if( $filter ){
 
 	<div class="sos-wrap container">
     
-        <?php PO_Admin_Helper::content_part__header( $page_title, "add-filters"); ?>
+        <?php PO_Admin_Helper::content_part__header( $page_title, "add-filters" ); ?>
         
 		<div id="edit_filter" class="row sos-content">
 			<div class="row content-new-element">
@@ -101,7 +101,7 @@ if( $filter ){
 								<div class="header">Title</div>
 								<div>
 									<div class="content enter-data">
-										<span><input class="content-text" id="set_title" type="text"  name="PO_filter_data[title]"value="<?= $filter_title ?>" placeholder="The title of this filter"></span>
+										<span><input class="content-text" id="set_title" type="text" name="PO_filter_data[title]" value="<?= $filter_title ?>" placeholder="The title of this filter"></span>
 									</div>
 								</div>
 							</div>
@@ -187,7 +187,7 @@ if( $filter ){
 									<?php
 									if ( $groups ){
 										foreach ( $groups as $group ){
-                                            $block_plugins_in_group = explode( ', ', get_post_meta( $group->ID, 'group_plugins', true ) );
+                                            $block_plugins_in_group = get_post_meta( $group->ID, 'group_plugins', true );
                                             $selected = in_array( $group->ID, $groups_to_block );
                                             $blocked  = $selected ? " blocked" : "";
                                             $checked  = $selected ? ' checked="checked"' : '';
