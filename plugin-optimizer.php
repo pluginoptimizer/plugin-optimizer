@@ -22,6 +22,24 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
+ * Initialize the plugin tracker
+ *
+ * @return void
+ */
+function appsero_init_tracker_plugin_optimizer() {
+    if ( ! class_exists( 'Appsero\Client' ) ) {
+        // require_once __DIR__ . '/appsero/src/Client.php';
+        require_once __DIR__ . '/vendor/autoload.php';
+    }
+    $client = new Appsero\Client( 'c5104b7b-7b26-4f52-b690-45ef58f9ba31', 'Plugin Optimizer', __FILE__ );
+    // Active insights
+    $client->insights()->init();
+    // Active automatic updater
+    $client->updater();
+}
+appsero_init_tracker_plugin_optimizer();
+
+/**
  * Currently plugin version.
  * Use SemVer - https://semver.org
  */
@@ -48,7 +66,7 @@ function deactivate_plugin_optimizer() {
 register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
 register_deactivation_hook( __FILE__, 'deactivate_plugin_optimizer' );
 
-
+// TODO - let's copy the file there if it's missing
 if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') ){
     
     return;
