@@ -100,8 +100,8 @@ $categories = get_categories( [
                                 <th>TITLE</th>
                             </tr>
                         </thead>
-                        <tbody id="the-list">
-                            <?php PO_Helper::content_filters_categories( $categories ); ?>
+                        <tbody id="the-list" class="filter_on__status_publish">
+                            <?php PO_Admin_Helper::list_content__categories( $categories ); ?>
                         </tbody>
                     </table>
                 </div>

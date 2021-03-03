@@ -273,38 +273,4 @@ class PO_Helper {
 		}
 	}
 
-	public static function content_filters_categories( $categories ) {
-		if ( $categories ){
-			foreach ( $categories as $cat ){ ?>
-                <tr class="block_info" id="cat-<?= $cat->cat_ID ?>">
-                    <td><input type="checkbox" id="<?= $cat->cat_ID ?>"></td>
-                    <td class="data-title-category"><?= $cat->cat_name; ?></td>
-                </tr>
-				<?php
-				$difference    = $cat->cat_ID;
-				$subcategories = get_categories( array(
-					'parent'     => $difference,
-					'taxonomy'   => '?ategories_filters',
-					'type'       => 'sos_filter',
-					'hide_empty' => 0,
-				) );
-				if ( $subcategories ) :
-					foreach ( $subcategories as $subcategory ) :?>
-                        <tr class="block_info block_children">
-                            <td><input type="checkbox" id="<?= $subcategory->cat_ID ?>"></td>
-                            <td> — <?= $subcategory->cat_name; ?></td>
-                        </tr>
-					<?php endforeach;
-				endif;
-				?>
-			<?php }
-        } else {
-		?>
-            <tr>
-                <td colspan="5">No categories</td>
-            </tr>
-		<?php
-        }
-	}
-
 }

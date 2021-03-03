@@ -249,8 +249,11 @@
 }
 
 #the-list > .filtered_out__type,
-#the-list > .filtered_out__date,
-#the-list > .filtered_out__status{
+#the-list > .filtered_out__date{
+    display: none;
+}
+#the-list.filter_on__status_publish > :not([data-status="publish"]),
+#the-list.filter_on__status_trash > :not([data-status="trash"]){
     display: none;
 }
 

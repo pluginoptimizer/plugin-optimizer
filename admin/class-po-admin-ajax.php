@@ -30,10 +30,6 @@ class PO_Ajax {
 		add_action( 'wp_ajax_sos_add_plugin_to_filter',     [ $this, 'sos_add_plugin_to_filter'     ] );
 		add_action( 'wp_ajax_sos_search_pages',             [ $this, 'sos_search_pages'             ] );
 		add_action( 'wp_ajax_sos_search_elements',          [ $this, 'sos_search_elements'          ] );
-		add_action( 'wp_ajax_sos_all_elements',             [ $this, 'sos_all_elements'             ] );
-		add_action( 'wp_ajax_sos_trash_elements',           [ $this, 'sos_trash_elements'           ] );
-		add_action( 'wp_ajax_sos_delete_elements',          [ $this, 'sos_delete_elements'          ] );
-		add_action( 'wp_ajax_sos_publish_elements',         [ $this, 'sos_publish_elements'         ] );
 		add_action( 'wp_ajax_sos_count_elements',           [ $this, 'sos_count_elements'           ] );
 		add_action( 'wp_ajax_sos_add_group_plugins',        [ $this, 'sos_add_group_plugins'        ] );
 		add_action( 'wp_ajax_sos_create_cat_subcat',        [ $this, 'sos_create_cat_subcat'        ] );
@@ -53,6 +49,8 @@ class PO_Ajax {
 		add_action( 'wp_ajax_po_save_filter',               [ $this, 'po_save_filter'               ] );
 		add_action( 'wp_ajax_po_save_group',                [ $this, 'po_save_group'                ] );
 		add_action( 'wp_ajax_po_create_category',           [ $this, 'po_create_category'           ] );
+		add_action( 'wp_ajax_po_delete_elements',           [ $this, 'po_delete_elements'           ] );
+		add_action( 'wp_ajax_po_publish_elements',          [ $this, 'po_publish_elements'          ] );
 
 	}
 
@@ -197,6 +195,78 @@ class PO_Ajax {
         }
         
         wp_send_json_success( [ "category_id" => $data['term_id'] ] );
+	}
+
+	/** NEW
+	 * Delete elements
+	 */
+	function po_delete_elements() {
+		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
+		$id_elements    = htmlspecialchars( $_POST['id_elements'] );
+		$type_elements  = htmlspecialchars( $_POST['type_elements'] );
+
+		if ( $type_elements === 'all' ) {
+            
+			if ( $name_post_type === 'cat' ) {
+				$id_elements = explode( ',', $id_elements );
+
+				foreach ( $id_elements as $id_element ) {
+					wp_delete_term( $id_element, 'сategories_filters' );
+				}
+
+				wp_send_json_success( [ "message" => "Categories are deleted." ] );
+                
+			} else {
+                
+				$posts = get_posts( array(
+					'post_type' => $name_post_type,
+					'include'   => $id_elements,
+				) );
+
+				foreach ( $posts as $post ) {
+					wp_trash_post( $post->ID );
+				}
+                
+				wp_send_json_success( [ "message" => "Items are moved to trash." ] );
+                
+			}
+            
+		} else {
+            
+			$posts = get_posts( array(
+				'post_type'   => $name_post_type,
+				'include'     => $id_elements,
+				'post_status' => 'trash',
+			) );
+
+			foreach ( $posts as $post ) {
+				wp_delete_post( $post->ID, true );
+			}
+            
+			wp_send_json_success( [ "message" => "Items are permanently deleted." ] );
+            
+		}
+	}
+
+	/**
+	 * Restore works
+	 */
+	function po_publish_elements() {
+		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
+		$id_elements    = $_POST['id_elements'];
+
+		$posts = get_posts( array(
+			'post_type'   => $name_post_type,
+			'include'     => $id_elements,
+			'post_status' => 'trash',
+		) );
+
+		foreach ( $posts as $post ) {
+			wp_publish_post( $post->ID );
+		}
+        
+		wp_send_json_success( [ "message" => "Items are restored." ] );
+        
 	}
 
 
@@ -397,7 +467,7 @@ class PO_Ajax {
 					'name__like' => esc_attr( $_POST['keyword'] ),
 				] );
 
-				PO_Helper::content_filters_categories( $categories );
+				PO_Admin_Helper::list_content__categories( $categories );
 			} elseif ( $name_post_type === 'plugins' ) {
                 
 				$filter_plugins = htmlspecialchars( $_POST['keyword'] );
@@ -427,148 +497,6 @@ class PO_Ajax {
 
 		wp_send_json_success( ob_get_clean() );
 
-	}
-
-	/**
-	 * Show all elements
-	 */
-	function sos_all_elements() {
-		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
-		ob_start();
-
-		$posts = get_posts( array(
-			'post_type'   => $name_post_type,
-			'numberposts' => - 1,
-		) );
-
-		if ( $name_post_type === 'sos_work' ) {
-			PO_Admin_Helper::list_content__works( $posts );
-		} elseif ( $name_post_type === 'sos_filter' ) {
-			PO_Admin_Helper::list_content__filters( $posts );
-		} elseif ( $name_post_type === 'sos_group' ) {
-			$posts = get_posts( array(
-				'post_type'   => 'sos_group',
-				'numberposts' => - 1,
-				'meta_query'  => array(
-					array(
-						'key'   => 'group_parents',
-						'value' => 'None'
-					)
-				),
-			) );
-			PO_Admin_Helper::list_content__groups( $posts );
-		}
-
-		wp_send_json_success( ob_get_clean() );
-
-	}
-
-	/**
-	 * Show trash elements
-	 */
-	function sos_trash_elements() {
-		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
-		ob_start();
-
-		$posts = get_posts( array(
-			'post_type'   => $name_post_type,
-			'numberposts' => - 1,
-			'post_status' => 'trash',
-		) );
-
-		if ( $name_post_type === 'sos_work' ) {
-			PO_Admin_Helper::list_content__works( $posts );
-		} elseif ( $name_post_type === 'sos_filter' ) {
-			PO_Admin_Helper::list_content__filters( $posts );
-		} elseif ( $name_post_type === 'sos_group' ) {
-			$posts = get_posts( array(
-				'post_type'   => 'sos_group',
-				'numberposts' => - 1,
-				'post_status' => 'trash',
-				'meta_query'  => array(
-					array(
-						'key'   => 'group_parents',
-						'value' => 'None'
-					)
-				),
-			) );
-			PO_Admin_Helper::list_content__groups( $posts );
-		}
-
-		wp_send_json_success( ob_get_clean() );
-
-	}
-
-	/**
-	 * Delete elements
-	 */
-	function sos_delete_elements() {
-		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
-		$id_elements    = htmlspecialchars( $_POST['id_elements'] );
-		$type_elements  = htmlspecialchars( $_POST['type_elements'] );
-
-		if ( $type_elements === 'all' ) {
-			if ( $name_post_type === 'cat' ) {
-				$id_elements = explode( ',', $id_elements );
-
-				foreach ( $id_elements as $id_element ) {
-					wp_delete_term( $id_element, 'сategories_filters' );
-				}
-
-				ob_start();
-
-				$categories = get_categories( [
-					'taxonomy'   => 'сategories_filters',
-					'type'       => 'sos_filter',
-					'parent'     => 0,
-					'hide_empty' => 0,
-				] );
-
-				PO_Helper::content_filters_categories( $categories );
-
-				wp_send_json_success( ob_get_clean() );
-			} else {
-				$posts = get_posts( array(
-					'post_type' => $name_post_type,
-					'include'   => $id_elements,
-				) );
-
-				foreach ( $posts as $post ) {
-					wp_trash_post( $post->ID );
-				}
-				$this->sos_all_elements();
-			}
-		} else {
-			$posts = get_posts( array(
-				'post_type'   => $name_post_type,
-				'include'     => $id_elements,
-				'post_status' => 'trash',
-			) );
-
-			foreach ( $posts as $post ) {
-				wp_delete_post( $post->ID, true );
-			}
-			$this->sos_trash_elements();
-		}
-	}
-
-	/**
-	 * Restore works
-	 */
-	function sos_publish_elements() {
-		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
-		$id_elements    = htmlspecialchars( $_POST['id_elements'] );
-
-		$posts = get_posts( array(
-			'post_type'   => $name_post_type,
-			'include'     => $id_elements,
-			'post_status' => 'trash',
-		) );
-
-		foreach ( $posts as $post ) {
-			wp_publish_post( $post->ID );
-		}
-		$this->sos_trash_elements();
 	}
 
 	/**
@@ -714,7 +642,7 @@ class PO_Ajax {
 			'hide_empty' => 0,
 		] );
 
-		PO_Helper::content_filters_categories( $categories );
+		PO_Admin_Helper::list_content__categories( $categories );
 
 		wp_send_json_success( ob_get_clean() );
 

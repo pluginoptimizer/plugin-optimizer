@@ -277,10 +277,12 @@ jQuery( document ).ready( function($){
         $('#all_elements').addClass("filtered");
         $('#trash_elements').removeClass("filtered");
         
-        $('#the-list > [data-status="trash"]').addClass("filtered_out__status");
-        $('#the-list > [data-status="publish"]').removeClass("filtered_out__status");
+        $('#the-list').addClass("filter_on__status_publish");
+        $('#the-list').removeClass("filter_on__status_trash");
         
         $('select#check_all_elements option[value="restore"]').remove();
+        
+        $('#the-list input:checked').prop('checked', false );
         
     });
     
@@ -290,10 +292,12 @@ jQuery( document ).ready( function($){
         $('#trash_elements').addClass("filtered");
         $('#all_elements').removeClass("filtered");
         
-        $('#the-list > [data-status="publish"]').addClass("filtered_out__status");
-        $('#the-list > [data-status="trash"]').removeClass("filtered_out__status");
+        $('#the-list').addClass("filter_on__status_trash");
+        $('#the-list').removeClass("filter_on__status_publish");
         
         $('select#check_all_elements option[value="delete"]').before('<option value="restore">Restore</option>');
+        
+        $('#the-list input:checked').prop('checked', false );
         
     });
     
@@ -325,6 +329,124 @@ jQuery( document ).ready( function($){
         
     });
     
+    // NEW: Change appearance checkbox all elements
+    $('body').on('change', '#the-list input:checkbox', function(){
+        
+        console.log( "OLD: Change appearance checkbox all elements" );
+        
+        if($('#check_all').is( ":checked" )){
+            $('#check_all').prop('checked', false);
+        }
+        if($('#the-list input:checkbox').length === $('#the-list input:checkbox:checked').length){
+            $('#check_all').prop('checked', true);
+        }
+    });
+    
+    // NEW: Bulk actions button (usually delete or restore element)
+    $('body').on('click', '#btn_apply', function(){
+        
+        let name_post_type;
+        let data = false;
+        
+        if( $('#name_page').attr("class") === 'worklist' ){
+            name_post_type = 'sos_work';
+        } else if( $('#name_page').attr("class") === 'filters' ){
+            name_post_type = 'sos_filter';
+        } else if( $('#name_page').attr("class") === 'groups' ){
+            name_post_type = 'sos_group';
+        } else if( $('#name_page').attr("class") === 'filters_categories' ){
+            name_post_type = 'cat';
+        }
+        
+        let selected_ids = $('#the-list input:checked').toArray().map(item => item.id);
+
+        if($('#check_all_elements option:selected').text() === 'Delete'){
+            
+            data = {
+                action          : 'po_delete_elements',
+                'name_post_type': name_post_type,
+                'type_elements' : ( $('#all_elements').hasClass('filtered') ? 'all' : 'trash' ),
+                'id_elements'   : selected_ids.join(','),
+            };
+            
+        } else if($('#check_all_elements option:selected').text() === 'Restore'){
+        
+            data = {
+                action          : 'po_publish_elements',
+                'name_post_type': name_post_type,
+                'id_elements'   : selected_ids.join(','),
+            };
+            
+        }
+        
+        // console.log( "Bulk: ", data );
+        // console.log( "selected_ids: ", selected_ids );
+        
+        if( data ){
+            
+            $.ajax({
+                url     : po_object.ajax_url,
+                type    : 'POST',
+                data    : data,
+                success : function (response) {
+                    
+                    $('#bulk_actions select').val('default');
+                    $('#bulk_actions button:not(#btn_apply)').click();
+                    
+                    $('#the-list input:checked').prop('checked', false );
+                    $('#check_all').prop('checked', false);
+                    
+                    if( data.action == 'po_publish_elements' ){
+                        
+                        $.each( selected_ids, function( index, id ){
+                            
+                            // console.log( "po_publish_elements ID: ", id );
+                            
+                            $('input#' + id ).parents('.block_info').attr("data-status", "publish");
+                            
+                        });
+                        
+                    }
+                    
+                    if( data.action == 'po_delete_elements' && data.type_elements == 'all' ){
+                        
+                        $.each( selected_ids, function( index, id ){
+                            
+                            console.log( "po_delete_elements all ID: ", id );
+                            
+                            $('input#' + id ).parents('.block_info').attr("data-status", "trash");
+                            
+                        });
+                        
+                    }
+                    
+                    if( data.action == 'po_delete_elements' && data.type_elements == 'trash' ){
+                        
+                        $.each( selected_ids, function( index, id ){
+                            
+                            console.log( "po_delete_elements trash ID: ", id );
+                            
+                            $('input#' + id ).parents('.block_info').remove();
+                            
+                        });
+                        
+                    }
+                    
+                    alert( response.data.message );
+                    
+                    // console.log( "Data: ", data );
+                    
+                    $('#count_all_elements').html( $('#the-list > [data-status="publish"]').length );
+                    $('#count_trash_elements').html( $('#the-list > [data-status="trash"]').length );
+                    
+                }
+                
+            });
+            
+        }
+        
+    });
+
     
     
     // Clicking on element on the list (filter, group, category) redirects to the edit page
@@ -422,67 +544,6 @@ jQuery( document ).ready( function($){
     
     
 
-
-    // Bulk actions button (usually delete or restore element)
-    $('body').on('click', '#btn_apply', function(){
-        
-        console.log( "SOMEWHAT FIXED: Bulk actions button (usually delete or restore element)" );
-        
-        let name_post_type;
-        let data = false;
-        
-        if($('#name_page').attr("class") === 'worklist'){
-            name_post_type = 'sos_work';
-        } else if($('#name_page').attr("class") === 'filters'){
-            name_post_type = 'sos_filter';
-        } else if($('#name_page').attr("class") === 'groups'){
-            name_post_type = 'sos_group';
-        } else if($('#name_page').attr("class") === 'filters_categories'){
-            name_post_type = 'cat';
-        }
-
-        console.log( "aAjax: delete-restore-element.js 222" );
-        
-        if($('#check_all_elements option:selected').text() === 'Delete'){
-            
-            data = {
-                action          : 'sos_delete_elements',
-                'name_post_type': name_post_type,
-                'type_elements' : ( $('#all_elements').css('font-weight') === '700' ? 'all' : 'trash' ),
-                'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
-            };
-            
-        } else if($('#check_all_elements option:selected').text() === 'Restore'){
-        
-            data = {
-                action          : 'sos_publish_elements',
-                'name_post_type': name_post_type,
-                'id_elements'   : $('input:checked').toArray().map(item => item.id).join(','),
-            };
-            
-        }
-        
-        if( data ){
-            
-            $.ajax({
-                url     : po_object.ajax_url,
-                type    : 'POST',
-                data    : data,
-                success : function (response) {
-                    
-                    $('#the-list').html( response.data );
-                    
-                    if($('#check_all').is( ":checked" )){
-                        $('#check_all').prop('checked', false);
-                    }
-                    
-                    allElements.count_element(name_post_type);
-                }
-            });
-            
-        }
-        
-    });
 
 
 
@@ -1015,20 +1076,6 @@ jQuery( document ).ready( function($){
             $('tbody input:checkbox').prop('checked', true);
         } else {
             $('tbody input:checkbox').prop('checked', false);
-        }
-    });
-    
-    // TODO Needs a better selector
-    // Change appearance checkbox all elements
-    $('body').on('change', 'tbody input:checkbox', function(){
-        
-        console.log( "OLD: Change appearance checkbox all elements" );
-        
-        if($('#check_all').is( ":checked" )){
-            $('#check_all').prop('checked', false);
-        }
-        if($('tbody input:checkbox').length === $('tbody input:checkbox:checked').length){
-            $('#check_all').prop('checked', true);
         }
     });
     

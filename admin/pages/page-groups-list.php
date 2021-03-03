@@ -39,7 +39,7 @@ $groups = get_posts( array(
                                 <th>Count</th>
                             </tr>
                         </thead>
-                        <tbody id="the-list">
+                        <tbody id="the-list" class="filter_on__status_publish">
                             <?php PO_Admin_Helper::list_content__groups( $groups ); ?>
                         </tbody>
                     </table>

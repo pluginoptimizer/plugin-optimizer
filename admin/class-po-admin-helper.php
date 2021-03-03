@@ -260,7 +260,7 @@ EOF;
                 $create_link = get_admin_url( null, $relative_url );
                 
                 ?>
-                <tr data-status="<?= $work_item->post_status ?>" data-date="<?= $date ?>">
+                <tr class="block_info" data-status="<?= $work_item->post_status ?>" data-date="<?= $date ?>">
                     <td><input type="checkbox" id="<?= $work_item->ID ?>"></td>
                     <td class="align-left normal-text"><?= $work_item->post_title ?></td>
                     <td class="align-left normal-text"><?= get_post_meta( $work_item->ID, 'post_link', true ) ?></td>
@@ -280,6 +280,23 @@ EOF;
             </tr>
 		<?php
 		}
+	}
+
+	public static function list_content__categories( $categories ) {
+		if ( $categories ){
+			foreach ( $categories as $cat ){ ?>
+                <tr class="block_info" id="cat-<?= $cat->cat_ID ?>" data-status="publish">
+                    <td><input type="checkbox" id="<?= $cat->cat_ID ?>"></td>
+                    <td class="data-title-category"><?= $cat->cat_name ?></td>
+                </tr>
+			<?php }
+        } else {
+		?>
+            <tr>
+                <td colspan="5">No categories</td>
+            </tr>
+		<?php
+        }
 	}
 
 }
