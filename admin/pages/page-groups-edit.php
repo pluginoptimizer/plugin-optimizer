@@ -80,7 +80,7 @@ if( $group ){
                                             
                                             <div class="header">
                                                 <div class="title">Select plugins <span class="disabled">- <?= count( $plugins["all"] ); ?></span></div>
-                                                <span class="all-check">Disable All</span>
+                                                <span class="all-check toggle_plugins">Disable All</span>
                                                 <span class="count-plugin">( Active: <?= count( $plugins["active"] ); ?>   |   Inactive: <?= count( $plugins["inactive"] ); ?> )</span>
                                             </div>
                                             
