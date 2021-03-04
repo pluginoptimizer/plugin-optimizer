@@ -47,7 +47,7 @@ class PO_Admin_Menu_Pages {
 	}
 
 	function render_filters_categories_page() {
-		include 'pages/page-categories.php';
+		include 'pages/page-categories-list.php';
 	}
 
 	function render_groups_page() {
