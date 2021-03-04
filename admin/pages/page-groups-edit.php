@@ -21,30 +21,6 @@ if( $group ){
         $plugins_to_block   = array_keys( $plugins_to_block );
     }
     
-    // $filter_title       = $filter->post_title;
-    // $filter_type        = get_post_meta( $filter->ID, "filter_type", true );
-    // $plugins_to_block   = get_post_meta( $filter->ID, "plugins_to_block", true );
-    // $groups_to_block    = get_post_meta( $filter->ID, "groups_used", true );
-    // $filter_categories  = get_post_meta( $filter->ID, "categories", true );
-    
-    // if( ! empty( $groups_to_block ) ){
-        // $groups_to_block    = array_keys( $groups_to_block );
-    // }
-    
-    // if( ! empty( $filter_categories ) ){
-        // $filter_categories  = array_keys( $filter_categories );
-    // }
-    
-    // if( $filter_type == "_endpoint" || ! in_array( $filter_type, $post_types ) ){
-        
-        // $filter_type = "_endpoint";
-        // $endpoints   = PO_Admin_Helper::get_filter_endpoints( $filter );
-        
-    // } else {
-        
-        // $show_endpoints_wrapper = ' style="display: none;"';
-    // }
-    
 }
 ?>
 <div class="wrap wrapper-filter">

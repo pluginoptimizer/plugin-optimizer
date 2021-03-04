@@ -286,8 +286,10 @@ EOF;
 		if ( $categories ){
 			foreach ( $categories as $cat ){ ?>
                 <tr class="block_info" id="cat-<?= $cat->cat_ID ?>" data-status="publish">
-                    <td><input type="checkbox" id="<?= $cat->cat_ID ?>"></td>
+                    <td class="data-edit-checkbox"><input type="checkbox" id="<?= $cat->cat_ID ?>"></td>
+                    <td class="data-edit-category"><a href="/wp-admin/admin.php?page=plugin_optimizer_add_categories&cat_id=<?= $cat->cat_ID ?>">Edit</a></td>
                     <td class="data-title-category"><?= $cat->cat_name ?></td>
+                    <td class="data-description-category"><?= $cat->description ?></td>
                 </tr>
 			<?php }
         } else {

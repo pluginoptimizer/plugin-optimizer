@@ -1,80 +1,54 @@
 <?php
-$categories = get_categories( [
-	'taxonomy'   => 'сategories_filters',
-	'type'       => 'sos_filter',
-	'parent'     => 0,
-	'hide_empty' => 0,
-] );
+// defaults
+$page_title = "Create a new category";
+$cat_title  = "";
+$cat_desc   = "";
+
+
+$cat_id = ! empty( $_GET["cat_id"] )  ? $_GET["cat_id"]                             : false;
+$cat    = $cat_id                     ? get_term( $cat_id, "сategories_filters" )   : false;
+
+if( $cat ){
+    
+    $page_title = "Editing category: " . $cat->name;
+    $cat_title  = $cat->name;
+    $cat_desc   = $cat->description;
+    
+}
 
 ?>
 <div class="wrap wrapper-filter">
 
     <div class="sos-wrap container">
     
-        <?php PO_Admin_Helper::content_part__header("Filter categories", "filters_categories"); ?>
+        <?php PO_Admin_Helper::content_part__header( $page_title, "filters_categories"); ?>
         
         <div class="row sos-content">
-            <div class="row col-12 justify-content-between global-information">
-            
-                <div class="col-3">
-                    <button class="po_green_button" id="add_elements"><span class="pluse">+</span> Add new Category</button>
-                </div>
-                
-                <?php PO_Admin_Helper::content_part__bulk_actions( $categories ); ?>
-                
-                <div class="col-3 quantity">
-                    <span id="all_elements">all</span> (<span id="count_all_elements"><?= wp_count_terms( 'сategories_filters' ); ?></span>)
-                </div>
-            </div>
-            
+        
             <div class="row col-12 content-new-element create-categories">
                 <div class="col-12">
                     <table>
                         <tr>
                             <td colspan="6">
                                 <div class="content-filter">
+                                
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="header">Title</div>
                                             <div>
                                                 <div class="content">
-                                                    <span><input class="content-text" id="set_title" type="text"></span>
+                                                    <span><input class="content-text" id="set_title" type="text" value="<?= $cat_title ?>"></span>
                                                 </div>
                                             </div>
                                             <div class="header">Description</div>
                                             <div>
                                                 <div class="content">
-                                                    <span><textarea id="set_description" name="text"></textarea></span>
+                                                    <span><textarea id="set_description" name="text"><?= $cat_desc ?></textarea></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row parent-category-wrapper">
-                                        <div class="col-12">
-                                            <div class="header">
-                                                <div class="title">
-                                                    Categories
-                                                </div>
-                                            </div>
-                                            <div class="plugin-wrapper">
-                                                <div class="content block none_parent select_parent_to_category">
-                                                    <span value="None">None</span>
-                                                </div>
-												<?php
-
-												if ( $categories ):
-													foreach ( $categories as $cat ):
-														?>
-                                                        <div class="content select_parent_to_category">
-                                                            <span value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></span>
-                                                        </div>
-													<?php
-													endforeach;
-												endif;
-												?>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
 
                                 <div class="row">
@@ -91,21 +65,6 @@ $categories = get_categories( [
 
             </div>
             
-            <div class="row col-12">
-                <div class="col-12">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th><input type="checkbox" id="check_all"></th>
-                                <th>TITLE</th>
-                            </tr>
-                        </thead>
-                        <tbody id="the-list" class="filter_on__status_publish">
-                            <?php PO_Admin_Helper::list_content__categories( $categories ); ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
     </div>
 </div>

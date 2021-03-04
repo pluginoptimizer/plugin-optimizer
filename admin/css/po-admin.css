@@ -598,10 +598,6 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     outline: none;
 }
 
-.sos-wrap .content-new-element.create-categories{
-    display: none;
-}
-
 .sos-wrap .content{
     cursor: pointer;
 }

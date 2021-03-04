@@ -27,77 +27,15 @@ $categories = get_categories( [
                 </div>
             </div>
             
-            <div class="row col-12 content-new-element create-categories">
-                <div class="col-12">
-                    <table>
-                        <tr>
-                            <td colspan="6">
-                                <div class="content-filter">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="header">Title</div>
-                                            <div>
-                                                <div class="content">
-                                                    <span><input class="content-text" id="set_title" type="text"></span>
-                                                </div>
-                                            </div>
-                                            <div class="header">Description</div>
-                                            <div>
-                                                <div class="content">
-                                                    <span><textarea id="set_description" name="text"></textarea></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row parent-category-wrapper">
-                                        <div class="col-12">
-                                            <div class="header">
-                                                <div class="title">
-                                                    Categories
-                                                </div>
-                                            </div>
-                                            <div class="plugin-wrapper">
-                                                <div class="content block none_parent select_parent_to_category">
-                                                    <span value="None">None</span>
-                                                </div>
-												<?php
-
-												if ( $categories ):
-													foreach ( $categories as $cat ):
-														?>
-                                                        <div class="content select_parent_to_category">
-                                                            <span value="<?= $cat->cat_ID; ?>"><?= $cat->cat_name; ?></span>
-                                                        </div>
-													<?php
-													endforeach;
-												endif;
-												?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <button class="po_green_button save save-category" id="add_elements"><span class="pluse">+</span>
-                                        Save new category
-                                    </button>
-                                </div>
-
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-
-            </div>
-            
             <div class="row col-12">
                 <div class="col-12">
                     <table>
                         <thead>
-                            <tr>
-                                <th><input type="checkbox" id="check_all"></th>
-                                <th>TITLE</th>
+                            <tr id="categories_table_header">
+                                <th class="cat_checkbox"><input type="checkbox" id="check_all"></th>
+                                <th class="cat_edit"></th>
+                                <th class="cat_title">TITLE</th>
+                                <th class="cat_description">Description</th>
                             </tr>
                         </thead>
                         <tbody id="the-list" class="filter_on__status_publish">
@@ -106,6 +44,7 @@ $categories = get_categories( [
                     </table>
                 </div>
             </div>
+            
         </div>
     </div>
 </div>

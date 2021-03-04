@@ -670,6 +670,8 @@ jQuery( document ).ready( function($){
             location.href='/wp-admin/admin.php?page=plugin_optimizer_add_filters';
         } else if($('#name_page').hasClass('groups')){
             location.href='/wp-admin/admin.php?page=plugin_optimizer_add_groups';
+        } else if($('#name_page').hasClass('filters_categories')){
+            location.href='/wp-admin/admin.php?page=plugin_optimizer_add_categories';
         } else {
             $('#create_elements').css('display', 'block');
             if($('.content-new-element').css('display') === 'block'){
