@@ -69,6 +69,9 @@ register_deactivation_hook( __FILE__, 'deactivate_plugin_optimizer' );
 // TODO - let's copy the file there if it's missing
 if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') ){
     
+    // TODO should we add the MU plugin at this point?
+    // copy( __DIR__ . '/class-po-mu.php', WPMU_PLUGIN_DIR . '/class-po-mu.php' );
+    
     return;
 }
 
