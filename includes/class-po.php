@@ -50,8 +50,8 @@ class PluginOptimizer {
 	 *
 	 */
 	public function __construct() {
-		if ( defined( 'SIMPLE_ONLINE_SYSTEMS_VERSION' ) ) {
-			$this->version = SIMPLE_ONLINE_SYSTEMS_VERSION;
+		if ( defined( 'SOS_PO_VERSION' ) ) {
+			$this->version = SOS_PO_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}

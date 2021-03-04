@@ -43,7 +43,7 @@ appsero_init_tracker_plugin_optimizer();
  * Currently plugin version.
  * Use SemVer - https://semver.org
  */
-define( 'SIMPLE_ONLINE_SYSTEMS_VERSION', '1.0.0' );
+define( 'SOS_PO_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.
