@@ -92,11 +92,9 @@ if( $filter ){
 					<div class="content-filter">
                     
 						<div class="row filter_title">
-                        
-                        <?php if( $filter ){ ?>
-                            <input type="hidden" name="PO_filter_data[ID]" value="<?= $filter->ID ?>"/>
-                        <?php } ?>
-                        
+                            
+                            <input type="hidden" name="PO_filter_data[ID]" value="<?= $filter ? $filter->ID : "" ?>"/>
+                            
 							<div class="col-9">
 								<div class="header">Title</div>
 								<div>

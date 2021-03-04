@@ -124,7 +124,7 @@ class PO_Ajax {
         }
         
         
-		wp_send_json_success( [ "message" => "All good, the filter is saved." ] );
+		wp_send_json_success( [ "message" => "All good, the filter is saved.", "id" => $post_id, ] );
 
 	}
 
@@ -181,7 +181,7 @@ class PO_Ajax {
         }
         
         
-		wp_send_json_success( [ "message" => "All good, the group is saved." ] );
+		wp_send_json_success( [ "message" => "All good, the group is saved.", "id" => $post_id, ] );
 
 	}
 
@@ -237,7 +237,7 @@ class PO_Ajax {
             wp_send_json_error( [ "message" => "An error occured: " . $category->get_error_message() ] );
         }
         
-		wp_send_json_success( [ "message" => "All good, the category is saved." ] );
+		wp_send_json_success( [ "message" => "All good, the category is saved.", "id" => $category["term_id"], ] );
 
 	}
 

@@ -36,11 +36,9 @@ if( $group ){
                         <tr>
                             <td colspan="6">
                                 <div class="content-filter">
-                                
-                                <?php if( $group ){ ?>
-                                    <input type="hidden" name="PO_filter_data[ID]" value="<?= $group->ID ?>"/>
-                                <?php } ?>
-                        
+                                    
+                                    <input type="hidden" name="PO_filter_data[ID]" value="<?= $group ? $group->ID : "" ?>"/>
+                                    
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="header">Title</div>

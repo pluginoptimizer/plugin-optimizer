@@ -27,10 +27,8 @@ if( $cat ){
             <div class="row content-new-element">
                 <div class="col-12">
                     <div class="content-filter">
-                    
-                        <?php if( $cat ){ ?>
-                            <input type="hidden" name="PO_filter_data[ID]" value="<?= $cat->term_id ?>"/>
-                        <?php } ?>
+                        
+                        <input type="hidden" name="PO_filter_data[ID]" value="<?= $cat ? $cat->term_id : "" ?>"/>
                         
                         <div class="row">
                             <div class="col-12">

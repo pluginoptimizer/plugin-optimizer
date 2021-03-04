@@ -152,6 +152,11 @@ jQuery( document ).ready( function($){
             
             alert( response.data.message );
             
+            if( response.data.id ){
+                
+                $('input[name="PO_filter_data[ID]"]').val( response.data.id );
+            }
+            
         }, "json");
         
     });
@@ -166,6 +171,11 @@ jQuery( document ).ready( function($){
             
             alert( response.data.message );
             
+            if( response.data.id ){
+                
+                $('input[name="PO_filter_data[ID]"]').val( response.data.id );
+            }
+            
         }, "json");
         
     });
@@ -177,9 +187,14 @@ jQuery( document ).ready( function($){
         // console.log( "category_data: ", category_data );
         
         $.post( po_object.ajax_url, { action  : 'po_save_category', data : category_data }, function( response ) {
-            console.log( "po_save_category: ", response );
+            // console.log( "po_save_category: ", response );
             
             alert( response.data.message );
+            
+            if( response.data.id ){
+                
+                $('input[name="PO_filter_data[ID]"]').val( response.data.id );
+            }
             
         }, "json");
         
