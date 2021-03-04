@@ -17,7 +17,9 @@ $categories = get_categories( [
             <div class="row col-12 justify-content-between global-information">
             
                 <div class="col-3">
-                    <button class="po_green_button" id="add_elements"><span class="pluse">+</span> Add new Category</button>
+                    <a href="/wp-admin/admin.php?page=plugin_optimizer_add_categories">
+                        <button class="po_green_button" id="add_elements"><span class="pluse">+</span> Add new Category</button>
+                    </a>
                 </div>
                 
                 <div id="bulk_actions" class="col-6">

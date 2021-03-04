@@ -15,7 +15,9 @@ $groups = get_posts( array(
             <div class="row col-12 justify-content-between global-information">
             
                 <div class="col-3">
-                    <button class="po_green_button" id="add_elements"><span class="pluse">+</span> Add New Group</button>
+                    <a href="/wp-admin/admin.php?page=plugin_optimizer_add_groups">
+                        <button class="po_green_button" id="add_elements"><span class="pluse">+</span> Add New Group</button>
+                    </a>
                 </div>
                 
                 <?php PO_Admin_Helper::content_part__bulk_actions( $groups ); ?>

@@ -48,6 +48,7 @@ class PO_Ajax {
         
 		add_action( 'wp_ajax_po_save_filter',               [ $this, 'po_save_filter'               ] );
 		add_action( 'wp_ajax_po_save_group',                [ $this, 'po_save_group'                ] );
+		add_action( 'wp_ajax_po_save_category',             [ $this, 'po_save_category'             ] );
 		add_action( 'wp_ajax_po_create_category',           [ $this, 'po_create_category'           ] );
 		add_action( 'wp_ajax_po_delete_elements',           [ $this, 'po_delete_elements'           ] );
 		add_action( 'wp_ajax_po_publish_elements',          [ $this, 'po_publish_elements'          ] );
@@ -106,7 +107,7 @@ class PO_Ajax {
             
             $set_categories = wp_set_object_terms( $post_id, $category_ids, "сategories_filters" );
             
-            po_mu_plugin()->write_log( $set_categories, "po_save_filter-set_categories" );
+            // po_mu_plugin()->write_log( $set_categories, "po_save_filter-set_categories" );
         }
         
         $meta = [
@@ -185,6 +186,62 @@ class PO_Ajax {
 	}
 
 	/** NEW
+	 * Create/Update Category
+	 */
+	function po_save_category() {
+        
+        parse_str( $_POST['data'], $array);
+        
+        $data = $array['PO_filter_data'];
+        
+		// wp_send_json_success( $data );
+        // exit;
+        
+        // po_mu_plugin()->write_log( $_POST, "po_save_category-_POST" );
+        // po_mu_plugin()->write_log( $data, "po_save_category-data" );
+        
+        
+        if( empty( $data["title"] ) ){
+            
+            wp_send_json_error( [ "message" => "The title is a required field!" ] );
+        }
+        
+        if( empty( $data["ID"] ) ){
+            
+            $category = wp_create_term( $data["title"], "сategories_filters" );
+            
+            if( is_wp_error( $category ) ){
+                wp_send_json_error( [ "message" => "An error occured: " . $category->get_error_message() ] );
+            }
+            
+            $term_id = $category["term_id"];
+            
+        } else {
+            
+            $term_id = $data["ID"];
+        }
+        
+        $args = [
+            'name' => trim( $data["title"] ),
+        ];
+        
+        if( ! empty( $data["description"] ) ){
+            
+            $args["description"] = trim( $data["description"] );
+            
+        }
+        
+        $category = wp_update_term( $term_id, "сategories_filters", $args );
+        
+        if( is_wp_error( $category ) ){
+            wp_send_json_error( [ "message" => "An error occured: " . $category->get_error_message() ] );
+        }
+        
+		wp_send_json_success( [ "message" => "All good, the category is saved." ] );
+
+	}
+
+	/** NEW
 	 * Create new category
 	 */
 	function po_create_category(){
@@ -215,31 +272,27 @@ class PO_Ajax {
 		$id_elements    = htmlspecialchars( $_POST['id_elements'] );
 		$type_elements  = htmlspecialchars( $_POST['type_elements'] );
 
-		if ( $type_elements === 'all' ) {
-            
-			if ( $name_post_type === 'cat' ) {
-				$id_elements = explode( ',', $id_elements );
+		if ( $name_post_type === 'cat' ) {
+			$id_elements = explode( ',', $id_elements );
 
-				foreach ( $id_elements as $id_element ) {
-					wp_delete_term( $id_element, 'сategories_filters' );
-				}
-
-				wp_send_json_success( [ "message" => "Categories are deleted." ] );
-                
-			} else {
-                
-				$posts = get_posts( array(
-					'post_type' => $name_post_type,
-					'include'   => $id_elements,
-				) );
-
-				foreach ( $posts as $post ) {
-					wp_trash_post( $post->ID );
-				}
-                
-				wp_send_json_success( [ "message" => "Items are moved to trash." ] );
-                
+			foreach ( $id_elements as $id_element ) {
+				wp_delete_term( $id_element, 'сategories_filters' );
 			}
+
+			wp_send_json_success( [ "message" => "Categories are deleted." ] );
+            
+		} elseif ( $type_elements === 'all' ) {
+         
+			$posts = get_posts( array(
+				'post_type' => $name_post_type,
+				'include'   => $id_elements,
+			) );
+
+			foreach ( $posts as $post ) {
+				wp_trash_post( $post->ID );
+			}
+            
+			wp_send_json_success( [ "message" => "Items are moved to trash." ] );
             
 		} else {
             

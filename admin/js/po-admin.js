@@ -156,13 +156,28 @@ jQuery( document ).ready( function($){
         
     });
     
-    // NEW: Edit Group page template - Save filter
+    // NEW: Edit Group page template - Save Group
     $('#edit_group').on('click', '#save_group', function(){
         
         let group_data = $('#edit_group').find('select, textarea, input').serialize();
         
         $.post( po_object.ajax_url, { action  : 'po_save_group', data : group_data }, function( response ) {
-            console.log( "po_save_group: ", response );
+            // console.log( "po_save_group: ", response );
+            
+            alert( response.data.message );
+            
+        }, "json");
+        
+    });
+    
+    // NEW: Edit Category page template - Save Category
+    $('#edit_category').on('click', '#save_category', function(){
+        
+        let category_data = $('#edit_category').find('select, textarea, input').serialize();
+        // console.log( "category_data: ", category_data );
+        
+        $.post( po_object.ajax_url, { action  : 'po_save_category', data : category_data }, function( response ) {
+            console.log( "po_save_category: ", response );
             
             alert( response.data.message );
             
@@ -446,25 +461,6 @@ jQuery( document ).ready( function($){
 
     
     
-    // Clicking on element on the list (filter, group, category) redirects to the edit page
-    // $('body').on('click', '.block_info > td:not(:nth-child(1))', function(){
-        
-        // console.log( "OLD: Clicking on element on the list (filter, group, category) redirects to the edit page" );
-        
-        // const element_id = $(this).parent().children('td:nth-child(1)').children().attr('id');
-
-        // if($('#name_page').attr("class") === 'filters_categories'){
-            // location.href=`/wp-admin/term.php?taxonomy&tag_ID=${element_id}&post_type=sos_filter`;
-        // } else if($('#name_page').hasClass('filters')){
-            // location.href=`/wp-admin/admin.php?page=plugin_optimizer_add_filters&filter_id=${element_id}`;
-        // } else {
-            // location.href=`/wp-admin/post.php?post=${element_id}&action=edit`;
-        // }
-
-    // });
-
-    
-    
     
     
     
@@ -658,27 +654,6 @@ jQuery( document ).ready( function($){
         // });
     });
 
-    // #add_elements is a button used to get the Create New XYZ form
-    $('body').on('click', '#add_elements', function(){
-        
-        console.log( "OLD: #add_elements is a button used to get the Create New XYZ form" );
-        
-        if($('#name_page').hasClass('filters')){
-            location.href='/wp-admin/admin.php?page=plugin_optimizer_add_filters';
-        } else if($('#name_page').hasClass('groups')){
-            location.href='/wp-admin/admin.php?page=plugin_optimizer_add_groups';
-        } else if($('#name_page').hasClass('filters_categories')){
-            location.href='/wp-admin/admin.php?page=plugin_optimizer_add_categories';
-        } else {
-            $('#create_elements').css('display', 'block');
-            if($('.content-new-element').css('display') === 'block'){
-                $('.content-new-element').css('display', 'none');
-            } else {
-                $('.content-new-element').css('display', 'block');
-            }
-        }
-    });
-
     //
     $('body').on('click', '.filter-category .close', function(){
         
@@ -824,55 +799,6 @@ jQuery( document ).ready( function($){
                 // }
             // });
         }
-    });
-
-    // #add_elements.save-category is a button used to get the Create New Category form
-    $('body').on('click', '.save-category', function(){
-        
-        console.log( "OLD: #add_elements.save-category is a button used to get the Create New Category form" );
-        
-        let result = true;
-        $('.content-new-element input').toArray().some(function (item) {
-            if ($(item).val().trim() === "" && result) {
-                $(item).focus();
-                return result = false;
-            }
-        })
-        if (!result) {
-            return false;
-        }
-        
-        console.log( "aAjax: create-category.js 111" );
-        
-        // $.ajax({
-            // url: po_object.ajax_url,
-            // type: 'POST',
-            // data: {
-                // action                  : 'sos_create_cat_subcat',
-                // 'name_category'         : $('#set_title').val(),
-                // 'description_category'  : $('#set_description').val(),
-                // 'parent_category'       : $('.parent-category-wrapper .block span').toArray().map(item => $(item).attr('value')).join(', '),
-            // },
-            // success: function ({data}) {
-                // $('#the-list').html(data);
-                // $('.content-new-element').css('display', 'none');
-                // $('#set_title').val('');
-                // allElements.count_element('cat');
-        
-                // console.log( "aAjax: create-category.js 222" );
-        
-                // $.ajax({
-                    // url: po_object.ajax_url,
-                    // type: 'POST',
-                    // data: {
-                        // action: 'sos_get_parent_cat',
-                    // },
-                    // success: function ({data}) {
-                        // $('.content-new-element .plugin-wrapper').html(data);
-                    // }
-                // });
-            // }
-        // });
     });
 
     // Select a plugins for a new filter or select plugins for a new group
