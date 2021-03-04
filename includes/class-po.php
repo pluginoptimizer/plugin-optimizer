@@ -109,9 +109,6 @@ class PluginOptimizer {
 		// The class responsible for defining all Ajax actions that occur in the admin area.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin-ajax.php';
 
-		
-		// The class responsible for defining all actions that occur in the public-facing side of the site.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-po-public.php';
 
 		$this->loader = new PO_Loader();
 
