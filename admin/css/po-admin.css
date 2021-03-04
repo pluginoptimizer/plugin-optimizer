@@ -11,6 +11,36 @@
 }
 
 
+#categories_table .cat_checkbox{
+    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
+}
+#categories_table .cat_edit{
+    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
+}
+#categories_table tr.block_info:not(:hover) .cat_edit a{
+    display: none;
+}
+#categories_table .cat_title{
+    text-align: left;
+}
+#categories_table th.cat_title{
+    padding-left: 8px;
+}
+#categories_table .cat_description{
+    text-align: left;
+}
+#categories_table .cat_filters{
+    text-align: right;
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+}
+
+
 .plugin-wrapper > .content > span.close{
     display: none;
 }

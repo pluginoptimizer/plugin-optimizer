@@ -148,7 +148,7 @@ jQuery( document ).ready( function($){
         let filter_data = $('#edit_filter').find('select, textarea, input').serialize();
         
         $.post( po_object.ajax_url, { action  : 'po_save_filter', data : filter_data }, function( response ) {
-            console.log( "po_save_filter: ", response );
+            // console.log( "po_save_filter: ", response );
             
             alert( response.data.message );
             
@@ -332,14 +332,19 @@ jQuery( document ).ready( function($){
     // NEW: Change appearance checkbox all elements
     $('body').on('change', '#the-list input:checkbox', function(){
         
-        console.log( "OLD: Change appearance checkbox all elements" );
-        
         if($('#check_all').is( ":checked" )){
             $('#check_all').prop('checked', false);
         }
         if($('#the-list input:checkbox').length === $('#the-list input:checkbox:checked').length){
             $('#check_all').prop('checked', true);
         }
+    });
+    
+    // NEW: Select all elements
+    $('body').on('change', '#check_all', function(){
+        
+        $('#the-list input:checkbox').prop('checked', $(this).is(":checked") );
+        
     });
     
     // NEW: Bulk actions button (usually delete or restore element)
@@ -400,8 +405,6 @@ jQuery( document ).ready( function($){
                         
                         $.each( selected_ids, function( index, id ){
                             
-                            // console.log( "po_publish_elements ID: ", id );
-                            
                             $('input#' + id ).parents('.block_info').attr("data-status", "publish");
                             
                         });
@@ -411,8 +414,6 @@ jQuery( document ).ready( function($){
                     if( data.action == 'po_delete_elements' && data.type_elements == 'all' ){
                         
                         $.each( selected_ids, function( index, id ){
-                            
-                            console.log( "po_delete_elements all ID: ", id );
                             
                             $('input#' + id ).parents('.block_info').attr("data-status", "trash");
                             
@@ -424,8 +425,6 @@ jQuery( document ).ready( function($){
                         
                         $.each( selected_ids, function( index, id ){
                             
-                            console.log( "po_delete_elements trash ID: ", id );
-                            
                             $('input#' + id ).parents('.block_info').remove();
                             
                         });
@@ -433,8 +432,6 @@ jQuery( document ).ready( function($){
                     }
                     
                     alert( response.data.message );
-                    
-                    // console.log( "Data: ", data );
                     
                     $('#count_all_elements').html( $('#the-list > [data-status="publish"]').length );
                     $('#count_trash_elements').html( $('#the-list > [data-status="trash"]').length );
@@ -1068,19 +1065,6 @@ jQuery( document ).ready( function($){
         // });
     });
 
-    // TODO Needs a better selector
-    // Select all elements
-    $('body').on('change', '#check_all', function(){
-        
-        console.log( "OLD: Select all elements" );
-        
-        if($(this).is( ":checked" )){
-            $('tbody input:checkbox').prop('checked', true);
-        } else {
-            $('tbody input:checkbox').prop('checked', false);
-        }
-    });
-    
     
     // Actions for all elements
     let allElements = {

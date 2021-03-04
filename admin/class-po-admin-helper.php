@@ -7,17 +7,11 @@ class PO_Admin_Helper {
 
 	static function get_filter_endpoints( $filter ) {
         
-        $endpoints = get_post_meta( $filter->ID, "selected_page", true );
-        
-        $endpoints = explode( ",", $endpoints );
-        
-        foreach( $endpoints as $index => $value ){
-            
-            $endpoints[ $index ] = trim( $value );
-        }
+        $endpoints = get_post_meta( $filter->ID, "endpoints", true );
         
         return $endpoints;
     }
+    
     
 	static function content_part__header( $page_title, $class = "default" ) {
         
@@ -175,6 +169,7 @@ EOF;
 		}
 	}
 
+
 	static function list_content__filters( $filters ) {
         
 		if( $filters ){
@@ -219,7 +214,7 @@ EOF;
 		}
 	}
 
-	public static function list_content__groups( $groups ) {
+	static function list_content__groups( $groups ) {
         
 		if ( $groups ){
 			foreach ( $groups as $group ){
@@ -245,7 +240,7 @@ EOF;
 		}
 	}
 
-	public static function list_content__works( $work_items ) {
+	static function list_content__works( $work_items ) {
 		if ( $work_items ){
 			foreach ( $work_items as $work_item ){
                 
@@ -282,14 +277,17 @@ EOF;
 		}
 	}
 
-	public static function list_content__categories( $categories ) {
+	static function list_content__categories( $categories ) {
 		if ( $categories ){
-			foreach ( $categories as $cat ){ ?>
-                <tr class="block_info" id="cat-<?= $cat->cat_ID ?>" data-status="publish">
-                    <td class="data-edit-checkbox"><input type="checkbox" id="<?= $cat->cat_ID ?>"></td>
-                    <td class="data-edit-category"><a href="/wp-admin/admin.php?page=plugin_optimizer_add_categories&cat_id=<?= $cat->cat_ID ?>">Edit</a></td>
-                    <td class="data-title-category"><?= $cat->cat_name ?></td>
-                    <td class="data-description-category"><?= $cat->description ?></td>
+			foreach ( $categories as $cat ){
+                ?>
+                <tr class="block_info" id="cat-<?= $cat->term_id ?>" data-status="publish">
+                    <td class="cat_checkbox"><input type="checkbox" id="<?= $cat->term_id ?>"></td>
+                    <td class="cat_edit"><a href="/wp-admin/admin.php?page=plugin_optimizer_add_categories&cat_id=<?= $cat->term_id ?>">Edit</a></td>
+                    <td class="cat_title"><?= $cat->cat_name ?></td>
+                    <td class="cat_description"><?= $cat->description ? $cat->description : "-" ?></td>
+                    <?php // TODO add a link to filter the filters by category ?>
+                    <td class="cat_filters"><?= $cat->count ?></td>
                 </tr>
 			<?php }
         } else {

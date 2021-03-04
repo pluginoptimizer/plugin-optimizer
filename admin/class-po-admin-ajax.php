@@ -82,13 +82,8 @@ class PO_Ajax {
 			'post_type'   => 'sos_filter',
 			'post_status' => 'publish',
 			'post_author' => 1,// TODO get_current_user_id() with localize_script in enqueue function
-			'tax_input'   => [ "сategories_filters" => ( ! empty( $data["categories"] ) ? $data["categories"] : [] ) ],
+			// 'tax_input'   => [ "сategories_filters" => ( ! empty( $data["categories"] ) ? array_keys( $data["categories"] ) : [] ) ],
 		);
-        
-        foreach( $post_data["tax_input"] as $index => $id ){
-            
-            $post_data["tax_input"][ $index ] = (int) $id;
-        }
         
         if( ! empty( $data["ID"] ) ){
             $post_data["ID"] = $data["ID"];
@@ -100,6 +95,20 @@ class PO_Ajax {
 			wp_send_json_error( [ "message" => $post_id->get_error_message() ] );
 		}
 
+        if( ! empty( $data["categories"] ) ){
+            
+            $category_ids = array_keys( $data["categories"] );
+            
+            foreach( $category_ids as $index => $cat_id ){
+                
+                $category_ids[ $index ] = (int) $cat_id;
+            }
+            
+            $set_categories = wp_set_object_terms( $post_id, $category_ids, "сategories_filters" );
+            
+            po_mu_plugin()->write_log( $set_categories, "po_save_filter-set_categories" );
+        }
+        
         $meta = [
             "filter_type"       => ! empty( $data["type"] )             ? $data["type"]             : "",
             "endpoints"         => ! empty( $data["endpoints"] )        ? $data["endpoints"]        : [],
@@ -130,8 +139,8 @@ class PO_Ajax {
 		// wp_send_json_success( $data );
         // exit;
         
-        // po_mu_plugin()->write_log( $_POST, "po_save_filter-_POST" );
-        // po_mu_plugin()->write_log( $data, "po_save_filter-data" );
+        // po_mu_plugin()->write_log( $_POST, "po_save_group-_POST" );
+        // po_mu_plugin()->write_log( $data, "po_save_group-data" );
         
         
         if( empty( $data["title"] ) ){
@@ -201,6 +210,7 @@ class PO_Ajax {
 	 * Delete elements
 	 */
 	function po_delete_elements() {
+        
 		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
 		$id_elements    = htmlspecialchars( $_POST['id_elements'] );
 		$type_elements  = htmlspecialchars( $_POST['type_elements'] );
