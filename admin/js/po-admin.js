@@ -479,15 +479,17 @@ jQuery( document ).ready( function($){
         
         // TODO - the page doesn't remember the current state of completed tasks
         
-        if($(this).next('.hidden-info_overview').css('display') !== 'block'){
-            $(this).next('.hidden-info_overview').css('display', 'block');
-            $(this).children('.trigger').removeClass('trigger_exit');
-            $(this).children('.trigger').addClass('trigger_open');
-            $(this).children().children('.info-passage').addClass('done');
+        if($(this).next('.hidden-info_overview').hasClass("closed") ){
+            
+            $(this).next('.hidden-info_overview').removeClass("closed").addClass("opened");
+            $(this).children('.trigger').removeClass('trigger_closed').addClass('trigger_opened');
+            // $(this).children().children('.info-passage').addClass('done');
+            
         } else{
-            $(this).children('.trigger').addClass('trigger_exit');
-            $(this).children('.trigger').removeClass('trigger_open');
-            $(this).next('.hidden-info_overview').css('display', 'none');
+            
+            $(this).next('.hidden-info_overview').addClass("closed").removeClass("opened");
+            $(this).children('.trigger').addClass('trigger_closed').removeClass('trigger_opened');
+            
         }
     })
     

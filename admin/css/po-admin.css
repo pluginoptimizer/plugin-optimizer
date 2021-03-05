@@ -824,7 +824,7 @@ input[type="text"].additional_endpoint{
     align-items: center;
 }
 
-.done.info-passage:before{
+.info-passage.done:before{
     content: '\2713';
     /*content: '✔';*/
     display: block;
@@ -849,28 +849,35 @@ input[type="text"].additional_endpoint{
     text-align: center;
 }
 
-.trigger_exit:before{
+.trigger_closed:before{
     content: '▼';
     color: #72777c;
     font-size: 15px;
 }
 
-.trigger_open:before{
+.trigger_opened:before{
     content: '▲';
     color: #72777c;
     font-size: 15px;
 }
 
-.hidden-info_overview> .container{
+.hidden-info_overview{
+    padding: 5px;
+    margin-top: -10px !important;
+}
+
+.hidden-info_overview.opened{
+    display: block;
+}
+.hidden-info_overview.closed{
+    display: none;
+}
+
+.hidden-info_overview > .container{
     background-color: #f1f1f1;
     padding: 35px;
 }
 
-.hidden-info_overview{
-    padding: 5px;
-    margin-top: -10px !important;
-    display: none;
-}
 
 #set_type{
     width: 100%;
