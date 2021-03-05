@@ -109,3 +109,19 @@ if( ! function_exists( 'write_log' ) ){//                                       
     }
 
 }
+
+
+function test_overview_page_hook( $tabs ){
+    
+    // po_mu_plugin()->write_log( $tabs, "test_overview_page_hook-tabs" );
+    
+    $tabs[25] = [
+        "title"     => "Added by a hook",
+        "content"   => "And our content goes here"
+    ];
+    
+    ksort( $tabs );
+    
+    return $tabs;
+}
+add_filter( "sos_po_overview_tabs", "test_overview_page_hook", 10, 1 );

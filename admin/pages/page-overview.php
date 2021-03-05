@@ -37,6 +37,8 @@
                         ],
                     ];
                     
+                    $tabs = apply_filters( "sos_po_overview_tabs", $tabs );
+                    
                     foreach( $tabs as $index => $tab ){
                         
                         echo <<<EOF
