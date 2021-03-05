@@ -474,6 +474,23 @@ jQuery( document ).ready( function($){
         
     });
 
+    // Overview page - switch between accordion elements
+    $('body').on('click', '.tab-overview', function(){
+        
+        // TODO - the page doesn't remember the current state of completed tasks
+        
+        if($(this).next('.hidden-info_overview').css('display') !== 'block'){
+            $(this).next('.hidden-info_overview').css('display', 'block');
+            $(this).children('.trigger').removeClass('trigger_exit');
+            $(this).children('.trigger').addClass('trigger_open');
+            $(this).children().children('.info-passage').addClass('done');
+        } else{
+            $(this).children('.trigger').addClass('trigger_exit');
+            $(this).children('.trigger').removeClass('trigger_open');
+            $(this).next('.hidden-info_overview').css('display', 'none');
+        }
+    })
+    
     
     
     
@@ -587,25 +604,6 @@ jQuery( document ).ready( function($){
             // }
         // });
     });
-    
-    // Overview page - switch between accordion elements
-    $('body').on('click', '.tab-overview', function(){
-        
-        console.log( "OLD: Overview page - switch between accordion elements" );
-        
-        // TODO - the page doesn't remember the current state of completed tasks
-        
-        if($(this).next('.hidden-info_overview').css('display') !== 'block'){
-            $(this).next('.hidden-info_overview').css('display', 'block');
-            $(this).children('.trigger').removeClass('trigger_exit');
-            $(this).children('.trigger').addClass('trigger_open');
-            $(this).children().children('.info-passage').addClass('done');
-        } else{
-            $(this).children('.trigger').addClass('trigger_exit');
-            $(this).children('.trigger').removeClass('trigger_open');
-            $(this).next('.hidden-info_overview').css('display', 'none');
-        }
-    })
     
     // Select a parent category on the Add New Category screen
     $('body').on('click', '.select_parent_to_category', function(){
