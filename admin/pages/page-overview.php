@@ -51,6 +51,7 @@
                     foreach( $tabs as $index => $tab ){
                         
                         $class_completed = $tab["completed"] ? " done" : "";
+                        $button_complete = $tab["completed"] ? "" : '<div><button class="po_green_button mark_tab_complete">Mark Complete</button></div>';
                         $class_opened    = "trigger_closed";
                         $content_opened  = "closed";
                         
@@ -72,7 +73,7 @@
                     <div class="container hidden-info_overview {$content_opened}">
                         <div class="container">
                             {$tab["content"]}
-                            <button class="po_green_button mark_tab_complete">Mark Complete</button>
+                            {$button_complete}
                         </div>
                     </div>
                     

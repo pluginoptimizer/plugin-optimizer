@@ -474,7 +474,7 @@ jQuery( document ).ready( function($){
         
     });
 
-    // Overview page - switch between accordion elements
+    // Overview page - toggle different sections
     $('body').on('click', '.tab-overview', function(){
         
         // TODO - the page doesn't remember the current state of completed tasks
