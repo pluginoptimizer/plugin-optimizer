@@ -147,7 +147,7 @@ class PO_Helper {
 							<?php
 							else:
 								?>
-                                <span class="close pluse_plugin" id="<?= $plugin_name; ?>"
+                                <span class="close" id="<?= $plugin_name; ?>"
                                       value="<?= $post->ID; ?>" link="<?= $plugin_id; ?>">+</span>
 							<?php
 							endif;
@@ -227,7 +227,7 @@ class PO_Helper {
 							<?php
 							else:
 								?>
-                                <span class="close pluse_plugin" id="<?= $plugin_name; ?>"
+                                <span class="close" id="<?= $plugin_name; ?>"
                                       value="<?= $post->ID; ?>" link="<?= $plugin_id; ?>">+</span>
 							<?php
 							endif;

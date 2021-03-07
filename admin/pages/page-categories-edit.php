@@ -17,48 +17,42 @@ if( $cat ){
 }
 
 ?>
-<div class="wrap wrapper-filter">
 
-    <div class="sos-wrap container">
+<div class="sos-wrap">
+
+    <?php PO_Admin_Helper::content_part__header( $page_title, "categories"); ?>
     
-        <?php PO_Admin_Helper::content_part__header( $page_title, "categories"); ?>
-        
-        <div id="edit_category" class="row sos-content">
-            <div class="row content-new-element">
-                <div class="col-12">
-                    <div class="content-filter">
-                        
-                        <input type="hidden" name="PO_filter_data[ID]" value="<?= $cat ? $cat->term_id : "" ?>"/>
-                        
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="header">Title</div>
-                                <div>
-                                    <div class="content">
-                                        <span><input class="content-text" id="set_title" type="text" name="PO_filter_data[title]" value="<?= $cat_title ?>"></span>
-                                    </div>
+    <div id="edit_category" class="sos-content">
+        <div class="row content-new-element">
+            <div class="col-12">
+                <div class="content-filter">
+                    
+                    <input type="hidden" name="PO_filter_data[ID]" value="<?= $cat ? $cat->term_id : "" ?>"/>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="header">Title</div>
+                            <div>
+                                <div class="content">
+                                    <span><input class="content-text" id="set_title" type="text" name="PO_filter_data[title]" value="<?= $cat_title ?>"></span>
                                 </div>
-                                <div class="header">Description</div>
-                                <div>
-                                    <div class="content">
-                                        <span><textarea id="set_description" name="PO_filter_data[description]" name="text"><?= $cat_desc ?></textarea></span>
-                                    </div>
+                            </div>
+                            <div class="header">Description</div>
+                            <div>
+                                <div class="content">
+                                    <span><textarea id="set_description" name="PO_filter_data[description]" name="text"><?= $cat_desc ?></textarea></span>
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
-
-                    <div class="row">
-                        <button id="save_category" class="po_green_button"><span class="pluse">+</span> Save Category</button>
-                    </div>
-
+                    
                 </div>
+
+                <div class="row">
+                    <button id="save_category" class="po_green_button">Save Category</button>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
-
-
-
-

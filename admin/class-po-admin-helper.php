@@ -35,12 +35,12 @@ class PO_Admin_Helper {
         
         echo <<<EOF
         
-        <div id="main_title" class="row col-12">
+        <div id="main_title">
             <h1>Plugin Optimizer</h1>
             <h2 id="name_page" class="$class">$page_title</h2>
         </div>
 
-        <div id="main_tab_navigation" class="row col-12 wrap-tabs">
+        <div id="main_tab_navigation" class="wrap-tabs">
             $tabs_html
         </div>
         
@@ -272,7 +272,7 @@ EOF;
                     <td><?= substr( str_replace( '-', '/', str_replace( " ", " at ", $work_item->post_date ) ), 0, - 3 ) . ' pm' ?></td>
                     <td>
                         <a class="row-title" href="<?= $create_link ?>">
-                            <button class="po_green_button"><span class="pluse">+</span> Create Filter</button>
+                            <button class="po_green_button">Create Filter</button>
                         </a>
                     </td>
                 </tr>
