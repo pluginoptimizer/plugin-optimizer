@@ -35,10 +35,8 @@ class PO_Admin_Helper {
         
         echo <<<EOF
         
-        <div class="row col-12">
+        <div id="main_title" class="row col-12">
             <h1>Plugin Optimizer</h1>
-        </div>
-        <div class="row col-12">
             <h2 id="name_page" class="$class">$page_title</h2>
         </div>
 
