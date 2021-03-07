@@ -11,7 +11,7 @@
  * @since      1.0.0
  * @package    PluginOptimizer
  * @subpackage PluginOptimizer/includes
- * @author     Web Dev <some@some.com>
+ * @author     Simple Online Systems <admin@simpleonlinesystems.com>
  */
 
 class PluginOptimizer {
@@ -150,7 +150,6 @@ class PluginOptimizer {
 		$this->loader->add_action( 'init',                  $plugin_admin, 'register_taxonomies' );
 		$this->loader->add_action( 'add_meta_boxes',        $plugin_admin, 'register_meta_boxes' );
         
-		// $this->loader->add_action( 'save_post_sos_filter',  $plugin_admin, 'save_filter_options' );
 		$this->loader->add_action( 'save_post_sos_group',   $plugin_admin, 'save_group_options' );
         
 		$this->loader->add_action( 'save_post_page',        $plugin_admin, 'add_item_to_worklist' );

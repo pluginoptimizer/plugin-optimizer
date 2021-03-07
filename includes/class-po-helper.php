@@ -63,52 +63,6 @@ class PO_Helper {
 
 	}
 
-	public static function create_category( $post ) {
-        
-		if ( $post && ! is_numeric( $post ) ) {
-			$id_filter = $post->ID;
-		} elseif ( is_numeric( $post ) ) {
-			$id_filter = $post;
-		} else {
-			$id_filter     = htmlspecialchars( $_POST['id_filter'] );
-			$name_category = htmlspecialchars( $_POST['name_category'] );
-
-			wp_set_object_terms( $id_filter, $name_category, '?ategories_filters' );
-		}
-
-
-		ob_start();
-
-		$categories = get_categories( [
-			'taxonomy'   => '?ategories_filters',
-			'type'       => 'sos_filter',
-			'hide_empty' => 0,
-		] );
-
-		if ( $categories ){
-			foreach ( $categories as $cat ){
-				?>
-                <div class="content filter-category <?= ( has_term( $cat->cat_name, '?ategories_filters', $id_filter ) ) ? 'block' : ''; ?>">
-                    <span><?= $cat->cat_name; ?></span>
-                    <span class="close" id="<?= $cat->cat_ID; ?>">×</span>
-                </div>
-			<?php
-			}
-		}
-        
-		?><input type="text" placeholder="Name category"><?php
-        ?><button class="po_green_button add_endpoint add-category" id="post-<?= $id_filter; ?>">
-            <span class="pluse">+</span> Category
-        </button><?php
-        
-		if ( $post && ! is_numeric( $post ) ) {
-			echo ob_get_clean();
-		} else {
-			wp_send_json_success( ob_get_clean() );
-		}
-
-	}
-
 	public static function content_plugin_to_filter( $post ) {
         
 		$plugins       = self::get_plugins_with_status();

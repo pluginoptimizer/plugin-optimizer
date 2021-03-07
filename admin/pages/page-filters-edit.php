@@ -226,7 +226,7 @@ if( $filter ){
 									}
 								}
 								?>
-								<div class="create_category content before_add" id="add_category">
+								<div class="content before_add" id="add_category">
                                     <span class="circle_button add_something before_add">+</span><span class="before_add"> Create New</span>
                                     <input class="during_add" type="text" name="new_category_name" value="" placeholder="Category Name"/>
                                     <span class="circle_button remove_something during_add cancel">-</span>

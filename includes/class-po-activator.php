@@ -8,7 +8,7 @@
  * @since      1.0.0
  * @package    PluginOptimizer
  * @subpackage PluginOptimizer/includes
- * @author     Web Dev <some@some.com>
+ * @author     Simple Online Systems <admin@simpleonlinesystems.com>
  */
 class PO_Activator {
 

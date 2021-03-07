@@ -36,9 +36,10 @@ class PO_MU {
         
         $this->po_pages = [
             "/wp-admin/admin.php?page=plugin_optimizer",
-            "/wp-admin/admin.php?page=plugin_optimizer_add_filters",
             "/wp-admin/admin.php?page=plugin_optimizer_filters",
+            "/wp-admin/admin.php?page=plugin_optimizer_add_filters",
             "/wp-admin/admin.php?page=plugin_optimizer_filters_categories",
+            "/wp-admin/admin.php?page=plugin_optimizer_add_categories",
             "/wp-admin/admin.php?page=plugin_optimizer_groups",
             "/wp-admin/admin.php?page=plugin_optimizer_add_groups",
             "/wp-admin/admin.php?page=plugin_optimizer_worklist",
@@ -165,7 +166,9 @@ class PO_MU {
                 
 				$this->use_filter( $filter );
 			}
-
+            
+            
+            // TODO wildcards for MU plugin go here
             // Filter by URL
 			if( is_array( $filter->endpoints ) ){
                 

@@ -4,7 +4,7 @@
  *
  * @package    PluginOptimizer
  * @subpackage PluginOptimizer/admin
- * @author     Web Dev <some@some.com>
+ * @author     Simple Online Systems <admin@simpleonlinesystems.com>
  */
 
 class PO_Admin_Menu_Pages {
