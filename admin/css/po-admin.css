@@ -638,6 +638,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     border-bottom: 1px solid lightgray;
     padding-bottom: 0;
     justify-content: flex-start;
+    align-items: flex-end;
 }
 #main_tab_navigation > div.tabs {
     position: relative;
@@ -652,14 +653,17 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     margin-right: 10px;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
-    padding: 7px 20px 6px;
+    padding: 7px 20px 0;
+    transition: all 300ms ease;
 }
-#main_tab_navigation > div.tabs:hover {
-    background: #fff;
+#main_tab_navigation > div.tabs:not(.current):hover {
+    /* background: #fff; */
+    padding: 7px 20px 6px;
 }
 #main_tab_navigation > div.tabs.current {
     background: #fff;
     border-bottom: 1px solid #fff;
+    padding: 7px 20px 6px;
 }
 
 .sos-wrap .notice{
