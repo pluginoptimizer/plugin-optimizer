@@ -24,14 +24,12 @@ class PO_Admin_Helper {
             <h2 id="name_page" class="$class">$page_title</h2>
         </div>
 
-        <div class="row col-12 justify-content-between wrap-tabs">
-            <div class="col-10 row">
-                <div id="window_filters"    class="tabs col-2">Filters</div>
-                <div id="window_categories" class="tabs col-2">Categories</div>
-                <div id="window_groups"     class="tabs col-2">Groups</div>
-                <div id="window_worklist"   class="tabs col-2">Worklist</div>
-                <div id="window_settings"   class="tabs col-2">Settings</div>
-            </div>
+        <div id="main_tab_navigation" class="row col-12 wrap-tabs">
+            <div id="window_filters"    class="tabs">Filters</div>
+            <div id="window_categories" class="tabs">Categories</div>
+            <div id="window_groups"     class="tabs">Groups</div>
+            <div id="window_worklist"   class="tabs">Worklist</div>
+            <div id="window_settings"   class="tabs">Settings</div>
         </div>
         
 EOF;
@@ -91,7 +89,7 @@ EOF;
             }
             
             $filter_type_html .= '</select>';
-            $filter_type_html .= '<button id="btn_type_filter">Filter</button>';
+            $filter_type_html .= '<button id="btn_type_filter" class="po_secondary_button">Filter</button>';
             $filter_type_html .= '</div>';
             
         }
@@ -104,14 +102,14 @@ EOF;
                             <option value="default">Bulk actions</option>
                             <option value="delete">Delete</option>
                         </select>
-                        <button id="btn_apply">Apply</button>
+                        <button id="btn_apply" class="po_secondary_button">Apply</button>
                     </div>
                     <div>
                         <select id="filter_all_elements">
                             <option value="default">All dates</option>
                             $months_html
                         </select>
-                        <button id="btn_date_filter">Filter</button>
+                        <button id="btn_date_filter" class="po_secondary_button">Filter</button>
                     </div>
                     $filter_type_html
                 </div>

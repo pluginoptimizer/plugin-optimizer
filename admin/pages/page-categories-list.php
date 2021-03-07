@@ -28,7 +28,7 @@ $categories = get_categories( [
                             <option value="default">Bulk actions</option>
                             <option value="delete">Delete</option>
                         </select>
-                        <button id="btn_apply">Apply</button>
+                        <button id="btn_apply" class="po_secondary_button">Apply</button>
                     </div>
                 </div>
             

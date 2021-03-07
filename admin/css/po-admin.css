@@ -124,20 +124,6 @@
 }
 
 
-.sos-wrap .tabs {
-    cursor: pointer;
-    background-color: #1e4d7d;
-    background-image: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0.2) 100%);
-
-    /* Style for "filters" */
-    color: #ffffff;
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 48px;
-    text-align: center;
-    margin-right: 1%;
-}
-
 .sos-wrap .search {
     /* Style for "tab" */
     float: right;
@@ -213,15 +199,37 @@
 }
 
 .sos-wrap button.po_green_button{
-    padding: 5px;
+    padding: 5px 15px;
     text-transform: uppercase;
     box-shadow: -1px 1px 0 rgba(255, 255, 255, 0.55), inset 0 0 0 2px rgba(255, 255, 255, 0.3);
     border: 1px solid #689530;
     background-color: #369451;
     background-image: linear-gradient(to top, rgba(0, 0, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 100%);
+    border-radius: 4px;
     color: white;
     cursor: pointer;
+    transition: all 300ms ease;
 }
+.sos-wrap button.po_green_button:hover{
+    background-image: none;
+}
+
+.sos-wrap button.po_secondary_button{
+    padding: 3px 15px;
+    text-transform: uppercase;
+    box-shadow: -1px 1px 0 rgba(255, 255, 255, 0.55), inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+    border: 1px solid #3A5683;
+    background-color: #5A76A3;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 100%);
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: all 300ms ease;
+}
+.sos-wrap button.po_secondary_button:hover{
+    background-image: none;
+}
+
 .sos-wrap button#save_filter{
     width: 50%;
     margin-left: 25%;
@@ -464,6 +472,14 @@ td.expandable.list_of_plugins *{
 #bulk_actions > div:not(:last-of-type){
     margin-right: 20px;
 }
+#bulk_actions > div{
+    display: flex;
+    align-items: center;
+}
+#bulk_actions > div > select{
+    margin-right: 10px;
+    min-height: 32px;
+}
 
 
 
@@ -616,6 +632,34 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 .wrap-tabs{
     display: flex;
     /*margin-bottom: 10px !important;*/
+}
+
+#main_tab_navigation{
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 0;
+    justify-content: flex-start;
+}
+#main_tab_navigation > div.tabs {
+    position: relative;
+    top: 1px;
+    border: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 300;
+    /* line-height: 28px; */
+    text-align: center;
+    margin-right: 10px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    padding: 7px 20px 6px;
+}
+#main_tab_navigation > div.tabs:hover {
+    background: #fff;
+}
+#main_tab_navigation > div.tabs.current {
+    background: #fff;
+    border-bottom: 1px solid #fff;
 }
 
 .sos-wrap .notice{

@@ -5,7 +5,7 @@ jQuery( document ).ready( function($){
     current_page = current_page === 'filters_categories' ? 'categories' : current_page;
     current_page = current_page === 'add-filters'        ? 'filters'    : current_page;
     current_page = current_page === 'add-groups'         ? 'groups'     : current_page;
-    $(`#window_${current_page}`).css('background-color', '#d7b70a');
+    $(`#window_${current_page}`).addClass('current');
 
     // NEW: Edit Filter page template, Edit Group page template - Clicking on a plugin
     $('#edit_filter, #edit_group').on('click', '.block-plugin-wrapper .single_plugin', function(){
@@ -491,9 +491,45 @@ jQuery( document ).ready( function($){
             $(this).children('.trigger').addClass('trigger_closed').removeClass('trigger_opened');
             
         }
-    })
+    });
+    
+    // switch between tabs menu pages
+    $('body').on('click', '#window_filters, #window_categories, #window_groups, #window_worklist, #window_settings', function(){
+        
+        $('#main_tab_navigation > div.tabs').removeClass('current');
+        
+        $(this).addClass('current');
+
+        const selfId = $(this).attr('id');
+
+        switch (selfId) {
+            case 'window_filters':
+                location.href='/wp-admin/admin.php?page=plugin_optimizer_filters';
+                break;
+            case 'window_categories':
+                location.href='/wp-admin/admin.php?page=plugin_optimizer_filters_categories';
+                break;
+            case 'window_groups':
+                location.href='/wp-admin/admin.php?page=plugin_optimizer_groups';
+                break;
+            case 'window_worklist':
+                location.href='/wp-admin/admin.php?page=plugin_optimizer_worklist';
+                break;
+            case 'window_settings':
+                location.href='/wp-admin/admin.php?page=plugin_optimizer_settings';
+                break;
+        }
+
+    });
     
     
+    $('body').on('click', '.mark_tab_complete', function(){
+        
+        let tab_id = $(this).parents('.hidden-info_overview').data('id');
+        
+        console.log( "Tab ID: ", tab_id );
+        
+    });
     
     
     
@@ -536,37 +572,6 @@ jQuery( document ).ready( function($){
         $(this).css('font-weight', 600);
         hidden_settings();
         $('#settings_debug').css('display', 'flex');
-    });
-    
-    // switch between tabs menu pages
-    $('body').on('click', '#window_filters, #window_categories, #window_groups, #window_worklist, #window_settings', function(){
-        
-        console.log( "OLD: switch between tabs menu pages" );
-        
-        $('.tabs').css('background', '#1e4d7d');
-
-        const selfId = $(this).attr('id');
-
-        switch (selfId) {
-            case 'window_filters':
-                location.href='/wp-admin/admin.php?page=plugin_optimizer_filters';
-                break;
-            case 'window_categories':
-                location.href='/wp-admin/admin.php?page=plugin_optimizer_filters_categories';
-                break;
-            case 'window_groups':
-                location.href='/wp-admin/admin.php?page=plugin_optimizer_groups';
-                break;
-            case 'window_worklist':
-                location.href='/wp-admin/admin.php?page=plugin_optimizer_worklist';
-                break;
-            case 'window_settings':
-                location.href='/wp-admin/admin.php?page=plugin_optimizer_settings';
-                break;
-        }
-
-        $(`#${selfId}`).css('background-color', '#d7b70a');
-
     });
     
     
