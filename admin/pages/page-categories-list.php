@@ -11,7 +11,7 @@ $categories = get_categories( [
 
     <div class="sos-wrap container">
     
-        <?php PO_Admin_Helper::content_part__header("Filter categories", "filters_categories"); ?>
+        <?php PO_Admin_Helper::content_part__header("Filter categories", "categories"); ?>
         
         <div class="row sos-content">
             <div class="row col-12 justify-content-between global-information">

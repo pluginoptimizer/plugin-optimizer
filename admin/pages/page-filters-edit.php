@@ -84,7 +84,7 @@ if( $filter ){
 
 	<div class="sos-wrap container">
     
-        <?php PO_Admin_Helper::content_part__header( $page_title, "add-filters" ); ?>
+        <?php PO_Admin_Helper::content_part__header( $page_title, "filters" ); ?>
         
 		<div id="edit_filter" class="row sos-content">
 			<div class="row content-new-element">

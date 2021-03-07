@@ -1,12 +1,6 @@
 jQuery( document ).ready( function($){
     'use strict';
 
-    let current_page = $('#name_page').attr('class');
-    current_page = current_page === 'filters_categories' ? 'categories' : current_page;
-    current_page = current_page === 'add-filters'        ? 'filters'    : current_page;
-    current_page = current_page === 'add-groups'         ? 'groups'     : current_page;
-    $(`#window_${current_page}`).addClass('current');
-
     // NEW: Edit Filter page template, Edit Group page template - Clicking on a plugin
     $('#edit_filter, #edit_group').on('click', '.block-plugin-wrapper .single_plugin', function(){
 
@@ -389,7 +383,7 @@ jQuery( document ).ready( function($){
             name_post_type = 'sos_filter';
         } else if( $('#name_page').attr("class") === 'groups' ){
             name_post_type = 'sos_group';
-        } else if( $('#name_page').attr("class") === 'filters_categories' ){
+        } else if( $('#name_page').attr("class") === 'categories' ){
             name_post_type = 'cat';
         }
         
@@ -519,7 +513,7 @@ jQuery( document ).ready( function($){
 
     });
     
-    
+    // NEW: Overview: mark tab complete
     $('body').on('click', '.mark_tab_complete', function(){
         
         let tab_id = $(this).parents('.hidden-info_overview').data('id').replace('tab_', '');
@@ -648,47 +642,6 @@ jQuery( document ).ready( function($){
             $(this).addClass('block');
         }
 
-    });
-
-    // search elements, a box on most of the PO pages
-    $('body').on('keyup', '#search_elements', function(){
-        
-        console.log( "OLD: search elements, a box on most of the PO pages" );
-        
-        let name_post_type;
-        if($('#name_page').attr("class") === 'worklist'){
-            name_post_type = 'sos_work';
-        } else if($('#name_page').attr("class") === 'filters'){
-            name_post_type = 'sos_filter';
-        } else if($('#name_page').attr("class") === 'groups'){
-            name_post_type = 'sos_group';
-        } else if($('#name_page').attr("class") === 'filters_categories'){
-            name_post_type = 'cat';
-        } else if($('#name_page').attr("class") === 'settings'){
-            name_post_type = 'plugins';
-        }
-        let type_elements;
-        if($('#all_elements').css('font-weight') === '700'){
-            type_elements = 'all';
-        } else {
-            type_elements = 'trash';
-        }
-        
-        console.log( "aAjax: search-elements.js" );
-        
-        // $.ajax({
-            // url: po_object.ajax_url,
-            // type: 'POST',
-            // data: {
-                // action          : 'sos_search_elements',
-                // 'name_post_type': name_post_type,
-                // 'type_elements' : type_elements,
-                // 'keyword'       : $('#search_elements').val(),
-            // },
-            // success: function (response) {
-                // $('#the-list').html(response.data);
-            // }
-        // });
     });
 
     //

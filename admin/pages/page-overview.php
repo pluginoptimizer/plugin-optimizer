@@ -5,7 +5,7 @@
                 <h1>Plugin Optimizer</h1>
             </div>
             <div class="row col-12">
-                <h2 id="name_page" class="filters">Overview</h2>
+                <h2>Overview</h2>
             </div>
             <div class="row sos-content">
                 <div class="col-12">

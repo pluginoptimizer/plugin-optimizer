@@ -15,6 +15,24 @@ class PO_Admin_Helper {
     
 	static function content_part__header( $page_title, $class = "default" ) {
         
+        $tabs = [
+            "Filters",
+            "Categories",
+            "Groups",
+            "Worklist",
+            "Settings",
+        ];
+        
+        $tabs_html = '';
+        
+        foreach( $tabs as $tab_name ){
+            
+            $tab_name_low = strtolower( $tab_name );
+            
+            $tabs_html .= '<div id="window_' . $tab_name_low . '"    class="tabs' . ( $class == $tab_name_low ? " current" : "" ) . '">' . $tab_name . '</div>';
+            
+        }
+        
         echo <<<EOF
         
         <div class="row col-12">
@@ -25,11 +43,7 @@ class PO_Admin_Helper {
         </div>
 
         <div id="main_tab_navigation" class="row col-12 wrap-tabs">
-            <div id="window_filters"    class="tabs">Filters</div>
-            <div id="window_categories" class="tabs">Categories</div>
-            <div id="window_groups"     class="tabs">Groups</div>
-            <div id="window_worklist"   class="tabs">Worklist</div>
-            <div id="window_settings"   class="tabs">Settings</div>
+            $tabs_html
         </div>
         
 EOF;

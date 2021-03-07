@@ -27,7 +27,7 @@ if( $group ){
 
     <div class="sos-wrap container">
     
-        <?php PO_Admin_Helper::content_part__header( $page_title, "add-groups" ); ?>
+        <?php PO_Admin_Helper::content_part__header( $page_title, "groups" ); ?>
         
         <div id="edit_group" class="row sos-content">
             <div class="row content-new-element">

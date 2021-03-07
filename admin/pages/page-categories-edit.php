@@ -21,7 +21,7 @@ if( $cat ){
 
     <div class="sos-wrap container">
     
-        <?php PO_Admin_Helper::content_part__header( $page_title, "filters_categories"); ?>
+        <?php PO_Admin_Helper::content_part__header( $page_title, "categories"); ?>
         
         <div id="edit_category" class="row sos-content">
             <div class="row content-new-element">
