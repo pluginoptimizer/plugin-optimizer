@@ -1,5 +1,5 @@
 <?php
-$plugins = PO_Helper::get_plugins_with_status();
+$plugins = PO_Admin_Helper::get_plugins_with_status();
 ?>
 
 <div class="sos-wrap">
