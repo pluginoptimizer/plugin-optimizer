@@ -1,5 +1,5 @@
 <?php
-$plugins = PO_Helper::get_plugins_with_status();
+$plugins = PO_Admin_Helper::get_plugins_with_status();
 
 $groups = get_posts( [
 	'post_type'   => 'sos_group',

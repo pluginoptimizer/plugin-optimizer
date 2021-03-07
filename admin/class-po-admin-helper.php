@@ -309,4 +309,63 @@ EOF;
         }
 	}
 
+
+    // if $all == false -> return array( "active" => [], "inactive" => [] )
+    // if $all == true  -> return []
+	static function get_plugins_with_status( $all = false, $remove_po = true ){
+        
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		
+		$plugins             = [];
+		$plugins_simple_list = [ "active" => [], "inactive" => [], "all" => [] ];
+        
+        if( empty( po_mu_plugin()->all_plugins ) ){
+            
+            $all_plugins    = get_plugins();
+            $active_plugins = get_option( 'active_plugins' );
+
+        } else {
+
+            $all_plugins    = po_mu_plugin()->all_plugins;
+            $active_plugins = po_mu_plugin()->original_active_plugins;
+            
+        }
+        
+        // po_mu_plugin()->write_log( $active_plugins, "get_plugins_with_status-active_plugins" );
+        // po_mu_plugin()->write_log( $all_plugins,    "get_plugins_with_status-all_plugins" );
+
+		foreach ( $active_plugins as $plugin_id ) {
+            
+            if( $plugin_id != "plugin-optimizer/plugin-optimizer.php" || ! $remove_po ){
+                $plugins_simple_list["active"][ $plugin_id ] = $all_plugins[ $plugin_id ][ 'Name' ];
+                $plugins_simple_list["all"][ $plugin_id ]    = $all_plugins[ $plugin_id ][ 'Name' ];
+            }
+            
+			$plugins[] = [
+				'name'      => $all_plugins[ $plugin_id ][ 'Name' ],
+				'file'      => $plugin_id,
+				'is_active' => 1,
+			];
+            
+			unset( $all_plugins[ $plugin_id ] );
+		}
+
+		foreach ( $all_plugins as $plugin_id => $plugin_data ) {
+            
+            if( $plugin_id != "plugin-optimizer/plugin-optimizer.php" || ! $remove_po ){
+                $plugins_simple_list["inactive"][ $plugin_id ] = $all_plugins[ $plugin_id ][ 'Name' ];
+                $plugins_simple_list["all"][ $plugin_id ]      = $all_plugins[ $plugin_id ][ 'Name' ];
+            }
+            
+			$plugins[] = [
+				'name'      => $plugin_data[ 'Name' ],
+				'file'      => $plugin_id,
+				'is_active' => 0,
+			];
+		}
+        
+		return $all ? $plugins : $plugins_simple_list;
+
+	}
+
 }

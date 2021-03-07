@@ -90,10 +90,6 @@ class PluginOptimizer {
 
 		
 		// The class responsible for defining helper functionality of the plugin.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-po-helper.php';
-
-		
-		// The class responsible for defining helper functionality of the plugin.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin-helper.php';
 
 		
