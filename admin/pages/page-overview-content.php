@@ -1,6 +1,34 @@
 <?php
 class PO_Admin_Overview{
     
+    static function get_tabs(){
+        
+        $tabs = [
+            10 => [
+                "title"     => "Plugin Registration",
+                "content"   => PO_Admin_Overview::tab_1()
+            ],
+            20 => [
+                "title"     => "Creating a Category Wizard",
+                "content"   => PO_Admin_Overview::tab_2()
+            ],
+            30 => [
+                "title"     => "Creating a Group Wizard",
+                "content"   => PO_Admin_Overview::tab_3()
+            ],
+            40 => [
+                "title"     => "Creating a Filter Wizard",
+                "content"   => PO_Admin_Overview::tab_4()
+            ],
+            50 => [
+                "title"     => "Paid installation section",
+                "content"   => PO_Admin_Overview::tab_5()
+            ],
+        ];
+        
+        return $tabs;
+    }
+    
     static function tab_1(){
         
         ob_start();

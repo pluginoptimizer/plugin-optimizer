@@ -14,32 +14,12 @@
                     
                     require_once("page-overview-content.php");
                     
-                    $tabs = [
-                        10 => [
-                            "title"     => "Plugin Registration",
-                            "content"   => PO_Admin_Overview::tab_1()
-                        ],
-                        20 => [
-                            "title"     => "Creating a Category Wizard",
-                            "content"   => PO_Admin_Overview::tab_2()
-                        ],
-                        30 => [
-                            "title"     => "Creating a Group Wizard",
-                            "content"   => PO_Admin_Overview::tab_3()
-                        ],
-                        40 => [
-                            "title"     => "Creating a Filter Wizard",
-                            "content"   => PO_Admin_Overview::tab_4()
-                        ],
-                        50 => [
-                            "title"     => "Paid installation section",
-                            "content"   => PO_Admin_Overview::tab_5()
-                        ],
-                    ];
+                    $tabs = PO_Admin_Overview::get_tabs();
                     
                     $tabs = apply_filters( "sos_po_overview_tabs", $tabs );
                     
                     $completed_tabs = [ 10, 20, 25 ];// TODO read the array from wp_options
+                    $completed_tabs = get_user_meta( get_current_user_id(), "completed_overview_tabs", true );
                     
                     foreach( $tabs as $index => $tab ){
                         
@@ -63,19 +43,19 @@
                         
                         echo <<<EOF
         
-                    <div class="tab tab-overview" id="tab_{$index}">
-                        <div class="info-content">
-                            <span class="info-passage{$class_completed}"></span>
-                            <span class="title">{$tab["title"]}</span>
+                        <div class="tab tab-overview" id="tab_{$index}">
+                            <div class="info-content">
+                                <span class="info-passage{$class_completed}"></span>
+                                <span class="title">{$tab["title"]}</span>
+                            </div>
+                            <span class="trigger {$class_opened}"></span>
                         </div>
-                        <span class="trigger {$class_opened}"></span>
-                    </div>
-                    <div class="container hidden-info_overview {$content_opened}">
-                        <div class="container">
-                            {$tab["content"]}
-                            {$button_complete}
+                        <div class="container hidden-info_overview {$content_opened}" data-id="tab_{$index}">
+                            <div class="container">
+                                {$tab["content"]}
+                                {$button_complete}
+                            </div>
                         </div>
-                    </div>
                     
 EOF;
                     }

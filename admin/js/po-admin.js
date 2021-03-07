@@ -474,16 +474,13 @@ jQuery( document ).ready( function($){
         
     });
 
-    // Overview page - toggle different sections
+    // NEW: Overview page - toggle different sections
     $('body').on('click', '.tab-overview', function(){
-        
-        // TODO - the page doesn't remember the current state of completed tasks
         
         if($(this).next('.hidden-info_overview').hasClass("closed") ){
             
             $(this).next('.hidden-info_overview').removeClass("closed").addClass("opened");
             $(this).children('.trigger').removeClass('trigger_closed').addClass('trigger_opened');
-            // $(this).children().children('.info-passage').addClass('done');
             
         } else{
             
@@ -525,9 +522,29 @@ jQuery( document ).ready( function($){
     
     $('body').on('click', '.mark_tab_complete', function(){
         
-        let tab_id = $(this).parents('.hidden-info_overview').data('id');
+        let tab_id = $(this).parents('.hidden-info_overview').data('id').replace('tab_', '');
         
         console.log( "Tab ID: ", tab_id );
+        
+        $(this).parents('.hidden-info_overview').slideUp( 400, function(){
+            
+            $('#tab_' + tab_id + ' .info-passage').addClass('done');
+            $('#tab_' + tab_id + ' .trigger').removeClass('trigger_opened').addClass('trigger_closed');
+            $(this).removeClass("opened").addClass("closed").attr("style", "");
+            
+        });
+        
+        $(this).remove();
+        
+        $.post( po_object.ajax_url, { action  : 'po_mark_tab_complete', tab_id : tab_id, user_id : po_object.user_id }, function( response ) {
+            console.log( "po_mark_tab_complete: ", response );
+            
+            if( response.data.message ){
+                
+                
+            }
+            
+        }, "json");
         
     });
     

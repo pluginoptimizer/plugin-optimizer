@@ -52,6 +52,7 @@ class PO_Ajax {
 		add_action( 'wp_ajax_po_create_category',           [ $this, 'po_create_category'           ] );
 		add_action( 'wp_ajax_po_delete_elements',           [ $this, 'po_delete_elements'           ] );
 		add_action( 'wp_ajax_po_publish_elements',          [ $this, 'po_publish_elements'          ] );
+		add_action( 'wp_ajax_po_mark_tab_complete',         [ $this, 'po_mark_tab_complete'         ] );
 
 	}
 
@@ -311,7 +312,7 @@ class PO_Ajax {
 		}
 	}
 
-	/**
+	/** NEW
 	 * Restore works
 	 */
 	function po_publish_elements() {
@@ -331,8 +332,35 @@ class PO_Ajax {
 		wp_send_json_success( [ "message" => "Items are restored." ] );
         
 	}
-
-
+    
+	/** NEW
+	 * Used for the Overview page
+	 */
+    function po_mark_tab_complete(){
+        
+        $tab_id  = $_POST["tab_id"];
+        $user_id = $_POST["user_id"];
+        
+        $user_tabs_completed = get_user_meta( $user_id, "completed_overview_tabs", true );
+        
+        if( empty( $user_tabs_completed ) ){
+            $user_tabs_completed = [];
+        }
+        
+        if( ! in_array( $tab_id, $user_tabs_completed ) ){
+            
+            $user_tabs_completed[] = $tab_id;
+            sort( $user_tabs_completed );
+            
+            update_user_meta( $user_id, "completed_overview_tabs", $user_tabs_completed );
+        }
+        
+		wp_send_json_success( [ "message" => "Completed tabs are now remembered." ] );
+        
+    }
+    
+    
+    
 	/**
 	 * Create filter
 	 */
