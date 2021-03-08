@@ -8,15 +8,16 @@ $plugins = PO_Admin_Helper::get_plugins_with_status();
     
     <div class="sos-content">
         <div id="settings_general" class="row col-12">
-            <div class="col-1">
+        
+            <div class="col-12">
                 <!-- Rounded switch -->
-                <label class="switch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
+                <label>
+                    <span class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </span>
+                    <span>Alphabetize the menu</span>
                 </label>
-            </div>
-            <div class="col-11">
-                <span>Some checkbox option</span>
             </div>
         </div>
     </div>

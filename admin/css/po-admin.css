@@ -483,8 +483,8 @@ td.expandable.list_of_plugins *{
 .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 42px;
+    height: 24px;
 }
 
 /* Hide default HTML checkbox */
@@ -510,32 +510,32 @@ td.expandable.list_of_plugins *{
 .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #369451;
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #369451;
 }
 
 input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
+    -webkit-transform: translateX(18px);
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
 }
 
 /* Rounded sliders */
 .slider.round {
-    border-radius: 34px;
+    border-radius: 24px;
 }
 
 .slider.round:before {
@@ -580,7 +580,10 @@ table.sos_table{
 }
 
 
-
+#settings_general label{
+    display: block;
+    user-select: none;
+}
 
 
 
