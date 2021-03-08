@@ -189,6 +189,7 @@ EOF;
                 $data_type        = get_post_meta( $filter->ID, 'filter_type',      true );
                 $data_endpoints   = get_post_meta( $filter->ID, 'endpoints',        true );
                 $blocking_plugins = get_post_meta( $filter->ID, 'plugins_to_block', true );
+                $turned_off       = get_post_meta( $filter->ID, 'turned_off',       true );
                 
                 sort( $blocking_plugins );
                 
@@ -205,6 +206,8 @@ EOF;
                 
                 $date = date("Ym",  strtotime( $filter->post_date ) );// 202109
                 
+                $turned_on_checked = $turned_off !== "1" ? ' checked="checked"' : '';
+                
 				?>
                 <tr class="block_info" id="filter-<?=  $filter->ID ?>" data-status="<?= $filter->post_status ?>" data-date="<?= $date ?>" data-type="<?= $type ?>">
                     <td><input type="checkbox" id="<?= $filter->ID ?>"></td>
@@ -212,6 +215,14 @@ EOF;
                     <td class="align-left normal-text"><?= $categories ?></td>
                     <td class="data-trigger align-left normal-text"><?= $trigger ?></td>
                     <td class="expandable list_of_plugins"><span class="no_hover"><?= count( $blocking_plugins ) ?></span><span class="yes_hover"><?= implode( ',<br/>', $blocking_plugins ); ?></span></td>
+                    <td class="toggle_filter">
+                        <label>
+                            <span class="switch">
+                                <input class="turn_off_filter" data-id="<?= $filter->ID ?>" type="checkbox"<?= $turned_on_checked ?>/>
+                                <span class="slider round"></span>
+                            </span>
+                        </label>
+                    </td>
                 </tr>
 			<?php
 			}

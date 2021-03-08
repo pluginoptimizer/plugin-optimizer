@@ -14,7 +14,7 @@ $checked = $should_alphabetize ? ' checked="checked"' : '';
         <div id="settings_general" class="row col-12">
         
             <div class="col-12">
-                <!-- Rounded switch -->
+            
                 <label>
                     <span class="switch">
                         <input id="should_alphabetize_menu" type="checkbox"<?= $checked ?>/>
@@ -22,6 +22,7 @@ $checked = $should_alphabetize ? ' checked="checked"' : '';
                     </span>
                     <span>Alphabetize the menu</span>
                 </label>
+                
             </div>
             
         </div>

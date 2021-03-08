@@ -201,6 +201,10 @@
     text-transform: none;
     font-weight: bold;
 }
+.sos-wrap .sos-content table .toggle_filter{
+    min-width: 100px;
+    width: 100px;
+}
 
 .sos-wrap button.po_green_button{
     padding: 5px 15px;

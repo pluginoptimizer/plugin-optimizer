@@ -35,6 +35,7 @@ class PO_Ajax {
 		add_action( 'wp_ajax_po_publish_elements',              [ $this, 'po_publish_elements'              ] );
 		add_action( 'wp_ajax_po_mark_tab_complete',             [ $this, 'po_mark_tab_complete'             ] );
 		add_action( 'wp_ajax_po_save_option_alphabetize_menu',  [ $this, 'po_save_option_alphabetize_menu'  ] );
+		add_action( 'wp_ajax_po_turn_off_filter',               [ $this, 'po_turn_off_filter'               ] );
 
 	}
 
@@ -348,12 +349,23 @@ class PO_Ajax {
         
         $should  = $_POST["should_alphabetize"] === "true";
         
-        // po_mu_plugin()->write_log( $_POST["should_alphabetize"], "po_save_option_alphabetize_menu-post-should_alphabetize" );
-        // po_mu_plugin()->write_log( $should, "po_save_option_alphabetize_menu-should" );
-        
         update_option("po_should_alphabetize_menu", $should );
         
 		wp_send_json_success( [ "message" => "Option saved successfully." ] );
+        
+    }
+    
+	/**
+	 * From the Filters List page
+	 */
+    function po_turn_off_filter(){
+        
+        $turned_off  = $_POST["turned_off"] === "true";
+        $post_id  = $_POST["post_id"];
+        
+        update_post_meta( $post_id, "turned_off", $turned_off );
+        
+		wp_send_json_success( [ "message" => "Filter turned " . ( $turned_off ? "off" : "on" ) . " successfully." ] );
         
     }
     

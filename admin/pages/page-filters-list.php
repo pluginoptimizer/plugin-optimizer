@@ -39,6 +39,7 @@ $filters = get_posts( array(
                             <th class="left-10 align-left">Categories</th>
                             <th>Triggers</th>
                             <th>Blocked plugins</th>
+                            <th class="toggle_filter">Turned On</th>
                         </tr>
                     </thead>
                     <tbody id="the-list" class="filter_on__status_publish">

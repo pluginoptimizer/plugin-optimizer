@@ -547,12 +547,32 @@ jQuery( document ).ready( function($){
     // Overview: mark tab complete
     $('body').on('change', '#should_alphabetize_menu', function(){
         
-        // let should = $(this).val();
         let should = $(this).prop('checked');
         
-        console.log( "should: ", should );
+        // console.log( "should: ", should );
         
         $.post( po_object.ajax_url, { action  : 'po_save_option_alphabetize_menu', should_alphabetize : should }, function( response ) {
+            console.log( "po_save_option_alphabetize_menu: ", response );
+            
+            if( response.data.message ){
+                
+                
+            }
+            
+        }, "json");
+        
+    });
+    
+    // Overview: mark tab complete
+    $('body').on('change', '#the-list .turn_off_filter', function(){
+        
+        let turned_off = ! $(this).prop('checked');
+        let post_id    = $(this).data('id');
+        
+        // console.log( "post_id: ", post_id );
+        // console.log( "turned_off: ", turned_off );
+        
+        $.post( po_object.ajax_url, { action  : 'po_turn_off_filter', turned_off : turned_off, post_id : post_id }, function( response ) {
             console.log( "po_save_option_alphabetize_menu: ", response );
             
             if( response.data.message ){
