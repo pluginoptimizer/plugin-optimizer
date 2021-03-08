@@ -68,7 +68,7 @@ class PO_Admin_Menu_Pages {
 	}
 
 	function render_settings_page() {
-		include 'pages/page-settings-template.php';
+		include 'pages/page-settings.php';
 	}
 
 	function render_support_page() {
