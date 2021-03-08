@@ -161,6 +161,11 @@ class PO_MU {
         
 		foreach( $filters as $filter ){
             
+            if( $filter->turned_off ){
+                
+                continue;
+            }
+            
             // If we're on the edit post screen, filter by post type
 			if( $filter->type_filter !== '_endpoint' && $editing_post_type && $editing_post_type == $filter->type_filter ){
                 
