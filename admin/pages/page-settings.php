@@ -1,5 +1,9 @@
 <?php
-$plugins = PO_Admin_Helper::get_plugins_with_status();
+
+$should_alphabetize = get_option("po_should_alphabetize_menu");
+
+$checked = $should_alphabetize ? ' checked="checked"' : '';
+
 ?>
 
 <div class="sos-wrap">
@@ -13,12 +17,14 @@ $plugins = PO_Admin_Helper::get_plugins_with_status();
                 <!-- Rounded switch -->
                 <label>
                     <span class="switch">
-                        <input type="checkbox">
+                        <input id="should_alphabetize_menu" type="checkbox"<?= $checked ?>/>
                         <span class="slider round"></span>
                     </span>
                     <span>Alphabetize the menu</span>
                 </label>
             </div>
+            
         </div>
     </div>
+    
 </div>

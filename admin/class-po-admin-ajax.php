@@ -27,13 +27,14 @@ class PO_Ajax {
 	 */
 	function load_hooks() {
 
-		add_action( 'wp_ajax_po_save_filter',       [ $this, 'po_save_filter'       ] );
-		add_action( 'wp_ajax_po_save_group',        [ $this, 'po_save_group'        ] );
-		add_action( 'wp_ajax_po_save_category',     [ $this, 'po_save_category'     ] );
-		add_action( 'wp_ajax_po_create_category',   [ $this, 'po_create_category'   ] );
-		add_action( 'wp_ajax_po_delete_elements',   [ $this, 'po_delete_elements'   ] );
-		add_action( 'wp_ajax_po_publish_elements',  [ $this, 'po_publish_elements'  ] );
-		add_action( 'wp_ajax_po_mark_tab_complete', [ $this, 'po_mark_tab_complete' ] );
+		add_action( 'wp_ajax_po_save_filter',                   [ $this, 'po_save_filter'                   ] );
+		add_action( 'wp_ajax_po_save_group',                    [ $this, 'po_save_group'                    ] );
+		add_action( 'wp_ajax_po_save_category',                 [ $this, 'po_save_category'                 ] );
+		add_action( 'wp_ajax_po_create_category',               [ $this, 'po_create_category'               ] );
+		add_action( 'wp_ajax_po_delete_elements',               [ $this, 'po_delete_elements'               ] );
+		add_action( 'wp_ajax_po_publish_elements',              [ $this, 'po_publish_elements'              ] );
+		add_action( 'wp_ajax_po_mark_tab_complete',             [ $this, 'po_mark_tab_complete'             ] );
+		add_action( 'wp_ajax_po_save_option_alphabetize_menu',  [ $this, 'po_save_option_alphabetize_menu'  ] );
 
 	}
 
@@ -337,6 +338,22 @@ class PO_Ajax {
         }
         
 		wp_send_json_success( [ "message" => "Completed tabs are now remembered." ] );
+        
+    }
+    
+	/**
+	 * From the Settings page
+	 */
+    function po_save_option_alphabetize_menu(){
+        
+        $should  = $_POST["should_alphabetize"] === "true";
+        
+        // po_mu_plugin()->write_log( $_POST["should_alphabetize"], "po_save_option_alphabetize_menu-post-should_alphabetize" );
+        // po_mu_plugin()->write_log( $should, "po_save_option_alphabetize_menu-should" );
+        
+        update_option("po_should_alphabetize_menu", $should );
+        
+		wp_send_json_success( [ "message" => "Option saved successfully." ] );
         
     }
     

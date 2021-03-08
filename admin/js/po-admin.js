@@ -544,6 +544,26 @@ jQuery( document ).ready( function($){
         
     });
     
+    // Overview: mark tab complete
+    $('body').on('change', '#should_alphabetize_menu', function(){
+        
+        // let should = $(this).val();
+        let should = $(this).prop('checked');
+        
+        console.log( "should: ", should );
+        
+        $.post( po_object.ajax_url, { action  : 'po_save_option_alphabetize_menu', should_alphabetize : should }, function( response ) {
+            console.log( "po_save_option_alphabetize_menu: ", response );
+            
+            if( response.data.message ){
+                
+                
+            }
+            
+        }, "json");
+        
+    });
+    
     function get_hostname(url) {
         let m = url.match(/^http:\/\/[^/]+/);
 
