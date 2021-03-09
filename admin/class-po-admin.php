@@ -61,6 +61,7 @@ class PO_Admin {
         
         $array = array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'home_url' => home_url(),
             'user_id'  => get_current_user_id(),
         );
         

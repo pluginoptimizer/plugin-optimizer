@@ -777,6 +777,28 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     justify-content: space-between;
     margin: 3px 0;
 }
+#edit_filter #endpoints_wrapper .additional_endpoint_wrapper:before{
+    display: block;
+    background: #ddd;
+    border: 1px solid #7e8993;
+    padding: 9px 10px 9px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#edit_filter #endpoints_wrapper .additional_endpoint_wrapper.error__empty_input:after{
+    content: "The endpoint field shouldn't be empty!";
+    display: block;
+    color: red;
+    min-width: 300px;
+}
+#edit_filter #endpoints_wrapper .additional_endpoint_wrapper.error__empty_input .additional_endpoint{
+    flex-grow: 2;
+}
+#edit_filter #endpoints_wrapper .additional_endpoint_wrapper.error__empty_input .circle_button{
+    min-width: 22px
+}
+
 #first_endpoint,
 input[type="text"].additional_endpoint{
     width: 100%;
@@ -786,6 +808,7 @@ input[type="text"].additional_endpoint{
     border-bottom: 1px solid #7e8993;
     border-radius: 0;
     padding: 5px;
+    /* padding-bottom: 2px; */
     font-size: 16px;
     text-transform: none;
     display: block;

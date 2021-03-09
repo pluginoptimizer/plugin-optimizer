@@ -5,9 +5,27 @@
 
 class PO_Admin_Helper {
 
-	static function get_filter_endpoints( $filter ) {
+	static function get_filter_endpoints( $filter, $add_home = false ) {
         
         $endpoints = get_post_meta( $filter->ID, "endpoints", true );
+        
+        if( ! empty( $endpoints ) && is_array( $endpoints ) ){
+            
+            foreach( $endpoints as $key => $endpoint ){
+                
+                if( $add_home ){
+                    if( strpos( $endpoint, home_url() ) === false ){
+                        $endpoints[ $key ] = home_url() . $endpoint;
+                    } else {
+                        $endpoints[ $key ] = $endpoint;
+                    }
+                } else {
+                    $endpoints[ $key ] = str_replace( home_url(), "", $endpoint );
+                }
+                
+            }
+            
+        }
         
         return $endpoints;
     }
@@ -186,8 +204,8 @@ EOF;
             
 			foreach( $filters as $filter ){
                 
+                $data_endpoints   = self::get_filter_endpoints( $filter, true );
                 $data_type        = get_post_meta( $filter->ID, 'filter_type',      true );
-                $data_endpoints   = get_post_meta( $filter->ID, 'endpoints',        true );
                 $blocking_plugins = get_post_meta( $filter->ID, 'plugins_to_block', true );
                 $turned_off       = get_post_meta( $filter->ID, 'turned_off',       true );
                 

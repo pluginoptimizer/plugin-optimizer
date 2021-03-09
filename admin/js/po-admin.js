@@ -1,7 +1,7 @@
 jQuery( document ).ready( function($){
     'use strict';
 
-    // Edit Filter page template, Edit Group page template - Clicking on a plugin
+    // Edit Filter screen, Edit Group screen - Clicking on a plugin
     $('#edit_filter, #edit_group').on('click', '.block-plugin-wrapper .single_plugin', function(){
 
         $(this).toggleClass('blocked');
@@ -11,7 +11,7 @@ jQuery( document ).ready( function($){
         
     });
 
-    // Edit Filter page template - Clicking on a group
+    // Edit Filter screen - Clicking on a group
     $('#edit_filter').on('click', '.block-group-plugin-wrapper .single_group', function(){
         
         $(this).toggleClass('blocked');
@@ -55,7 +55,7 @@ jQuery( document ).ready( function($){
         
     }
     
-    // Edit Filter page template - Select a category for a new filter, does nothing but marks the selected category
+    // Edit Filter screen - Select a category for a new filter, does nothing but marks the selected category
     $('#edit_filter').on('click', '.category-wrapper .single_category', function(){
 
         $(this).toggleClass('blocked');
@@ -65,7 +65,7 @@ jQuery( document ).ready( function($){
         
     });
     
-    // Edit Filter page template - Create new category, show input field
+    // Edit Filter screen - Create new category, show input field
     $('#edit_filter').on('click', '#add_category.before_add', function(){
 
         $('#add_category').removeClass('before_add');
@@ -74,7 +74,7 @@ jQuery( document ).ready( function($){
         
     });
     
-    // Edit Filter page template - Create new category, Cancel
+    // Edit Filter screen - Create new category, Cancel
     $('#edit_filter').on('click', '#add_category.during_add .cancel', function(){
 
         $('#add_category').removeClass('during_add');
@@ -82,7 +82,7 @@ jQuery( document ).ready( function($){
         
     });
     
-    // Edit Filter page template - Create new category, OK
+    // Edit Filter screen - Create new category, OK
     $('#edit_filter').on('click', '#add_category.during_add .ok', function(){
 
         let category_name = $('#add_category input').val();
@@ -115,14 +115,14 @@ jQuery( document ).ready( function($){
         
     });
     
-    // Edit Filter page template - Toggle plugins for already selected groups on page load
+    // Edit Filter screen - Toggle plugins for already selected groups on page load
     $('#edit_filter .block-group-plugin-wrapper .single_group.blocked').each(function(){
         
         toggle_plugins_by_group( $(this), true );
         
     });
     
-    // Edit Filter page template - Change filter type
+    // Edit Filter screen - Change filter type
     $('#edit_filter').on('change', '#set_type', function(){
         
         let type = $(this).val();
@@ -136,7 +136,7 @@ jQuery( document ).ready( function($){
         
     }).change();
     
-    // Edit Filter page template - Save filter
+    // Edit Filter screen - Save filter
     $('#edit_filter').on('click', '#save_filter', function(){
         
         let filter_data = $('#edit_filter').find('select, textarea, input').serialize();
@@ -155,7 +155,7 @@ jQuery( document ).ready( function($){
         
     });
     
-    // Edit Group page template - Save Group
+    // Edit Group screen - Save Group
     $('#edit_group').on('click', '#save_group', function(){
         
         let group_data = $('#edit_group').find('select, textarea, input').serialize();
@@ -174,7 +174,7 @@ jQuery( document ).ready( function($){
         
     });
     
-    // Edit Category page template - Save Category
+    // Edit Category screen - Save Category
     $('#edit_category').on('click', '#save_category', function(){
         
         let category_data = $('#edit_category').find('select, textarea, input').serialize();
@@ -247,49 +247,59 @@ jQuery( document ).ready( function($){
         
         // TODO forcing HTTPS is not what we want
         
-        let new_link = link;
-            new_link = get_hostname(new_link)               ? new_link.replace(get_hostname(new_link), '')  : new_link;
-            new_link = new_link.indexOf('/') === 0          ? new_link.replace('/', '')                       : new_link;
-            new_link = new_link.includes(location.hostname) ? new_link                                        : `${location.hostname}/${new_link}`;
-            new_link = new_link.includes('https://')        ? new_link                                        : `https://${new_link}`;
+        let new_link = link.replace( po_object.home_url, '');
+            new_link = new_link.indexOf('/') !== 0          ? '/' + new_link    : new_link;
+            // new_link = new_link.includes(location.hostname) ? new_link          : `${location.hostname}/${new_link}`;
+            // new_link = new_link.includes('https://')        ? new_link          : `https://${new_link}`;
         
         // TODO what if the site runs on http:// ?
         
         return new_link;
     }
     
-    // On the Add New Filter page, the button #add_endpoint is used to add a new endpoint to the filter
+    // On the Edit Filter screen, the button #add_endpoint is used to add a new endpoint to the filter
     $('body').on('click', '#add_endpoint', function(){
         
-        let link = force_local_domain( $('#first_endpoint').val() );
-
-        $(this).parent().after(`
+        $('#endpoints_wrapper > div:eq(-1)').after(`
 			<div class="col-12 additional_endpoint_wrapper">
-                <input class="additional_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value="${link}"/>
+                <input class="additional_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value=""/>
                 <div class="remove_additional_endpoint circle_button remove_something">-</div>
 			</div>
         `);
         
-        $('#first_endpoint').val('');
-        $('#first_endpoint').focus();
+        $('#endpoints_wrapper > div:eq(-1) input.additional_endpoint').focus();
         
     });
 
-    // On the Add New Filter page, the button #add_endpoint is used to add new endpoint to the filter
+    // On the Edit Filter screen, the button #add_endpoint is used to add new endpoint to the filter
     $('body').on('click', '.remove_additional_endpoint', function(){
         
         $(this).parent().remove();
     });
 
-    // On the Add New Filter page, we need to force to local domain, can't filter plugins for other domains
-    $('body').on('focusout', '.additional_endpoint_wrapper input', function(){
+    // On the Edit Filter screen, we need to force to local domain, can't filter plugins for other domains
+    $('body').on('input', '.additional_endpoint_wrapper input', function(ev){
+        
+        console.log( "Event type: ", ev.type );
         
         let link = force_local_domain( $(this).val() );
 
         $(this).val( link );
+        
+        $(this).parent().removeClass("error__empty_input");
     });
 
-    // On the Add New Filter page, #first_endpoint is the input field where you put the initial permalink/endpoint for the filter
+    // On the Edit Filter screen, we need to force to local domain, can't filter plugins for other domains
+    $('body').on('focusout', '.additional_endpoint_wrapper input', function(ev){
+        
+        if( ! $(this).val() ){
+            
+            $(this).parent().addClass("error__empty_input");
+        }
+        
+    });
+
+    // On the Edit Filter screen, #first_endpoint is the input field where you put the initial permalink/endpoint for the filter
     $('body').on('keypress', '#first_endpoint', function(e){
         
         if (e.keyCode == 13) {
@@ -584,14 +594,4 @@ jQuery( document ).ready( function($){
         
     });
     
-    function get_hostname(url) {
-        let m = url.match(/^http:\/\/[^/]+/);
-
-        if(m){
-            return m[0];
-        }
-        m = url.match(/^https:\/\/[^/]+/);
-        return m ? m[0] : null;
-    }
-
 });

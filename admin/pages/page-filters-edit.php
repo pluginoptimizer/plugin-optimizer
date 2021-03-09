@@ -81,6 +81,12 @@ if( $filter ){
 
 ?>
 
+<style>
+.additional_endpoint_wrapper:before{
+    content: "<?= home_url() ?>";
+}
+</style>
+
 <div class="sos-wrap">
 
     <?php PO_Admin_Helper::content_part__header( $page_title, "filters" ); ?>
