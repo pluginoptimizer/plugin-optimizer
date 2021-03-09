@@ -142,7 +142,7 @@ class PO_MU {
         $editing_post_type = $this->is_editing_post_type( $relative_url );
         
         // --- are we on any of the PO pages?
-        
+        // TODO introduce wildcards for po_pages
         if( in_array( $relative_url, $this->po_pages ) || in_array( $editing_post_type, $this->po_post_types ) ){
             
             $this->is_po_default_page   = true;
@@ -167,25 +167,36 @@ class PO_MU {
             }
             
             // If we're on the edit post screen, filter by post type
+            
 			if( $filter->type_filter !== '_endpoint' && $editing_post_type && $editing_post_type == $filter->type_filter ){
                 
 				$this->use_filter( $filter );
+                
+                continue;
 			}
             
-            
-            // TODO wildcards for MU plugin go here
             // Filter by URL
-			if( is_array( $filter->endpoints ) ){
+            
+            $endpoints = is_array( $filter->endpoints ) ? $filter->endpoints : [ $filter->endpoints ];
+            
+            if( in_array( $relative_url, $endpoints ) ){
                 
-                if( in_array( $current_url, $filter->endpoints ) ){
+                $this->use_filter( $filter );
+                
+            } else {
+                
+                foreach( $endpoints as $endpoint ){
                     
-                    $this->use_filter( $filter );
+                    if( fnmatch( $endpoint, $relative_url, FNM_PATHNAME | FNM_CASEFOLD ) ){
+                        
+                        $this->use_filter( $filter );
+                        
+                        break;
+                    }
+                    
                 }
                 
-			} elseif( $filter->endpoints == $current_url ){
-
-				$this->use_filter( $filter );
-			}
+            }
 
 		}
         
