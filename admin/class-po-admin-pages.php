@@ -28,7 +28,7 @@ class PO_Admin_Menu_Pages {
 		add_submenu_page( 'plugin_optimizer', 'Group',              'Create Group',         'manage_options', 'plugin_optimizer_add_groups',         [ $this, 'render_add_groups_page'         ] );
 		add_submenu_page( 'plugin_optimizer', 'Filter Categories',  'Filter Categories',    'manage_options', 'plugin_optimizer_filters_categories', [ $this, 'render_filters_categories_page' ] );
 		add_submenu_page( 'plugin_optimizer', 'Filter Category',    'Create Category',      'manage_options', 'plugin_optimizer_add_categories',     [ $this, 'render_add_category_page'       ] );
-		add_submenu_page( 'plugin_optimizer', 'Worklist',           'Worklist',             'manage_options', 'plugin_optimizer_worklist',           [ $this, 'render_worklist_page'           ] );
+		// add_submenu_page( 'plugin_optimizer', 'Worklist',           'Worklist',             'manage_options', 'plugin_optimizer_worklist',           [ $this, 'render_worklist_page'           ] );
 		add_submenu_page( 'plugin_optimizer', 'Settings',           'Settings',             'manage_options', 'plugin_optimizer_settings',           [ $this, 'render_settings_page'           ] );
 		// add_submenu_page( 'plugin_optimizer', 'Support',            'Support',              'manage_options', 'plugin_optimizer_support',            [ $this, 'render_support_page'            ] );
 

@@ -37,7 +37,7 @@ class PO_Admin_Helper {
             "Filters",
             "Categories",
             "Groups",
-            "Worklist",
+            // "Worklist",
             "Settings",
         ];
         
