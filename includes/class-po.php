@@ -79,8 +79,7 @@ class PluginOptimizer {
 	 * @access   private
 	 */
 	private function load_dependencies() {
-
-		
+        
 		// The class responsible for orchestrating the actions and filters of the core plugin.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-po-loader.php';
 
@@ -104,6 +103,14 @@ class PluginOptimizer {
 		// The class responsible for defining all Ajax actions that occur in the admin area.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin-ajax.php';
 
+        if( function_exists("po_mu_plugin") && in_array( "woocommerce/woocommerce.php", po_mu_plugin()->blocked_plugins ) ){
+            
+            // po_mu_plugin()->write_log( po_mu_plugin()->blocked_plugins, "PluginOptimizer-load_dependencies-blocked_plugins" );
+            
+            require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-po-woocommerce.php';
+            
+        }
+		
 
 		$this->loader = new PO_Loader();
 
