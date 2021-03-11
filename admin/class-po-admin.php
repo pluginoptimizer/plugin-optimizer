@@ -326,7 +326,7 @@ class PO_Admin {
 				'parent_item_colon' => __( 'Parent Category:' ),
 				'edit_item'         => __( 'Edit Category' ),
 				'update_item'       => __( 'Update Category' ),
-				'add_new_item'      => __( 'Add New Category' ),
+				'add_new_item'      => __( 'Create Category' ),
 				'new_item_name'     => __( 'New Category Name' ),
 				'menu_name'         => __( 'Categories' ),
 			),

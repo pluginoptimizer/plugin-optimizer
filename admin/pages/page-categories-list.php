@@ -17,7 +17,7 @@ $categories = get_categories( [
         
             <div class="col-3">
                 <a href="/wp-admin/admin.php?page=plugin_optimizer_add_categories">
-                    <button class="po_green_button" id="add_elements">Add new Category</button>
+                    <button class="po_green_button" id="add_elements">Create Category</button>
                 </a>
             </div>
             

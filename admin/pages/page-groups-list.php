@@ -15,7 +15,7 @@ $groups = get_posts( array(
         
             <div class="col-3">
                 <a href="/wp-admin/admin.php?page=plugin_optimizer_add_groups">
-                    <button class="po_green_button" id="add_elements">Add New Group</button>
+                    <button class="po_green_button" id="add_elements">Create Group</button>
                 </a>
             </div>
             
