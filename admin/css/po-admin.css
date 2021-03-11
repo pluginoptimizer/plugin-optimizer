@@ -732,6 +732,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     display: flex;
     align-items: center;
     justify-content: space-between;
+    user-select: none;
 }
 .sos-wrap .plugin-wrapper .single_plugin.inactive{
     /* background: gray; */
@@ -741,7 +742,16 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 }
 .sos-wrap .plugin-wrapper .single_plugin.blocked{
     background-color: #ffc4c4;
+    background-color: rgba(255, 196, 196, 0.8);
     color: #212529;
+}
+.sos-wrap .plugin-wrapper .single_plugin:not(.inactive) .plugin_name:before{
+    content: "✓";
+    margin-right: 10px;
+}
+.sos-wrap .plugin-wrapper .single_plugin.blocked .plugin_name:before{
+    content: "X";
+    margin-right: 10px;
 }
 .sos-wrap .plugin-wrapper .single_plugin .group_name{
     font-size: 12px;
@@ -754,12 +764,21 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 
 .sos-wrap .plugin-wrapper .single_group.blocked{
     background-color: #ffc4c4;
+    background-color: rgba(255, 196, 196, 0.8);
     color: #212529;
+}
+.sos-wrap .plugin-wrapper .single_group.blocked:before{
+    content: "X";
+    margin-right: 10px;
 }
 
 .sos-wrap .plugin-wrapper .single_category.blocked{
-    background-color: #ffc4c4;
+    background-color: rgba(198, 255, 205, 0.5);
     color: #212529;
+}
+.sos-wrap .plugin-wrapper .single_category.blocked:before{
+    content: "✓";
+    margin-right: 10px;
 }
 #edit_filter > .content-new-element{
     padding: 0;

@@ -180,7 +180,7 @@ EOF;
                 
                 echo '<div class="' . $class . '" data-id="' . $plugin_id . '" data-name="' . $plugin_name . '">';
                 echo    '<input class="noeyes" type="checkbox" name="PO_filter_data[plugins_to_block][' . $plugin_id . ']" value="' . $plugin_name . '"' . $checked . '/>';
-                echo    '<span value="' . $plugin_id . '">' . $plugin_name . '</span>';
+                echo    '<span class="plugin_name" value="' . $plugin_id . '">' . $plugin_name . '</span>';
                 echo    '<span class="group_name">' . '</span>';
                 echo '</div>';
                 
