@@ -242,21 +242,6 @@ jQuery( document ).ready( function($){
         }
     });
     
-    // Potentially replace the domain in the link with the local domain
-    function force_local_domain( link ){
-        
-        // TODO forcing HTTPS is not what we want
-        
-        let new_link = link.replace( po_object.home_url, '');
-            new_link = new_link.indexOf('/') !== 0          ? '/' + new_link    : new_link;
-            // new_link = new_link.includes(location.hostname) ? new_link          : `${location.hostname}/${new_link}`;
-            // new_link = new_link.includes('https://')        ? new_link          : `https://${new_link}`;
-        
-        // TODO what if the site runs on http:// ?
-        
-        return new_link;
-    }
-    
     // On the Edit Filter screen, the button #add_endpoint is used to add a new endpoint to the filter
     $('body').on('click', '#add_endpoint', function(){
         
@@ -282,9 +267,10 @@ jQuery( document ).ready( function($){
         
         console.log( "Event type: ", ev.type );
         
-        let link = force_local_domain( $(this).val() );
+        let full_url = new URL( $(this).val(), po_object.home_url );
+        let relative = full_url.href.replace( full_url.origin, '' );
 
-        $(this).val( link );
+        $(this).val( relative );
         
         $(this).parent().removeClass("error__empty_input");
     });
