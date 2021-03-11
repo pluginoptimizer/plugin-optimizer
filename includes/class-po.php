@@ -17,15 +17,6 @@
 class PluginOptimizer {
 
 	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the plugin.
-	 *
-	 * @access   protected
-	 * @var      PO_Loader $loader Maintains and registers all hooks for the plugin.
-	 */
-	protected $loader;
-
-	/**
 	 * The unique identifier of this plugin.
 	 *
 	 * @access   protected
@@ -57,49 +48,30 @@ class PluginOptimizer {
 		}
 		$this->plugin_name = 'plugin-optimizer';
 
-		$this->load_dependencies();
-		$this->set_locale();
-		$this->define_admin_hooks();
+		$this->include_dependencies();
+		$this->init();
 
 	}
 
 	/**
 	 * Load the required dependencies for this plugin.
 	 *
-	 * Include the following files that make up the plugin:
-	 *
-	 * - PO_Loader. Orchestrates the hooks of the plugin.
-	 * - PO_i18n. Defines internationalization functionality.
-	 * - PO_Admin. Defines all hooks for the admin area.
-	 * - PO_Public. Defines all hooks for the public side of the site.
-	 *
-	 * Create an instance of the loader which will be used to register the hooks
-	 * with WordPress.
-	 *
 	 * @access   private
 	 */
-	private function load_dependencies() {
+	private function include_dependencies() {
         
-		// The class responsible for orchestrating the actions and filters of the core plugin.
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-po-loader.php';
-
-		
 		// The class responsible for defining internationalization functionality of the plugin.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-po-i18n.php';
 
-		
 		// The class responsible for defining helper functionality of the plugin.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin-helper.php';
 
-		
 		// The class responsible for defining all actions that occur in the admin area.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin.php';
 
-		
 		// The class responsible for menu pages of the admin area.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin-pages.php';
 
-		
 		// The class responsible for defining all Ajax actions that occur in the admin area.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin-ajax.php';
 
@@ -111,25 +83,6 @@ class PluginOptimizer {
             
         }
 		
-
-		$this->loader = new PO_Loader();
-
-	}
-
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the PO_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @access   private
-	 */
-	private function set_locale() {
-
-		$plugin_i18n = new PO_i18n();
-
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -138,35 +91,13 @@ class PluginOptimizer {
 	 *
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
+	private function init() {
 
+		$plugin_i18n  = new PO_i18n();
 		$plugin_admin = new PO_Admin( $this->get_plugin_name(), $this->get_version() );
 		$admin_ajax   = new PO_Ajax();
 		$menu_pages   = new PO_Admin_Menu_Pages();
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-        
-		$this->loader->add_action( 'script_loader_tag',     $plugin_admin, 'add_type_attribute', 10, 3 );
-        
-		$this->loader->add_action( 'init',                  $plugin_admin, 'register_post_types' );
-		$this->loader->add_action( 'init',                  $plugin_admin, 'register_taxonomies' );
-		$this->loader->add_action( 'add_meta_boxes',        $plugin_admin, 'register_meta_boxes' );
-        
-		$this->loader->add_action( 'save_post_sos_group',   $plugin_admin, 'save_group_options' );
-        
-		$this->loader->add_action( 'save_post_page',        $plugin_admin, 'add_item_to_worklist' );
-		$this->loader->add_action( 'save_post_post',        $plugin_admin, 'add_item_to_worklist' );
-		$this->loader->add_action( 'admin_bar_menu',        $plugin_admin, 'add_plugin_in_admin_bar', 100 );
-
-	}
-
-	/**
-	 * Run the loader to execute all of the hooks with WordPress.
-	 *
-	 */
-	public function run() {
-		$this->loader->run();
 	}
 
 	/**
@@ -178,16 +109,6 @@ class PluginOptimizer {
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
-	}
-
-	/**
-	 * The reference to the class that orchestrates the hooks with the plugin.
-	 *
-	 * @return    PO_Loader    Orchestrates the hooks of the plugin.
-	 * @since     1.0.0
-	 */
-	public function get_loader() {
-		return $this->loader;
 	}
 
 	/**

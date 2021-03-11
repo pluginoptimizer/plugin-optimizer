@@ -35,8 +35,32 @@ class PO_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+        
+        $this->load_hooks();
+	}
 
-//		$this->getLinkPosts();
+	/**
+	 * Register all of the hooks related to the admin area functionality of the plugin.
+	 *
+	 * @access   private
+	 */
+	function load_hooks() {
+
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles'          ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts'         ] );
+        
+		add_action( 'script_loader_tag',     [ $this, 'add_type_attribute'      ], 10, 3 );
+        
+		add_action( 'init',                  [ $this, 'register_post_types'     ] );
+		add_action( 'init',                  [ $this, 'register_taxonomies'     ] );
+		add_action( 'add_meta_boxes',        [ $this, 'register_meta_boxes'     ] );
+        
+		add_action( 'save_post_sos_group',   [ $this, 'save_group_options'      ] );
+        
+		add_action( 'save_post_page',        [ $this, 'add_item_to_worklist'    ] );
+		add_action( 'save_post_post',        [ $this, 'add_item_to_worklist'    ] );
+		add_action( 'admin_bar_menu',        [ $this, 'add_plugin_in_admin_bar' ], 100 );
+
 
 	}
 
@@ -84,7 +108,6 @@ class PO_Admin {
 		return $tag;
 	}
 
-    // TODO not used?
 	function check_memory_usage() {
 		return function_exists( 'memory_get_peak_usage' ) ? round( memory_get_peak_usage() / 1024 / 1024, 2 ) : 0;
 	}

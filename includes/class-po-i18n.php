@@ -12,7 +12,12 @@
  * @author     Simple Online Systems <admin@simpleonlinesystems.com>
  */
 class PO_i18n {
+    
+    public function __construct() {
+        
+		add_action( 'plugins_loaded', [ $this, 'load_plugin_textdomain' ] );
 
+	}
 
 	/**
 	 * Load the plugin text domain for translation.

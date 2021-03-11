@@ -88,7 +88,6 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-po.php';
 function run_plugin_optimizer() {
 
 	$plugin = new PluginOptimizer();
-	$plugin->run();
 
 }
 
