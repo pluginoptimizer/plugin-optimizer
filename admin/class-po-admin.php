@@ -53,14 +53,12 @@ class PO_Admin {
         
 		add_action( 'init',                  [ $this, 'register_post_types'     ] );
 		add_action( 'init',                  [ $this, 'register_taxonomies'     ] );
-		add_action( 'add_meta_boxes',        [ $this, 'register_meta_boxes'     ] );
         
-		add_action( 'save_post_sos_group',   [ $this, 'save_group_options'      ] );
+		add_action( 'in_admin_header',       [ $this, 'disable_all_notice_nags' ] );
         
 		add_action( 'save_post_page',        [ $this, 'add_item_to_worklist'    ] );
 		add_action( 'save_post_post',        [ $this, 'add_item_to_worklist'    ] );
 		add_action( 'admin_bar_menu',        [ $this, 'add_plugin_in_admin_bar' ], 100 );
-
 
 	}
 
@@ -340,113 +338,21 @@ class PO_Admin {
 	}
 
 	/**
-	 * Edit group
+	 * Disable the dreadful nags
 	 */
-	function render_group_options( $post ) {
+	function disable_all_notice_nags() {
+        
+        $screen = get_current_screen();
+        
+        if( $screen->base != 'toplevel_page_plugin_optimizer' && strpos( $screen->base, "plugin-optimizer_page_plugin_optimizer" ) === false ){
+            return;
+        }
 
-		wp_nonce_field( plugin_basename( __FILE__ ), 'nonce_sos_group_options' );
-
-		$value_group_plugins = get_post_meta( $post->ID, 'group_plugins', 1 );
-
-		?><div style="display: none">
-            <label for="block_plugins"> <?= "Select group plugins" ?> </label>
-            <input type="text" id="block_plugins" name="block_plugins" value=" <?= $value_group_plugins ?>" size="25"/>
-            <br>
-            <br>
-        </div><?php
-
-		$group_plugins = get_post_meta( $post->ID, 'group_plugins', true );
-
-		?><div class="sos-wrap">
-        <table>
-            <thead>
-                <tr>
-                    <th><input type="checkbox" id="check_all"></th>
-                    <th>Title</th>
-                    <th>Plugins</th>
-                    <th>Count</th>
-                </tr>
-            </thead>
-            <tbody id="the-list">
-                <tr class="block_info" id="group_<?= $post->ID; ?>">
-                    <td><input type="checkbox" id="<?= $post->ID; ?>"></td>
-                    <td><?= $post->post_title; ?></td>
-                    <td><?= $group_plugins; ?></td>
-                    <td><?= $group_plugins ? count( explode( ',', $group_plugins ) ) : 0; ?></td>
-                </tr>
-				<?php
-				if ( $post->post_status === 'publish' ) {
-					$posts_chidren = get_posts( array(
-						'post_type'   => 'sos_group',
-						'numberposts' => - 1,
-						'meta_query'  => array(
-							array(
-								'key'   => 'group_parents',
-								'value' => $post->post_title,
-							)
-						),
-					) );
-				} else if ( $post->post_status === 'trash' ) {
-					$posts_chidren = get_posts( array(
-						'post_type'   => 'sos_group',
-						'numberposts' => - 1,
-						'post_status' => 'trash',
-						'meta_query'  => array(
-							array(
-								'key'   => 'group_parents',
-								'value' => $post->post_title,
-							)
-						),
-					) );
-				}
-
-
-				if ( $posts_chidren ){
-					foreach ( $posts_chidren as $post_chidren ){
-						$children_group_plugins = get_post_meta( $post_chidren->ID, 'group_plugins', true );
-						?>
-
-                        <tr class="block_info block_children">
-                            <td><input type="checkbox" id="<?= $post_chidren->ID; ?>"></td>
-                            <td> — <?= $post_chidren->post_title; ?></td>
-                            <td><?= get_post_meta( $post_chidren->ID, 'type_group', true ); ?></td>
-                            <td><?= $children_group_plugins; ?></td>
-                            <td><?= substr_count( $children_group_plugins, ',' ) + 1; ?></td>
-                        </tr>
-                        
-					<?php
-                    }
-				}
-				?>
-            </tbody>
-        </table>
-        </div><?php
-	}
-
-	/**
-	 * Save the edited group
-	 */
-	function save_group_options( $post_id ) {
-
-		if ( ! isset( $_POST['block_plugins'] ) ) {
-			return;
-		}
-
-		if ( ! wp_verify_nonce( $_POST['nonce_sos_group_options'], plugin_basename( __FILE__ ) ) ) {
-			return;
-		}
-
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return;
-		}
-
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return;
-		}
-
-		$group_plugins = sanitize_text_field( $_POST['block_plugins'] );
-
-		update_post_meta( $post_id, 'group_plugins', $group_plugins );
+        // po_mu_plugin()->write_log( $screen->base, "disable_all_notice_nags-screen-base" );
+        
+        remove_all_actions('admin_notices');
+        remove_all_actions('all_admin_notices');
+        
 	}
 
 	/**
