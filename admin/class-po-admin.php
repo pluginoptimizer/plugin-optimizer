@@ -78,8 +78,11 @@ class PO_Admin {
 	 * Register the stylesheets for the admin area.
 	 */
 	function enqueue_styles() {
+        
 		wp_enqueue_style( $this->plugin_name . '-public', plugin_dir_url( __FILE__ ) . 'css/po-admin-public.css', array(), $this->version, 'all' );
+        
 		if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) || stripos( $_SERVER["QUERY_STRING"], "action=edit" ) ) {
+            
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/po-admin.css', array(), $this->version, 'all' );
 			wp_enqueue_style( $this->plugin_name . '_bootstrap', plugin_dir_url( __FILE__ ) . 'css/po-admin-bootstrap.css', array(), $this->version, 'all' );
 		}
@@ -90,8 +93,9 @@ class PO_Admin {
 	 */
 	function enqueue_scripts() {
 
-        $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/po-admin.js' ));
-		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/po-admin.js', array( 'jquery' ), $version, false );
+        $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/po-admin-menu-fix.js' ));
+		wp_register_script( $this->plugin_name . "_menu_fix", plugin_dir_url( __FILE__ ) . 'js/po-admin-menu-fix.js', array( 'jquery' ), $version, false );
+		wp_enqueue_script(  $this->plugin_name . "_menu_fix" );
         
         $array = array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -99,8 +103,22 @@ class PO_Admin {
             'user_id'  => get_current_user_id(),
         );
         
+        if( function_exists("po_mu_plugin") && count( po_mu_plugin()->blocked_plugins ) >= 1 ){
+            
+            $original_menu = get_option("sos_po_original_menu");
+            
+            if( $original_menu ){
+                
+                $array["original_menu"] = $original_menu;
+                
+            }
+            
+        }
+        
+        $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/po-admin.js' ));
+		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/po-admin.js', array( 'jquery' ), $version, true );
 		wp_localize_script( $this->plugin_name, 'po_object', $array );
-		wp_enqueue_script( $this->plugin_name );
+		wp_enqueue_script(  $this->plugin_name );
 
 	}
 
