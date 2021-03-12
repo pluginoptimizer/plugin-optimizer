@@ -1,8 +1,6 @@
 jQuery( document ).ready( function($){
     'use strict';
     
-    console.log( "Ready", $.fn.jquery );
-
     // Edit Filter screen, Edit Group screen - Clicking on a plugin
     $('#edit_filter, #edit_group').on('click', '.block-plugin-wrapper .single_plugin', function(){
 

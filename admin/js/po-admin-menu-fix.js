@@ -1,9 +1,5 @@
 jQuery(function($){
    
-    // console.log( window.location.href );
-    console.log( "Immediately", $.fn.jquery );
-    // alert( $.fn.jquery );
-    
     // Are we replacing the menu?
     if( po_object.original_menu ){
         
@@ -25,8 +21,6 @@ jQuery(function($){
             
             if( current_url.endsWith( link_url ) ){
                 
-                console.log( "Current submenu item: ", $(this).attr("href") );
-                
                 $current_menu_sub_item = $(this).parent();
                 
                 return;
@@ -40,8 +34,6 @@ jQuery(function($){
             let link_url = $(this).attr("href");
             
             if( current_url.endsWith( link_url ) ){
-                
-                console.log( "Current menu item: ", $(this).attr("href") );
                 
                 $current_menu_item = $(this).parent();
                 
@@ -60,12 +52,14 @@ jQuery(function($){
         
         $('#adminmenu > li > ul.wp-submenu > li').removeClass("current");
         $('#adminmenu > li').removeClass("wp-has-current-submenu wp-menu-open").addClass("wp-not-current-submenu");
+        $('#adminmenu > li > a').removeClass("wp-has-current-submenu wp-menu-open").addClass("wp-not-current-submenu");
         
         // ----- add correct menu classes
         
         if( $current_menu_item ){
             
             $current_menu_item.addClass("wp-has-current-submenu wp-menu-open").removeClass("wp-not-current-submenu");
+            $current_menu_item.children('a').addClass("wp-has-current-submenu wp-menu-open").removeClass("wp-not-current-submenu");
             
             if( $current_menu_sub_item ){
                 
