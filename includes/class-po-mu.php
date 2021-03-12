@@ -139,6 +139,11 @@ class PO_MU {
             return [];
         }
         
+        if( ! empty( $_GET["disable_po"] ) && $_GET["disable_po"] == "yes" ){
+            $this->is_skipped = true;
+            return [];
+        }
+        
         $editing_post_type = $this->is_editing_post_type( $relative_url );
         
         // --- are we on any of the PO pages?
