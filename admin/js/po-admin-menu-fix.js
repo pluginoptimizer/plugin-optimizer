@@ -67,6 +67,28 @@ jQuery(function($){
             }
         }
         
+        // ----- add correct circled counters
+        
+        if( po_object.dashboard_updates ){
+            
+            // TODO add the element if it needed but doesn't exist
+            
+            $('#adminmenu > #menu-dashboard .update-plugins').attr("class", "update-plugins count-" + po_object.dashboard_updates );
+            $('#adminmenu > #menu-dashboard .update-plugins .update-count').html( po_object.dashboard_updates );
+        } else {
+            $('#adminmenu > #menu-dashboard .update-plugins').remove();
+        }
+        
+        if( po_object.plugin_updates ){
+            
+            // TODO add the element if it needed but doesn't exist
+            
+            $('#adminmenu > #menu-plugins .update-plugins').attr("class", "update-plugins count-" + po_object.plugin_updates );
+            $('#adminmenu > #menu-plugins .update-plugins .update-count').html( po_object.plugin_updates );
+        } else {
+            $('#adminmenu > #menu-plugins .update-plugins').remove();
+        }
+        
     }
     
     // show the menu
