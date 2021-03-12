@@ -580,4 +580,10 @@ jQuery( document ).ready( function($){
         
     });
     
+    // check if all plugins from groups have been manually enabled
+    function check_group_plugins_state(){
+        
+        // TODO Once a group is selected, you can manually re-enable each plugin and if all are enabled, we should deselect the group
+    }
+    
 });
