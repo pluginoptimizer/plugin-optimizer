@@ -2,8 +2,8 @@ body.po_is_blocking_plugins ul#adminmenu{
     display: none;
 }
 body.po_is_blocking_plugins ul#adminmenu .wp-menu-image img{
-    /* width: 20px; */
-    /* height: 20px; */
+    max-width: 20px;
+    max-height: 20px;
 }
 
 .sos-icon:before {
