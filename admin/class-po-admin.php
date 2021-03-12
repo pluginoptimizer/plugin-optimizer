@@ -46,6 +46,8 @@ class PO_Admin {
 	 */
 	function load_hooks() {
 
+		add_action( 'admin_body_class',      [ $this, 'mark_admin_body_class'   ] );
+
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles'          ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts'         ] );
         
@@ -61,6 +63,16 @@ class PO_Admin {
 		add_action( 'admin_bar_menu',        [ $this, 'add_plugin_in_admin_bar' ], 100 );
 
 	}
+    
+	function mark_admin_body_class( $classes ){
+        
+        if( function_exists("po_mu_plugin") && count( po_mu_plugin()->blocked_plugins ) >= 1 ){
+            $classes .= ' po_is_blocking_plugins ';
+        }
+        
+        return $classes;
+	}
+
 
 	/**
 	 * Register the stylesheets for the admin area.
