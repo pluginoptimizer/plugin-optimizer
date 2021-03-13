@@ -11,17 +11,36 @@ $checked = $should_alphabetize ? ' checked="checked"' : '';
     <?php PO_Admin_Helper::content_part__header("Settings", "settings"); ?>
     
     <div class="sos-content">
-        <div id="settings_general" class="row col-12">
+        <div id="settings_general" class="">
         
-            <div class="col-12">
-            
-                <label>
-                    <span class="switch">
-                        <input id="should_alphabetize_menu" type="checkbox"<?= $checked ?>/>
-                        <span class="slider round"></span>
-                    </span>
+            <div class="row">
+                
+                <div class="col-2">
                     <span>Alphabetize the menu</span>
-                </label>
+                </div>
+                
+                <div class="col-3">
+                    <label>
+                        <span class="switch">
+                            <input id="should_alphabetize_menu" type="checkbox"<?= $checked ?>/>
+                            <span class="slider round"></span>
+                        </span>
+                    </label>
+                </div>
+                
+            </div>
+            
+            <div class="row">
+            
+                <div class="col-2">
+                    <span>Recreate the menu</span>
+                </div>
+                
+                <div class="col-3">
+                    <a href="/wp-admin/admin.php?page=plugin_optimizer_settings&po_original_menu=get&redirect_to=<?= urlencode( site_url( $_SERVER["REQUEST_URI"] ) ) ?>">
+                        <button class="po_green_button">Go!</button>
+                    </a>
+                </div>
                 
             </div>
             

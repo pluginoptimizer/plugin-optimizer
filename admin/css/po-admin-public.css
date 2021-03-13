@@ -1,3 +1,50 @@
+#toplevel_page_plugin_optimizer ul li:nth-child(9),
+#toplevel_page_plugin_optimizer ul li:nth-child(7),
+#toplevel_page_plugin_optimizer ul li:nth-child(5),
+#toplevel_page_plugin_optimizer ul li:nth-child(3){
+    border-top: 1px dashed gray;
+}
+#adminmenu #toplevel_page_plugin_optimizer ul li{
+    margin-left: 5px;
+    margin-right: 10px;
+    /* padding: 0 15px; */
+}
+
+
+body.po_is_recreating_menu{
+    max-height: calc( 100vh - 32px );
+    overflow: hidden;
+    min-height: initial;
+}
+body.po_is_recreating_menu #po_please_wait{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* background-color: rgba(200, 200, 200, 0.6); */
+    background-color: rgba(100, 100, 100, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000;
+}
+body.po_is_recreating_menu #po_please_wait_message{
+    position: absolute;
+    top: calc( 50% - 50px );
+    left: calc( 50% - 150px );
+    width: 300px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid #369451;
+    border-radius: 3px;
+    background-color: #fff;
+    text-align: center;
+}
+
+
 body.po_is_blocking_plugins ul#adminmenu{
     display: none;
 }
@@ -5,6 +52,7 @@ body.po_is_blocking_plugins ul#adminmenu .wp-menu-image img{
     max-width: 20px;
     max-height: 20px;
 }
+
 
 .sos-icon:before {
     font-family: "dashicons";

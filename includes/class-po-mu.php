@@ -134,12 +134,20 @@ class PO_MU {
 		$relative_url  = trim( $_SERVER["REQUEST_URI"] );
 		$current_url   = get_home_url() . $relative_url;
         
+        // some URLs just need to be skipped
         if( $this->should_skip_url( $relative_url ) ){
             $this->is_skipped = true;
             return [];
         }
         
+        // when we want to disable the current page, we use ?disable_po=yes on any page
         if( ! empty( $_GET["disable_po"] ) && $_GET["disable_po"] == "yes" ){
+            $this->is_skipped = true;
+            return [];
+        }
+        
+        // when we are recreating the menu
+        if( ! empty( $_GET["po_original_menu"] ) && $_GET["po_original_menu"] == "get" ){
             $this->is_skipped = true;
             return [];
         }

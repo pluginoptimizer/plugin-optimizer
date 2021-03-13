@@ -543,6 +543,8 @@ jQuery( document ).ready( function($){
     // Overview: mark tab complete
     $('body').on('change', '#should_alphabetize_menu', function(){
         
+        $('body').addClass("po_is_recreating_menu").append('<div id="po_please_wait"><div id="po_please_wait_message">Please wait...</div></div>');
+        
         let should = $(this).prop('checked');
         
         // console.log( "should: ", should );
@@ -552,7 +554,7 @@ jQuery( document ).ready( function($){
             
             if( response.data.message ){
                 
-                
+                window.location.href = $('#wp-admin-bar-plugin_optimizer_recreate_the_menu a').attr("href");
             }
             
         }, "json");

@@ -66,8 +66,12 @@ class PO_Admin {
     
 	function mark_admin_body_class( $classes ){
         
-        if( function_exists("po_mu_plugin") && count( po_mu_plugin()->blocked_plugins ) >= 1 ){
+        if( function_exists("po_mu_plugin") && ( count( po_mu_plugin()->blocked_plugins ) >= 1 || get_option("po_should_alphabetize_menu") == "1" ) ){
             $classes .= ' po_is_blocking_plugins ';
+        }
+        
+        if( ! empty( $_GET["po_original_menu"] ) && $_GET["po_original_menu"] == "get" ){
+            $classes .= ' po_is_recreating_menu ';
         }
         
         return $classes;
@@ -81,6 +85,8 @@ class PO_Admin {
         
 		wp_enqueue_style( $this->plugin_name . '-public', plugin_dir_url( __FILE__ ) . 'css/po-admin-public.css', array(), $this->version, 'all' );
         
+        // TODO we don't need action=edit
+        
 		if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) || stripos( $_SERVER["QUERY_STRING"], "action=edit" ) ) {
             
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/po-admin.css', array(), $this->version, 'all' );
@@ -92,10 +98,6 @@ class PO_Admin {
 	 * Register the JavaScript for the admin area.
 	 */
 	function enqueue_scripts() {
-
-        $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/po-admin-menu-fix.js' ));
-		wp_register_script( $this->plugin_name . "_menu_fix", plugin_dir_url( __FILE__ ) . 'js/po-admin-menu-fix.js', array( 'jquery' ), $version, false );
-		wp_enqueue_script(  $this->plugin_name . "_menu_fix" );
         
         $array = array(
             'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -103,7 +105,7 @@ class PO_Admin {
             'user_id'  => get_current_user_id(),
         );
         
-        if( function_exists("po_mu_plugin") && count( po_mu_plugin()->blocked_plugins ) >= 1 ){
+        if( function_exists("po_mu_plugin") && ( count( po_mu_plugin()->blocked_plugins ) >= 1 || get_option("po_should_alphabetize_menu") == "1" ) ){
             
             $original_menu = get_option("sos_po_original_menu");
             
@@ -112,6 +114,32 @@ class PO_Admin {
                 $array["original_menu"] = $original_menu;
                 
             }
+            
+        }
+        
+        // are we getting the original menu
+        if( ! empty( $_GET["po_original_menu"] ) && $_GET["po_original_menu"] == "get" ){
+            
+            $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/po-admin-menu-get.js' ));
+            wp_register_script( $this->plugin_name . "_menu_get", plugin_dir_url( __FILE__ ) . 'js/po-admin-menu-get.js', array( 'jquery' ), $version, false );
+            wp_enqueue_script(  $this->plugin_name . "_menu_get" );
+            
+            if( ! empty( $_GET["redirect_to"] ) ){
+                
+                $array["redirect_to"] = $_GET["redirect_to"];
+            }
+            
+            if( get_option("po_should_alphabetize_menu") === "1" ){
+                
+                $array["alphabetize_menu"] = true;
+            }
+            
+        // or are we fixing the current menu
+        } else {
+            
+            $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/po-admin-menu-fix.js' ));
+            wp_register_script( $this->plugin_name . "_menu_fix", plugin_dir_url( __FILE__ ) . 'js/po-admin-menu-fix.js', array( 'jquery' ), $version, false );
+            wp_enqueue_script(  $this->plugin_name . "_menu_fix" );
             
         }
         
@@ -145,6 +173,8 @@ class PO_Admin {
 	 */
 	function add_plugin_in_admin_bar( $wp_admin_bar ) {
         
+        $current_url = site_url( $_SERVER["REQUEST_URI"] );
+        
         // Main top menu item
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'plugin_optimizer',
@@ -154,13 +184,21 @@ class PO_Admin {
         
         
         // Worklist
+		// $wp_admin_bar->add_menu( array(
+			// 'parent' => 'plugin_optimizer',
+			// 'id'     => 'plugin_optimizer_worklist',
+			// 'title'  => 'Worklist (' . wp_count_posts( 'sos_work' )->publish . ')',
+			// 'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_worklist' ) ),
+		// ) );
+
+
+        // Recreate the menu
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
-			'id'     => 'plugin_optimizer_worklist',
-			'title'  => 'Worklist (' . wp_count_posts( 'sos_work' )->publish . ')',
-			'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_worklist' ) ),
+			'id'     => 'plugin_optimizer_recreate_the_menu',
+			'title'  => 'Recreate the menu',
+            'href'   => $current_url . ( strpos( $current_url, '?' ) !== false ? '&' : '?' ) . 'po_original_menu=get&redirect_to=' . urlencode( $current_url ),
 		) );
-
 
         // Blocked Plugins
 		$wp_admin_bar->add_menu( array(
@@ -222,6 +260,7 @@ class PO_Admin {
                     'parent' => 'plugin_optimizer_filters_in_use',
                     'id'     => 'plugin_optimizer_filter_in_use_' . $filter_id,
                     'title'  => $filter_name,
+                    'href'   => '/wp-admin/admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter_id,
                 ) );
             }
             
