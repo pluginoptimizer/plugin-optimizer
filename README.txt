@@ -1,10 +1,10 @@
 === Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: author-uri.com
+Contributors: pluginoptimizer,simpleonlinesystems,andrija
 Tags: comments, spam
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
+Requires at least: 5.0
+Tested up to: 5.7
+Stable tag: 1.0
+Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
