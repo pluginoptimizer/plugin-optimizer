@@ -266,6 +266,16 @@ class PO_Admin {
             
         }
         
+        // Temp turn filters off
+        if( po_mu_plugin()->is_being_filtered ){
+            $wp_admin_bar->add_menu( array(
+                'parent' => 'plugin_optimizer',
+                'id'     => 'plugin_optimizer_unfiltered_page',
+                'title'  => 'Visit the unfiltered page',
+                'href'   => $current_url . ( strpos( $current_url, '?' ) !== false ? '&' : '?' ) . 'disable_po=yes',
+            ) );
+        }
+
 	}
 
 	/**
