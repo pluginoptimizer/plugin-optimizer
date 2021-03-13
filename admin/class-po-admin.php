@@ -100,9 +100,10 @@ class PO_Admin {
 	function enqueue_scripts() {
         
         $array = array(
-            'ajax_url' => admin_url( 'admin-ajax.php' ),
-            'home_url' => home_url(),
-            'user_id'  => get_current_user_id(),
+            'admin_url' => admin_url(),
+            'ajax_url'  => admin_url( 'admin-ajax.php' ),
+            'home_url'  => home_url(),
+            'user_id'   => get_current_user_id(),
         );
         
         if( function_exists("po_mu_plugin") && ( count( po_mu_plugin()->blocked_plugins ) >= 1 || get_option("po_should_alphabetize_menu") == "1" ) ){
@@ -260,7 +261,7 @@ class PO_Admin {
                     'parent' => 'plugin_optimizer_filters_in_use',
                     'id'     => 'plugin_optimizer_filter_in_use_' . $filter_id,
                     'title'  => $filter_name,
-                    'href'   => '/wp-admin/admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter_id,
+                    'href'   => admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter_id ),
                 ) );
             }
             

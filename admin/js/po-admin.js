@@ -493,19 +493,19 @@ jQuery( document ).ready( function($){
 
         switch (selfId) {
             case 'window_filters':
-                location.href='/wp-admin/admin.php?page=plugin_optimizer_filters';
+                location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_filters';
                 break;
             case 'window_categories':
-                location.href='/wp-admin/admin.php?page=plugin_optimizer_filters_categories';
+                location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_filters_categories';
                 break;
             case 'window_groups':
-                location.href='/wp-admin/admin.php?page=plugin_optimizer_groups';
+                location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_groups';
                 break;
             case 'window_worklist':
-                location.href='/wp-admin/admin.php?page=plugin_optimizer_worklist';
+                location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_worklist';
                 break;
             case 'window_settings':
-                location.href='/wp-admin/admin.php?page=plugin_optimizer_settings';
+                location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_settings';
                 break;
         }
 

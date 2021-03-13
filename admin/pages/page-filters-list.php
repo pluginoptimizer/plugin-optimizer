@@ -14,7 +14,7 @@ $filters = get_posts( array(
         <div class="row justify-content-between global-information">
         
             <div class="col-3">
-                <a href="/wp-admin/admin.php?page=plugin_optimizer_add_filters">
+                <a href="<?= admin_url('admin.php?page=plugin_optimizer_add_filters') ?>">
                     <button class="po_green_button" id="add_elements">Create Filter</button>
                 </a>
             </div>

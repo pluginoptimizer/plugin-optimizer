@@ -37,7 +37,7 @@ $checked = $should_alphabetize ? ' checked="checked"' : '';
                 </div>
                 
                 <div class="col-3">
-                    <a href="/wp-admin/admin.php?page=plugin_optimizer_settings&po_original_menu=get&redirect_to=<?= urlencode( site_url( $_SERVER["REQUEST_URI"] ) ) ?>">
+                    <a href="<?= admin_url( 'admin.php?page=plugin_optimizer_settings&po_original_menu=get&redirect_to=' . urlencode( site_url( $_SERVER["REQUEST_URI"] ) ) ) ?>">
                         <button class="po_green_button">Go!</button>
                     </a>
                 </div>
