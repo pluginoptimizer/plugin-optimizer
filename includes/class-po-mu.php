@@ -155,8 +155,7 @@ class PO_MU {
         $editing_post_type = $this->is_editing_post_type( $relative_url );
         
         // --- are we on any of the PO pages?
-        // TODO introduce wildcards for po_pages
-        if( in_array( $relative_url, $this->po_pages ) || in_array( $editing_post_type, $this->po_post_types ) ){
+        if( strpos( $relative_url, "wp-admin/admin.php?page=plugin_optimizer") !== false || in_array( $relative_url, $this->po_pages ) || in_array( $editing_post_type, $this->po_post_types ) ){
             
             $this->is_po_default_page   = true;
             $this->is_being_filtered    = true;
