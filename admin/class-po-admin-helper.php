@@ -90,7 +90,7 @@ EOF;
                     
                 } else {
                     
-                    $filter_types["_edit_screen"] = "Edit screen";
+                    $filter_types["_edit_screen"] = "Post type";
                     
                 }
                 
@@ -215,7 +215,7 @@ EOF;
                     $trigger = implode( ',<br>', $data_endpoints );
                     $type    = "_endpoint";
                 } else {
-                    $trigger = "Edit screen of: <b>" . $data_type . "</b>";
+                    $trigger = "Editing post type: <b>" . $data_type . "</b>";
                     $type    = $data_type;
                     $type    = "_edit_screen";
                 }
