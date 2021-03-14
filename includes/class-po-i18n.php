@@ -6,7 +6,7 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @since      1.0.0
+ * @since      1.0.1
  * @package    PluginOptimizer
  * @subpackage PluginOptimizer/includes
  * @author     Simple Online Systems <admin@simpleonlinesystems.com>
