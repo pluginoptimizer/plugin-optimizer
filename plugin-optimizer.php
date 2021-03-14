@@ -1,16 +1,14 @@
 <?php
 /**
- * The plugin bootstrap file
- *
  * @wordpress-plugin
  * Plugin Name:       Plugin Optimizer
- * Plugin URI:        plugin-uri.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin URI:        https://pluginoptimizer.com
+ * Description:       The Most Powerful Performance Plugin for WordPress is now available for FREE.
  * Version:           1.0.0
- * Author:            Simple Online Systems
- * Author URI:        https://simpleonlinesystems.com
+ * Author:            pluginoptimizer
+ * Author URI:        https://pluginoptimizer.com
  * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       plugin-optimizer
  * Domain Path:       /languages
  */

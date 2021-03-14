@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name:       Plugin Optimizer MU
- * Plugin URI:        plugin-uri.com
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin URI:        https://pluginoptimizer.com
+ * Description:       This MU plugin is required by the Plugin Optimizer plugin. It will be removed upon deactivation.
  * Version:           1.0.0
- * Author:            Simple Online Systems
- * Author URI:        https://simpleonlinesystems.com
+ * Author:            pluginoptimizer
+ * Author URI:        https://pluginoptimizer.com
  * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
  */
 
 class PO_MU {
