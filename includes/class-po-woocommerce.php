@@ -46,7 +46,7 @@ class PO_WC_Comments {
 	/**
 	 * See if comments are open.
 	 *
-	 * @since  3.1.0
+     * @since  1.0.0
 	 * @param  bool $open    Whether the current post is open for comments.
 	 * @param  int  $post_id Post ID.
 	 * @return bool
@@ -88,7 +88,7 @@ class PO_WC_Comments {
 	/**
 	 * Exclude webhook comments from queries and RSS.
 	 *
-	 * @since  2.2
+     * @since  1.0.0
 	 * @param  array $clauses A compacted array of comment query clauses.
 	 * @return array
 	 */
@@ -100,7 +100,7 @@ class PO_WC_Comments {
 	/**
 	 * Exclude webhook comments from queries and RSS.
 	 *
-	 * @since  2.1
+     * @since  1.0.0
 	 * @param  string $where The WHERE clause of the query.
 	 * @return string
 	 */
@@ -138,7 +138,7 @@ class PO_WC_Comments {
 	/**
 	 * Remove order notes and webhook delivery logs from wp_count_comments().
 	 *
-	 * @since  2.2
+     * @since  1.0.0
 	 * @param  object $stats   Comment stats.
 	 * @param  int    $post_id Post ID.
 	 * @return object
@@ -203,7 +203,7 @@ class PO_WC_Comments {
 	/**
 	 * Make sure WP displays avatars for comments with the `review` type.
 	 *
-	 * @since  2.3
+     * @since  1.0.0
 	 * @param  array $comment_types Comment types.
 	 * @return array
 	 */
@@ -214,7 +214,7 @@ class PO_WC_Comments {
 	/**
 	 * Update comment type of product reviews.
 	 *
-	 * @since 3.5.0
+     * @since  1.0.0
 	 * @param array $comment_data Comment data.
 	 * @return array
 	 */
@@ -232,7 +232,7 @@ class PO_WC_Comments {
 	 * Prior to WordPress 5.5, '' was the default comment type.
 	 * As of 5.5, the default type is 'comment'.
 	 *
-	 * @since 4.3.0
+     * @since  1.0.0
 	 * @param string $comment_type Comment type.
 	 * @return bool
 	 */
