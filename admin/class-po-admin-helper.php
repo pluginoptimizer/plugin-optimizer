@@ -439,4 +439,44 @@ EOF;
         
     }
     
+    /**
+     * Format the data used to save a group
+     * 
+     * The group can be new (if we don't have the key 'ID') or an existing one.
+     * This function will rearrange the array, sanitize the inputs and validate some fields.
+     * 
+     * @param array $data The form data sent via Ajax
+     * 
+     * @return array
+     */
+    static function format__group_data( $data ){
+        
+        if( empty( $data["title"] ) ){
+            
+            return new WP_Error( 'missing_title', "The title is a required field!" );
+        }
+        
+        if( empty( $data["plugins_to_block"] ) ){
+            
+            return new WP_Error( 'missing_title', "There has to be at least 1 plugin selected in order to save this group!" );
+        }
+        
+        
+        
+        // basically none of the meta data needs to be sanitized because add_metadata() already does that
+        $safe_data = [
+            "title" => sanitize_text_field( $data["title"] ),
+            "meta"  => [
+                "group_plugins" => $data["plugins_to_block"],
+            ],
+        ];
+        
+        if( ! empty( $data["ID"] ) ){
+            $safe_data["ID"] = intval( $data["ID"] );
+        }
+
+        return $safe_data;
+        
+    }
+    
 }

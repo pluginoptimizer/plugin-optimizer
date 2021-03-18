@@ -113,26 +113,23 @@ class SOSPO_Ajax {
 	 */
 	function po_save_group() {
         
+        if( empty( $_POST['data'] ) ){              wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
+        
         parse_str( $_POST['data'], $array);
         
-        $data = $array['SOSPO_filter_data'];
+        if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
         
-		// wp_send_json_success( $data );
-        // exit;
+        
+        $data = SOSPO_Admin_Helper::format__group_data( $array['SOSPO_filter_data'] );
         
         // sospo_mu_plugin()->write_log( $_POST, "po_save_group-_POST" );
         // sospo_mu_plugin()->write_log( $data, "po_save_group-data" );
         
-        
-        if( empty( $data["title"] ) ){
+        if( is_wp_error( $data ) ){
             
-            wp_send_json_error( [ "message" => "The title is a required field!" ] );
+            wp_send_json_error( [ "message" => $data->get_error_message() ] );
         }
         
-        if( empty( $data["plugins_to_block"] ) ){
-            
-            wp_send_json_error( [ "message" => "There has to be at least 1 plugin selected in order to save this group!" ] );
-        }
         
 		$post_data = array(
 			'post_title'  => $data["title"],
@@ -151,11 +148,7 @@ class SOSPO_Ajax {
 			wp_send_json_error( [ "message" => $post_id->get_error_message() ] );
 		}
 
-        $meta = [
-            "group_plugins" => $data["plugins_to_block"],
-        ];
-        
-        foreach( $meta as $meta_key => $meta_value ){
+        foreach( $data["meta"] as $meta_key => $meta_value ){
             
             update_post_meta( $post_id, $meta_key, $meta_value );
         }
