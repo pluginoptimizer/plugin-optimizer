@@ -16,7 +16,7 @@ $categories = get_categories( [
         <div class="row justify-content-between global-information">
         
             <div class="col-3">
-                <a href="<?= admin_url('admin.php?page=plugin_optimizer_add_categories') ?>">
+                <a href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_categories') ?>">
                     <button class="po_green_button" id="add_elements">Create Category</button>
                 </a>
             </div>
@@ -32,7 +32,7 @@ $categories = get_categories( [
             </div>
         
             <div class="col-3 quantity">
-                <span>All</span> (<span id="count_all_elements"><?= wp_count_terms( 'сategories_filters' ); ?></span>)
+                <span>All</span> (<span id="count_all_elements"><?php echo wp_count_terms( 'сategories_filters' ); ?></span>)
             </div>
         </div>
         

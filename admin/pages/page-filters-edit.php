@@ -83,7 +83,7 @@ if( $filter ){
 
 <style>
 .additional_endpoint_wrapper:before{
-    content: "<?= home_url() ?>";
+    content: "<?php echo home_url() ?>";
 }
 </style>
 
@@ -98,13 +98,13 @@ if( $filter ){
                 
 					<div class="row filter_title">
                         
-                        <input type="hidden" name="PO_filter_data[ID]" value="<?= $filter ? $filter->ID : "" ?>"/>
+                        <input type="hidden" name="PO_filter_data[ID]" value="<?php echo $filter ? $filter->ID : "" ?>"/>
                         
 						<div class="col-9">
 							<div class="header">Title</div>
 							<div>
 								<div class="content enter-data">
-									<span><input class="content-text" id="set_title" type="text" name="PO_filter_data[title]" value="<?= $filter_title ?>" placeholder="The title of this filter"></span>
+									<span><input class="content-text" id="set_title" type="text" name="PO_filter_data[title]" value="<?php echo $filter_title ?>" placeholder="The title of this filter"></span>
 								</div>
 							</div>
 						</div>
@@ -116,7 +116,7 @@ if( $filter ){
                                     <span>
                                         <select name="PO_filter_data[type]" id="set_type">
                                             <optgroup label="Default:">
-                                                <option value="_endpoint"<?= $filter_type == "_endpoint" ? ' selected="selected"' : "" ?>>Endpoint(s)</option>
+                                                <option value="_endpoint"<?php echo $filter_type == "_endpoint" ? ' selected="selected"' : "" ?>>Endpoint(s)</option>
                                             </optgroup>
                                             <optgroup label="Edit page of a Post Type:">
                                                 <?php
@@ -137,21 +137,21 @@ if( $filter ){
                         
 					</div>
 					
-                    <div class="row select_trigger" id="endpoints_wrapper"<?= $show_endpoints_wrapper ?>>
+                    <div class="row select_trigger" id="endpoints_wrapper"<?php echo $show_endpoints_wrapper ?>>
                     
 						<div class="col-12">
 							<div class="header">Endpoints</div>
 						</div>
                         
 						<div class="col-12 additional_endpoint_wrapper">
-                            <input id="first_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?= ! empty( $endpoints ) ? $endpoints[0] : "" ?>"/>
+                            <input id="first_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?php echo ! empty( $endpoints ) ? $endpoints[0] : "" ?>"/>
                             <div id="add_endpoint" class="circle_button add_something">+</div>
 						</div>
                         
                         <?php for( $i = 1; $i < count( $endpoints ); $i++ ){ ?>
                         
                             <div class="col-12 additional_endpoint_wrapper">
-                                <input class="additional_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?= $endpoints[ $i ] ?>"/>
+                                <input class="additional_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?php echo $endpoints[ $i ] ?>"/>
                                 <div class="remove_additional_endpoint circle_button remove_something">-</div>
                             </div>
                             
@@ -163,8 +163,8 @@ if( $filter ){
 						<div class="col-12">
                         
 							<div class="header">
-								<div class="title">Plugins <span class="disabled">- <?= count( $plugins["all"] ); ?></span></div>
-								<span class="count-plugin">( Active: <?= count( $plugins["active"] ); ?>   |   Inactive: <?= count( $plugins["inactive"] ); ?> )</span>
+								<div class="title">Plugins <span class="disabled">- <?php echo count( $plugins["all"] ); ?></span></div>
+								<span class="count-plugin">( Active: <?php echo count( $plugins["active"] ); ?>   |   Inactive: <?php echo count( $plugins["inactive"] ); ?> )</span>
 								<span class="all-check toggle_plugins">Disable All</span>
 							</div>
                             
@@ -182,7 +182,7 @@ if( $filter ){
 					<div class="row block-group-plugin-wrapper">
 						<div class="col-12">
 							<div class="header">
-								<div class="title">Groups <span class="disabled">- <?= count( $groups ); ?></span>
+								<div class="title">Groups <span class="disabled">- <?php echo count( $groups ); ?></span>
 								</div>
 								<span class="all-check toggle_groups">Disable All</span>
 							</div>
@@ -195,12 +195,12 @@ if( $filter ){
                                         $blocked  = $selected ? " blocked" : "";
                                         $checked  = $selected ? ' checked="checked"' : '';
 										?>
-										<div class="single_group content<?= $blocked ?>" data-plugins="<?= htmlspecialchars(json_encode($block_plugins_in_group)) ?>">
-                                            <input class="noeyes" type="checkbox" name="PO_filter_data[groups][<?= $group->ID ?>]" value="<?= $group->post_title ?>"<?= $checked ?>/>
-											<span><?= $group->post_title; ?></span>
+										<div class="single_group content<?php echo $blocked ?>" data-plugins="<?php echo htmlspecialchars(json_encode($block_plugins_in_group)) ?>">
+                                            <input class="noeyes" type="checkbox" name="PO_filter_data[groups][<?php echo $group->ID ?>]" value="<?php echo $group->post_title ?>"<?php echo $checked ?>/>
+											<span><?php echo $group->post_title; ?></span>
 											<?php foreach ( $block_plugins_in_group as $block_plugin_in_group ){ ?>
 												<div class="hidden_content">
-													- <span><?= $block_plugin_in_group; ?></span>
+													- <span><?php echo $block_plugin_in_group; ?></span>
 												</div>
 											<?php } ?>
 										</div>
@@ -224,9 +224,9 @@ if( $filter ){
                                         $selected = in_array( $cat->term_id, $filter_categories );
                                         $checked  = $selected ? ' checked="checked"' : '';
 										?>
-										<div class="single_category content<?= $selected ? " blocked" : "" ?>">
-                                            <input class="noeyes" type="checkbox" name="PO_filter_data[categories][<?= $cat->term_id ?>]" value="<?= $cat->cat_name ?>"<?= $checked ?>/>
-											<span value="<?= $cat->term_id; ?>"><?= $cat->cat_name; ?></span>
+										<div class="single_category content<?php echo $selected ? " blocked" : "" ?>">
+                                            <input class="noeyes" type="checkbox" name="PO_filter_data[categories][<?php echo $cat->term_id ?>]" value="<?php echo $cat->cat_name ?>"<?php echo $checked ?>/>
+											<span value="<?php echo $cat->term_id; ?>"><?php echo $cat->cat_name; ?></span>
 										</div>
 									<?php
 									}

@@ -27,20 +27,20 @@ if( $cat ){
             <div class="col-12">
                 <div class="content-filter">
                     
-                    <input type="hidden" name="PO_filter_data[ID]" value="<?= $cat ? $cat->term_id : "" ?>"/>
+                    <input type="hidden" name="PO_filter_data[ID]" value="<?php echo $cat ? $cat->term_id : "" ?>"/>
                     
                     <div class="row">
                         <div class="col-12">
                             <div class="header">Title</div>
                             <div>
                                 <div class="content">
-                                    <span><input class="content-text" id="set_title" type="text" name="PO_filter_data[title]" value="<?= $cat_title ?>"></span>
+                                    <span><input class="content-text" id="set_title" type="text" name="PO_filter_data[title]" value="<?php echo $cat_title ?>"></span>
                                 </div>
                             </div>
                             <div class="header">Description</div>
                             <div>
                                 <div class="content">
-                                    <span><textarea id="set_description" name="PO_filter_data[description]" name="text"><?= $cat_desc ?></textarea></span>
+                                    <span><textarea id="set_description" name="PO_filter_data[description]" name="text"><?php echo $cat_desc ?></textarea></span>
                                 </div>
                             </div>
                         </div>

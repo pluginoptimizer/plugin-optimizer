@@ -227,16 +227,16 @@ EOF;
                 $turned_on_checked = $turned_off !== "1" ? ' checked="checked"' : '';
                 
 				?>
-                <tr class="block_info" id="filter-<?=  $filter->ID ?>" data-status="<?= $filter->post_status ?>" data-date="<?= $date ?>" data-type="<?= $type ?>">
-                    <td><input type="checkbox" id="<?= $filter->ID ?>"></td>
-                    <td class="align-left normal-text"><?= $filter->post_title ?><br/><a class="edit_item" href="<?= admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ) ?>">Edit</a><br/></td>
-                    <td class="align-left normal-text"><?= $categories ?></td>
-                    <td class="data-trigger align-left normal-text"><?= $trigger ?></td>
-                    <td class="expandable list_of_plugins"><span class="no_hover"><?= count( $blocking_plugins ) ?></span><span class="yes_hover"><?= implode( ',<br/>', $blocking_plugins ); ?></span></td>
+                <tr class="block_info" id="filter-<?php echo  $filter->ID ?>" data-status="<?php echo $filter->post_status ?>" data-date="<?php echo $date ?>" data-type="<?php echo $type ?>">
+                    <td><input type="checkbox" id="<?php echo $filter->ID ?>"></td>
+                    <td class="align-left normal-text"><?php echo $filter->post_title ?><br/><a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ) ?>">Edit</a><br/></td>
+                    <td class="align-left normal-text"><?php echo $categories ?></td>
+                    <td class="data-trigger align-left normal-text"><?php echo $trigger ?></td>
+                    <td class="expandable list_of_plugins"><span class="no_hover"><?php echo count( $blocking_plugins ) ?></span><span class="yes_hover"><?php echo implode( ',<br/>', $blocking_plugins ); ?></span></td>
                     <td class="toggle_filter">
                         <label>
                             <span class="switch">
-                                <input class="turn_off_filter" data-id="<?= $filter->ID ?>" type="checkbox"<?= $turned_on_checked ?>/>
+                                <input class="turn_off_filter" data-id="<?php echo $filter->ID ?>" type="checkbox"<?php echo $turned_on_checked ?>/>
                                 <span class="slider round"></span>
                             </span>
                         </label>
@@ -262,11 +262,11 @@ EOF;
                 $date = date("Ym",  strtotime( $group->post_date ) );// 202109
                 
 				?>
-                <tr class="block_info" id="group_<?= $group->ID; ?>" data-status="<?= $group->post_status ?>" data-date="<?= $date ?>">
-                    <td><input type="checkbox" id="<?= $group->ID; ?>"></td>
-                    <td class="align-left normal-text"><?= $group->post_title; ?><br/><a class="edit_item" href="<?= admin_url('admin.php?page=plugin_optimizer_add_groups&group_id=' . $group->ID ) ?>">Edit</a><br/></td>
-                    <td><?= implode( '<br/>', $group_plugins ) ?></td>
-                    <td><?= $group_plugins ? count( $group_plugins ) : 0 ?></td>
+                <tr class="block_info" id="group_<?php echo $group->ID; ?>" data-status="<?php echo $group->post_status ?>" data-date="<?php echo $date ?>">
+                    <td><input type="checkbox" id="<?php echo $group->ID; ?>"></td>
+                    <td class="align-left normal-text"><?php echo $group->post_title; ?><br/><a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_groups&group_id=' . $group->ID ) ?>">Edit</a><br/></td>
+                    <td><?php echo implode( '<br/>', $group_plugins ) ?></td>
+                    <td><?php echo $group_plugins ? count( $group_plugins ) : 0 ?></td>
                 </tr>
 			<?php
             }
@@ -294,13 +294,13 @@ EOF;
                 $create_link = get_admin_url( null, $relative_url );
                 
                 ?>
-                <tr class="block_info" data-status="<?= $work_item->post_status ?>" data-date="<?= $date ?>">
-                    <td><input type="checkbox" id="<?= $work_item->ID ?>"></td>
-                    <td class="align-left normal-text"><?= $work_item->post_title ?></td>
-                    <td class="align-left normal-text"><?= get_post_meta( $work_item->ID, 'post_link', true ) ?></td>
-                    <td><?= substr( str_replace( '-', '/', str_replace( " ", " at ", $work_item->post_date ) ), 0, - 3 ) . ' pm' ?></td>
+                <tr class="block_info" data-status="<?php echo $work_item->post_status ?>" data-date="<?php echo $date ?>">
+                    <td><input type="checkbox" id="<?php echo $work_item->ID ?>"></td>
+                    <td class="align-left normal-text"><?php echo $work_item->post_title ?></td>
+                    <td class="align-left normal-text"><?php echo get_post_meta( $work_item->ID, 'post_link', true ) ?></td>
+                    <td><?php echo substr( str_replace( '-', '/', str_replace( " ", " at ", $work_item->post_date ) ), 0, - 3 ) . ' pm' ?></td>
                     <td>
-                        <a class="row-title" href="<?= $create_link ?>">
+                        <a class="row-title" href="<?php echo $create_link ?>">
                             <button class="po_green_button">Create Filter</button>
                         </a>
                     </td>
@@ -320,13 +320,13 @@ EOF;
 		if ( $categories ){
 			foreach ( $categories as $cat ){
                 ?>
-                <tr class="block_info" id="cat-<?= $cat->term_id ?>" data-status="publish">
-                    <td class="cat_checkbox"><input type="checkbox" id="<?= $cat->term_id ?>"></td>
-                    <td class="cat_edit"><a href="<?= admin_url('admin.php?page=plugin_optimizer_add_categories&cat_id=' . $cat->term_id ) ?>">Edit</a></td>
-                    <td class="cat_title"><?= $cat->cat_name ?></td>
-                    <td class="cat_description"><?= $cat->description ? $cat->description : "-" ?></td>
+                <tr class="block_info" id="cat-<?php echo $cat->term_id ?>" data-status="publish">
+                    <td class="cat_checkbox"><input type="checkbox" id="<?php echo $cat->term_id ?>"></td>
+                    <td class="cat_edit"><a href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_categories&cat_id=' . $cat->term_id ) ?>">Edit</a></td>
+                    <td class="cat_title"><?php echo $cat->cat_name ?></td>
+                    <td class="cat_description"><?php echo $cat->description ? $cat->description : "-" ?></td>
                     <?php // TODO add a link to filter the filters by category ?>
-                    <td class="cat_filters"><?= $cat->count ?></td>
+                    <td class="cat_filters"><?php echo $cat->count ?></td>
                 </tr>
 			<?php }
         } else {

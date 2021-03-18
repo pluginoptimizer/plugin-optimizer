@@ -33,14 +33,14 @@ if( $group ){
             <div class="col-12">
                 <div class="content-filter">
                     
-                    <input type="hidden" name="PO_filter_data[ID]" value="<?= $group ? $group->ID : "" ?>"/>
+                    <input type="hidden" name="PO_filter_data[ID]" value="<?php echo $group ? $group->ID : "" ?>"/>
                     
                     <div class="row">
                         <div class="col-12">
                             <div class="header">Title</div>
                             <div>
                                 <div class="content">
-                                    <span><input class="content-text" id="set_title" type="text" name="PO_filter_data[title]" value="<?= $group_title ?>" placeholder="The title of this group"/></span>
+                                    <span><input class="content-text" id="set_title" type="text" name="PO_filter_data[title]" value="<?php echo $group_title ?>" placeholder="The title of this group"/></span>
                                 </div>
                             </div>
                         </div>
@@ -49,9 +49,9 @@ if( $group ){
                         <div class="col-12">
                             
                             <div class="header">
-                                <div class="title">Select plugins <span class="disabled">- <?= count( $plugins["all"] ); ?></span></div>
+                                <div class="title">Select plugins <span class="disabled">- <?php echo count( $plugins["all"] ); ?></span></div>
                                 <span class="all-check toggle_plugins">Disable All</span>
-                                <span class="count-plugin">( Active: <?= count( $plugins["active"] ); ?>   |   Inactive: <?= count( $plugins["inactive"] ); ?> )</span>
+                                <span class="count-plugin">( Active: <?php echo count( $plugins["active"] ); ?>   |   Inactive: <?php echo count( $plugins["inactive"] ); ?> )</span>
                             </div>
                             
                             <?php PO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["all"], "inactive" => $plugins["inactive"], "blocked" => $plugins_to_block ] ); ?>

@@ -18,9 +18,9 @@ $worklists = get_posts( array(
             <div class="col-3"></div>
             
             <div class="col-3 quantity">
-                <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?= wp_count_posts( 'sos_work' )->publish; ?></span>)
+                <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?php echo wp_count_posts( 'sos_work' )->publish; ?></span>)
                 |
-                <span id="trash_elements">Trashed</span> (<span id="count_trash_elements"><?= wp_count_posts( 'sos_work' )->trash; ?></span>)
+                <span id="trash_elements">Trashed</span> (<span id="count_trash_elements"><?php echo wp_count_posts( 'sos_work' )->trash; ?></span>)
             </div>
             
         </div>

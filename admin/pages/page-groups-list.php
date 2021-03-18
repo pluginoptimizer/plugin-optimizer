@@ -14,7 +14,7 @@ $groups = get_posts( array(
         <div class="row justify-content-between global-information">
         
             <div class="col-3">
-                <a href="<?= admin_url('admin.php?page=plugin_optimizer_add_groups') ?>">
+                <a href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_groups') ?>">
                     <button class="po_green_button" id="add_elements">Create Group</button>
                 </a>
             </div>
@@ -22,9 +22,9 @@ $groups = get_posts( array(
             <?php PO_Admin_Helper::content_part__bulk_actions( $groups ); ?>
             
             <div class="col-3 quantity">
-                <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?= wp_count_posts( 'sos_group' )->publish; ?></span>)
+                <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?php echo wp_count_posts( 'sos_group' )->publish; ?></span>)
                 |
-                <span id="trash_elements">Trashed</span> (<span id="count_trash_elements"><?= wp_count_posts( 'sos_group' )->trash; ?></span>)
+                <span id="trash_elements">Trashed</span> (<span id="count_trash_elements"><?php echo wp_count_posts( 'sos_group' )->trash; ?></span>)
             </div>
             
         </div>
