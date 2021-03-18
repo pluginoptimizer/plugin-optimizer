@@ -86,7 +86,7 @@ class PO_Admin_Overview{
             <div class="col-6">
                 <h4>CATEGORY</h4>
                 <div class="sos-registration">
-                    <img src="/wp-content/plugins/plugin-optimizer/admin/img/noimage.png" alt="No image">
+                    <img src="<?php echo plugin_dir_url( __DIR__ ) ?>img/noimage.png" alt="No image">
 
                 </div>
             </div>
@@ -107,7 +107,7 @@ class PO_Admin_Overview{
             <div class="col-6">
                 <h4>GROUP</h4>
                 <div class="sos-registration">
-                    <img src="/wp-content/plugins/plugin-optimizer/admin/img/noimage.png" alt="No image">
+                    <img src="<?php echo plugin_dir_url( __DIR__ ) ?>img/noimage.png" alt="No image">
 
                 </div>
             </div>
@@ -128,7 +128,7 @@ class PO_Admin_Overview{
             <div class="col-6">
                 <h4>FILTER</h4>
                 <div class="sos-registration">
-                    <img src="/wp-content/plugins/plugin-optimizer/admin/img/noimage.png" alt="No image">
+                    <img src="<?php echo plugin_dir_url( __DIR__ ) ?>img/noimage.png" alt="No image">
 
                 </div>
             </div>
@@ -149,7 +149,7 @@ class PO_Admin_Overview{
             <div class="col-6">
                 <h4>INSTALLATION</h4>
                 <div class="sos-registration">
-                    <img src="/wp-content/plugins/plugin-optimizer/admin/img/noimage.png" alt="No image">
+                    <img src="<?php echo plugin_dir_url( __DIR__ ) ?>img/noimage.png" alt="No image">
 
                 </div>
             </div>
