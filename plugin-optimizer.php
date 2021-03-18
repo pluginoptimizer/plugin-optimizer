@@ -4,7 +4,7 @@
  * Plugin Name:       Plugin Optimizer
  * Plugin URI:        https://pluginoptimizer.com
  * Description:       The Most Powerful Performance Plugin for WordPress is now available for FREE.
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            pluginoptimizer
  * Author URI:        https://pluginoptimizer.com/about/
  * License:           GPL-2.0+
@@ -40,7 +40,7 @@ appsero_init_tracker_plugin_optimizer();
  * Currently plugin version.
  * Use SemVer - https://semver.org
  */
-define( 'SOS_PO_VERSION', '1.0.1' );
+define( 'SOS_PO_VERSION', '1.0.2' );
 
 /**
  * The code that runs during plugin activation.

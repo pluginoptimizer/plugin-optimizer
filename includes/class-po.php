@@ -8,7 +8,6 @@
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.0.1
  * @package    PluginOptimizer
  * @subpackage PluginOptimizer/includes
  * @author     Simple Online Systems <admin@simpleonlinesystems.com>
@@ -44,7 +43,7 @@ class PluginOptimizer {
 		if ( defined( 'SOS_PO_VERSION' ) ) {
 			$this->version = SOS_PO_VERSION;
 		} else {
-			$this->version = '1.0.1';
+			$this->version = '1.0.2';
 		}
 		$this->plugin_name = 'plugin-optimizer';
 
@@ -105,7 +104,6 @@ class PluginOptimizer {
 	 * WordPress and to define internationalization functionality.
 	 *
 	 * @return    string    The name of the plugin.
-	 * @since     1.0.1
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -115,7 +113,6 @@ class PluginOptimizer {
 	 * Retrieve the version number of the plugin.
 	 *
 	 * @return    string    The version number of the plugin.
-	 * @since     1.0.1
 	 */
 	public function get_version() {
 		return $this->version;

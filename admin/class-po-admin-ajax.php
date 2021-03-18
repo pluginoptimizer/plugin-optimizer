@@ -36,7 +36,7 @@ class PO_Ajax {
 		add_action( 'wp_ajax_po_mark_tab_complete',             [ $this, 'po_mark_tab_complete'             ] );
 		add_action( 'wp_ajax_po_save_option_alphabetize_menu',  [ $this, 'po_save_option_alphabetize_menu'  ] );
 		add_action( 'wp_ajax_po_turn_off_filter',               [ $this, 'po_turn_off_filter'               ] );
-		add_action( 'wp_ajax_po_save_original_menu',             [ $this, 'po_save_original_menu'             ] );
+		add_action( 'wp_ajax_po_save_original_menu',            [ $this, 'po_save_original_menu'            ] );
 
 	}
 

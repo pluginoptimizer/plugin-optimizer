@@ -46,12 +46,12 @@ class PO_Admin {
 	 */
 	function load_hooks() {
 
-		add_action( 'admin_body_class',      [ $this, 'mark_admin_body_class'   ] );
+		add_filter( 'admin_body_class',      [ $this, 'mark_admin_body_class'   ] );
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_styles'          ] );
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts'         ] );
         
-		add_action( 'script_loader_tag',     [ $this, 'add_type_attribute'      ], 10, 3 );
+		add_filter( 'script_loader_tag',     [ $this, 'add_type_attribute'      ], 10, 3 );
         
 		add_action( 'init',                  [ $this, 'register_post_types'     ] );
 		add_action( 'init',                  [ $this, 'register_taxonomies'     ] );
