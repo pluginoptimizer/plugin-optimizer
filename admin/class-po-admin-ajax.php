@@ -55,7 +55,7 @@ class SOSPO_Ajax {
         $data = SOSPO_Admin_Helper::format__filter_data( $array['SOSPO_filter_data'] );
         
         // sospo_mu_plugin()->write_log( $_POST, "po_save_filter-_POST" );
-        // sospo_mu_plugin()->write_log( $data, "po_save_filter-data" );
+        // sospo_mu_plugin()->write_log( $data,  "po_save_filter-data"  );
         
         if( is_wp_error( $data ) ){
             
@@ -123,7 +123,7 @@ class SOSPO_Ajax {
         $data = SOSPO_Admin_Helper::format__group_data( $array['SOSPO_filter_data'] );
         
         // sospo_mu_plugin()->write_log( $_POST, "po_save_group-_POST" );
-        // sospo_mu_plugin()->write_log( $data, "po_save_group-data" );
+        // sospo_mu_plugin()->write_log( $data,  "po_save_group-data"  );
         
         if( is_wp_error( $data ) ){
             
@@ -163,25 +163,27 @@ class SOSPO_Ajax {
 	 */
 	function po_save_category() {
         
+        if( empty( $_POST['data'] ) ){              wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
+        
         parse_str( $_POST['data'], $array);
         
-        $data = $array['SOSPO_filter_data'];
+        if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
         
-		// wp_send_json_success( $data );
-        // exit;
+        
+        $data = SOSPO_Admin_Helper::format__category_data( $array['SOSPO_filter_data'] );
         
         // sospo_mu_plugin()->write_log( $_POST, "po_save_category-_POST" );
-        // sospo_mu_plugin()->write_log( $data, "po_save_category-data" );
+        // sospo_mu_plugin()->write_log( $data,  "po_save_category-data"  );
         
-        
-        if( empty( $data["title"] ) ){
+        if( is_wp_error( $data ) ){
             
-            wp_send_json_error( [ "message" => "The title is a required field!" ] );
+            wp_send_json_error( [ "message" => $data->get_error_message() ] );
         }
+        
         
         if( empty( $data["ID"] ) ){
             
-            $category = wp_create_term( $data["title"], "сategories_filters" );
+            $category = wp_create_term( $data["name"], "сategories_filters" );
             
             if( is_wp_error( $category ) ){
                 wp_send_json_error( [ "message" => "An error occured: " . $category->get_error_message() ] );
@@ -192,19 +194,10 @@ class SOSPO_Ajax {
         } else {
             
             $term_id = $data["ID"];
+            unset( $data["ID"] );
         }
         
-        $args = [
-            'name' => trim( $data["title"] ),
-        ];
-        
-        if( ! empty( $data["description"] ) ){
-            
-            $args["description"] = trim( $data["description"] );
-            
-        }
-        
-        $category = wp_update_term( $term_id, "сategories_filters", $args );
+        $category = wp_update_term( $term_id, "сategories_filters", $data );
         
         if( is_wp_error( $category ) ){
             wp_send_json_error( [ "message" => "An error occured: " . $category->get_error_message() ] );

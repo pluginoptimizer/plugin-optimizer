@@ -479,4 +479,39 @@ EOF;
         
     }
     
+    /**
+     * Format the data used to save a category
+     * 
+     * The category can be new (if we don't have the key 'ID') or an existing one.
+     * This function will rearrange the array, sanitize the inputs and validate some fields.
+     * 
+     * @param array $data The form data sent via Ajax
+     * 
+     * @return array
+     */
+    static function format__category_data( $data ){
+        
+        if( empty( $data["title"] ) ){
+            
+            return new WP_Error( 'missing_title', "The title is a required field!" );
+        }
+        
+        
+        
+        $safe_data = [
+            "name" => sanitize_text_field( $data["title"] ),
+        ];
+        
+        if( ! empty( $data["description"] ) ){
+            $safe_data["description"] = sanitize_textarea_field( $data["description"] );
+        }
+
+        if( ! empty( $data["ID"] ) ){
+            $safe_data["ID"] = intval( $data["ID"] );
+        }
+
+        return $safe_data;
+        
+    }
+    
 }
