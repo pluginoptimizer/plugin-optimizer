@@ -13,7 +13,7 @@ $checked = $should_alphabetize ? ' checked="checked"' : '';
     <div class="sos-content">
         <div id="settings_general" class="">
         
-            <div class="row">
+            <div class="row align-items-center">
                 
                 <div class="col-2">
                     <span>Alphabetize the menu</span>
@@ -30,7 +30,7 @@ $checked = $should_alphabetize ? ' checked="checked"' : '';
                 
             </div>
             
-            <div class="row">
+            <div class="row align-items-center">
             
                 <div class="col-2">
                     <span>Recreate the menu</span>

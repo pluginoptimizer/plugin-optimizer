@@ -9,6 +9,15 @@
     min-width: 40px;
     max-width: 40px;
 }
+#categories_table tr.block_info .cat_edit a{
+    font-weight: 500;
+    color: #369451;
+    text-decoration: none;
+    font-size: 14px;
+}
+#categories_table tr.block_info .cat_edit a:hover{
+    color: #3A5683;
+}
 #categories_table tr.block_info:not(:hover) .cat_edit a{
     display: none;
 }
@@ -219,6 +228,7 @@
     background-image: linear-gradient(to top, rgba(0, 0, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 100%);
     border-radius: 4px;
     color: white;
+    line-height: 1.5;
     cursor: pointer;
     transition: all 300ms ease;
 }
@@ -378,6 +388,15 @@
     color: #212529;
 }
 
+.sos-wrap .block_info .edit_item{
+    font-weight: 500;
+    color: #369451;
+    text-decoration: none;
+    font-size: 14px;
+}
+.sos-wrap .block_info .edit_item:hover{
+    color: #3A5683;
+}
 .sos-wrap .block_info:not(:hover) .edit_item{
     display: none;
 }
@@ -552,12 +571,7 @@ table.sos_table{
 }
 
 .sos-wrap a{
-    color: #444 !important;
-}
-
-.sos-wrap a:hover{
-    color: #000 !important;
-    text-decoration: none !important;
+    text-decoration: none;
 }
 
 .sos-wrap a:visited, a:active, a:focus{
@@ -567,7 +581,7 @@ table.sos_table{
 
 .sos-wrap .content:hover{
     box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
-    transform: scale(1.03, 1.03);
+    /* transform: scale(1.03, 1.03); */
     transition: box-shadow, transform 0.35s ease-in-out;
 }
 
@@ -619,7 +633,7 @@ form.created-cat * {
 
 .select-filter span:hover{
     box-shadow: rgba(99, 99, 99, 0.2) 0 2px 8px 0;
-    transform: scale(1.03, 1.03);
+    /* transform: scale(1.03, 1.03); */
     transition: box-shadow, transform 0.35s ease-in-out;
 }
 
@@ -645,6 +659,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     font-size: 18px;
     font-weight: 300;
     /* line-height: 28px; */
+    line-height: 1.5;
     text-align: center;
     margin-right: 10px;
     border-top-left-radius: 6px;
@@ -774,6 +789,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 }
 #edit_filter #endpoints_wrapper{
     /* display: none; */
+    flex-flow: row wrap;
 }
 
 #edit_filter #endpoints_wrapper .additional_endpoint_wrapper{
@@ -789,7 +805,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     display: block;
     background: #ddd;
     border: 1px solid #7e8993;
-    padding: 9px 10px 9px;
+    padding: 12px 10px 10px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
 }

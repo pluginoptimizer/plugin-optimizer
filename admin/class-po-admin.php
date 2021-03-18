@@ -83,12 +83,9 @@ class SOSPO_Admin {
         
 		wp_enqueue_style( $this->plugin_name . '-public', plugin_dir_url( __FILE__ ) . 'css/po-admin-public.css', array(), $this->version, 'all' );
         
-        // TODO we don't need action=edit
-        
-		if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) || stripos( $_SERVER["QUERY_STRING"], "action=edit" ) ) {
+		if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) ) {
             
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/po-admin.css', array(), $this->version, 'all' );
-			wp_enqueue_style( $this->plugin_name . '_bootstrap', plugin_dir_url( __FILE__ ) . 'css/po-admin-bootstrap.css', array(), $this->version, 'all' );
 		}
 	}
 
