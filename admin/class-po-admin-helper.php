@@ -396,5 +396,47 @@ EOF;
 		return $all ? $plugins : $plugins_simple_list;
 
 	}
+    
+    /**
+     * Format the data used to save a filter
+     * 
+     * The filter can be new (if we don't have the key 'ID') or an existing one.
+     * This function will rearrange the array, sanitize the inputs and validate some fields.
+     * 
+     * @param array $data The form data sent via Ajax
+     * 
+     * @return array
+     */
+    static function format__filter_data( $data ){
+        
+        if( empty( $data["title"] ) ){
+            
+            return new WP_Error( 'missing_title', "The title is a required field!" );
+        }
+        
+        if( ! empty( $data["type"] ) && $data["type"] == "_endpoint" && count( $data["endpoints"] ) === 1 && empty( $data["endpoints"][0] ) ){
+            
+            return new WP_Error( 'missing_endpoint', "There has to be at least 1 endpoint defined for this filter type!" );
+        }
+        
+        // basically none of the meta data needs to be sanitized because add_metadata() already does that
+        $safe_data = [
+            "title" => sanitize_text_field( $data["title"] ),
+            "meta"  => [
+                "filter_type"       => ! empty( $data["type"] )             ? sanitize_text_field( $data["type"] ) : "",
+                "endpoints"         => ! empty( $data["endpoints"] )        ? $data["endpoints"]        : [],
+                "plugins_to_block"  => ! empty( $data["plugins_to_block"] ) ? $data["plugins_to_block"] : [],
+                "groups_used"       => ! empty( $data["groups"] )           ? $data["groups"]           : [],
+                "categories"        => ! empty( $data["categories"] )       ? $data["categories"]       : [],
+            ],
+        ];
+        
+        if( ! empty( $data["ID"] ) ){
+            $safe_data["ID"] = intval( $data["ID"] );
+        }
 
+        return $safe_data;
+        
+    }
+    
 }

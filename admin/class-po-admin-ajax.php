@@ -45,30 +45,29 @@ class SOSPO_Ajax {
 	 */
 	function po_save_filter() {
         
+        if( empty( $_POST['data'] ) ){              wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
+        
         parse_str( $_POST['data'], $array);
         
-        $data = $array['SOSPO_filter_data'];
+        if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
+        
+        
+        $data = SOSPO_Admin_Helper::format__filter_data( $array['SOSPO_filter_data'] );
         
         // sospo_mu_plugin()->write_log( $_POST, "po_save_filter-_POST" );
         // sospo_mu_plugin()->write_log( $data, "po_save_filter-data" );
         
-        
-        if( empty( $data["title"] ) ){
+        if( is_wp_error( $data ) ){
             
-            wp_send_json_error( [ "message" => "The title is a required field!" ] );
+            wp_send_json_error( [ "message" => $data->get_error_message() ] );
         }
         
-        if( ! empty( $data["type"] ) && $data["type"] == "_endpoint" && count( $data["endpoints"] ) === 1 && empty( $data["endpoints"][0] ) ){
-            
-            wp_send_json_error( [ "message" => "There has to be at least 1 endpoint defined for this filter type!" ] );
-        }
         
 		$post_data = array(
 			'post_title'  => $data["title"],
 			'post_type'   => 'sos_filter',
 			'post_status' => 'publish',
 			'post_author' => 1,// TODO get_current_user_id() with localize_script in enqueue function
-			// 'tax_input'   => [ "сategories_filters" => ( ! empty( $data["categories"] ) ? array_keys( $data["categories"] ) : [] ) ],
 		);
         
         if( ! empty( $data["ID"] ) ){
@@ -81,32 +80,28 @@ class SOSPO_Ajax {
 			wp_send_json_error( [ "message" => $post_id->get_error_message() ] );
 		}
 
+
+
         if( ! empty( $data["categories"] ) ){
             
             $category_ids = array_keys( $data["categories"] );
             
             foreach( $category_ids as $index => $cat_id ){
                 
-                $category_ids[ $index ] = (int) $cat_id;
+                $category_ids[ $index ] = intval( $cat_id );
             }
             
             $set_categories = wp_set_object_terms( $post_id, $category_ids, "сategories_filters" );
             
-            // sospo_mu_plugin()->write_log( $set_categories, "po_save_filter-set_categories" );
         }
         
-        $meta = [
-            "filter_type"       => ! empty( $data["type"] )             ? $data["type"]             : "",
-            "endpoints"         => ! empty( $data["endpoints"] )        ? $data["endpoints"]        : [],
-            "plugins_to_block"  => ! empty( $data["plugins_to_block"] ) ? $data["plugins_to_block"] : [],
-            "groups_used"       => ! empty( $data["groups"] )           ? $data["groups"]           : [],
-            "categories"        => ! empty( $data["categories"] )       ? $data["categories"]       : [],
-        ];
         
-        foreach( $meta as $meta_key => $meta_value ){
+        
+        foreach( $data["meta"] as $meta_key => $meta_value ){
             
             update_post_meta( $post_id, $meta_key, $meta_value );
         }
+        
         
         
 		wp_send_json_success( [ "message" => "All good, the filter is saved.", "id" => $post_id, ] );
