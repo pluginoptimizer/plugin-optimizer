@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Comments class.
  */
-class PO_WC_Comments {
+class SOSPO_WC_Comments {
 
 	/**
 	 * Hook in methods.
@@ -234,4 +234,4 @@ class PO_WC_Comments {
 	}
 }
 
-PO_WC_Comments::init();
+SOSPO_WC_Comments::init();

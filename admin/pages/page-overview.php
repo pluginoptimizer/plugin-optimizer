@@ -14,7 +14,7 @@
                     
                     require_once("page-overview-content.php");
                     
-                    $tabs = PO_Admin_Overview::get_tabs();
+                    $tabs = SOSPO_Admin_Overview::get_tabs();
                     
                     $tabs = apply_filters( "sos_po_overview_tabs", $tabs );
                     

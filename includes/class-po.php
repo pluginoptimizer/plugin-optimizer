@@ -40,8 +40,8 @@ class PluginOptimizer {
 	 *
 	 */
 	public function __construct() {
-		if ( defined( 'SOS_PO_VERSION' ) ) {
-			$this->version = SOS_PO_VERSION;
+		if ( defined( 'SOSPO_VERSION' ) ) {
+			$this->version = SOSPO_VERSION;
 		} else {
 			$this->version = '1.0.2';
 		}
@@ -74,9 +74,9 @@ class PluginOptimizer {
 		// The class responsible for defining all Ajax actions that occur in the admin area.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-po-admin-ajax.php';
 
-        if( function_exists("po_mu_plugin") && in_array( "woocommerce/woocommerce.php", po_mu_plugin()->blocked_plugins ) ){
+        if( function_exists("sospo_mu_plugin") && in_array( "woocommerce/woocommerce.php", sospo_mu_plugin()->blocked_plugins ) ){
             
-            // po_mu_plugin()->write_log( po_mu_plugin()->blocked_plugins, "PluginOptimizer-load_dependencies-blocked_plugins" );
+            // sospo_mu_plugin()->write_log( sospo_mu_plugin()->blocked_plugins, "PluginOptimizer-load_dependencies-blocked_plugins" );
             
             require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-po-woocommerce.php';
             
@@ -92,10 +92,10 @@ class PluginOptimizer {
 	 */
 	private function init() {
 
-		$plugin_i18n  = new PO_i18n();
-		$plugin_admin = new PO_Admin( $this->get_plugin_name(), $this->get_version() );
-		$admin_ajax   = new PO_Ajax();
-		$menu_pages   = new PO_Admin_Menu_Pages();
+		$plugin_i18n  = new SOSPO_i18n();
+		$plugin_admin = new SOSPO_Admin( $this->get_plugin_name(), $this->get_version() );
+		$admin_ajax   = new SOSPO_Ajax();
+		$menu_pages   = new SOSPO_Admin_Menu_Pages();
 
 	}
 

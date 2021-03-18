@@ -105,7 +105,7 @@ jQuery( document ).ready( function($){
                 
                 $('#add_category').before(`
 					<div class="single_category content blocked">
-                        <input class="noeyes" type="checkbox" name="PO_filter_data[categories][${response.data.category_id}]" value="${category_name}" checked="checked"/>
+                        <input class="noeyes" type="checkbox" name="SOSPO_filter_data[categories][${response.data.category_id}]" value="${category_name}" checked="checked"/>
 						<span value="${response.data.category_id}">${category_name}</span>
                     </div>
                 `);
@@ -148,7 +148,7 @@ jQuery( document ).ready( function($){
             
             if( response.data.id ){
                 
-                $('input[name="PO_filter_data[ID]"]').val( response.data.id );
+                $('input[name="SOSPO_filter_data[ID]"]').val( response.data.id );
             }
             
         }, "json");
@@ -167,7 +167,7 @@ jQuery( document ).ready( function($){
             
             if( response.data.id ){
                 
-                $('input[name="PO_filter_data[ID]"]').val( response.data.id );
+                $('input[name="SOSPO_filter_data[ID]"]').val( response.data.id );
             }
             
         }, "json");
@@ -187,7 +187,7 @@ jQuery( document ).ready( function($){
             
             if( response.data.id ){
                 
-                $('input[name="PO_filter_data[ID]"]').val( response.data.id );
+                $('input[name="SOSPO_filter_data[ID]"]').val( response.data.id );
             }
             
         }, "json");
@@ -247,7 +247,7 @@ jQuery( document ).ready( function($){
         
         $('#endpoints_wrapper > div:eq(-1)').after(`
 			<div class="col-12 additional_endpoint_wrapper">
-                <input class="additional_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value=""/>
+                <input class="additional_endpoint" type="text" name="SOSPO_filter_data[endpoints][]" placeholder="Put your URL here" value=""/>
                 <div class="remove_additional_endpoint circle_button remove_something">-</div>
 			</div>
         `);

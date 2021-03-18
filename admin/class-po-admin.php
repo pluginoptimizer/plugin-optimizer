@@ -7,7 +7,7 @@
  * @author     Simple Online Systems <admin@simpleonlinesystems.com>
  */
 
-class PO_Admin {
+class SOSPO_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -66,7 +66,7 @@ class PO_Admin {
     
 	function mark_admin_body_class( $classes ){
         
-        if( function_exists("po_mu_plugin") && ( count( po_mu_plugin()->blocked_plugins ) >= 1 || get_option("po_should_alphabetize_menu") == "1" ) ){
+        if( function_exists("sospo_mu_plugin") && ( count( sospo_mu_plugin()->blocked_plugins ) >= 1 || get_option("po_should_alphabetize_menu") == "1" ) ){
             $classes .= ' po_is_blocking_plugins ';
         }
         
@@ -106,7 +106,7 @@ class PO_Admin {
             'user_id'   => get_current_user_id(),
         );
         
-        if( function_exists("po_mu_plugin") && ( count( po_mu_plugin()->blocked_plugins ) >= 1 || get_option("po_should_alphabetize_menu") == "1" ) ){
+        if( function_exists("sospo_mu_plugin") && ( count( sospo_mu_plugin()->blocked_plugins ) >= 1 || get_option("po_should_alphabetize_menu") == "1" ) ){
             
             $original_menu = get_option("sos_po_original_menu");
             
@@ -205,10 +205,10 @@ class PO_Admin {
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_blocked_plugins',
-			'title'  => 'Blocked Plugins (' . count( po_mu_plugin()->blocked_plugins ) . ')',
+			'title'  => 'Blocked Plugins (' . count( sospo_mu_plugin()->blocked_plugins ) . ')',
 		) );
 
-		foreach ( po_mu_plugin()->get_names_list( "blocked_plugins" ) as $plugin_path => $plugin_name) {
+		foreach ( sospo_mu_plugin()->get_names_list( "blocked_plugins" ) as $plugin_path => $plugin_name) {
 			$wp_admin_bar->add_menu( array(
 				'parent' => 'plugin_optimizer_blocked_plugins',
 				'id'     => 'plugin_optimizer_blocked_plugin_' . $plugin_path,
@@ -221,10 +221,10 @@ class PO_Admin {
 		$wp_admin_bar->add_menu( array(
 			'parent' => 'plugin_optimizer',
 			'id'     => 'plugin_optimizer_running_plugins',
-			'title'  => 'Running Plugins (' . count( po_mu_plugin()->filtered_active_plugins ) . ')',
+			'title'  => 'Running Plugins (' . count( sospo_mu_plugin()->filtered_active_plugins ) . ')',
 		) );
 
-		foreach ( po_mu_plugin()->get_names_list( "filtered_active_plugins" ) as $plugin_path => $plugin_name) {
+		foreach ( sospo_mu_plugin()->get_names_list( "filtered_active_plugins" ) as $plugin_path => $plugin_name) {
 			$wp_admin_bar->add_menu( array(
 				'parent' => 'plugin_optimizer_running_plugins',
 				'id'     => 'plugin_optimizer_running_plugin_' . $plugin_path,
@@ -232,7 +232,7 @@ class PO_Admin {
 			) );
 		}
         
-        if( po_mu_plugin()->is_po_default_page ){
+        if( sospo_mu_plugin()->is_po_default_page ){
             $wp_admin_bar->add_menu( array(
                 'parent' => 'plugin_optimizer',
                 'id'     => 'plugin_optimizer_default_page',
@@ -240,7 +240,7 @@ class PO_Admin {
             ) );
         }
         
-        if( ! po_mu_plugin()->is_being_filtered ){
+        if( ! sospo_mu_plugin()->is_being_filtered ){
             $wp_admin_bar->add_menu( array(
                 'parent' => 'plugin_optimizer',
                 'id'     => 'plugin_optimizer_being_filtered',
@@ -248,15 +248,15 @@ class PO_Admin {
             ) );
         }
         
-        if( ! empty( po_mu_plugin()->filters_in_use ) ){
+        if( ! empty( sospo_mu_plugin()->filters_in_use ) ){
             
             $wp_admin_bar->add_menu( array(
                 'parent' => 'plugin_optimizer',
                 'id'     => 'plugin_optimizer_filters_in_use',
-                'title'  => 'Filters in use: ' . count( po_mu_plugin()->filters_in_use ),
+                'title'  => 'Filters in use: ' . count( sospo_mu_plugin()->filters_in_use ),
             ) );
             
-            foreach ( po_mu_plugin()->filters_in_use as $filter_id => $filter_name) {
+            foreach ( sospo_mu_plugin()->filters_in_use as $filter_id => $filter_name) {
                 $wp_admin_bar->add_menu( array(
                     'parent' => 'plugin_optimizer_filters_in_use',
                     'id'     => 'plugin_optimizer_filter_in_use_' . $filter_id,
@@ -268,7 +268,7 @@ class PO_Admin {
         }
         
         // Temp turn filters off
-        if( po_mu_plugin()->is_being_filtered ){
+        if( sospo_mu_plugin()->is_being_filtered ){
             $wp_admin_bar->add_menu( array(
                 'parent' => 'plugin_optimizer',
                 'id'     => 'plugin_optimizer_unfiltered_page',
@@ -428,7 +428,7 @@ class PO_Admin {
             return;
         }
 
-        // po_mu_plugin()->write_log( $screen->base, "disable_all_notice_nags-screen-base" );
+        // sospo_mu_plugin()->write_log( $screen->base, "disable_all_notice_nags-screen-base" );
         
         remove_all_actions('admin_notices');
         remove_all_actions('all_admin_notices');

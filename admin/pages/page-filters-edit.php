@@ -1,5 +1,5 @@
 <?php
-$plugins = PO_Admin_Helper::get_plugins_with_status();
+$plugins = SOSPO_Admin_Helper::get_plugins_with_status();
 
 $groups = get_posts( [
 	'post_type'   => 'sos_group',
@@ -19,7 +19,7 @@ unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 's
 
 natcasesort( $post_types );
 
-// po_mu_plugin()->write_log( $categories, "page-add-filters-categories" );
+// sospo_mu_plugin()->write_log( $categories, "page-add-filters-categories" );
 
 // defaults
 $page_title        = "Create a new Filter";
@@ -59,12 +59,12 @@ if( $filter ){
         $filter_categories  = array_keys( $filter_categories );
     }
     
-    // po_mu_plugin()->write_log( $filter_type, "page-filters-edit-filter_type" );
+    // sospo_mu_plugin()->write_log( $filter_type, "page-filters-edit-filter_type" );
     
     if( $filter_type == "_endpoint" || ! in_array( $filter_type, $post_types ) ){
         
         $filter_type = "_endpoint";
-        $endpoints   = PO_Admin_Helper::get_filter_endpoints( $filter );
+        $endpoints   = SOSPO_Admin_Helper::get_filter_endpoints( $filter );
         
     } else {
         
@@ -89,7 +89,7 @@ if( $filter ){
 
 <div class="sos-wrap">
 
-    <?php PO_Admin_Helper::content_part__header( $page_title, "filters" ); ?>
+    <?php SOSPO_Admin_Helper::content_part__header( $page_title, "filters" ); ?>
     
 	<div id="edit_filter" class="sos-content">
 		<div class="row content-new-element">
@@ -98,13 +98,13 @@ if( $filter ){
                 
 					<div class="row filter_title">
                         
-                        <input type="hidden" name="PO_filter_data[ID]" value="<?php echo $filter ? $filter->ID : "" ?>"/>
+                        <input type="hidden" name="SOSPO_filter_data[ID]" value="<?php echo $filter ? $filter->ID : "" ?>"/>
                         
 						<div class="col-9">
 							<div class="header">Title</div>
 							<div>
 								<div class="content enter-data">
-									<span><input class="content-text" id="set_title" type="text" name="PO_filter_data[title]" value="<?php echo $filter_title ?>" placeholder="The title of this filter"></span>
+									<span><input class="content-text" id="set_title" type="text" name="SOSPO_filter_data[title]" value="<?php echo $filter_title ?>" placeholder="The title of this filter"></span>
 								</div>
 							</div>
 						</div>
@@ -114,7 +114,7 @@ if( $filter ){
 							<div>
 								<div class="content enter-data">
                                     <span>
-                                        <select name="PO_filter_data[type]" id="set_type">
+                                        <select name="SOSPO_filter_data[type]" id="set_type">
                                             <optgroup label="Default:">
                                                 <option value="_endpoint"<?php echo $filter_type == "_endpoint" ? ' selected="selected"' : "" ?>>Endpoint(s)</option>
                                             </optgroup>
@@ -144,14 +144,14 @@ if( $filter ){
 						</div>
                         
 						<div class="col-12 additional_endpoint_wrapper">
-                            <input id="first_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?php echo ! empty( $endpoints ) ? $endpoints[0] : "" ?>"/>
+                            <input id="first_endpoint" type="text" name="SOSPO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?php echo ! empty( $endpoints ) ? $endpoints[0] : "" ?>"/>
                             <div id="add_endpoint" class="circle_button add_something">+</div>
 						</div>
                         
                         <?php for( $i = 1; $i < count( $endpoints ); $i++ ){ ?>
                         
                             <div class="col-12 additional_endpoint_wrapper">
-                                <input class="additional_endpoint" type="text" name="PO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?php echo $endpoints[ $i ] ?>"/>
+                                <input class="additional_endpoint" type="text" name="SOSPO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?php echo $endpoints[ $i ] ?>"/>
                                 <div class="remove_additional_endpoint circle_button remove_something">-</div>
                             </div>
                             
@@ -170,11 +170,11 @@ if( $filter ){
                             
                             <div class="header attribute-plugin">Active plugins</div>
                                 
-							<?php PO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["active"],   "inactive" => [],                   "blocked" => $plugins_to_block ] ); ?>
+							<?php SOSPO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["active"],   "inactive" => [],                   "blocked" => $plugins_to_block ] ); ?>
                             
                             <div class="header attribute-plugin">Inactive plugins</div>
                             
-							<?php PO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["inactive"], "inactive" => $plugins["inactive"], "blocked" => $plugins_to_block ] ); ?>
+							<?php SOSPO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["inactive"], "inactive" => $plugins["inactive"], "blocked" => $plugins_to_block ] ); ?>
                             
 						</div>
 					</div>
@@ -196,7 +196,7 @@ if( $filter ){
                                         $checked  = $selected ? ' checked="checked"' : '';
 										?>
 										<div class="single_group content<?php echo $blocked ?>" data-plugins="<?php echo htmlspecialchars(json_encode($block_plugins_in_group)) ?>">
-                                            <input class="noeyes" type="checkbox" name="PO_filter_data[groups][<?php echo $group->ID ?>]" value="<?php echo $group->post_title ?>"<?php echo $checked ?>/>
+                                            <input class="noeyes" type="checkbox" name="SOSPO_filter_data[groups][<?php echo $group->ID ?>]" value="<?php echo $group->post_title ?>"<?php echo $checked ?>/>
 											<span><?php echo $group->post_title; ?></span>
 											<?php foreach ( $block_plugins_in_group as $block_plugin_in_group ){ ?>
 												<div class="hidden_content">
@@ -225,7 +225,7 @@ if( $filter ){
                                         $checked  = $selected ? ' checked="checked"' : '';
 										?>
 										<div class="single_category content<?php echo $selected ? " blocked" : "" ?>">
-                                            <input class="noeyes" type="checkbox" name="PO_filter_data[categories][<?php echo $cat->term_id ?>]" value="<?php echo $cat->cat_name ?>"<?php echo $checked ?>/>
+                                            <input class="noeyes" type="checkbox" name="SOSPO_filter_data[categories][<?php echo $cat->term_id ?>]" value="<?php echo $cat->cat_name ?>"<?php echo $checked ?>/>
 											<span value="<?php echo $cat->term_id; ?>"><?php echo $cat->cat_name; ?></span>
 										</div>
 									<?php

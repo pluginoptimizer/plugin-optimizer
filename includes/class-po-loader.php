@@ -11,7 +11,7 @@
  * @subpackage PluginOptimizer/includes
  * @author     Simple Online Systems <admin@simpleonlinesystems.com>
  */
-class PO_Loader {
+class SOSPO_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

@@ -10,7 +10,7 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
  */
 
-class PO_MU {
+class SOSPO_MU {
     
     protected static $instance      = null;
     
@@ -308,7 +308,7 @@ class PO_MU {
     
 }
 
-function po_mu_plugin(){
-     return PO_MU::get_instance();
+function sospo_mu_plugin(){
+     return SOSPO_MU::get_instance();
 }
-po_mu_plugin();
+sospo_mu_plugin();

@@ -1,9 +1,9 @@
 <?php
 /**
- * Class PO_Admin_Helper
+ * Class SOSPO_Admin_Helper
  */
 
-class PO_Admin_Helper {
+class SOSPO_Admin_Helper {
 
 	static function get_filter_endpoints( $filter, $add_home = false ) {
         
@@ -95,7 +95,7 @@ EOF;
                 }
                 
             }
-            // po_mu_plugin()->write_log( $post->filter_type, "content_part__bulk_actions-post-filter_type" );
+            // sospo_mu_plugin()->write_log( $post->filter_type, "content_part__bulk_actions-post-filter_type" );
             // break;
         }
         
@@ -158,7 +158,7 @@ EOF;
         
         $data = wp_parse_args( $args, $defaults );
         
-        // po_mu_plugin()->write_log( $data, "content_part__plugins-data" );
+        // sospo_mu_plugin()->write_log( $data, "content_part__plugins-data" );
         
 		if( $data["plugins"] ){
             
@@ -179,7 +179,7 @@ EOF;
                 }
                 
                 echo '<div class="' . $class . '" data-id="' . $plugin_id . '" data-name="' . $plugin_name . '">';
-                echo    '<input class="noeyes" type="checkbox" name="PO_filter_data[plugins_to_block][' . $plugin_id . ']" value="' . $plugin_name . '"' . $checked . '/>';
+                echo    '<input class="noeyes" type="checkbox" name="SOSPO_filter_data[plugins_to_block][' . $plugin_id . ']" value="' . $plugin_name . '"' . $checked . '/>';
                 echo    '<span class="plugin_name" value="' . $plugin_id . '">' . $plugin_name . '</span>';
                 echo    '<span class="group_name">' . '</span>';
                 echo '</div>';
@@ -348,20 +348,20 @@ EOF;
 		$plugins             = [];
 		$plugins_simple_list = [ "active" => [], "inactive" => [], "all" => [] ];
         
-        if( empty( po_mu_plugin()->all_plugins ) ){
+        if( empty( sospo_mu_plugin()->all_plugins ) ){
             
             $all_plugins    = get_plugins();
             $active_plugins = get_option( 'active_plugins' );
 
         } else {
 
-            $all_plugins    = po_mu_plugin()->all_plugins;
-            $active_plugins = po_mu_plugin()->original_active_plugins;
+            $all_plugins    = sospo_mu_plugin()->all_plugins;
+            $active_plugins = sospo_mu_plugin()->original_active_plugins;
             
         }
         
-        // po_mu_plugin()->write_log( $active_plugins, "get_plugins_with_status-active_plugins" );
-        // po_mu_plugin()->write_log( $all_plugins,    "get_plugins_with_status-all_plugins" );
+        // sospo_mu_plugin()->write_log( $active_plugins, "get_plugins_with_status-active_plugins" );
+        // sospo_mu_plugin()->write_log( $all_plugins,    "get_plugins_with_status-all_plugins" );
 
 		foreach ( $active_plugins as $plugin_id ) {
             

@@ -9,7 +9,7 @@
  * @subpackage PluginOptimizer/includes
  * @author     Simple Online Systems <admin@simpleonlinesystems.com>
  */
-class PO_Deactivator {
+class SOSPO_Deactivator {
 
 	/**
 	 * Short Description. (use period)

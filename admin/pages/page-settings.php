@@ -8,7 +8,7 @@ $checked = $should_alphabetize ? ' checked="checked"' : '';
 
 <div class="sos-wrap">
 
-    <?php PO_Admin_Helper::content_part__header("Settings", "settings"); ?>
+    <?php SOSPO_Admin_Helper::content_part__header("Settings", "settings"); ?>
     
     <div class="sos-content">
         <div id="settings_general" class="">

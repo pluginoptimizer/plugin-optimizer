@@ -8,12 +8,12 @@ $worklists = get_posts( array(
 
 <div class="sos-wrap">
 
-    <?php PO_Admin_Helper::content_part__header("Worklist", "worklist"); ?>
+    <?php SOSPO_Admin_Helper::content_part__header("Worklist", "worklist"); ?>
     
     <div class="sos-content">
         <div class="row justify-content-between global-information">
         
-            <?php PO_Admin_Helper::content_part__bulk_actions( $worklists ); ?>
+            <?php SOSPO_Admin_Helper::content_part__bulk_actions( $worklists ); ?>
             
             <div class="col-3"></div>
             
@@ -38,7 +38,7 @@ $worklists = get_posts( array(
                         </tr>
                     </thead>
                     <tbody id="the-list" class="filter_on__status_publish">
-                        <?php PO_Admin_Helper::list_content__works( $worklists ); ?>
+                        <?php SOSPO_Admin_Helper::list_content__works( $worklists ); ?>
                     </tbody>
                 </table>
             </div>

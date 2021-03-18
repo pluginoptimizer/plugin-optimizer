@@ -7,7 +7,7 @@
  * @author     Simple Online Systems <admin@simpleonlinesystems.com>
  */
 
-class PO_Admin_Menu_Pages {
+class SOSPO_Admin_Menu_Pages {
 
 	function __construct() {
         

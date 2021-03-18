@@ -10,7 +10,7 @@ $categories = get_categories( [
 
 <div class="sos-wrap">
 
-    <?php PO_Admin_Helper::content_part__header("Filter categories", "categories"); ?>
+    <?php SOSPO_Admin_Helper::content_part__header("Filter categories", "categories"); ?>
     
     <div class="sos-content">
         <div class="row justify-content-between global-information">
@@ -49,7 +49,7 @@ $categories = get_categories( [
                         </tr>
                     </thead>
                     <tbody id="the-list" class="filter_on__status_publish">
-                        <?php PO_Admin_Helper::list_content__categories( $categories ); ?>
+                        <?php SOSPO_Admin_Helper::list_content__categories( $categories ); ?>
                     </tbody>
                 </table>
             </div>

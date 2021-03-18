@@ -8,7 +8,7 @@ $groups = get_posts( array(
 
 <div class="sos-wrap">
 
-    <?php PO_Admin_Helper::content_part__header("Groups", "groups"); ?>
+    <?php SOSPO_Admin_Helper::content_part__header("Groups", "groups"); ?>
     
     <div class="sos-content">
         <div class="row justify-content-between global-information">
@@ -19,7 +19,7 @@ $groups = get_posts( array(
                 </a>
             </div>
             
-            <?php PO_Admin_Helper::content_part__bulk_actions( $groups ); ?>
+            <?php SOSPO_Admin_Helper::content_part__bulk_actions( $groups ); ?>
             
             <div class="col-3 quantity">
                 <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?php echo wp_count_posts( 'sos_group' )->publish; ?></span>)
@@ -41,7 +41,7 @@ $groups = get_posts( array(
                         </tr>
                     </thead>
                     <tbody id="the-list" class="filter_on__status_publish">
-                        <?php PO_Admin_Helper::list_content__groups( $groups ); ?>
+                        <?php SOSPO_Admin_Helper::list_content__groups( $groups ); ?>
                     </tbody>
                 </table>
             </div>

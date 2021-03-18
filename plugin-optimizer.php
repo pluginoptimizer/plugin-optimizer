@@ -40,7 +40,7 @@ appsero_init_tracker_plugin_optimizer();
  * Currently plugin version.
  * Use SemVer - https://semver.org
  */
-define( 'SOS_PO_VERSION', '1.0.2' );
+define( 'SOSPO_VERSION', '1.0.2' );
 
 /**
  * The code that runs during plugin activation.
@@ -48,7 +48,7 @@ define( 'SOS_PO_VERSION', '1.0.2' );
  */
 function activate_plugin_optimizer() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-activator.php';
-	PO_Activator::activate();
+	SOSPO_Activator::activate();
 }
 
 /**
@@ -57,7 +57,7 @@ function activate_plugin_optimizer() {
  */
 function deactivate_plugin_optimizer() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-deactivator.php';
-	PO_Deactivator::deactivate();
+	SOSPO_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
@@ -109,7 +109,7 @@ if( ! function_exists( 'write_log' ) ){//                                       
 
 function test_overview_page_hook( $tabs ){
     
-    // po_mu_plugin()->write_log( $tabs, "test_overview_page_hook-tabs" );
+    // sospo_mu_plugin()->write_log( $tabs, "test_overview_page_hook-tabs" );
     
     $tabs[25] = [
         "title"     => "Added by a hook",

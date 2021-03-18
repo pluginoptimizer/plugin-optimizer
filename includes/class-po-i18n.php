@@ -10,7 +10,7 @@
  * @subpackage PluginOptimizer/includes
  * @author     Simple Online Systems <admin@simpleonlinesystems.com>
  */
-class PO_i18n {
+class SOSPO_i18n {
     
     public function __construct() {
         

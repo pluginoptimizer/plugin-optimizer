@@ -7,7 +7,7 @@
  * @author     Simple Online Systems <admin@simpleonlinesystems.com>
  */
 
-class PO_Ajax {
+class SOSPO_Ajax {
 
 	/**
 	 * Initialize the class and set its properties.
@@ -47,10 +47,10 @@ class PO_Ajax {
         
         parse_str( $_POST['data'], $array);
         
-        $data = $array['PO_filter_data'];
+        $data = $array['SOSPO_filter_data'];
         
-        // po_mu_plugin()->write_log( $_POST, "po_save_filter-_POST" );
-        // po_mu_plugin()->write_log( $data, "po_save_filter-data" );
+        // sospo_mu_plugin()->write_log( $_POST, "po_save_filter-_POST" );
+        // sospo_mu_plugin()->write_log( $data, "po_save_filter-data" );
         
         
         if( empty( $data["title"] ) ){
@@ -92,7 +92,7 @@ class PO_Ajax {
             
             $set_categories = wp_set_object_terms( $post_id, $category_ids, "сategories_filters" );
             
-            // po_mu_plugin()->write_log( $set_categories, "po_save_filter-set_categories" );
+            // sospo_mu_plugin()->write_log( $set_categories, "po_save_filter-set_categories" );
         }
         
         $meta = [
@@ -120,13 +120,13 @@ class PO_Ajax {
         
         parse_str( $_POST['data'], $array);
         
-        $data = $array['PO_filter_data'];
+        $data = $array['SOSPO_filter_data'];
         
 		// wp_send_json_success( $data );
         // exit;
         
-        // po_mu_plugin()->write_log( $_POST, "po_save_group-_POST" );
-        // po_mu_plugin()->write_log( $data, "po_save_group-data" );
+        // sospo_mu_plugin()->write_log( $_POST, "po_save_group-_POST" );
+        // sospo_mu_plugin()->write_log( $data, "po_save_group-data" );
         
         
         if( empty( $data["title"] ) ){
@@ -177,13 +177,13 @@ class PO_Ajax {
         
         parse_str( $_POST['data'], $array);
         
-        $data = $array['PO_filter_data'];
+        $data = $array['SOSPO_filter_data'];
         
 		// wp_send_json_success( $data );
         // exit;
         
-        // po_mu_plugin()->write_log( $_POST, "po_save_category-_POST" );
-        // po_mu_plugin()->write_log( $data, "po_save_category-data" );
+        // sospo_mu_plugin()->write_log( $_POST, "po_save_category-_POST" );
+        // sospo_mu_plugin()->write_log( $data, "po_save_category-data" );
         
         
         if( empty( $data["title"] ) ){
@@ -231,7 +231,7 @@ class PO_Ajax {
 	 */
 	function po_create_category(){
         
-        // po_mu_plugin()->write_log( $_POST, "po_create_category-_POST" );
+        // sospo_mu_plugin()->write_log( $_POST, "po_create_category-_POST" );
         
         $category_name = htmlspecialchars( $_POST['category_name'] );
         
@@ -377,7 +377,7 @@ class PO_Ajax {
         
         $menu_html  = stripcslashes( $_POST["menu_html"] );
         
-        // po_mu_plugin()->write_log( $menu_html, "po_save_original_menu-menu_html" );
+        // sospo_mu_plugin()->write_log( $menu_html, "po_save_original_menu-menu_html" );
         
         update_option( "sos_po_original_menu", $menu_html );
         

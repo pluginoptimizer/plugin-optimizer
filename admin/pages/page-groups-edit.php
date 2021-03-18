@@ -1,5 +1,5 @@
 <?php
-$plugins = PO_Admin_Helper::get_plugins_with_status();
+$plugins = SOSPO_Admin_Helper::get_plugins_with_status();
 
 // defaults
 $page_title        = "Create a new Filter group";
@@ -26,21 +26,21 @@ if( $group ){
 
 <div class="sos-wrap">
 
-    <?php PO_Admin_Helper::content_part__header( $page_title, "groups" ); ?>
+    <?php SOSPO_Admin_Helper::content_part__header( $page_title, "groups" ); ?>
     
     <div id="edit_group" class="sos-content">
         <div class="row content-new-element">
             <div class="col-12">
                 <div class="content-filter">
                     
-                    <input type="hidden" name="PO_filter_data[ID]" value="<?php echo $group ? $group->ID : "" ?>"/>
+                    <input type="hidden" name="SOSPO_filter_data[ID]" value="<?php echo $group ? $group->ID : "" ?>"/>
                     
                     <div class="row">
                         <div class="col-12">
                             <div class="header">Title</div>
                             <div>
                                 <div class="content">
-                                    <span><input class="content-text" id="set_title" type="text" name="PO_filter_data[title]" value="<?php echo $group_title ?>" placeholder="The title of this group"/></span>
+                                    <span><input class="content-text" id="set_title" type="text" name="SOSPO_filter_data[title]" value="<?php echo $group_title ?>" placeholder="The title of this group"/></span>
                                 </div>
                             </div>
                         </div>
@@ -54,7 +54,7 @@ if( $group ){
                                 <span class="count-plugin">( Active: <?php echo count( $plugins["active"] ); ?>   |   Inactive: <?php echo count( $plugins["inactive"] ); ?> )</span>
                             </div>
                             
-                            <?php PO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["all"], "inactive" => $plugins["inactive"], "blocked" => $plugins_to_block ] ); ?>
+                            <?php SOSPO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["all"], "inactive" => $plugins["inactive"], "blocked" => $plugins_to_block ] ); ?>
                                 
                         </div>
                     </div>
