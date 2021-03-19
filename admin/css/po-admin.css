@@ -808,6 +808,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     padding: 12px 10px 10px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+    white-space: nowrap;
 }
 
 #edit_filter #endpoints_wrapper .additional_endpoint_wrapper.error__empty_input:after{
