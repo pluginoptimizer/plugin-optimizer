@@ -365,7 +365,7 @@ jQuery( document ).ready( function($){
     // Select all elements
     $('body').on('change', '#check_all', function(){
         
-        $('#the-list input:checkbox').prop('checked', $(this).is(":checked") );
+        $('#the-list .block_info > td:first-of-type > input:checkbox').prop('checked', $(this).is(":checked") );
         
     });
     
@@ -432,38 +432,24 @@ jQuery( document ).ready( function($){
                     $('#bulk_actions select').val('default');
                     $('#bulk_actions button:not(#btn_apply)').click();
                     
-                    $('#the-list input:checked').prop('checked', false );
+                    
                     $('#check_all').prop('checked', false);
                     
-                    if( data.action == 'po_publish_elements' ){
+                    let publish = ( data.action == 'po_publish_elements' );
+                    let trash   = ( data.action == 'po_delete_elements' && data.type_elements == 'all' );
+                    let remove  = ( data.action == 'po_delete_elements' && data.type_elements == 'trash' );
                         
-                        $.each( selected_ids, function( index, id ){
-                            
-                            $('input#' + id ).parents('.block_info').attr("data-status", "publish");
-                            
-                        });
+                    $.each( selected_ids, function( index, id ){
                         
-                    }
-                    
-                    if( data.action == 'po_delete_elements' && data.type_elements == 'all' ){
+                        $('input#' + id ).parents('.block_info').children('td:first-of-type').children('input:checked').prop('checked', false );
                         
-                        $.each( selected_ids, function( index, id ){
-                            
-                            $('input#' + id ).parents('.block_info').attr("data-status", "trash");
-                            
-                        });
-                        
-                    }
-                    
-                    if( data.action == 'po_delete_elements' && data.type_elements == 'trash' ){
-                        
-                        $.each( selected_ids, function( index, id ){
-                            
+                        if( publish || trash ){
+                            $('input#' + id ).parents('.block_info').attr("data-status", ( publish ? "publish" : "trash" ) );
+                        } else if( remove ){
                             $('input#' + id ).parents('.block_info').remove();
-                            
-                        });
+                        }
                         
-                    }
+                    });
                     
                     alert( response.data.message );
                     
