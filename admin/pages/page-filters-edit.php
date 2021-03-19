@@ -34,8 +34,8 @@ $show_endpoints_wrapper = '';
 
 // Editing existing filter?
 
-$filter_id = ! empty( $_GET["filter_id"] )  ? $_GET["filter_id"]        : false;
-$filter    = $filter_id                     ? get_post( $filter_id )    : false;
+$filter_id = ! empty( $_GET["filter_id"] )  ? intval( $_GET["filter_id"] )  : false;
+$filter    = $filter_id                     ? get_post( $filter_id )        : false;
 
 if( $filter ){
     
@@ -73,8 +73,8 @@ if( $filter ){
     
 } elseif( ! empty( $_GET["work_title"] ) && ! empty( $_GET["work_link"] ) ){
     
-    $filter_title = $_GET["work_title"];
-    $endpoints    = [ $_GET["work_link"] ];
+    $filter_title = $_GET["work_title"];//    no sanitation: will be used by as an input field value that's sanitized later on
+    $endpoints    = [ $_GET["work_link"] ];// no sanitation: will be used by as an input field value that's sanitized later on
     
 }
 

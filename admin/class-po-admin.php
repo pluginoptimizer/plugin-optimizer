@@ -122,7 +122,7 @@ class SOSPO_Admin {
             
             if( ! empty( $_GET["redirect_to"] ) ){
                 
-                $array["redirect_to"] = $_GET["redirect_to"];
+                $array["redirect_to"] = $_GET["redirect_to"];// no sanitation: will be used by window.location.href later on
             }
             
             if( get_option("po_should_alphabetize_menu") === "1" ){

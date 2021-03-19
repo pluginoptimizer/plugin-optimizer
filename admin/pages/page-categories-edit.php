@@ -5,7 +5,7 @@ $cat_title  = "";
 $cat_desc   = "";
 
 
-$cat_id = ! empty( $_GET["cat_id"] )  ? $_GET["cat_id"]                             : false;
+$cat_id = ! empty( $_GET["cat_id"] )  ? intval( $_GET["cat_id"] )                   : false;
 $cat    = $cat_id                     ? get_term( $cat_id, "сategories_filters" )   : false;
 
 if( $cat ){
