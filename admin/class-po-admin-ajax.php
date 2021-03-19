@@ -275,8 +275,10 @@ class SOSPO_Ajax {
 	 * Restore works
 	 */
 	function po_publish_elements() {
-		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
-		$id_elements    = $_POST['id_elements'];
+        
+		$name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
+		$id_elements    = sanitize_textarea_field( $_POST['id_elements'] );
+        $id_elements    = array_map( 'intval', explode( ',', $id_elements ) );
 
 		$posts = get_posts( array(
 			'post_type'   => $name_post_type,
