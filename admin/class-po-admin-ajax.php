@@ -52,7 +52,7 @@ class SOSPO_Ajax {
         if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
         
         
-        $data = SOSPO_Admin_Helper::format__filter_data( $array['SOSPO_filter_data'] );
+        $data = SOSPO_Admin_Helper::format__save_filter_data( $array['SOSPO_filter_data'] );
         
         // sospo_mu_plugin()->write_log( $_POST, "po_save_filter-_POST" );
         // sospo_mu_plugin()->write_log( $data,  "po_save_filter-data"  );
@@ -120,7 +120,7 @@ class SOSPO_Ajax {
         if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
         
         
-        $data = SOSPO_Admin_Helper::format__group_data( $array['SOSPO_filter_data'] );
+        $data = SOSPO_Admin_Helper::format__save_group_data( $array['SOSPO_filter_data'] );
         
         // sospo_mu_plugin()->write_log( $_POST, "po_save_group-_POST" );
         // sospo_mu_plugin()->write_log( $data,  "po_save_group-data"  );
@@ -170,7 +170,7 @@ class SOSPO_Ajax {
         if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
         
         
-        $data = SOSPO_Admin_Helper::format__category_data( $array['SOSPO_filter_data'] );
+        $data = SOSPO_Admin_Helper::format__save_category_data( $array['SOSPO_filter_data'] );
         
         // sospo_mu_plugin()->write_log( $_POST, "po_save_category-_POST" );
         // sospo_mu_plugin()->write_log( $data,  "po_save_category-data"  );
@@ -214,7 +214,11 @@ class SOSPO_Ajax {
         
         // sospo_mu_plugin()->write_log( $_POST, "po_create_category-_POST" );
         
-        $category_name = htmlspecialchars( $_POST['category_name'] );
+        if( empty( $_POST['category_name'] ) ){
+            wp_send_json_error( [ "message" => "Category name is a required field!" ] );
+        }
+        
+        $category_name = sanitize_textarea_field( $_POST['category_name'] );
         
         if( term_exists( $category_name, "сategories_filters" ) ){
             wp_send_json_error( [ "message" => "A category with that name already exists!" ] );

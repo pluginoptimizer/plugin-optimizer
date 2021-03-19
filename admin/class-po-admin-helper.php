@@ -397,6 +397,9 @@ EOF;
 
 	}
     
+    
+    /* Validation, sanitization and formatting */
+    
     /**
      * Format the data used to save a filter
      * 
@@ -407,7 +410,7 @@ EOF;
      * 
      * @return array
      */
-    static function format__filter_data( $data ){
+    static function format__save_filter_data( $data ){
         
         if( empty( $data["title"] ) ){
             
@@ -449,7 +452,7 @@ EOF;
      * 
      * @return array
      */
-    static function format__group_data( $data ){
+    static function format__save_group_data( $data ){
         
         if( empty( $data["title"] ) ){
             
@@ -489,7 +492,7 @@ EOF;
      * 
      * @return array
      */
-    static function format__category_data( $data ){
+    static function format__save_category_data( $data ){
         
         if( empty( $data["title"] ) ){
             
