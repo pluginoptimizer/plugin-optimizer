@@ -235,8 +235,7 @@ class SOSPO_Ajax {
         
 		$name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
 		$type_elements  = sanitize_textarea_field( $_POST['type_elements'] );
-		$id_elements    = sanitize_textarea_field( $_POST['id_elements'] );
-        $id_elements    = array_map( 'intval', explode( ',', $id_elements ) );
+        $id_elements    = array_map( 'intval', $_POST['id_elements'] );
 
 		if ( $name_post_type === 'cat' ) {
 			
@@ -277,8 +276,7 @@ class SOSPO_Ajax {
 	function po_publish_elements() {
         
 		$name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
-		$id_elements    = sanitize_textarea_field( $_POST['id_elements'] );
-        $id_elements    = array_map( 'intval', explode( ',', $id_elements ) );
+        $id_elements    = array_map( 'intval', $_POST['id_elements'] );
 
 		$posts = get_posts( array(
 			'post_type'   => $name_post_type,

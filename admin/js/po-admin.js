@@ -372,6 +372,12 @@ jQuery( document ).ready( function($){
     // Bulk actions button (usually delete or restore element)
     $('body').on('click', '#btn_apply', function(){
         
+        if( $('#check_all_elements').val() === 'default' ){
+            
+            alert("Select an action!");
+            return;
+        }
+
         let name_post_type;
         let data = false;
         
@@ -385,7 +391,13 @@ jQuery( document ).ready( function($){
             name_post_type = 'cat';
         }
         
-        let selected_ids = $('#the-list input:checked').toArray().map(item => item.id);
+        let selected_ids = $('#the-list input:checked').toArray().map( item => item.id ).filter( id => id );
+        
+        if( selected_ids.length < 1 ){
+            
+            alert("Select some items!");
+            return;
+        }
 
         if($('#check_all_elements option:selected').text() === 'Delete'){
             
@@ -393,7 +405,7 @@ jQuery( document ).ready( function($){
                 action          : 'po_delete_elements',
                 'name_post_type': name_post_type,
                 'type_elements' : ( $('#all_elements').hasClass('filtered') ? 'all' : 'trash' ),
-                'id_elements'   : selected_ids.join(','),
+                'id_elements'   : selected_ids,
             };
             
         } else if($('#check_all_elements option:selected').text() === 'Restore'){
@@ -401,7 +413,7 @@ jQuery( document ).ready( function($){
             data = {
                 action          : 'po_publish_elements',
                 'name_post_type': name_post_type,
-                'id_elements'   : selected_ids.join(','),
+                'id_elements'   : selected_ids,
             };
             
         }
