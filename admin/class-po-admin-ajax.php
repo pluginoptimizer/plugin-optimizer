@@ -84,12 +84,7 @@ class SOSPO_Ajax {
 
         if( ! empty( $data["categories"] ) ){
             
-            $category_ids = array_keys( $data["categories"] );
-            
-            foreach( $category_ids as $index => $cat_id ){
-                
-                $category_ids[ $index ] = intval( $cat_id );
-            }
+            $category_ids = array_map( 'intval', array_keys( $data["categories"] ) );
             
             $set_categories = wp_set_object_terms( $post_id, $category_ids, "сategories_filters" );
             
@@ -238,13 +233,13 @@ class SOSPO_Ajax {
 	 */
 	function po_delete_elements() {
         
-		$name_post_type = htmlspecialchars( $_POST['name_post_type'] );
-		$id_elements    = htmlspecialchars( $_POST['id_elements'] );
-		$type_elements  = htmlspecialchars( $_POST['type_elements'] );
+		$name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
+		$type_elements  = sanitize_textarea_field( $_POST['type_elements'] );
+		$id_elements    = sanitize_textarea_field( $_POST['id_elements'] );
+        $id_elements    = array_map( 'intval', explode( ',', $id_elements ) );
 
 		if ( $name_post_type === 'cat' ) {
-			$id_elements = explode( ',', $id_elements );
-
+			
 			foreach ( $id_elements as $id_element ) {
 				wp_delete_term( $id_element, 'сategories_filters' );
 			}
@@ -253,13 +248,8 @@ class SOSPO_Ajax {
             
 		} elseif ( $type_elements === 'all' ) {
          
-			$posts = get_posts( array(
-				'post_type' => $name_post_type,
-				'include'   => $id_elements,
-			) );
-
-			foreach ( $posts as $post ) {
-				wp_trash_post( $post->ID );
+			foreach ( $id_elements as $post_id ) {
+				wp_trash_post( $post_id );
 			}
             
 			wp_send_json_success( [ "message" => "Items are moved to trash." ] );
