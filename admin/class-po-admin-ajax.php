@@ -339,7 +339,7 @@ class SOSPO_Ajax {
     function po_turn_off_filter(){
         
         $turned_off  = $_POST["turned_off"] === "true";
-        $post_id  = $_POST["post_id"];
+        $post_id     = intval( $_POST["post_id"] );
         
         update_post_meta( $post_id, "turned_off", $turned_off );
         
