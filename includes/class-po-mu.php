@@ -79,7 +79,7 @@ class SOSPO_MU {
 
 	function complete_action_once_plugins_are_loaded(){
 
-		remove_filter('option_active_plugins', [ $this, 'disable_filtered_plugins_for_current_url' ], 5 );
+		remove_filter('option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
         
 	}
 
@@ -92,7 +92,7 @@ class SOSPO_MU {
         
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
-        remove_filter('option_active_plugins', [ $this, 'disable_filtered_plugins_for_current_url' ], 5 );
+        remove_filter('option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
         $this->all_plugins              = get_plugins();
         add_filter( 'option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
         
