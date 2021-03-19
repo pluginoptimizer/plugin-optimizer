@@ -299,8 +299,8 @@ class SOSPO_Ajax {
 	 */
     function po_mark_tab_complete(){
         
-        $tab_id  = $_POST["tab_id"];
-        $user_id = $_POST["user_id"];
+        $tab_id  = sanitize_textarea_field( $_POST["tab_id"] );
+        $user_id = intval( $_POST["user_id"] );
         
         $user_tabs_completed = get_user_meta( $user_id, "completed_overview_tabs", true );
         
