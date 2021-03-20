@@ -114,22 +114,23 @@ if( $filter ){
 							<div>
 								<div class="content enter-data">
                                     <span>
-                                        <select name="SOSPO_filter_data[type]" id="set_type">
+                                        <select name="SOSPO_filter_data[type]" id="set_filter_type" data-selected="<?php echo $filter_type; ?>">
                                             <optgroup label="Default:">
-                                                <option value="_endpoint"<?php echo $filter_type == "_endpoint" ? ' selected="selected"' : "" ?>>Endpoint(s)</option>
+                                                <option value="_endpoint"<?php // echo $filter_type == "_endpoint" ? ' selected="selected"' : "" ?>>Endpoint(s)</option>
                                             </optgroup>
-                                            <optgroup label="Edit page of a Post Type:">
+                                            <optgroup label="Edit page of a Post Type:" id="select_post_types">
                                                 <?php
-                                                foreach ( $post_types as $post_type ) {
+                                                // foreach ( $post_types as $post_type ) {
                                                     
-                                                    $selected = $filter_type == $post_type ? ' selected="selected"' : "";
+                                                    // $selected = $filter_type == $post_type ? ' selected="selected"' : "";
                                                     
-                                                    echo '<option value="' . $post_type . '"' . $selected . '>' . $post_type . '</option>';
+                                                    // echo '<option value="' . $post_type . '"' . $selected . '>' . $post_type . '</option>';
                                                     
-                                                }
+                                                // }
                                                 ?>
                                             </optgroup>
                                         </select>
+                                        <span id="loading_post_types">Loading..</span>
                                     </span>
 								</div>
 							</div>

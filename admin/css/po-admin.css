@@ -983,8 +983,9 @@ input[type="text"].additional_endpoint{
 }
 
 
-#set_type{
+#set_filter_type{
     width: 100%;
+    display: none;
 }
 
 #content_type{

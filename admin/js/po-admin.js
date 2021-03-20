@@ -1,6 +1,35 @@
 jQuery( document ).ready( function($){
     'use strict';
     
+    
+    // Edit Filter screen - fetch post types
+    if( $('#set_filter_type').length >= 1 ){
+        
+        $.post( po_object.ajax_url, { action  : 'po_get_post_types' }, function( response ) {
+            
+            // console.log( "post_types: ", response.data.post_types );
+            
+            if( response.data.post_types ){
+                
+                $.each( response.data.post_types, function( key, name ){
+                    
+                    // console.log( key, name );
+                    
+                    $('#select_post_types').append(`<option value="${key}">${name}</option>`)
+                    
+                });
+                
+            }
+            
+            let selected = $('#set_filter_type').data("selected");
+            
+            $('#loading_post_types').hide();
+            $('#set_filter_type').val( selected ).change().slideDown();
+            
+        }, "json");
+        
+    }
+    
     // Edit Filter screen, Edit Group screen - Clicking on a plugin
     $('#edit_filter, #edit_group').on('click', '.block-plugin-wrapper .single_plugin', function(){
 
@@ -123,7 +152,7 @@ jQuery( document ).ready( function($){
     });
     
     // Edit Filter screen - Change filter type
-    $('#edit_filter').on('change', '#set_type', function(){
+    $('#edit_filter').on('change', '#set_filter_type', function(){
         
         let type = $(this).val();
         

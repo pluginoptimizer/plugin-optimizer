@@ -37,6 +37,7 @@ class SOSPO_Ajax {
 		add_action( 'wp_ajax_po_save_option_alphabetize_menu',  [ $this, 'po_save_option_alphabetize_menu'  ] );
 		add_action( 'wp_ajax_po_turn_off_filter',               [ $this, 'po_turn_off_filter'               ] );
 		add_action( 'wp_ajax_po_save_original_menu',            [ $this, 'po_save_original_menu'            ] );
+		add_action( 'wp_ajax_po_get_post_types',                [ $this, 'po_get_post_types'                ] );
 
 	}
 
@@ -361,6 +362,29 @@ class SOSPO_Ajax {
         update_option( "sos_po_new_posts",     $new_html );
         
 		wp_send_json_success( [ "message" => "Menu saved successfully." ] );
+        
+    }
+    
+	/**
+	 * Because Ajax is not being filtered, we can get a full list of post types
+	 */
+    function po_get_post_types(){
+        
+        $post_types = [];
+        
+        $post_types_raw = get_post_types( [ "show_in_menu" => true ], "objects" );
+        
+        // sospo_mu_plugin()->write_log( $post_types_raw, "po_get_post_types-post_types_raw" );
+        
+        foreach( $post_types_raw as $post_type ){
+            
+            $post_types[ $post_type->name ] = $post_type->labels->singular_name . " (" . $post_type->name . ")";
+            
+        }
+        
+        natsort( $post_types );
+        
+		wp_send_json_success( [ "message" => "Post types fetched.", "post_types" => $post_types ] );
         
     }
     
