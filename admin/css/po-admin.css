@@ -820,8 +820,8 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 #edit_filter #endpoints_wrapper .additional_endpoint_wrapper.error__empty_input .additional_endpoint{
     flex-grow: 2;
 }
-#edit_filter #endpoints_wrapper .additional_endpoint_wrapper.error__empty_input .circle_button{
-    min-width: 22px
+#edit_filter #endpoints_wrapper .additional_endpoint_wrapper .circle_button{
+    min-width: 24px;
 }
 
 #first_endpoint,
