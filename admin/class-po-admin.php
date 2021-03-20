@@ -108,7 +108,23 @@ class SOSPO_Admin {
             if( $original_menu ){
                 
                 $array["original_menu"] = $original_menu;
+            }
+            
+        }
+        
+        if( function_exists("sospo_mu_plugin") && count( sospo_mu_plugin()->blocked_plugins ) >= 1 ){
+            
+            $topbar_menu   = get_option("sos_po_topbar_menu");
+            $new_posts     = get_option("sos_po_new_posts");
+            
+            if( $topbar_menu ){
                 
+                $array["topbar_menu"] = $topbar_menu;
+            }
+            
+            if( $new_posts ){
+                
+                $array["new_posts"] = $new_posts;
             }
             
         }

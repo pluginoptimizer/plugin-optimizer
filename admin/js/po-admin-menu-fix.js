@@ -1,6 +1,6 @@
 jQuery(function($){
    
-    // Are we replacing the menu?
+    // Are we replacing the menu
     if( po_object.original_menu ){
         
         // ----- replace the menu
@@ -93,5 +93,21 @@ jQuery(function($){
     
     // show the menu
     $('#adminmenu').show();
+    
+    
+    // Should we fix the topbar site-name menu
+    if( po_object.topbar_menu ){
+        
+        $('#wp-admin-bar-site-name-default').append( po_object.topbar_menu );
+        
+    }
+    
+    
+    // Should we use the original list of +New
+    if( po_object.new_posts ){
+        
+        $('#wp-admin-bar-new-content-default').html( po_object.new_posts );
+        
+    }
     
 });

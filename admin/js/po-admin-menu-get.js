@@ -3,9 +3,7 @@ jQuery(function($){
     $('body').append('<div id="po_please_wait"><div id="po_please_wait_message">Please wait...</div></div>');
     
     
-    // TODO If we need to clean the menu we're getting, this would be the best spot, before we grab it from the DOM
-    
-    
+    // clean the menu we're fetching
     if( po_object.alphabetize_menu ){
         
         // remove separators
@@ -33,12 +31,22 @@ jQuery(function($){
         
     }
     
+    // clean the topbar site-name submenu
+    $('#wp-admin-bar-view-site').remove();
+    
     
     // grab the menu html
     let menu_html = $('#adminmenu').html();
     
+    // grab the topbar site-name submenu additional items
+    let topbar_menu_html = $('#wp-admin-bar-site-name-default').html();
+    
+    // grab the topbar site-name submenu additional items
+    let new_html = $('#wp-admin-bar-new-content-default').html();
+    
+    
     // save the menu in wp_options
-    $.post( po_object.ajax_url, { action  : 'po_save_original_menu', menu_html : menu_html }, function( response ) {
+    $.post( po_object.ajax_url, { action  : 'po_save_original_menu', menu_html : menu_html, topbar_menu_html : topbar_menu_html, new_html : new_html }, function( response ) {
         
         $('#po_please_wait_message').html('Refreshing...');
         

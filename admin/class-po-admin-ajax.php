@@ -350,11 +350,15 @@ class SOSPO_Ajax {
 	 */
     function po_save_original_menu(){
         
-        $menu_html  = stripcslashes( $_POST["menu_html"] );
+        $menu_html          = stripcslashes( $_POST["menu_html"] );
+        $topbar_menu_html   = stripcslashes( $_POST["topbar_menu_html"] );
+        $new_html           = stripcslashes( $_POST["new_html"] );
         
         // sospo_mu_plugin()->write_log( $menu_html, "po_save_original_menu-menu_html" );
         
         update_option( "sos_po_original_menu", $menu_html );
+        update_option( "sos_po_topbar_menu",   $topbar_menu_html );
+        update_option( "sos_po_new_posts",     $new_html );
         
 		wp_send_json_success( [ "message" => "Menu saved successfully." ] );
         
