@@ -73,8 +73,8 @@ if( $filter ){
     
 } elseif( ! empty( $_GET["work_title"] ) && ! empty( $_GET["work_link"] ) ){
     
-    $filter_title = $_GET["work_title"];//    no sanitation: will be used by as an input field value that's sanitized later on
-    $endpoints    = [ $_GET["work_link"] ];// no sanitation: will be used by as an input field value that's sanitized later on
+    $filter_title = sanitize_text_field( $_GET["work_title"] );
+    $endpoints    = [ esc_url( $_GET["work_link"] ) ];
     
 }
 
@@ -116,19 +116,9 @@ if( $filter ){
                                     <span>
                                         <select name="SOSPO_filter_data[type]" id="set_filter_type" data-selected="<?php echo $filter_type; ?>">
                                             <optgroup label="Default:">
-                                                <option value="_endpoint"<?php // echo $filter_type == "_endpoint" ? ' selected="selected"' : "" ?>>Endpoint(s)</option>
+                                                <option value="_endpoint">Endpoint(s)</option>
                                             </optgroup>
-                                            <optgroup label="Edit page of a Post Type:" id="select_post_types">
-                                                <?php
-                                                // foreach ( $post_types as $post_type ) {
-                                                    
-                                                    // $selected = $filter_type == $post_type ? ' selected="selected"' : "";
-                                                    
-                                                    // echo '<option value="' . $post_type . '"' . $selected . '>' . $post_type . '</option>';
-                                                    
-                                                // }
-                                                ?>
-                                            </optgroup>
+                                            <optgroup label="Edit page of a Post Type:" id="select_post_types"></optgroup>
                                         </select>
                                         <span id="loading_post_types">Loading..</span>
                                     </span>

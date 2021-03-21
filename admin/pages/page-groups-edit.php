@@ -8,8 +8,8 @@ $plugins_to_block  = [];
 
 // Editing existing group?
 
-$group_id = ! empty( $_GET["group_id"] )  ? $_GET["group_id"]        : false;
-$group    = $group_id                     ? get_post( $group_id )    : false;
+$group_id = ! empty( $_GET["group_id"] )  ? intval( $_GET["group_id"] ) : false;
+$group    = $group_id                     ? get_post( $group_id )       : false;
 
 if( $group ){
     

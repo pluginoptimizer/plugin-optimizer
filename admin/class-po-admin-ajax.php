@@ -351,9 +351,9 @@ class SOSPO_Ajax {
 	 */
     function po_save_original_menu(){
         
-        $menu_html          = stripcslashes( $_POST["menu_html"] );
-        $topbar_menu_html   = stripcslashes( $_POST["topbar_menu_html"] );
-        $new_html           = stripcslashes( $_POST["new_html"] );
+        $menu_html          = wp_kses_post( stripcslashes( $_POST["menu_html"]        ) );
+        $topbar_menu_html   = wp_kses_post( stripcslashes( $_POST["topbar_menu_html"] ) );
+        $new_html           = wp_kses_post( stripcslashes( $_POST["new_html"]         ) );
         
         // sospo_mu_plugin()->write_log( $menu_html, "po_save_original_menu-menu_html" );
         
