@@ -104,6 +104,8 @@ class SOSPO_MU {
         
         $this->blocked_plugins          = array_intersect( $this->original_active_plugins, $this->plugins_to_block );
         
+        sospo_mu_plugin()->write_log( $this->filtered_active_plugins, "filter_active_plugins_option_value-filtered_active_plugins" );
+
 		return $this->filtered_active_plugins;
 
 	}

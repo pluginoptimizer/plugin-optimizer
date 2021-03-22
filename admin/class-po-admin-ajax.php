@@ -83,6 +83,14 @@ class SOSPO_Ajax {
 
 
 
+        // check if the agent plugin is installed
+        if( in_array('sos_plugin_optimizer_dictionary_age/sos_plugin_optimizer_dictionary_age.php', get_option('active_plugins')) ){
+            
+            // if it is installed then add 'premium_filter' meta key to the post_id
+            update_post_meta( $post_id, 'premium_filter', true);
+        }
+
+
         if( ! empty( $data["categories"] ) ){
             
             $category_ids = array_map( 'intval', array_keys( $data["categories"] ) );
