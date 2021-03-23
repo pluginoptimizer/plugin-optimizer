@@ -57,11 +57,7 @@ jQuery(function($){
         
         $('#po_please_wait_message').html('Refreshing...');
         
-        if( po_object.redirect_to ){
-            
-            console.log( "Redirecting to the original page..." );
-            window.location.href = po_object.redirect_to;
-        }
+        window.location.href = po_object.redirect_to ? po_object.redirect_to : window.location.href;
         
     }, "json");
     
