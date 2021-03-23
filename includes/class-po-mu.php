@@ -148,7 +148,7 @@ class SOSPO_MU {
         if( ! empty( $_GET["disable_po"] ) && $_GET["disable_po"] == "yes" ){
             $this->is_skipped = true;
             return [];
-        
+        }
         
         // when we are recreating the menu
         if( ! empty( $_GET["po_original_menu"] ) && $_GET["po_original_menu"] == "get" ){
@@ -313,6 +313,6 @@ class SOSPO_MU {
 }
 
 function sospo_mu_plugin(){
-     return SOSPO_MU::get_instance();
+    return SOSPO_MU::get_instance();
 }
 sospo_mu_plugin();
