@@ -14,6 +14,7 @@ class SOSPO_MU {
     
     protected static $instance      = null;
     
+    protected $po_plugins           = [];
     protected $po_pages             = [];
     protected $po_post_types        = [];
     
@@ -34,6 +35,11 @@ class SOSPO_MU {
             return;
         }
         
+        $this->po_plugins = [
+            "plugin-optimizer/plugin-optimizer.php",
+            "sos_plugin_optimizer_dictionary_age/sos_plugin_optimizer_dictionary_age.php",
+            "sos_plugin_optimizer_premium/sos_plugin_optimizer_premium.php",
+        ];
         $this->po_pages = [
             "/wp-admin/admin.php?page=plugin_optimizer",
             "/wp-admin/admin.php?page=plugin_optimizer_filters",
@@ -171,7 +177,7 @@ class SOSPO_MU {
             
             $this->is_po_default_page   = true;
             $this->is_being_filtered    = true;
-            $this->plugins_to_block     = array_diff( $this->original_active_plugins, [ "plugin-optimizer/plugin-optimizer.php", "sos_plugin_optimizer_dictionary_age/sos_plugin_optimizer_dictionary_age.php","sos_plugin_optimizer_premium/sos_plugin_optimizer_premium.php" ] );
+            $this->plugins_to_block     = array_diff( $this->original_active_plugins, $this->po_plugins );
             
             return $this->plugins_to_block;
         }

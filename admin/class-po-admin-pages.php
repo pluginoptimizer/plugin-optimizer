@@ -19,12 +19,12 @@ class SOSPO_Admin_Menu_Pages {
 	 */
 	function add_menu_pages() {
 
-		// add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'plugin_optimizer', [ $this, 'render_overview_page' ], 'dashicons-sos' );
-		add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'plugin_optimizer', [ $this, 'render_filters_page' ], 'dashicons-sos' );
+		add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'plugin_optimizer', [ $this, 'render_overview_page' ], 'dashicons-sos' );
+		// add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'plugin_optimizer', [ $this, 'render_filters_page' ], 'dashicons-sos' );
         
-		// add_submenu_page( 'plugin_optimizer', 'Overview',           'Overview',             'manage_options', 'plugin_optimizer',                    [ $this, 'render_overview_page'           ] );
-		// add_submenu_page( 'plugin_optimizer', 'Filters',            'Filters',              'manage_options', 'plugin_optimizer_filters',            [ $this, 'render_filters_page'            ] );
-		add_submenu_page( 'plugin_optimizer', 'Filters',            'Filters',              'manage_options', 'plugin_optimizer',                    [ $this, 'render_filters_page'            ] );
+		add_submenu_page( 'plugin_optimizer', 'Overview',           'Overview',             'manage_options', 'plugin_optimizer',                    [ $this, 'render_overview_page'           ] );
+		add_submenu_page( 'plugin_optimizer', 'Filters',            'Filters',              'manage_options', 'plugin_optimizer_filters',            [ $this, 'render_filters_page'            ] );
+		// add_submenu_page( 'plugin_optimizer', 'Filters',            'Filters',              'manage_options', 'plugin_optimizer',                    [ $this, 'render_filters_page'            ] );
 		add_submenu_page( 'plugin_optimizer', 'Filter',             'Create Filter',        'manage_options', 'plugin_optimizer_add_filters',        [ $this, 'render_add_filters_page'        ] );
 		add_submenu_page( 'plugin_optimizer', 'Groups',             'Groups',               'manage_options', 'plugin_optimizer_groups',             [ $this, 'render_groups_page'             ] );
 		add_submenu_page( 'plugin_optimizer', 'Group',              'Create Group',         'manage_options', 'plugin_optimizer_add_groups',         [ $this, 'render_add_groups_page'         ] );
