@@ -44,9 +44,16 @@ jQuery(function($){
     // grab the topbar site-name submenu additional items
     let new_html = $('#wp-admin-bar-new-content-default').html();
     
+    // form the data object for sending
+    let data = {
+        action                   : 'po_save_original_menu',
+        menu_html                : menu_html,
+        topbar_menu_html         : topbar_menu_html,
+        new_html                 : new_html
+    };
     
     // save the menu in wp_options
-    $.post( po_object.ajax_url, { action  : 'po_save_original_menu', menu_html : menu_html, topbar_menu_html : topbar_menu_html, new_html : new_html }, function( response ) {
+    $.post( po_object.ajax_url, data, function( response ) {
         
         $('#po_please_wait_message').html('Refreshing...');
         
