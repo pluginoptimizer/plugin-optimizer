@@ -63,11 +63,12 @@ function deactivate_plugin_optimizer() {
 register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
 register_deactivation_hook( __FILE__, 'deactivate_plugin_optimizer' );
 
-// TODO - let's copy the file there if it's missing
+// let's install the MU plugin if it's missing and refresh
 if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') ){
     
-    // TODO should we add the MU plugin at this point?
-    // copy( __DIR__ . '/class-po-mu.php', WPMU_PLUGIN_DIR . '/class-po-mu.php' );
+    copy( __DIR__ . '/includes/class-po-mu.php', WPMU_PLUGIN_DIR . '/class-po-mu.php' );
+    
+    header("Refresh:0");
     
     return;
 }
