@@ -100,6 +100,16 @@ class SOSPO_MU {
         add_filter( 'option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
         
         $this->original_active_plugins  = $active_plugins;
+        
+        $active_plugins_on_menu_save = get_option( "active_plugins_on_menu_save" );
+        
+        if( $active_plugins_on_menu_save != $active_plugins ){
+            
+            // this will trigger the script that recreates the menu:
+            update_option( "active_plugins_on_menu_save", $active_plugins );
+            $_GET["po_original_menu"] = "get";
+            
+        }
 
         $this->plugins_to_block         = $this->get_plugins_to_block_for_current_url();
         
@@ -107,8 +117,6 @@ class SOSPO_MU {
         
         $this->blocked_plugins          = array_intersect( $this->original_active_plugins, $this->plugins_to_block );
         
-        sospo_mu_plugin()->write_log( $this->filtered_active_plugins, "filter_active_plugins_option_value-filtered_active_plugins" );
-
         return $this->filtered_active_plugins;
     }
 
