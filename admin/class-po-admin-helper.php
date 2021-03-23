@@ -220,8 +220,15 @@ EOF;
                     $type    = "_edit_screen";
                 }
                 
-                $categories = implode( ',<br>', get_post_meta( $filter->ID, 'categories', true ) );
-                
+                // Jake's note: implode failing on empty array;
+                if( $categories = get_post_meta( $filter->ID, 'categories', true ) ){
+
+                    if (!empty($categories)){
+
+                        $categories = implode( ',<br>', $categories );
+                    }
+                }
+
                 $date = date("Ym",  strtotime( $filter->post_date ) );// 202109
                 
                 $turned_on_checked = $turned_off !== "1" ? ' checked="checked"' : '';
