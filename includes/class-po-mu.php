@@ -28,7 +28,7 @@ class SOSPO_MU {
     public $blocked_plugins         = [];
     public $filters_in_use          = [];
 
-	private function __construct() {
+    private function __construct() {
         
         if( wp_doing_ajax() || wp_doing_cron() ){
             return;
@@ -45,6 +45,9 @@ class SOSPO_MU {
             "/wp-admin/admin.php?page=plugin_optimizer_worklist",
             "/wp-admin/admin.php?page=plugin_optimizer_settings",
             "/wp-admin/admin.php?page=plugin_optimizer_support",
+            "/wp-admin/admin.php?page=plugin_optimizer_agent",
+            "/wp-admin/admin.php?page=plugin_optimizer_pending",
+            "/wp-admin/admin.php?page=plugin_optimizer_approved"
         ];
         $this->po_post_types = [
             "sos_filter",
@@ -54,7 +57,7 @@ class SOSPO_MU {
         
         $this->set_hooks();
         
-	}
+    }
     
     static function get_instance() {
 
@@ -64,33 +67,33 @@ class SOSPO_MU {
      
         return self::$instance;
 
-	}
+    }
 
 
-	function set_hooks() {
+    function set_hooks() {
 
-		add_filter( 'option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
+        add_filter( 'option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
         
-		add_action( 'plugins_loaded',        [ $this, 'complete_action_once_plugins_are_loaded' ], 5 );
+        add_action( 'plugins_loaded',        [ $this, 'complete_action_once_plugins_are_loaded' ], 5 );
 
-		add_action( 'shutdown',              [ $this, 'update_worklist_if_needed' ] );
+        add_action( 'shutdown',              [ $this, 'update_worklist_if_needed' ] );
 
-	}
+    }
 
-	function complete_action_once_plugins_are_loaded(){
+    function complete_action_once_plugins_are_loaded(){
 
-		remove_filter('option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
+        remove_filter('option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
         
-	}
+    }
 
 
-	function filter_active_plugins_option_value( $active_plugins ) {
+    function filter_active_plugins_option_value( $active_plugins ) {
         
         if( ! empty( $this->all_plugins ) ){
             return $active_plugins;
         }
         
-		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        require_once ABSPATH . 'wp-admin/includes/plugin.php';
 
         remove_filter('option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
         $this->all_plugins              = get_plugins();
@@ -98,7 +101,7 @@ class SOSPO_MU {
         
         $this->original_active_plugins  = $active_plugins;
 
-		$this->plugins_to_block         = $this->get_plugins_to_block_for_current_url();
+        $this->plugins_to_block         = $this->get_plugins_to_block_for_current_url();
         
         $this->filtered_active_plugins  = array_diff( $this->original_active_plugins, $this->plugins_to_block );
         
@@ -106,11 +109,10 @@ class SOSPO_MU {
         
         sospo_mu_plugin()->write_log( $this->filtered_active_plugins, "filter_active_plugins_option_value-filtered_active_plugins" );
 
-		return $this->filtered_active_plugins;
+        return $this->filtered_active_plugins;
+    }
 
-	}
-
-	function should_skip_url( $url ) {
+    function should_skip_url( $url ) {
         
         $skip = [
             '/favicon.ico',
@@ -129,12 +131,12 @@ class SOSPO_MU {
         }
         
         return false;
-	}
+    }
 
-	function get_plugins_to_block_for_current_url() {
+    function get_plugins_to_block_for_current_url() {
         
-		$relative_url  = trim( $_SERVER["REQUEST_URI"] );
-		$current_url   = get_home_url() . $relative_url;
+        $relative_url  = trim( $_SERVER["REQUEST_URI"] );
+        $current_url   = get_home_url() . $relative_url;
         
         // some URLs just need to be skipped
         if( $this->should_skip_url( $relative_url ) ){
@@ -146,7 +148,7 @@ class SOSPO_MU {
         if( ! empty( $_GET["disable_po"] ) && $_GET["disable_po"] == "yes" ){
             $this->is_skipped = true;
             return [];
-        }
+        
         
         // when we are recreating the menu
         if( ! empty( $_GET["po_original_menu"] ) && $_GET["po_original_menu"] == "get" ){
@@ -161,19 +163,19 @@ class SOSPO_MU {
             
             $this->is_po_default_page   = true;
             $this->is_being_filtered    = true;
-            $this->plugins_to_block     = array_diff( $this->original_active_plugins, [ "plugin-optimizer/plugin-optimizer.php" ] );
+            $this->plugins_to_block     = array_diff( $this->original_active_plugins, [ "plugin-optimizer/plugin-optimizer.php", "sos_plugin_optimizer_dictionary_age/sos_plugin_optimizer_dictionary_age.php","sos_plugin_optimizer_premium/sos_plugin_optimizer_premium.php" ] );
             
             return $this->plugins_to_block;
         }
         
         // --- Get plugins to block from all the filters
         
-		$filters = get_posts([
-			'post_type'   => 'sos_filter',
-			'numberposts' => - 1,
-		]);
+        $filters = get_posts([
+            'post_type'   => 'sos_filter',
+            'numberposts' => - 1,
+        ]);
         
-		foreach( $filters as $filter ){
+        foreach( $filters as $filter ){
             
             if( $filter->turned_off ){
                 
@@ -182,12 +184,12 @@ class SOSPO_MU {
             
             // If we're on the edit post screen, filter by post type
             
-			if( $filter->type_filter !== '_endpoint' && $editing_post_type && $editing_post_type == $filter->type_filter ){
+            if( $filter->type_filter !== '_endpoint' && $editing_post_type && $editing_post_type == $filter->type_filter ){
                 
-				$this->use_filter( $filter );
+                $this->use_filter( $filter );
                 
                 continue;
-			}
+            }
             
             // Filter by URL
             
@@ -212,10 +214,10 @@ class SOSPO_MU {
                 
             }
 
-		}
+        }
         
-		return array_unique( $this->plugins_to_block );
-	}
+        return array_unique( $this->plugins_to_block );
+    }
 
     function use_filter( $filter ){
         
@@ -249,7 +251,7 @@ class SOSPO_MU {
     }
     
 
-	function is_editing_post_type( $url ){
+    function is_editing_post_type( $url ){
         
         $post_id   = $this->url_to_postid( $url );
         $post_type = false;
@@ -261,9 +263,9 @@ class SOSPO_MU {
         
         return $post_type;
         
-	}
+    }
     
-	function url_to_postid( $url ){
+    function url_to_postid( $url ){
         
         parse_str( parse_url( $url, PHP_URL_QUERY ), $query_vars);
         
@@ -272,7 +274,7 @@ class SOSPO_MU {
         
         return $post_id;
         
-	}
+    }
     
     function write_log( $log, $text = "write_log: ", $file_name = "debug.log" )  {
         

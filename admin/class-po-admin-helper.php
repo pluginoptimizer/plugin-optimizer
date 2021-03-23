@@ -372,7 +372,8 @@ EOF;
 
 		foreach ( $active_plugins as $plugin_id ) {
             
-            if( $plugin_id != "plugin-optimizer/plugin-optimizer.php" || ! $remove_po ){
+
+            if( !in_array($plugin_id, [ "plugin-optimizer/plugin-optimizer.php", "sos_plugin_optimizer_dictionary_age/sos_plugin_optimizer_dictionary_age.php","sos_plugin_optimizer_premium/sos_plugin_optimizer_premium.php" ]) || ! $remove_po ){
                 $plugins_simple_list["active"][ $plugin_id ] = $all_plugins[ $plugin_id ][ 'Name' ];
                 $plugins_simple_list["all"][ $plugin_id ]    = $all_plugins[ $plugin_id ][ 'Name' ];
             }
@@ -388,7 +389,7 @@ EOF;
 
 		foreach ( $all_plugins as $plugin_id => $plugin_data ) {
             
-            if( $plugin_id != "plugin-optimizer/plugin-optimizer.php" || ! $remove_po ){
+            if( !in_array($plugin_id, [ "plugin-optimizer/plugin-optimizer.php", "sos_plugin_optimizer_dictionary_age/sos_plugin_optimizer_dictionary_age.php","sos_plugin_optimizer_premium/sos_plugin_optimizer_premium.php" ]) || ! $remove_po ){
                 $plugins_simple_list["inactive"][ $plugin_id ] = $all_plugins[ $plugin_id ][ 'Name' ];
                 $plugins_simple_list["all"][ $plugin_id ]      = $all_plugins[ $plugin_id ][ 'Name' ];
             }
