@@ -43,7 +43,7 @@ class PluginOptimizer {
 		if ( defined( 'SOSPO_VERSION' ) ) {
 			$this->version = SOSPO_VERSION;
 		} else {
-			$this->version = '1.0.3';
+			$this->version = '1.0.4';
 		}
 		$this->plugin_name = 'plugin-optimizer';
 

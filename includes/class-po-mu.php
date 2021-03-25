@@ -3,7 +3,7 @@
  * Plugin Name:       Plugin Optimizer MU
  * Plugin URI:        https://pluginoptimizer.com
  * Description:       This MU plugin is required by the Plugin Optimizer plugin. It will be removed upon deactivation.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Author:            pluginoptimizer
  * Author URI:        https://pluginoptimizer.com/about/
  * License:           GPL-2.0+
