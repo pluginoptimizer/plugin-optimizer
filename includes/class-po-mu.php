@@ -14,7 +14,7 @@ class SOSPO_MU {
     
     protected static $instance      = null;
     
-    protected $po_plugins           = [];
+    public $po_plugins              = [];
     protected $po_pages             = [];
     protected $po_post_types        = [];
     
