@@ -46,8 +46,8 @@ Speed up the back-end development environment and speed up the front-end user ex
 == Support ==
 
 If you have questions, comments, or suggestions contact us here:
-By Email: Support@pluginoptimizer.com
-By Form: https://pluginoptimizer.com/support
+By Email: [Support@pluginoptimizer.com](mailto:support@pluginoptimizer.com)
+By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/support)
 
 == Installation ==
 
