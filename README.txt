@@ -43,6 +43,12 @@ Speed up the back-end development environment and speed up the front-end user ex
 * Reduction in server load - get great results with even basic shared server accounts
 * Works great in combination with a cache plugin (e.g. WP Rocket, WP Fastest Cache, W3 Total Cache), a hosting company that offers packages with server-level caching available (e.g. WordKeeper) or a service like Cloudflare that has page caching enabled.
 
+== Support ==
+
+If you have questions, comments, or suggestions contact us here:
+By Email: Support@pluginoptimizer.com
+By Form: https://pluginoptimizer.com/support
+
 == Installation ==
 
 1. Install 'Plugin Optimizer' plugin
