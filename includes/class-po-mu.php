@@ -116,7 +116,7 @@ class SOSPO_MU {
             $_GET["po_original_menu"] = "get";
             
         }
-
+        
         $this->plugins_to_block         = $this->get_plugins_to_block_for_current_url();
         
         $this->filtered_active_plugins  = array_diff( $this->original_active_plugins, $this->plugins_to_block );
@@ -126,13 +126,21 @@ class SOSPO_MU {
         return $this->filtered_active_plugins;
     }
 
+    function should_block_all( $url ) {
+        
+        if( strpos( $url, 'plugin-install.php?tab=plugin-information&plugin=' ) !== false ){
+            return true;
+        }
+        
+    }
+
     function should_skip_url( $url ) {
         
-        $skip = [
+        $skip_for = [
             '/favicon.ico',
         ];
         
-        if( in_array( $url, $skip ) ){
+        if( in_array( $url, $skip_for ) ){
             return true;
         } elseif( strpos( $url, 'wp-content/plugins' ) !== false ){
             return true;
@@ -151,6 +159,12 @@ class SOSPO_MU {
         
         $relative_url  = trim( $_SERVER["REQUEST_URI"] );
         $current_url   = get_home_url() . $relative_url;
+        
+        // some URLs just need all plugins to get blocked
+        if( $this->should_block_all( $relative_url ) ){
+            $this->is_skipped = true;
+            return $this->original_active_plugins;
+        }
         
         // some URLs just need to be skipped
         if( $this->should_skip_url( $relative_url ) ){

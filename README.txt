@@ -57,6 +57,10 @@ By Form: https://pluginoptimizer.com/support
 
 == Changelog ==
 
+= 1.0.5 = March 2021
+* The MU plugin will get updated on any plugin update
+* The View Details screen on the Plugins page got fixed
+
 = 1.0.4 = March 2021
 * Auto Menu Update Fixed
 * Overview and walkthrough added
