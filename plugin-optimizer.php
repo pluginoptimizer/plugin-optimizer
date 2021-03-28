@@ -127,4 +127,19 @@ function test_overview_page_hook( $tabs ){
     
     return $tabs;
 }
-add_filter( "sos_po_overview_tabs", "test_overview_page_hook", 10, 1 );
+// add_filter( "sos_po_overview_tabs", "test_overview_page_hook", 10, 1 );
+
+
+function test_post_state( $post_states, $post ){
+    
+    sospo_mu_plugin()->write_log( $post_states, "test_post_state-post_id: " . $post->ID . ", post_type: " . $post->post_type );
+    
+    if( $post->ID / 2 != ceil( $post->ID / 2 ) ){
+        
+        $post_states["test"] = "PO Optimized";
+    }
+    
+    return $post_states;
+}
+// add_filter( "display_post_states", "test_post_state", 10, 2 );
+
