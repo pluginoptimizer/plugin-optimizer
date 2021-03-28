@@ -60,7 +60,7 @@ class SOSPO_Admin {
 		add_action( 'save_post_post',               [ $this, 'add_item_to_worklist'     ] );
 		add_action( 'admin_bar_menu',               [ $this, 'add_plugin_in_admin_bar'  ], 100 );
 
-		add_action( 'upgrader_process_complete',    [ $this, 'do_after_plugin_update'   ] );
+		add_action( 'upgrader_process_complete',    [ $this, 'do_after_plugin_update'   ], 10, 2 );
 
 	}
     
@@ -69,24 +69,27 @@ class SOSPO_Admin {
         
         // https://developer.wordpress.org/reference/hooks/upgrader_process_complete/
         
-        sospo_mu_plugin()->write_log( $wp_upgrader_object,  "do_afet_plugin_update-wp_upgrader_object"  );
-        sospo_mu_plugin()->write_log( $options,             "do_afet_plugin_update-options"             );
+        // sospo_mu_plugin()->write_log( $wp_upgrader_object,  "do_afet_plugin_update-wp_upgrader_object"  );
+        // sospo_mu_plugin()->write_log( $options,             "do_afet_plugin_update-options"             );
         
-        /* 
-        // The path to our plugin's main file
-        $our_plugin = plugin_basename( __FILE__ );
+        // Array
+        // (
+            // [action] => update
+            // [type] => plugin
+            // [bulk] => 1
+            // [plugins] => Array
+                // (
+                    // [0] => wordpress-beta-tester/wp-beta-tester.php
+                // )
+        // )
         
-        // If an update has taken place and the updated type is plugins and the plugins element exists
-        if( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
-            // Iterate through the plugins being updated and check if ours is there
-            foreach( $options['plugins'] as $plugin ) {
-                if( $plugin == $our_plugin ) {
-                    // Your action if it is your plugin
-                
-                }
-            }
+        if( ! file_exists( WPMU_PLUGIN_DIR ) ){
+            
+            mkdir( WPMU_PLUGIN_DIR );
+            chmod( WPMU_PLUGIN_DIR, 0755 );
         }
-         */
+
+        copy( dirname( __DIR__ ) . '/includes/class-po-mu.php', WPMU_PLUGIN_DIR . '/class-po-mu.php' );
         
 	}
 
