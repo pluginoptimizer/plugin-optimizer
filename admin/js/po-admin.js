@@ -523,8 +523,8 @@ jQuery( document ).ready( function($){
             
         // TODO SWITCH
 
-                location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_filters';
-                // location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer';
+                // location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_filters';
+                location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer';
                 break;
             case 'window_categories':
                 location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_filters_categories';
