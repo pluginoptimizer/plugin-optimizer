@@ -66,9 +66,6 @@ register_deactivation_hook( __FILE__, 'deactivate_plugin_optimizer' );
 // let's install the MU plugin if it's missing and refresh
 $should_copy_mu = false;
 
-sospo_mu_plugin()->write_log( sospo_mu_plugin()->version, "sospo_mu-version" );
-sospo_mu_plugin()->write_log( SOSPO_VERSION, "SOSPO_VERSION-version" );
-
 if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') || ! function_exists("sospo_mu_plugin") || sospo_mu_plugin()->version !== SOSPO_VERSION ){
     
     $should_copy_mu = true;
