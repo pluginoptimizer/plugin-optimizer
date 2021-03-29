@@ -55,7 +55,8 @@ class SOSPO_MU {
             "/wp-admin/admin.php?page=plugin_optimizer_support",
             "/wp-admin/admin.php?page=plugin_optimizer_agent",
             "/wp-admin/admin.php?page=plugin_optimizer_pending",
-            "/wp-admin/admin.php?page=plugin_optimizer_approved"
+            "/wp-admin/admin.php?page=plugin_optimizer_approved",
+            "/wp-admin/admin.php?page=plugin_optimizer_premium"
         ];
         $this->po_post_types = [
             "sos_filter",
