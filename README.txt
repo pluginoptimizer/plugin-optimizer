@@ -59,6 +59,8 @@ By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/suppo
 
 = 1.0.6 = March 2021
 * The MU plugin will always be the same version as the main file
+* Plugin Optimizer now works with WordPress in a subfolder
+* View Details on the Plugins page fixed
 
 = 1.0.5 = March 2021
 * The MU plugin will get updated on any plugin update
