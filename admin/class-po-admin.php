@@ -204,7 +204,7 @@ class SOSPO_Admin {
 	 */
 	function add_plugin_in_admin_bar( $wp_admin_bar ) {
         
-        $current_url = site_url( $_SERVER["REQUEST_URI"] );
+        $current_url = sospo_mu_plugin()->current_full_url;
         
         // Main top menu item
 		$wp_admin_bar->add_menu( array(

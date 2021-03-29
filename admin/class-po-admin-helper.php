@@ -287,13 +287,13 @@ EOF;
                 
                 $date = date("Ym",  strtotime( $work_item->post_date ) );// 202109
                 
-                $relative_url  = 'admin.php?page=plugin_optimizer_add_filters';
-                $relative_url .= '&work_title=';
-                $relative_url .= urlencode( str_replace( ' ', '_', str_replace( 'Add filter to ', '', $work_item->post_title ) ) );
-                $relative_url .= '&work_link=';
-                $relative_url .= urlencode( get_post_meta( $work_item->ID, 'post_link', true ) );
+                $admin_relative_url  = 'admin.php?page=plugin_optimizer_add_filters';
+                $admin_relative_url .= '&work_title=';
+                $admin_relative_url .= urlencode( str_replace( ' ', '_', str_replace( 'Add filter to ', '', $work_item->post_title ) ) );
+                $admin_relative_url .= '&work_link=';
+                $admin_relative_url .= urlencode( get_post_meta( $work_item->ID, 'post_link', true ) );
                 
-                $create_link = get_admin_url( null, $relative_url );
+                $create_link = get_admin_url( null, $admin_relative_url );
                 
                 ?>
                 <tr class="block_info" data-status="<?php echo $work_item->post_status ?>" data-date="<?php echo $date ?>">

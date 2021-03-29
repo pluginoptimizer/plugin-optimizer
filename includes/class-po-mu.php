@@ -16,6 +16,9 @@ class SOSPO_MU {
     
     protected static $instance      = null;
     
+    public $current_url             = false;
+    public $wp_relative_url         = false;
+    
     public $po_plugins              = [];
     protected $po_pages             = [];
     protected $po_post_types        = [];
@@ -32,6 +35,9 @@ class SOSPO_MU {
     public $filters_in_use          = [];
 
     private function __construct() {
+        
+        $this->current_full_url         = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $this->current_wp_relative_url  = str_replace( site_url(), "", $this->current_full_url );
         
         if( wp_doing_ajax() || wp_doing_cron() ){
             return;
@@ -160,17 +166,14 @@ class SOSPO_MU {
 
     function get_plugins_to_block_for_current_url() {
         
-        $relative_url  = trim( $_SERVER["REQUEST_URI"] );
-        $current_url   = get_home_url() . $relative_url;
-        
         // some URLs just need all plugins to get blocked
-        if( $this->should_block_all( $relative_url ) ){
+        if( $this->should_block_all( $this->current_wp_relative_url ) ){
             $this->is_skipped = true;
             return $this->original_active_plugins;
         }
         
         // some URLs just need to be skipped
-        if( $this->should_skip_url( $relative_url ) ){
+        if( $this->should_skip_url( $this->current_wp_relative_url ) ){
             $this->is_skipped = true;
             return [];
         }
@@ -187,10 +190,14 @@ class SOSPO_MU {
             return [];
         }
         
-        $editing_post_type = $this->is_editing_post_type( $relative_url );
+        $editing_post_type = $this->is_editing_post_type( $this->current_wp_relative_url );
         
         // --- are we on any of the PO pages?
-        if( strpos( $relative_url, "wp-admin/admin.php?page=plugin_optimizer") !== false || in_array( $relative_url, $this->po_pages ) || in_array( $editing_post_type, $this->po_post_types ) ){
+        if(
+            strpos( $this->current_wp_relative_url, "wp-admin/admin.php?page=plugin_optimizer") !== false ||
+            in_array( $this->current_wp_relative_url, $this->po_pages ) ||
+            in_array( $editing_post_type, $this->po_post_types )
+        ){
             
             $this->is_po_default_page   = true;
             $this->is_being_filtered    = true;
@@ -226,7 +233,7 @@ class SOSPO_MU {
             
             $endpoints = is_array( $filter->endpoints ) ? $filter->endpoints : [ $filter->endpoints ];
             
-            if( in_array( $relative_url, $endpoints ) ){
+            if( in_array( $this->current_wp_relative_url, $endpoints ) ){
                 
                 $this->use_filter( $filter );
                 
@@ -234,7 +241,7 @@ class SOSPO_MU {
                 
                 foreach( $endpoints as $endpoint ){
                     
-                    if( fnmatch( $endpoint, $relative_url, FNM_PATHNAME | FNM_CASEFOLD ) ){
+                    if( fnmatch( $endpoint, $this->current_wp_relative_url, FNM_PATHNAME | FNM_CASEFOLD ) ){
                         
                         $this->use_filter( $filter );
                         
@@ -276,7 +283,7 @@ class SOSPO_MU {
                 
             }
             
-            // $this->write_log( ( is_admin() ? "Back end" : "Front end" ) . ": " . var_export( trim( $_SERVER["REQUEST_URI"] ), true ), "update_worklist_if_needed-REQUEST_URI" );
+            // $this->write_log( ( is_admin() ? "Back end" : "Front end" ) . ": " . var_export( trim( $this->current_wp_relative_url ), true ), "update_worklist_if_needed-REQUEST_URI" );
         }
         
     }
