@@ -1,6 +1,8 @@
 jQuery( document ).ready( function($){
     'use strict';
     
+    recalculate__special_grid_lists();
+    
 
     // Edit  screen - Hover a tooltip - Start
     $('#the-list').on('mouseenter', '.has_tooltip > .tooltip_trigger[data-tooltip-list]', function(){
@@ -221,6 +223,22 @@ jQuery( document ).ready( function($){
 						<span value="${response.data.category_id}">${category_name}</span>
                     </div>
                 `);
+                
+                // sort categories alphabetically
+                let $categories_list = $('#add_category').parent();
+                
+                $categories_list.children('.single_category').sort( function( a, b ){
+                    
+                    let a_title = $(a).children('span').text().trim().toLowerCase();
+                    let b_title = $(b).children('span').text().trim().toLowerCase();
+                    
+                    return a_title.localeCompare( b_title );
+                    
+                }).prependTo( $categories_list );
+                
+                // recalculate rows and columns
+                recalculate__special_grid_lists();
+                
             }
             
         }, "json");
@@ -736,6 +754,27 @@ jQuery( document ).ready( function($){
     function check_group_plugins_state(){
         
         // TODO Once a group is selected, you can manually re-enable each plugin and if all are enabled, we should deselect the group
+    }
+    
+    // we need to calculate the rows and columns of .special_grid_list
+    function recalculate__special_grid_lists( columns = 3 ){
+        
+        $('.special_grid_list').each(function( index ){
+            
+            let $grid_list = $(this);
+            
+            let items_no   = $grid_list.children().length;
+            
+            let rows       = Math.ceil( items_no / columns );
+            
+            console.log( "Items: ", items_no );
+            console.log( "rows: ",  rows     );
+            
+            $grid_list.css("grid-template-columns", "repeat(" + columns + ", 1fr  )" );
+            $grid_list.css("grid-template-rows",    "repeat(" + rows    + ", auto )" );
+            
+        });
+        
     }
     
 });

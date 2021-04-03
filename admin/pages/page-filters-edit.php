@@ -163,7 +163,7 @@ if( $filter ){
                                 
 							<?php SOSPO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["active"],   "inactive" => [],                   "blocked" => $plugins_to_block ] ); ?>
                             
-                            <div class="header attribute-plugin">Inactive plugins</div>
+                            <div class="header attribute-plugin" style="margin-top: 10px;">Inactive plugins</div>
                             
 							<?php SOSPO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["inactive"], "inactive" => $plugins["inactive"], "blocked" => $plugins_to_block ] ); ?>
                             
@@ -177,7 +177,7 @@ if( $filter ){
 								</div>
 								<span class="all-check toggle_groups">Disable All</span>
 							</div>
-							<div class="plugin-wrapper">
+							<div class="special_grid_list">
 								<?php
 								if ( $groups ){
 									foreach ( $groups as $group ){
@@ -208,7 +208,7 @@ if( $filter ){
 							<div class="header">
 								<div class="title">Categories</div>
 							</div>
-							<div class="plugin-wrapper">
+							<div class="special_grid_list">
 								<?php
 								if ( $categories ){
 									foreach ( $categories as $cat ){

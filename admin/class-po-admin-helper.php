@@ -165,7 +165,7 @@ EOF;
             // write_log( $data["plugins"], "content_part__plugins-data-plugins" );
             natsort( $data["plugins"] );
             
-            echo '<div class="plugin-wrapper">';
+            echo '<div class="special_grid_list">';
             
 			foreach( $data["plugins"] as $plugin_id => $plugin_name ){
                 
