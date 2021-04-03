@@ -261,6 +261,18 @@ jQuery( document ).ready( function($){
             if( response.data.id ){
                 
                 $('input[name="SOSPO_filter_data[ID]"]').val( response.data.id );
+                
+                const url = new URL( window.location.href );
+                url.searchParams.set( 'filter_id', response.data.id );
+                window.history.replaceState( null, null, url );
+                
+                $('#name_page').html( 'Editing filter: ' + $('#set_title').val() );
+                
+                window.scroll({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });
             }
             
         }, "json");
@@ -280,6 +292,18 @@ jQuery( document ).ready( function($){
             if( response.data.id ){
                 
                 $('input[name="SOSPO_filter_data[ID]"]').val( response.data.id );
+                
+                const url = new URL( window.location.href );
+                url.searchParams.set( 'group_id', response.data.id );
+                window.history.replaceState( null, null, url );
+                
+                $('#name_page').html( 'Editing group: ' + $('#set_title').val() );
+                
+                window.scroll({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });
             }
             
         }, "json");
@@ -300,6 +324,18 @@ jQuery( document ).ready( function($){
             if( response.data.id ){
                 
                 $('input[name="SOSPO_filter_data[ID]"]').val( response.data.id );
+                
+                const url = new URL( window.location.href );
+                url.searchParams.set( 'cat_id', response.data.id );
+                window.history.replaceState( null, null, url );
+                
+                $('#name_page').html( 'Editing category: ' + $('#set_title').val() );
+                
+                window.scroll({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });
             }
             
         }, "json");
