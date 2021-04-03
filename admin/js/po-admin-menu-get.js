@@ -1,6 +1,6 @@
 jQuery(function($){
     
-    $('body').append('<div id="po_please_wait"><div id="po_please_wait_message">Please wait...</div></div>');
+    $('body').append('<div id="po_please_wait"><div id="po_please_wait_message"><b>Plugin Optimizer</b><span>Please wait...</span></div></div>');
     
     
     // clean the menu we're fetching
@@ -55,7 +55,7 @@ jQuery(function($){
     // save the menu in wp_options
     $.post( po_object.ajax_url, data, function( response ) {
         
-        $('#po_please_wait_message').html('Refreshing...');
+        $('#po_please_wait_message').html('<b>Plugin Optimizer</b><span>Refreshing...</span>');
         
         window.location.href = po_object.redirect_to ? po_object.redirect_to : window.location.href;
         
