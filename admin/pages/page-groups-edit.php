@@ -60,7 +60,7 @@ if( $group ){
                     </div>
                 </div>
                 <div class="row">
-                    <button id="save_group" class="po_green_button">Save new group</button>
+                    <button id="save_group" class="po_green_button">Save group</button>
                 </div>
 
             </div>
