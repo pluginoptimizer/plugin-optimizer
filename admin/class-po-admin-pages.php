@@ -21,11 +21,11 @@ class SOSPO_Admin_Menu_Pages {
         
         // TODO SWITCH
 
-		// add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'plugin_optimizer', [ $this, 'render_overview_page' ], 'dashicons-sos' );
+		// add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'plugin_optimizer', [ $this, 'render_overview_page' ], 'none' );
 		// add_submenu_page( 'plugin_optimizer', 'Overview',           'Overview',             'manage_options', 'plugin_optimizer',                    [ $this, 'render_overview_page'           ] );
 		// add_submenu_page( 'plugin_optimizer', 'Filters',            'Filters',              'manage_options', 'plugin_optimizer_filters',            [ $this, 'render_filters_page'            ] );
         
-		add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'plugin_optimizer', [ $this, 'render_filters_page' ], 'dashicons-sos' );
+		add_menu_page( 'Plugin Optimizer', 'Plugin Optimizer', 'manage_options', 'plugin_optimizer', [ $this, 'render_filters_page' ], 'none' );
 		add_submenu_page( 'plugin_optimizer', 'Filters',            'Filters',              'manage_options', 'plugin_optimizer',                    [ $this, 'render_filters_page'            ] );
         
         // and plugin-optimizer\admin\js\po-admin.js

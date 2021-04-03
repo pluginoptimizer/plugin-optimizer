@@ -48,7 +48,15 @@ body{
     font-size: 16px;
 }
 
-
+#toplevel_page_plugin_optimizer .wp-menu-image{
+    background-image: url('../../assets/icon-128x128.png');
+    background-size: 20px auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+#toplevel_page_plugin_optimizer.wp-menu-open .wp-menu-image{
+    background-image: url('../../assets/icon-128x128-white.png');
+}
 /* #toplevel_page_plugin_optimizer ul li:nth-child(9), */
 /* #toplevel_page_plugin_optimizer ul li:nth-child(7), */
 /* #toplevel_page_plugin_optimizer ul li:nth-child(5), */
