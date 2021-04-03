@@ -162,6 +162,9 @@ EOF;
         
 		if( $data["plugins"] ){
             
+            // write_log( $data["plugins"], "content_part__plugins-data-plugins" );
+            natsort( $data["plugins"] );
+            
             echo '<div class="plugin-wrapper">';
             
 			foreach( $data["plugins"] as $plugin_id => $plugin_name ){
