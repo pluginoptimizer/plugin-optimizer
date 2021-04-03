@@ -228,13 +228,24 @@ EOF;
                 
                 $turned_on_checked = $turned_off !== "1" ? ' checked="checked"' : '';
                 
+                $has_tooltip_class = "";
+                $tooltip_list      = "";
+                
+                if( count( $blocking_plugins ) > 0 ){
+                    
+                    $has_tooltip_class = "has_tooltip";
+                    $tooltip_list      = 'class="tooltip_trigger" data-tooltip-list="' . htmlspecialchars( json_encode( $blocking_plugins ), ENT_QUOTES, 'UTF-8' ) . '"';
+                }
+                
 				?>
                 <tr class="block_info" id="filter-<?php echo  $filter->ID ?>" data-status="<?php echo $filter->post_status ?>" data-date="<?php echo $date ?>" data-type="<?php echo $type ?>">
                     <td><input type="checkbox" id="<?php echo $filter->ID ?>"></td>
                     <td class="align-left normal-text"><?php echo $filter->post_title ?><br/><a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ) ?>">Edit</a><br/></td>
                     <td class="align-left normal-text"><?php echo $categories ?></td>
                     <td class="data-trigger align-left normal-text"><?php echo $trigger ?></td>
-                    <td class="expandable list_of_plugins"><span class="no_hover"><?php echo count( $blocking_plugins ) ?></span><span class="yes_hover"><?php echo implode( ',<br/>', $blocking_plugins ); ?></span></td>
+                    <td class="list_of_plugins <?php echo $has_tooltip_class; ?>">
+                        <span <?php echo $tooltip_list; ?>><?php echo count( $blocking_plugins ) ?></span>
+                    </td>
                     <td class="toggle_filter">
                         <label>
                             <span class="switch">

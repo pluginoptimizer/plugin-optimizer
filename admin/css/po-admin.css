@@ -95,12 +95,12 @@
 
 /*New design*/
 
-.sos-wrap {
-    overflow-y: auto !important;
-}
-
 .sos-wrap * {
     text-transform: uppercase;
+}
+
+#the-list *{
+    text-transform: none;
 }
 
 .sos-wrap h1 {
@@ -453,16 +453,58 @@
     font-size: 18px;
 }
 
-
-td.expandable:hover .no_hover,
-td.expandable:not(:hover) .yes_hover{
+.list_of_plugins{
+    position: relative;
+}
+.list_of_plugins.has_tooltip{
+    padding: 5px 15px;
+    cursor: default;
+}
+.list_of_plugins.has_tooltip .tooltip_trigger{
+    position: relative;
+    display: inner-block;
+    padding: 10px;
+}
+.list_of_plugins.has_tooltip .active_tooltip{
+    position: absolute;
+    top: 0;
+    max-height: 208px;
+    z-index: 1;
+    padding: 0;
+    
+    background: #555;
+    color: #fff;
+    border: 10px solid #555;
+    border-radius: 4px;
+    
+    overflow: visible;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+.list_of_plugins.has_tooltip .active_tooltip .active_tooltip_inner{
+    display: flex;
+    flex-flow: column nowrap;
+    white-space: nowrap;
+}
+.list_of_plugins.has_tooltip.tooltip_is_active:hover .tooltip_trigger:after{
+    content: " ";
+    position: absolute;
+    left: -20px;
+    top: calc( 50% - 10px );
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #555;
+    z-index: 1;
+}
+.list_of_plugins.has_tooltip .simplebar-content:before,
+.list_of_plugins.has_tooltip .simplebar-content:after{
     display: none;
 }
-
-td.expandable.list_of_plugins *{
-    text-transform: none;
+.list_of_plugins.has_tooltip .simplebar-scrollbar:before{
+    background: #fff;
 }
-
 
 .sos-wrap.container{
     max-width: 100%;

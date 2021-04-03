@@ -1,7 +1,90 @@
 jQuery( document ).ready( function($){
     'use strict';
     
+
+    // Edit  screen - Hover a tooltip - Start
+    $('#the-list').on('mouseenter', '.has_tooltip > .tooltip_trigger[data-tooltip-list]', function(){
+        
+        if( $(this).parents(".has_tooltip").hasClass("tooltip_is_active") ){
+            
+            return;
+        }
+        
+        $(this).parents(".has_tooltip").addClass("tooltip_is_active");
+        
+        $('#the-list .active_tooltip').remove();
+
+
+        let list = $(this).data("tooltip-list");
+        
+        if( ! list || list.length == 0 ){
+            
+            return;
+        }
+        
+        // console.log( "list: ", list );
+        // list = list.concat( list, list, list, list, list, list );
+        // console.log( "list: ", list );
+        
+        
+        
+        let $tooltip = $('<div class="active_tooltip"><div class="active_tooltip_inner"></div></div>');
+        let $tooltip_inner = $tooltip.find('.active_tooltip_inner');
+        
+        
+        
+        $tooltip.css("opacity", 0 );
+        
+        let html = '';
+        
+        $.each( list, function( index, value ){
+            html += '<div>' + value + '</div>';
+        });
+        
+        $tooltip_inner.html( html );
+        
+        $(this).after( $tooltip );
+        
+        
+        let tooltip_inner__width = $tooltip_inner.outerWidth();
+        $tooltip.css("width", tooltip_inner__width + 40 );
+        // console.log( "tooltip_inner__width: ",  tooltip_inner__width  );
+        
+        let tooltip_height      = $tooltip.outerHeight();
+        let tooltip_width       = $tooltip.outerWidth();
+        let trigger_position    = $(this).position();
+        let trigger_height      = $(this).outerHeight();
+        
+        // console.log( "trigger_position_left: " + trigger_position.left + ", trigger_position_top: " + trigger_position.top );
+        // console.log( "tooltip_height: ", tooltip_height );
+        // console.log( "tooltip_width: ",  tooltip_width  );
+        
+        $tooltip.css("left", trigger_position.left - tooltip_width - 20 );
+        $tooltip.css("top", trigger_position.top + ( trigger_height / 2 ) - ( tooltip_height / 2 ) );
+        
+        $tooltip.hide();
+        $tooltip.css("opacity", 1 );
+        
+        // https://github.com/Grsmto/simplebar/tree/master/packages/simplebar
+        let simplebar = new SimpleBar( $tooltip[0], {
+            autoHide: false
+        });
+        
+        $tooltip.show();
+        
+    });
+
+    // Edit  screen - Hover a tooltip - End
+    $('#the-list').on('mouseleave', '.has_tooltip', function(){
+        
+        $(this).removeClass("tooltip_is_active");
+        $(this).parent().find(".active_tooltip").remove();
+
+        // console.log( "Over and out" );
+        
+    });
     
+
     // Edit Filter screen - fetch post types
     if( $('#set_filter_type').length >= 1 ){
         

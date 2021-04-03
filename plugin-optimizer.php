@@ -126,6 +126,7 @@ function test_overview_page_hook( $tabs ){
     
     // sospo_mu_plugin()->write_log( $tabs, "test_overview_page_hook-tabs" );
     
+    
     $tabs[25] = [
         "title"     => "Added by a hook",
         "content"   => "And our content goes here"
@@ -150,4 +151,11 @@ function test_post_state( $post_states, $post ){
     return $post_states;
 }
 // add_filter( "display_post_states", "test_post_state", 10, 2 );
+
+function test_temp(){
+    
+   sospo_mu_plugin()->write_log( print_r( $GLOBALS['wp_scripts']->registered, true ), "test_temp-globals-wp_scripts" );
+}
+// add_action( "shutdown", "test_temp" );
+
 

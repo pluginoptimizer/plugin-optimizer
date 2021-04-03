@@ -118,6 +118,7 @@ class SOSPO_Admin {
 		if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) ) {
             
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/po-admin.css', array(), $this->version, 'all' );
+            wp_enqueue_style( $this->plugin_name . '-simplebar', plugin_dir_url( __FILE__ ) . 'css/simplebar.css', array(), $this->version, 'all' );
 		}
 	}
 
@@ -186,6 +187,10 @@ class SOSPO_Admin {
             wp_enqueue_script(  $this->plugin_name . "_menu_fix" );
             
         }
+        
+        $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/simplebar.min.js' ));
+		wp_register_script( $this->plugin_name . '-simplebar', plugin_dir_url( __FILE__ ) . 'js/simplebar.min.js', array( 'jquery' ), $version, true );
+		wp_enqueue_script(  $this->plugin_name . '-simplebar' );
         
         $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/po-admin.js' ));
 		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/po-admin.js', array( 'jquery' ), $version, true );
