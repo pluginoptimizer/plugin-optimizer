@@ -6,6 +6,11 @@ $categories = get_categories( [
 	'hide_empty' => 0,
 ] );
 
+if( $categories ){
+    
+    usort( $categories, "SOSPO_Admin_Helper::sort__by_cat_name" );
+}
+
 ?>
 
 <div class="sos-wrap">

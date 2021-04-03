@@ -4,6 +4,16 @@
  */
 
 class SOSPO_Admin_Helper {
+    
+    static function sort__by_post_title( $a, $b ){
+        
+        return strnatcasecmp( $a->post_title, $b->post_title );
+    }
+
+    static function sort__by_cat_name( $a, $b ){
+        
+        return strnatcasecmp( $a->cat_name, $b->cat_name );
+    }
 
 	static function get_filter_endpoints( $filter, $add_home = false ) {
         
@@ -162,7 +172,6 @@ EOF;
         
 		if( $data["plugins"] ){
             
-            // write_log( $data["plugins"], "content_part__plugins-data-plugins" );
             natsort( $data["plugins"] );
             
             echo '<div class="special_grid_list">';

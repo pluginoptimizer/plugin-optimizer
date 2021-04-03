@@ -4,6 +4,12 @@ $groups = get_posts( array(
 	'post_status' => [ 'publish', 'trash' ],
 	'numberposts' => - 1,
 ) );
+
+if( $groups ){
+    
+    usort( $groups, "SOSPO_Admin_Helper::sort__by_post_title" );
+}
+
 ?>
 
 <div class="sos-wrap">
