@@ -222,7 +222,7 @@ class SOSPO_MU {
             
             // If we're on the edit post screen, filter by post type
             
-            if( $filter->type_filter !== '_endpoint' && $editing_post_type && $editing_post_type == $filter->type_filter ){
+            if( $filter->filter_type !== '_endpoint' && $editing_post_type && $editing_post_type == $filter->filter_type ){
                 
                 $this->use_filter( $filter );
                 
