@@ -4,7 +4,7 @@
  * Plugin URI:        https://pluginoptimizer.com
  * Description:       This MU plugin is required by the Plugin Optimizer plugin. It will be removed upon deactivation.
  * Version:           1.0.6
- * Author:            pluginoptimizer
+ * Author:            Plugin Optimizer
  * Author URI:        https://pluginoptimizer.com/about/
  * License:           GPL-2.0+
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
