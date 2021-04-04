@@ -797,7 +797,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     background: none;
 }
 #edit_filter #endpoints_wrapper{
-    /* display: none; */
+    display: none;
     flex-flow: row wrap;
 }
 

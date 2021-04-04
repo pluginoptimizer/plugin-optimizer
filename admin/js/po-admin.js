@@ -109,6 +109,11 @@ jQuery( document ).ready( function($){
             let selected = $('#set_filter_type').data("selected");
             
             $('#loading_post_types').hide();
+            
+            // TODO It's possible that this 'selected' post_type doesn't exist anymore, so we should:
+            // a) switch to default, or
+            // b) notify the user that there might be an error
+            // it's not necessary an error if the plugin that creates that post type is temporary disabled
             $('#set_filter_type').val( selected ).change().slideDown();
             
         }, "json");
@@ -431,7 +436,7 @@ jQuery( document ).ready( function($){
     // On the Edit Filter screen, we need to force to local domain, can't filter plugins for other domains
     $('body').on('input', '.additional_endpoint_wrapper input', function(ev){
         
-        console.log( "Event type: ", ev.type );
+        // console.log( "Event type: ", ev.type );
         
         let full_url = new URL( $(this).val(), po_object.home_url );
         let relative = full_url.href.replace( full_url.origin, '' );
@@ -684,7 +689,7 @@ jQuery( document ).ready( function($){
         
         let tab_id = $(this).parents('.hidden-info_overview').data('id').replace('tab_', '');
         
-        console.log( "Tab ID: ", tab_id );
+        // console.log( "Tab ID: ", tab_id );
         
         $(this).parents('.hidden-info_overview').slideUp( 400, function(){
             
@@ -697,7 +702,7 @@ jQuery( document ).ready( function($){
         $(this).remove();
         
         $.post( po_object.ajax_url, { action  : 'po_mark_tab_complete', tab_id : tab_id, user_id : po_object.user_id }, function( response ) {
-            console.log( "po_mark_tab_complete: ", response );
+            // console.log( "po_mark_tab_complete: ", response );
             
             if( response.data.message ){
                 
@@ -718,7 +723,7 @@ jQuery( document ).ready( function($){
         // console.log( "should: ", should );
         
         $.post( po_object.ajax_url, { action  : 'po_save_option_alphabetize_menu', should_alphabetize : should }, function( response ) {
-            console.log( "po_save_option_alphabetize_menu: ", response );
+            // console.log( "po_save_option_alphabetize_menu: ", response );
             
             if( response.data.message ){
                 
@@ -729,7 +734,7 @@ jQuery( document ).ready( function($){
         
     });
     
-    // Overview: mark tab complete
+    // Filters List screen: turn filter on/off
     $('body').on('change', '#the-list .turn_off_filter', function(){
         
         let turned_off = ! $(this).prop('checked');
@@ -739,7 +744,7 @@ jQuery( document ).ready( function($){
         // console.log( "turned_off: ", turned_off );
         
         $.post( po_object.ajax_url, { action  : 'po_turn_off_filter', turned_off : turned_off, post_id : post_id }, function( response ) {
-            console.log( "po_save_option_alphabetize_menu: ", response );
+            // console.log( "po_save_option_alphabetize_menu: ", response );
             
             if( response.data.message ){
                 
@@ -767,8 +772,8 @@ jQuery( document ).ready( function($){
             
             let rows       = Math.ceil( items_no / columns );
             
-            console.log( "Items: ", items_no );
-            console.log( "rows: ",  rows     );
+            // console.log( "Items: ", items_no );
+            // console.log( "rows: ",  rows     );
             
             $grid_list.css("grid-template-columns", "repeat(" + columns + ", 1fr  )" );
             $grid_list.css("grid-template-rows",    "repeat(" + rows    + ", auto )" );

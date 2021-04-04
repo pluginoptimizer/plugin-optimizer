@@ -17,13 +17,6 @@ $categories = get_categories( [
 	'hide_empty' => 0,
 ] );
 
-// TODO If all plugins are blocked on this page, this will return only posts and pages
-$post_types = get_post_types( [ 'publicly_queryable' => 1 ] );
-$post_types['page'] = 'page';
-unset( $post_types[ 'attachment' ], $post_types[ 'sos_filter' ], $post_types[ 'sos_group' ], $post_types[ 'sos_work' ] );
-
-natcasesort( $post_types );
-
 // sospo_mu_plugin()->write_log( $categories, "page-add-filters-categories" );
 
 // defaults
@@ -34,8 +27,6 @@ $plugins_to_block  = [];
 $groups_to_block   = [];
 $filter_categories = [];
 $endpoints         = [];
-
-$show_endpoints_wrapper = '';
 
 // Editing existing filter?
 
@@ -51,6 +42,7 @@ if( $filter ){
     $plugins_to_block   = get_post_meta( $filter->ID, "plugins_to_block", true );
     $groups_to_block    = get_post_meta( $filter->ID, "groups_used", true );
     $filter_categories  = get_post_meta( $filter->ID, "categories", true );
+    $endpoints          = SOSPO_Admin_Helper::get_filter_endpoints( $filter );
     
     if( ! empty( $plugins_to_block ) ){
         $plugins_to_block   = array_keys( $plugins_to_block );
@@ -62,18 +54,6 @@ if( $filter ){
     
     if( ! empty( $filter_categories ) ){
         $filter_categories  = array_keys( $filter_categories );
-    }
-    
-    // sospo_mu_plugin()->write_log( $filter_type, "page-filters-edit-filter_type" );
-    
-    if( $filter_type == "_endpoint" || ! in_array( $filter_type, $post_types ) ){
-        
-        $filter_type = "_endpoint";
-        $endpoints   = SOSPO_Admin_Helper::get_filter_endpoints( $filter );
-        
-    } else {
-        
-        $show_endpoints_wrapper = ' style="display: none;"';
     }
     
 } elseif( ! empty( $_GET["work_title"] ) && ! empty( $_GET["work_link"] ) ){
@@ -133,7 +113,7 @@ if( $filter ){
                         
 					</div>
 					
-                    <div class="row select_trigger" id="endpoints_wrapper"<?php echo $show_endpoints_wrapper ?>>
+                    <div class="row select_trigger" id="endpoints_wrapper">
                     
 						<div class="col-12">
 							<div class="header">Endpoints</div>
