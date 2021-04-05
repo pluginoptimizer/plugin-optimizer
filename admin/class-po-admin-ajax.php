@@ -91,12 +91,11 @@ class SOSPO_Ajax {
         }
 
 
-        if( ! empty( $data["categories"] ) ){
+        if( ! empty( $data["meta"]["categories"] ) ){
             
-            $category_ids = array_map( 'intval', array_keys( $data["categories"] ) );
+            $category_ids = array_map( 'intval', array_keys( $data["meta"]["categories"] ) );
             
             $set_categories = wp_set_object_terms( $post_id, $category_ids, "сategories_filters" );
-            
         }
         
         
