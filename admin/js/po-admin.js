@@ -640,12 +640,12 @@ jQuery( document ).ready( function($){
         
         if($(this).next('.hidden-info_overview').hasClass("closed") ){
             
-            $(this).next('.hidden-info_overview').removeClass("closed").addClass("opened");
+            $(this).next('.hidden-info_overview').slideDown().removeClass("closed").addClass("opened");
             $(this).children('.trigger').removeClass('trigger_closed').addClass('trigger_opened');
             
         } else{
             
-            $(this).next('.hidden-info_overview').addClass("closed").removeClass("opened");
+            $(this).next('.hidden-info_overview').slideUp().addClass("closed").removeClass("opened");
             $(this).children('.trigger').addClass('trigger_closed').removeClass('trigger_opened');
             
         }
@@ -665,8 +665,8 @@ jQuery( document ).ready( function($){
             
         // TODO SWITCH
 
-                // location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_filters';
-                location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer';
+                location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_filters';
+                // location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer';
                 break;
             case 'window_categories':
                 location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_filters_categories';

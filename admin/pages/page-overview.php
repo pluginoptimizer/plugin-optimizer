@@ -1,14 +1,13 @@
 <div class="wrap container">
     <div class="wrap sos-wrap">
         <div class="container">
-            <div class="row col-12">
+            <div>
                 <h1>Plugin Optimizer</h1>
             </div>
-            <div class="row col-12">
+            <div>
                 <h2>Overview</h2>
             </div>
-            <div class="row sos-content">
-                <div class="col-12">
+            <div class="sos-content">
                 
                 <?php
                     
@@ -60,7 +59,6 @@ EOF;
                     }
                 ?>
                 
-                </div>
             </div>
         </div>
     </div>

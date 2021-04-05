@@ -33,7 +33,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="row">
+        ?><div class="justify-content-between">
             <div class="col-6">
                 <h4>Plugin Registration</h4>
                 <div class="sos-registration">
@@ -82,7 +82,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="row">
+        ?><div class="justify-content-between">
             <div class="col-6">
                 <h4>CATEGORY</h4>
                 <div class="sos-registration">
@@ -103,7 +103,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="row">
+        ?><div class="justify-content-between">
             <div class="col-6">
                 <h4>GROUP</h4>
                 <div class="sos-registration">
@@ -124,7 +124,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="row">
+        ?><div class="justify-content-between">
             <div class="col-6">
                 <h4>FILTER</h4>
                 <div class="sos-registration">
@@ -145,7 +145,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="row">
+        ?><div class="justify-content-between">
             <div class="col-6">
                 <h4>INSTALLATION</h4>
                 <div class="sos-registration">
