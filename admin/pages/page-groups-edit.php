@@ -48,14 +48,20 @@ if( $group ){
                     <div class="row block-plugin-wrapper">
                         <div class="col-12">
                             
-                            <div class="header">
-                                <div class="title">Select plugins <span class="disabled">- <?php echo count( $plugins["all"] ); ?></span></div>
-                                <span class="all-check toggle_plugins">Disable All</span>
-                                <span class="count-plugin">( Active: <?php echo count( $plugins["active"] ); ?>   |   Inactive: <?php echo count( $plugins["inactive"] ); ?> )</span>
-                            </div>
+							<div class="header">
+								<div class="title">Plugins <span class="disabled">- <?php echo count( $plugins["all"] ); ?></span></div>
+								<span class="count-plugin">( Active: <?php echo count( $plugins["active"] ); ?>   |   Inactive: <?php echo count( $plugins["inactive"] ); ?> )</span>
+								<span class="all-check toggle_plugins">Disable All</span>
+							</div>
                             
-                            <?php SOSPO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["all"], "inactive" => $plugins["inactive"], "blocked" => $plugins_to_block ] ); ?>
+                            <div class="header attribute-plugin">Active plugins</div>
                                 
+							<?php SOSPO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["active"],   "inactive" => [],                   "blocked" => $plugins_to_block ] ); ?>
+                            
+                            <div class="header attribute-plugin" style="margin-top: 10px;">Inactive plugins</div>
+                            
+							<?php SOSPO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["inactive"], "inactive" => $plugins["inactive"], "blocked" => $plugins_to_block ] ); ?>
+                            
                         </div>
                     </div>
                 </div>
