@@ -130,14 +130,14 @@ body.po_is_blocking_plugins ul#adminmenu .wp-menu-image img{
 
 
 .sos-icon:before {
-    font-family: "dashicons";
-    content: "\f468";
+    content: " ";
     display: inline-block;
-    line-height: 1;
     width: 20px;
     height: 20px;
-    font-size: 20px;
     vertical-align: top;
     margin-top: 6px;
-    color: #fff;
+    background-image: url('../../assets/icon-128x128.png');
+    background-size: 16px auto;
+    background-repeat: no-repeat;
+    background-position: center;
 }
