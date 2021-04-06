@@ -2,7 +2,7 @@
 $plugins = SOSPO_Admin_Helper::get_plugins_with_status();
 
 $groups = get_posts( [
-	'post_type'   => 'sos_group',
+	'post_type'   => 'plgnoptmzr_group',
 	'numberposts' => - 1,
 ] );
 
@@ -13,7 +13,7 @@ if( $groups ){
 
 $categories = get_categories( [
 	'taxonomy'   => 'сategories_filters',
-	'type'       => 'sos_filter',
+	'type'       => 'plgnoptmzr_filter',
 	'hide_empty' => 0,
 ] );
 

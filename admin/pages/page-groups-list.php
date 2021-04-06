@@ -1,6 +1,6 @@
 <?php
 $groups = get_posts( array(
-	'post_type'   => 'sos_group',
+	'post_type'   => 'plgnoptmzr_group',
 	'post_status' => [ 'publish', 'trash' ],
 	'numberposts' => - 1,
 ) );
@@ -28,9 +28,9 @@ if( $groups ){
             <?php SOSPO_Admin_Helper::content_part__bulk_actions( $groups ); ?>
             
             <div class="col-3 quantity">
-                <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?php echo wp_count_posts( 'sos_group' )->publish; ?></span>)
+                <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?php echo wp_count_posts( 'plgnoptmzr_group' )->publish; ?></span>)
                 |
-                <span id="trash_elements">Trashed</span> (<span id="count_trash_elements"><?php echo wp_count_posts( 'sos_group' )->trash; ?></span>)
+                <span id="trash_elements">Trashed</span> (<span id="count_trash_elements"><?php echo wp_count_posts( 'plgnoptmzr_group' )->trash; ?></span>)
             </div>
             
         </div>

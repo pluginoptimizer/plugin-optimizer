@@ -1,6 +1,6 @@
 <?php
 $filters = get_posts( array(
-	'post_type'   => 'sos_filter',
+	'post_type'   => 'plgnoptmzr_filter',
 	'post_status' => [ 'publish', 'trash' ],
 	'numberposts' => - 1,
 ) );
@@ -28,9 +28,9 @@ if( $filters ){
             <?php SOSPO_Admin_Helper::content_part__bulk_actions( $filters ); ?>
             
             <div class="col-3 quantity">
-                <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?php echo wp_count_posts( 'sos_filter' )->publish; ?></span>)
+                <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?php echo wp_count_posts( 'plgnoptmzr_filter' )->publish; ?></span>)
                 |
-                <span id="trash_elements">Trashed</span> (<span id="count_trash_elements"><?php echo wp_count_posts( 'sos_filter' )->trash; ?></span>)
+                <span id="trash_elements">Trashed</span> (<span id="count_trash_elements"><?php echo wp_count_posts( 'plgnoptmzr_filter' )->trash; ?></span>)
             </div>
             
         </div>

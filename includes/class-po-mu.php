@@ -65,9 +65,9 @@ class SOSPO_MU {
             "/wp-admin/admin.php?page=plugin_optimizer_premium"
         ];
         $this->po_post_types = [
-            "sos_filter",
-            "sos_group",
-            "sos_work",
+            "plgnoptmzr_filter",
+            "plgnoptmzr_group",
+            "plgnoptmzr_work",
         ];
         
         $this->set_hooks();
@@ -209,7 +209,7 @@ class SOSPO_MU {
         // --- Get plugins to block from all the filters
         
         $filters = get_posts([
-            'post_type'   => 'sos_filter',
+            'post_type'   => 'plgnoptmzr_filter',
             'numberposts' => - 1,
         ]);
         

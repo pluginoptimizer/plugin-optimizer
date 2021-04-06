@@ -92,7 +92,7 @@ EOF;
             
             $months[ $date_value ] = $date_label;
             
-            if( $post->post_type == "sos_filter" && ! in_array( $post->filter_type, array_keys( $filter_types ) ) ){
+            if( $post->post_type == "plgnoptmzr_filter" && ! in_array( $post->filter_type, array_keys( $filter_types ) ) ){
                 
                 if( $post->filter_type == "_endpoint" ){
                     

@@ -31,7 +31,7 @@ class SOSPO_Activator {
         
         // Check if we already have the worklist
         
-        $worklist = get_posts( ["post_type" => "sos_work", ] );
+        $worklist = get_posts( ["post_type" => "plgnoptmzr_work", ] );
         
         if( ! empty( $worklist ) ){
             
@@ -46,7 +46,7 @@ class SOSPO_Activator {
             
 			$post_data = array(
 				'post_title'  => get_post( $post->ID )->post_title,
-				'post_type'   => 'sos_work',
+				'post_type'   => 'plgnoptmzr_work',
 				'post_status' => 'publish',
 				'post_author' => 1,
 			);
@@ -66,7 +66,7 @@ class SOSPO_Activator {
             
 			$post_data = array(
 				'post_title'  => $page->post_title,
-				'post_type'   => 'sos_work',
+				'post_type'   => 'plgnoptmzr_work',
 				'post_status' => 'publish',
 				'post_author' => 1,
 			);
@@ -117,7 +117,7 @@ class SOSPO_Activator {
 
 		$post_types         = get_post_types( [ 'publicly_queryable' => 1 ] );
 		$post_types['page'] = 'page';
-		unset( $post_types['attachment'], $post_types['sos_filter'], $post_types['sos_group'], $post_types['sos_work'] );
+		unset( $post_types['attachment'], $post_types['plgnoptmzr_filter'], $post_types['plgnoptmzr_group'], $post_types['plgnoptmzr_work'] );
 
 		foreach ( $post_types as $post_type ) {
 			$posts = get_posts( array(

@@ -66,7 +66,7 @@ class SOSPO_Ajax {
         
 		$post_data = array(
 			'post_title'  => $data["title"],
-			'post_type'   => 'sos_filter',
+			'post_type'   => 'plgnoptmzr_filter',
 			'post_status' => 'publish',
 			'post_author' => 1,// TODO get_current_user_id() with localize_script in enqueue function
 		);
@@ -136,7 +136,7 @@ class SOSPO_Ajax {
         
 		$post_data = array(
 			'post_title'  => $data["title"],
-			'post_type'   => 'sos_group',
+			'post_type'   => 'plgnoptmzr_group',
 			'post_status' => 'publish',
 			'post_author' => 1,// TODO get_current_user_id() with localize_script in enqueue function
 		);

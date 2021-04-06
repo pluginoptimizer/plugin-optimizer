@@ -223,7 +223,7 @@ class SOSPO_Admin {
 		// $wp_admin_bar->add_menu( array(
 			// 'parent' => 'plugin_optimizer',
 			// 'id'     => 'plugin_optimizer_worklist',
-			// 'title'  => 'Worklist (' . wp_count_posts( 'sos_work' )->publish . ')',
+			// 'title'  => 'Worklist (' . wp_count_posts( 'plgnoptmzr_work' )->publish . ')',
 			// 'href'   => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_worklist' ) ),
 		// ) );
 
@@ -321,7 +321,7 @@ class SOSPO_Admin {
 		/**
 		 * Register filter for page
 		 */
-		register_post_type( 'sos_filter', array(
+		register_post_type( 'plgnoptmzr_filter', array(
 			'label'         => null,
 			'labels'        => array(
 				'name'               => 'Filters',
@@ -356,7 +356,7 @@ class SOSPO_Admin {
 		/**
 		 * Register group for plugins
 		 */
-		register_post_type( 'sos_group', array(
+		register_post_type( 'plgnoptmzr_group', array(
 			'label'         => null,
 			'labels'        => array(
 				'name'               => 'Groups plugins',
@@ -391,7 +391,7 @@ class SOSPO_Admin {
 		/**
 		 * Register work for worklist
 		 */
-		register_post_type( 'sos_work', array(
+		register_post_type( 'plgnoptmzr_work', array(
 			'label'         => null,
 			'labels'        => array(
 				'name'               => 'Works',
@@ -430,7 +430,7 @@ class SOSPO_Admin {
 	 */
 	function register_taxonomies() {
 
-		register_taxonomy( 'сategories_filters', array( 'sos_filter' ), array(
+		register_taxonomy( 'сategories_filters', array( 'plgnoptmzr_filter' ), array(
 			'hierarchical' => true,
 			'labels'       => array(
 				'name'              => _x( 'Categories', 'taxonomy general name' ),
@@ -503,7 +503,7 @@ class SOSPO_Admin {
 
 		$post_data = array(
 			'post_title'  => $title_work,
-			'post_type'   => 'sos_work',
+			'post_type'   => 'plgnoptmzr_work',
 			'post_status' => 'publish',
 			'post_author' => 1,
 		);

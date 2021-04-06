@@ -1,7 +1,7 @@
 <?php
 $categories = get_categories( [
 	'taxonomy'   => 'сategories_filters',
-	'type'       => 'sos_filter',
+	'type'       => 'plgnoptmzr_filter',
 	'parent'     => 0,
 	'hide_empty' => 0,
 ] );

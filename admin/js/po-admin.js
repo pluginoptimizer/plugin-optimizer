@@ -553,11 +553,11 @@ jQuery( document ).ready( function($){
         let data = false;
         
         if( $('#name_page').attr("class") === 'worklist' ){
-            name_post_type = 'sos_work';
+            name_post_type = 'plgnoptmzr_work';
         } else if( $('#name_page').attr("class") === 'filters' ){
-            name_post_type = 'sos_filter';
+            name_post_type = 'plgnoptmzr_filter';
         } else if( $('#name_page').attr("class") === 'groups' ){
-            name_post_type = 'sos_group';
+            name_post_type = 'plgnoptmzr_group';
         } else if( $('#name_page').attr("class") === 'categories' ){
             name_post_type = 'cat';
         }
