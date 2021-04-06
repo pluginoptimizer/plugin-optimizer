@@ -12,7 +12,7 @@ if( $groups ){
 }
 
 $categories = get_categories( [
-	'taxonomy'   => 'plgnoptmzr_сategories',
+	'taxonomy'   => 'plgnoptmzr_categories',
 	'type'       => 'plgnoptmzr_filter',
 	'hide_empty' => 0,
 ] );

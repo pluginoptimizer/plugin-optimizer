@@ -1,6 +1,6 @@
 <?php
 $categories = get_categories( [
-	'taxonomy'   => 'plgnoptmzr_сategories',
+	'taxonomy'   => 'plgnoptmzr_categories',
 	'type'       => 'plgnoptmzr_filter',
 	'parent'     => 0,
 	'hide_empty' => 0,
@@ -37,7 +37,7 @@ if( $categories ){
             </div>
         
             <div class="col-3 quantity">
-                <span>All</span> (<span id="count_all_elements"><?php echo wp_count_terms( 'plgnoptmzr_сategories' ); ?></span>)
+                <span>All</span> (<span id="count_all_elements"><?php echo wp_count_terms( 'plgnoptmzr_categories' ); ?></span>)
             </div>
         </div>
         
