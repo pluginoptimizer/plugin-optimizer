@@ -95,7 +95,7 @@ class SOSPO_Ajax {
             
             $category_ids = array_map( 'intval', array_keys( $data["meta"]["categories"] ) );
             
-            $set_categories = wp_set_object_terms( $post_id, $category_ids, "сategories_filters" );
+            $set_categories = wp_set_object_terms( $post_id, $category_ids, "plgnoptmzr_сategories" );
         }
         
         
@@ -186,7 +186,7 @@ class SOSPO_Ajax {
         
         if( empty( $data["ID"] ) ){
             
-            $category = wp_create_term( $data["name"], "сategories_filters" );
+            $category = wp_create_term( $data["name"], "plgnoptmzr_сategories" );
             
             if( is_wp_error( $category ) ){
                 wp_send_json_error( [ "message" => "An error occured: " . $category->get_error_message() ] );
@@ -200,7 +200,7 @@ class SOSPO_Ajax {
             unset( $data["ID"] );
         }
         
-        $category = wp_update_term( $term_id, "сategories_filters", $data );
+        $category = wp_update_term( $term_id, "plgnoptmzr_сategories", $data );
         
         if( is_wp_error( $category ) ){
             wp_send_json_error( [ "message" => "An error occured: " . $category->get_error_message() ] );
@@ -223,11 +223,11 @@ class SOSPO_Ajax {
         
         $category_name = sanitize_textarea_field( $_POST['category_name'] );
         
-        if( term_exists( $category_name, "сategories_filters" ) ){
+        if( term_exists( $category_name, "plgnoptmzr_сategories" ) ){
             wp_send_json_error( [ "message" => "A category with that name already exists!" ] );
         }
         
-        $data = wp_create_term( $category_name, "сategories_filters" );
+        $data = wp_create_term( $category_name, "plgnoptmzr_сategories" );
         
         if( is_wp_error( $data ) ){
             wp_send_json_error( [ "message" => "An error occured: " . $data->get_error_message() ] );
@@ -248,7 +248,7 @@ class SOSPO_Ajax {
 		if ( $name_post_type === 'cat' ) {
 			
 			foreach ( $id_elements as $id_element ) {
-				wp_delete_term( $id_element, 'сategories_filters' );
+				wp_delete_term( $id_element, 'plgnoptmzr_сategories' );
 			}
 
 			wp_send_json_success( [ "message" => "Categories are deleted." ] );

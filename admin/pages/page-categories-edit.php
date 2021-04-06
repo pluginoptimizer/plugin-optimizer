@@ -6,7 +6,7 @@ $cat_desc   = "";
 
 
 $cat_id = ! empty( $_GET["cat_id"] )  ? intval( $_GET["cat_id"] )                   : false;
-$cat    = $cat_id                     ? get_term( $cat_id, "сategories_filters" )   : false;
+$cat    = $cat_id                     ? get_term( $cat_id, "plgnoptmzr_сategories" )   : false;
 
 if( $cat ){
     

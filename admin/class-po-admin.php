@@ -430,7 +430,7 @@ class SOSPO_Admin {
 	 */
 	function register_taxonomies() {
 
-		register_taxonomy( 'сategories_filters', array( 'plgnoptmzr_filter' ), array(
+		register_taxonomy( 'plgnoptmzr_сategories', array( 'plgnoptmzr_filter' ), array(
 			'hierarchical' => true,
 			'labels'       => array(
 				'name'              => _x( 'Categories', 'taxonomy general name' ),
