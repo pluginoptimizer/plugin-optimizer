@@ -15,7 +15,7 @@
                     
                     $tabs = SOSPO_Admin_Overview::get_tabs();
                     
-                    $tabs = apply_filters( "sos_po_overview_tabs", $tabs );
+                    $tabs = apply_filters( "plgnoptmzr_overview_tabs", $tabs );
                     
                     $completed_tabs = get_user_meta( get_current_user_id(), "completed_overview_tabs", true );
                     

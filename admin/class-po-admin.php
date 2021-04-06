@@ -136,7 +136,7 @@ class SOSPO_Admin {
         
         if( function_exists("sospo_mu_plugin") && ( count( sospo_mu_plugin()->blocked_plugins ) >= 1 || get_option("po_should_alphabetize_menu") == "1" ) ){
             
-            $original_menu = get_option("sos_po_original_menu");
+            $original_menu = get_option("plgnoptmzr_original_menu");
             
             if( $original_menu ){
                 
@@ -147,8 +147,8 @@ class SOSPO_Admin {
         
         if( function_exists("sospo_mu_plugin") && count( sospo_mu_plugin()->blocked_plugins ) >= 1 ){
             
-            $topbar_menu   = get_option("sos_po_topbar_menu");
-            $new_posts     = get_option("sos_po_new_posts");
+            $topbar_menu   = get_option("plgnoptmzr_topbar_menu");
+            $new_posts     = get_option("plgnoptmzr_new_posts");
             
             if( $topbar_menu ){
                 

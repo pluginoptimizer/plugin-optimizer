@@ -136,7 +136,7 @@ function test_overview_page_hook( $tabs ){
     
     return $tabs;
 }
-// add_filter( "sos_po_overview_tabs", "test_overview_page_hook", 10, 1 );
+// add_filter( "plgnoptmzr_overview_tabs", "test_overview_page_hook", 10, 1 );
 
 
 function test_post_state( $post_states, $post ){
