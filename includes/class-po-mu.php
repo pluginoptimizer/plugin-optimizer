@@ -45,8 +45,8 @@ class SOSPO_MU {
         
         $this->po_plugins = [
             "plugin-optimizer/plugin-optimizer.php",
-            "sos_plugin_optimizer_dictionary_age/sos_plugin_optimizer_dictionary_age.php",
-            "sos_plugin_optimizer_premium/sos_plugin_optimizer_premium.php",
+            "plugin-optimizer-agent/plugin-optimizer-agent.php",
+            "plugin-optimizer-premiumplugin-optimizer-premium.php",
         ];
         $this->po_pages = [
             "/wp-admin/admin.php?page=plugin_optimizer",
