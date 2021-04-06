@@ -1,114 +1,84 @@
-=== Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: author-uri.com
-Tags: comments, spam
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
+=== Plugin Optimizer - Speed Up Your WordPress Like Never Before ===
+Contributors: pluginoptimizer,simpleonlinesystems,andrija
+Tags: Plugin Optimizer, Speed Up, Optimization, Save Time, Page Speed, Performance
+Requires at least: 5.0
+Tested up to: 5.7
+Stable tag: 1.0.7
+Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+The Most Powerful Performance Plugin for WordPress is now available for FREE.
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+== Plugin Optimizer for WordPress ==
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+Speed up WordPress by only loading the Plugins you need in each page.
 
-A few notes about the sections above:
+https://youtu.be/-x4xg59uJn0
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+Optimizing your WordPress site with [Plugin Optimizer](https://pluginoptimizer.com/?utm_source=po-lite&utm_campaign=wp-repo&utm_medium=readme&utm_term=pluginoptimizer) is easy and can reduce load times as much as 90%.
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
+Faster page load, faster wp-admin, and faster page editing.
 
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+Speed up your site today with by only loading the plugin code needed for any particular page.   
+
+Plugin Optimizer works completely different than any other Page Speed / Site Speed plugin or tool.
+
+Plugin Optimizer does not affect minifying, cache, image load/size or scripts. It works by filtering the plugins and only allowing the necessary plugins for each page to load.
+
+Once installed and configured you will see an instant boost in any optimized page. 
+
+Speed up the back-end development environment and speed up the front-end user experience.
+
+== Features ==
+
+* Page size reduction by stripping code from unneeded plugins on each optimized page
+* Step-by-Step Wizard for creating Filters, Groups, and Categories 
+* Custom filters for maximizing user experience
+* Boost speed for both backend and frontend pages
+* Speed up editing of content
+* Instant page speed boost on optimized pages
+* Reduction in server load - get great results with even basic shared server accounts
+* Works great in combination with a cache plugin (e.g. WP Rocket, WP Fastest Cache, W3 Total Cache), a hosting company that offers packages with server-level caching available (e.g. WordKeeper) or a service like Cloudflare that has page caching enabled.
+
+== Support ==
+
+If you have questions, comments, or suggestions contact us here:
+By Email: [Support@pluginoptimizer.com](mailto:support@pluginoptimizer.com)
+By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/support)
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
-
-1. Upload `simple-online-systems.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
-
-== Frequently Asked Questions ==
-
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
-
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Install 'Plugin Optimizer' plugin
+2. Activate the plugin
+3. Go to Plugin Optimizer -> Create Filter and start making filters.
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
+= 1.0.7 = April 2021
+* Bugfixes and UI polishing
 
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+= 1.0.6 = March 2021
+* The MU plugin will always be the same version as the main file
+* Plugin Optimizer now works with WordPress in a subfolder
+* View Details on the Plugins page fixed
 
-== Upgrade Notice ==
+= 1.0.5 = March 2021
+* The MU plugin will get updated on any plugin update
+* The View Details screen on the Plugins page got fixed
 
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
+= 1.0.4 = March 2021
+* Auto Menu Update Fixed
+* Overview and walkthrough added
+* Other minor tweeks to the code
 
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
+= 1.0.3 = March 2021
+* Initial Deployment.
 
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+## Privacy Policy
+Plugin Optimizer uses [Appsero](https://appsero.com) SDK to collect some telemetry data upon user's confirmation. This helps us to troubleshoot problems faster & make product improvements.
+Appsero SDK **does not gather any data by default.** The SDK only starts gathering basic telemetry data **when a user allows it via the admin notice**. We collect the data to ensure a great user experience for all our users.
+Integrating Appsero SDK **DOES NOT IMMEDIATELY** start gathering data, **without confirmation from users in any case.**
+Learn more about how [Appsero collects and uses this data](https://appsero.com/privacy-policy/).
