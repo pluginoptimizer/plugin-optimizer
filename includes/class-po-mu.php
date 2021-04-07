@@ -332,7 +332,10 @@ class SOSPO_MU {
         
         foreach( $this->$array_name as $plugin_id ){
             
-            $list[ $plugin_id ] = $this->all_plugins[ $plugin_id ][ $key ];
+            if( ! empty( $this->all_plugins[ $plugin_id ] ) ){
+                
+                $list[ $plugin_id ] = $this->all_plugins[ $plugin_id ][ $key ];
+            }
             
         }
         
