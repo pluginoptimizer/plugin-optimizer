@@ -83,6 +83,34 @@ class SOSPO_Admin {
                 // )
         // )
         
+        // ----
+        
+        // check if we need to convert our post types from the old names
+        
+        global $wpdb;
+        
+        $table = $wpdb->prefix . "posts";
+        
+        $query = "
+            SELECT      DISTINCT( post_type )
+            FROM        $table
+            WHERE       post_type IN ( 'sos_filter', 'sos_group', 'sos_work' )
+        ";
+        
+        $old_post_types = $wpdb->get_col( $query );
+        
+        if( ! empty( $old_post_types ) ){
+            
+            $wpdb->query("UPDATE  " . $wpdb->prefix . "posts         SET post_type = 'plgnoptmzr_filter'     WHERE post_type = 'sos_filter';");
+            $wpdb->query("UPDATE  " . $wpdb->prefix . "posts         SET post_type = 'plgnoptmzr_group'      WHERE post_type = 'sos_group';");
+            $wpdb->query("UPDATE  " . $wpdb->prefix . "posts         SET post_type = 'plgnoptmzr_work'       WHERE post_type = 'sos_work';");
+            $wpdb->query("UPDATE  " . $wpdb->prefix . "term_taxonomy SET taxonomy  = 'plgnoptmzr_categories' WHERE taxonomy LIKE '_ategories_filters' OR taxonomy LIKE 'plgnoptmzr%tegories';");
+            
+        }
+        
+        
+        // put the MU plugin in place
+        
         if( ! file_exists( WPMU_PLUGIN_DIR ) ){
             
             mkdir( WPMU_PLUGIN_DIR );
