@@ -119,6 +119,11 @@ class SOSPO_Admin {
 
         copy( dirname( __DIR__ ) . '/includes/class-po-mu.php', WPMU_PLUGIN_DIR . '/class-po-mu.php' );
         
+        
+        // rewrite rules
+        
+        flush_rewrite_rules( false );// false = soft
+        
 	}
 
     
