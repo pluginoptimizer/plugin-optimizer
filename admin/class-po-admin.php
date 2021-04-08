@@ -62,7 +62,7 @@ class SOSPO_Admin {
 
 		add_action( 'upgrader_process_complete',    [ $this, 'do_after_plugin_update'   ], 10, 2 );
 
-        add_action( 'admin_menu',                   [ $this, 'po_wp_menu'               ]);
+        add_action( 'admin_menu',                   [ $this, 'po_wp_menu'               ], 101);
 	}
 
 	function do_after_plugin_update(  $wp_upgrader_object, $options ){
