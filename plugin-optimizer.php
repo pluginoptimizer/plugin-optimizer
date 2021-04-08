@@ -18,6 +18,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+include 'config.php';
+
 /**
  * Initialize the plugin tracker
  *
