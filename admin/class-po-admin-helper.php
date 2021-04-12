@@ -390,6 +390,11 @@ EOF;
 
 		foreach ( $active_plugins as $plugin_id ) {
             
+            if( empty( $all_plugins[ $plugin_id ] ) ){
+                
+                continue;
+            }
+            
             if( ! in_array( $plugin_id, sospo_mu_plugin()->po_plugins ) || ! $remove_po ){
                 $plugins_simple_list["active"][ $plugin_id ] = $all_plugins[ $plugin_id ][ 'Name' ];
                 $plugins_simple_list["all"][ $plugin_id ]    = $all_plugins[ $plugin_id ][ 'Name' ];
@@ -405,6 +410,11 @@ EOF;
 		}
 
 		foreach ( $all_plugins as $plugin_id => $plugin_data ) {
+            
+            if( empty( $all_plugins[ $plugin_id ] ) ){
+                
+                continue;
+            }
             
             if( ! in_array( $plugin_id, sospo_mu_plugin()->po_plugins ) || ! $remove_po ){
                 $plugins_simple_list["inactive"][ $plugin_id ] = $all_plugins[ $plugin_id ][ 'Name' ];
