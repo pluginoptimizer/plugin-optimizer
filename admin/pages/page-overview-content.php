@@ -5,23 +5,39 @@ class SOSPO_Admin_Overview{
         
         $tabs = [
             10 => [
-                "title"     => "Plugin Registration",
+                "title"     => "Plugin Optimizer Overview",
                 "content"   => SOSPO_Admin_Overview::tab_1()
             ],
             20 => [
-                "title"     => "Creating a Category Wizard",
+                "title"     => "Setup Your First Filter",
                 "content"   => SOSPO_Admin_Overview::tab_2()
             ],
             30 => [
-                "title"     => "Creating a Group Wizard",
+                "title"     => "How To Setup A Group",
                 "content"   => SOSPO_Admin_Overview::tab_3()
             ],
             40 => [
-                "title"     => "Creating a Filter Wizard",
+                "title"     => "Organizing with Categories",
                 "content"   => SOSPO_Admin_Overview::tab_4()
             ],
             50 => [
-                "title"     => "Paid installation section",
+                "title"     => "How To Use Wildcards",
+                "content"   => SOSPO_Admin_Overview::tab_5()
+            ],
+            60 => [
+                "title"     => "EndPoints Vs PostTypes",
+                "content"   => SOSPO_Admin_Overview::tab_5()
+            ],
+            70 => [
+                "title"     => "Mistakes To Avoid",
+                "content"   => SOSPO_Admin_Overview::tab_5()
+            ],
+            80 => [
+                "title"     => "Testing Your Filters",
+                "content"   => SOSPO_Admin_Overview::tab_5()
+            ],
+            90 => [
+                "title"     => "Get It Done For You",
                 "content"   => SOSPO_Admin_Overview::tab_5()
             ],
         ];
@@ -35,43 +51,14 @@ class SOSPO_Admin_Overview{
         
         ?><div class="justify-content-between">
             <div class="col-6">
-                <h4>Plugin Registration</h4>
-                <div class="sos-registration">
-                    <form action="">
-                        <div>
-                            <p>Enter text</p>
-                            <input type="text">
-                        </div>
-                        <div>
-                            <p>Enter text</p>
-                            <input type="text">
-                        </div>
-                        <div>
-                            <p>Enter text</p>
-                            <input type="text">
-                        </div>
-                        <div>
-                            <p>Enter text</p>
-                            <input type="text">
-                        </div>
-                        <div>
-                            <p>Enter text</p>
-                            <input type="text">
-                        </div>
-                        <div>
-                            <p>Enter text</p>
-                            <input type="text">
-                        </div>
-                        <input type="submit" value="Submit">
-                    </form>
-                </div>
-                <div class="anonymous">
-                    <input type="checkbox" name="" id=""> <span>Anonymous Data Sharing Permission</span>
+                <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560;" style="background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
+                    <iframe src="https://www.youtube.com/embed/-x4xg59uJn0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="col-6">
-                <h4>Registration</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, explicabo harum? Alias aspernatur assumenda aut consequuntur dolor, eaque earum enim facere magnam molestias odio optio qui quod repudiandae, rerum, totam voluptatibus. Ab alias culpa, explicabo fugit id ipsum laudantium libero magni non nostrum numquam obcaecati quas repellendus ullam, voluptates! Cumque dolores enim optio voluptatem! Adipisci architecto autem doloremque eaque eum, explicabo illum laborum libero? Ab aliquam, aspernatur, autem culpa cum delectus dicta eveniet illum inventore nam non officia, perspiciatis quasi quisquam reiciendis totam vel. Animi id nostrum quidem, rerum saepe tenetur veritatis. Eaque id modi nihil temporibus veniam! Cumque, doloremque!</p>
+                <h4>A Quick Run Through of Plugin Optimizer</h4>
+                <p>Speed up WordPress by only loading the Plugins you need for each page.</p>
+                <p>Optimizing your WordPress site with Plugin Optimizer is easy and can reduce load times by as much as 90%</p>
             </div>
         </div><?php
         
@@ -84,15 +71,13 @@ class SOSPO_Admin_Overview{
         
         ?><div class="justify-content-between">
             <div class="col-6">
-                <h4>CATEGORY</h4>
-                <div class="sos-registration">
-                    <img src="<?php echo plugin_dir_url( __DIR__ ) ?>img/noimage.png" alt="No image">
-
+                <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560;">
+                    <iframe src="https://www.youtube.com/embed/j_xsWpCj__A" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="col-6">
-                <h4>CATEGORY</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, explicabo harum? Alias aspernatur assumenda aut consequuntur dolor, eaque earum enim facere magnam molestias odio optio qui quod repudiandae, rerum, totam voluptatibus. Ab alias culpa, explicabo fugit id ipsum laudantium libero magni non nostrum numquam obcaecati quas repellendus ullam, voluptates! Cumque dolores enim optio voluptatem! Adipisci architecto autem doloremque eaque eum, explicabo illum laborum libero? Ab aliquam, aspernatur, autem culpa cum delectus dicta eveniet illum inventore nam non officia, perspiciatis quasi quisquam reiciendis totam vel. Animi id nostrum quidem, rerum saepe tenetur veritatis. Eaque id modi nihil temporibus veniam! Cumque, doloremque!</p>
+                <h4>Let’s set up your first filter!</h4>
+                <p>Get started with something easy and then tinker from there!</p>
             </div>
         </div><?php
         
@@ -105,15 +90,13 @@ class SOSPO_Admin_Overview{
         
         ?><div class="justify-content-between">
             <div class="col-6">
-                <h4>GROUP</h4>
-                <div class="sos-registration">
-                    <img src="<?php echo plugin_dir_url( __DIR__ ) ?>img/noimage.png" alt="No image">
-
+                <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560;">
+                    <iframe src="https://www.youtube.com/embed/ZDayBkmYRXc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="col-6">
-                <h4>GROUP</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, explicabo harum? Alias aspernatur assumenda aut consequuntur dolor, eaque earum enim facere magnam molestias odio optio qui quod repudiandae, rerum, totam voluptatibus. Ab alias culpa, explicabo fugit id ipsum laudantium libero magni non nostrum numquam obcaecati quas repellendus ullam, voluptates! Cumque dolores enim optio voluptatem! Adipisci architecto autem doloremque eaque eum, explicabo illum laborum libero? Ab aliquam, aspernatur, autem culpa cum delectus dicta eveniet illum inventore nam non officia, perspiciatis quasi quisquam reiciendis totam vel. Animi id nostrum quidem, rerum saepe tenetur veritatis. Eaque id modi nihil temporibus veniam! Cumque, doloremque!</p>
+                <h4>Make creating filters easier by using Filter Groups</h4>
+                <p>Using Filter Groups you can create new Filters with ease.</p>
             </div>
         </div><?php
         
@@ -126,15 +109,13 @@ class SOSPO_Admin_Overview{
         
         ?><div class="justify-content-between">
             <div class="col-6">
-                <h4>FILTER</h4>
-                <div class="sos-registration">
-                    <img src="<?php echo plugin_dir_url( __DIR__ ) ?>img/noimage.png" alt="No image">
-
+                <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560;">
+                    <iframe src="https://www.youtube.com/embed/31ZIMIP_zI0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="col-6">
-                <h4>FILTER</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, explicabo harum? Alias aspernatur assumenda aut consequuntur dolor, eaque earum enim facere magnam molestias odio optio qui quod repudiandae, rerum, totam voluptatibus. Ab alias culpa, explicabo fugit id ipsum laudantium libero magni non nostrum numquam obcaecati quas repellendus ullam, voluptates! Cumque dolores enim optio voluptatem! Adipisci architecto autem doloremque eaque eum, explicabo illum laborum libero? Ab aliquam, aspernatur, autem culpa cum delectus dicta eveniet illum inventore nam non officia, perspiciatis quasi quisquam reiciendis totam vel. Animi id nostrum quidem, rerum saepe tenetur veritatis. Eaque id modi nihil temporibus veniam! Cumque, doloremque!</p>
+                <h4>Make your first Category and stay organized</h4>
+                <p>Staying organized is easy by using Categories</p>
             </div>
         </div><?php
         
@@ -147,15 +128,99 @@ class SOSPO_Admin_Overview{
         
         ?><div class="justify-content-between">
             <div class="col-6">
-                <h4>INSTALLATION</h4>
-                <div class="sos-registration">
-                    <img src="<?php echo plugin_dir_url( __DIR__ ) ?>img/noimage.png" alt="No image">
-
+                <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
+                <?php /*
+                    <iframe src="https://www.youtube.com/embed/-x4xg59uJn0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                */ ?>
                 </div>
             </div>
             <div class="col-6">
-                <h4>INSTALLATION</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, explicabo harum? Alias aspernatur assumenda aut consequuntur dolor, eaque earum enim facere magnam molestias odio optio qui quod repudiandae, rerum, totam voluptatibus. Ab alias culpa, explicabo fugit id ipsum laudantium libero magni non nostrum numquam obcaecati quas repellendus ullam, voluptates! Cumque dolores enim optio voluptatem! Adipisci architecto autem doloremque eaque eum, explicabo illum laborum libero? Ab aliquam, aspernatur, autem culpa cum delectus dicta eveniet illum inventore nam non officia, perspiciatis quasi quisquam reiciendis totam vel. Animi id nostrum quidem, rerum saepe tenetur veritatis. Eaque id modi nihil temporibus veniam! Cumque, doloremque!</p>
+                <h4>Learn how wildcards work with Plugin Optimizer</h4>
+                <p>Wildcards can be powerful tools, however they can also cause us some trouble. Here’s how to use them correctly in your Filters.</p>
+            </div>
+        </div><?php
+        
+        return ob_get_clean();
+    }
+    
+    static function tab_6(){
+        
+        ob_start();
+        
+        ?><div class="justify-content-between">
+            <div class="col-6">
+                <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
+                <?php /*
+                    <iframe src="https://www.youtube.com/embed/-x4xg59uJn0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                */ ?>
+                </div>
+            </div>
+            <div class="col-6">
+                <h4>aaaaaaaaaaaaaaaa</h4>
+                <p>bbbbbbbbbb</p>
+            </div>
+        </div><?php
+        
+        return ob_get_clean();
+    }
+    
+    static function tab_7(){
+        
+        ob_start();
+        
+        ?><div class="justify-content-between">
+            <div class="col-6">
+                <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
+                <?php /*
+                    <iframe src="https://www.youtube.com/embed/-x4xg59uJn0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                */ ?>
+                </div>
+            </div>
+            <div class="col-6">
+                <h4>aaaaaaaaaaaaaaaa</h4>
+                <p>bbbbbbbbbb</p>
+            </div>
+        </div><?php
+        
+        return ob_get_clean();
+    }
+    
+    static function tab_8(){
+        
+        ob_start();
+        
+        ?><div class="justify-content-between">
+            <div class="col-6">
+                <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
+                <?php /*
+                    <iframe src="https://www.youtube.com/embed/-x4xg59uJn0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                */ ?>
+                </div>
+            </div>
+            <div class="col-6">
+                <h4>aaaaaaaaaaaaaaaa</h4>
+                <p>bbbbbbbbbb</p>
+            </div>
+        </div><?php
+        
+        return ob_get_clean();
+    }
+    
+    static function tab_9(){
+        
+        ob_start();
+        
+        ?><div class="justify-content-between">
+            <div class="col-6">
+                <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
+                <?php /*
+                    <iframe src="https://www.youtube.com/embed/-x4xg59uJn0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                */ ?>
+                </div>
+            </div>
+            <div class="col-6">
+                <h4>aaaaaaaaaaaaaaaa</h4>
+                <p>bbbbbbbbbb</p>
             </div>
         </div><?php
         
