@@ -1,44 +1,44 @@
 <?php
-class SOSPO_Admin_Overview{
+class SOSPO_Admin_Overview_Free_Bootcamp{
     
     static function get_tabs(){
         
         $tabs = [
             10 => [
                 "title"     => "Plugin Optimizer Overview",
-                "content"   => SOSPO_Admin_Overview::tab_1()
+                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_1()
             ],
             20 => [
                 "title"     => "Setup Your First Filter",
-                "content"   => SOSPO_Admin_Overview::tab_2()
+                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_2()
             ],
             30 => [
                 "title"     => "How To Setup A Group",
-                "content"   => SOSPO_Admin_Overview::tab_3()
+                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_3()
             ],
             40 => [
                 "title"     => "Organizing with Categories",
-                "content"   => SOSPO_Admin_Overview::tab_4()
+                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_4()
             ],
             50 => [
                 "title"     => "How To Use Wildcards",
-                "content"   => SOSPO_Admin_Overview::tab_5()
+                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_5()
             ],
             60 => [
                 "title"     => "EndPoints Vs PostTypes",
-                "content"   => SOSPO_Admin_Overview::tab_5()
+                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_5()
             ],
             70 => [
                 "title"     => "Mistakes To Avoid",
-                "content"   => SOSPO_Admin_Overview::tab_5()
+                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_5()
             ],
             80 => [
                 "title"     => "Testing Your Filters",
-                "content"   => SOSPO_Admin_Overview::tab_5()
+                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_5()
             ],
             90 => [
                 "title"     => "Get It Done For You",
-                "content"   => SOSPO_Admin_Overview::tab_5()
+                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_5()
             ],
         ];
         

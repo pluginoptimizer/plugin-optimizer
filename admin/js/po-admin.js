@@ -636,17 +636,17 @@ jQuery( document ).ready( function($){
     });
 
     // Overview page - toggle free bootcamp
-    $('body').on('click', '#free_bootcamp_header .toggler', function(){
+    $('body.po_page_overview').on('click', '.bootcamp_header .toggler', function(){
         
-        if( $('#free_bootcamp_header').hasClass("closed") ){
+        if( $(this).parent().hasClass("closed") ){
             
-            $('#free_bootcamp_header').removeClass("closed").addClass("opened");
-            $('#free_bootcamp_content').slideDown();
+            $(this).parent().removeClass("closed").addClass("opened");
+            $(this).parents('.bootcamp').find('.bootcamp_content').slideDown();
             
         } else {
             
-            $('#free_bootcamp_header').addClass("closed").removeClass("opened");
-            $('#free_bootcamp_content').slideUp();
+            $(this).parent().addClass("closed").removeClass("opened");
+            $(this).parents('.bootcamp').find('.bootcamp_content').slideUp();
             
         }
     });
