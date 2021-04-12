@@ -137,6 +137,20 @@ class SOSPO_Admin {
             $classes .= ' po_is_recreating_menu ';
         }
         
+        $screen = get_current_screen();
+        // write_log( $screen->base, "mark_adminh_body_class-screen" );
+        
+        if( $screen->base === "toplevel_page_plugin_optimizer" ){
+            
+            $classes .= " po_page_overview";
+        }
+        
+        if( strpos( $screen->base, "plugin-optimizer_page_plugin_optimizer_" ) === 0 ){
+            
+            $classes .= " " . str_replace( "plugin-optimizer_page_plugin_optimizer_", "po_page_", $screen->base ) . " ";
+        }
+        
+        
         return $classes;
 	}
 
