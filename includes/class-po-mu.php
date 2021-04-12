@@ -34,6 +34,8 @@ class SOSPO_MU {
     public $blocked_plugins         = [];
     public $filters_in_use          = [];
 
+    public $has_premium             = false;
+
     private function __construct() {
         
         $this->current_full_url         = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -98,6 +100,11 @@ class SOSPO_MU {
     function complete_action_once_plugins_are_loaded(){
 
         remove_filter('option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
+        
+        if( in_array( "plugin-optimizer-premium/plugin-optimizer-premium.php", $this->original_active_plugins ) ){
+            
+            $this->has_premium = true;
+        }
         
     }
 
