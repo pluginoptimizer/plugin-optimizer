@@ -635,15 +635,31 @@ jQuery( document ).ready( function($){
         
     });
 
-    // Overview page - toggle different sections
-    $('body').on('click', '.tab-overview', function(){
+    // Overview page - toggle free bootcamp
+    $('body').on('click', '#free_bootcamp_header .toggler', function(){
         
-        if($(this).next('.hidden-info_overview').hasClass("closed") ){
+        if( $('#free_bootcamp_header').hasClass("closed") ){
+            
+            $('#free_bootcamp_header').removeClass("closed").addClass("opened");
+            $('#free_bootcamp_content').slideDown();
+            
+        } else {
+            
+            $('#free_bootcamp_header').addClass("closed").removeClass("opened");
+            $('#free_bootcamp_content').slideUp();
+            
+        }
+    });
+    
+    // Overview page - toggle different sections
+    $('body').on('click', '.tab_header', function(){
+        
+        if( $(this).next('.hidden-info_overview').hasClass("closed") ){
             
             $(this).next('.hidden-info_overview').slideDown().removeClass("closed").addClass("opened");
             $(this).children('.trigger').removeClass('trigger_closed').addClass('trigger_opened');
             
-        } else{
+        } else {
             
             $(this).next('.hidden-info_overview').slideUp().addClass("closed").removeClass("opened");
             $(this).children('.trigger').addClass('trigger_closed').removeClass('trigger_opened');

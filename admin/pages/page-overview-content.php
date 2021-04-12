@@ -49,7 +49,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="justify-content-between">
+        ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
                 <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560;" style="background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
                     <iframe src="https://www.youtube.com/embed/-x4xg59uJn0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -69,7 +69,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="justify-content-between">
+        ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
                 <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560;">
                     <iframe src="https://www.youtube.com/embed/j_xsWpCj__A" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -88,7 +88,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="justify-content-between">
+        ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
                 <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560;">
                     <iframe src="https://www.youtube.com/embed/ZDayBkmYRXc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -107,7 +107,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="justify-content-between">
+        ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
                 <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560;">
                     <iframe src="https://www.youtube.com/embed/31ZIMIP_zI0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -126,7 +126,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="justify-content-between">
+        ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
                 <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
                 <?php /*
@@ -147,7 +147,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="justify-content-between">
+        ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
                 <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
                 <?php /*
@@ -168,7 +168,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="justify-content-between">
+        ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
                 <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
                 <?php /*
@@ -189,7 +189,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="justify-content-between">
+        ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
                 <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
                 <?php /*
@@ -210,7 +210,7 @@ class SOSPO_Admin_Overview{
         
         ob_start();
         
-        ?><div class="justify-content-between">
+        ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
                 <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
                 <?php /*
