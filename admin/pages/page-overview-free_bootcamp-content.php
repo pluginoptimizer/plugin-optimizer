@@ -228,3 +228,5 @@ class SOSPO_Admin_Overview_Free_Bootcamp{
     }
     
 }
+
+$tabs = SOSPO_Admin_Overview_Free_Bootcamp::get_tabs();
