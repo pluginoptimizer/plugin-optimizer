@@ -9,8 +9,43 @@
 
             <div class="sos-content">
             
+                <div id="overview_summary" class="bootcamp">
+                
+                    <div class="first_half">
+                    
+                    <?php if( sospo_mu_plugin()->has_premium ){ ?>
+                        
+                        <div>Thank you for buying Premium!</div>
+                        <p>You currently have X premium filters.</p>
+                        <p>There are currently X premium filters available for your site.</p>
+                        
+                    <?php } else { ?>
+                        
+                        <div>Get Premium!</div>
+                        <p>You could benefit from X premium filters available for your site.</p>
+                        
+                    <?php } ?>
+                    
+                    </div>
+                    
+                    <div class="second_half">
+                    
+                    <?php if( sospo_mu_plugin()->has_premium ){ ?>
+                        
+                    <?php } else { ?>
+                        
+                    <?php } ?>
+                    
+                        <div>Knowledgebase</div>
+                        <p><a href="/">Contact Support</a></p>
+                        <p><a href="/">Read FAQ</a></p>
+                        
+                    </div>
+                    
+                </div>
+                
                 <?php if( sospo_mu_plugin()->has_premium ){ ?>
-            
+                
                 <div id="premium_bootcamp" class="bootcamp">
                 
                     <div id="premium_bootcamp_header" class="bootcamp_header opened">
@@ -36,7 +71,7 @@
                 </div>
                 
                 <?php } ?>
-            
+                
                 <div id="free_bootcamp" class="bootcamp">
                 
                     <div id="free_bootcamp_header" class="bootcamp_header opened">

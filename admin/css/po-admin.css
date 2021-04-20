@@ -141,7 +141,54 @@ body.po_page_overview .hidden-info_overview .row > .col-6:last-of-type h4{
 }
 
 
+body.po_page_overview #overview_summary{
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-top: 15px;
+    border: 1px solid #e5e5e5;
+    background: #fff;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+    border-radius: 8px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+}
+body.po_page_overview #overview_summary > *{
+    width: 50%;
+    padding: 16px;
+}
+body.po_page_overview #overview_summary .first_half{
+    position: relative;
+}
+body.po_page_overview #overview_summary .first_half:after{
+    content: " ";
+    display: block;
+    width: 1px;
+    height: 70%;
+    position: absolute;
+    right: 0;
+    top: 15%;
+    background: #f1f1f1;
+}
+
 @media all and (max-width: 800px){
+
+
+body.po_page_overview #overview_summary{
+    display: block;
+}
+body.po_page_overview #overview_summary > *{
+    width: 100%;
+}
+body.po_page_overview #overview_summary .first_half:after{
+    width: 70%;
+    height: 1px;
+    left: 15%;
+    bottom: 0;
+    top: initial;
+    right: initial;
+}
+
 body.po_page_overview .hidden-info_overview .row{
     flex-flow: column nowrap;
 }
