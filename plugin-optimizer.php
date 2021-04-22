@@ -45,39 +45,39 @@ if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') || ! function_exists("s
  *
  * @return void
  */
-global $poplicense;
+global $sospo_appsero;
 function appsero_init_tracker_plugin_optimizer() {
     
-    global $poplicense;
+    global $sospo_appsero;
+    
+    $sospo_appsero = [];
     
     if ( ! class_exists( 'Appsero\Client' ) ) {
         require_once __DIR__ . '/vendor/autoload.php';
     }
     
-    $client_free = new Appsero\Client( 'c5104b7b-7b26-4f52-b690-45ef58f9ba31', 'Plugin Optimizer', __FILE__ );
-    $client_free->insights()->init();// Activate insights
-    $client_free->updater();//          Activate automatic updater
+    $sospo_appsero["free"] = new Appsero\Client( 'c5104b7b-7b26-4f52-b690-45ef58f9ba31', 'Plugin Optimizer', __FILE__ );
+    $sospo_appsero["free"]->insights()->init();// Activate insights
+    $sospo_appsero["free"]->updater();//          Activate automatic updater
     
     if( ! in_array( "plugin-optimizer-premium/plugin-optimizer-premium.php", sospo_mu_plugin()->original_active_plugins ) ){
         
         return;
     }
     
-    $client_prem = new Appsero\Client( 'ae74f660-483b-425f-9c31-eced50ca019f', 'Plugin Optimizer Premium', plugin_dir_path( __DIR__ ) . 'plugin-optimizer-premium/plugin-optimizer-premium.php' );
-    $client_prem->insights()->init();// Activate insights
-    $client_prem->updater();//          Activate automatic updater
-    
-    $poplicense = $client_prem->license()->is_valid();
+    $sospo_appsero["premium"] = new Appsero\Client( 'ae74f660-483b-425f-9c31-eced50ca019f', 'Plugin Optimizer Premium', plugin_dir_path( __DIR__ ) . 'plugin-optimizer-premium/plugin-optimizer-premium.php' );
+    $sospo_appsero["premium"]->insights()->init();// Activate insights
+    $sospo_appsero["premium"]->updater();//          Activate automatic updater
     
     // Activate license page and checker
     $args = array(
-        'type'        => 'options',
-        'menu_title'  => 'Plugin Optimizer Premium',
+        'type'        => 'submenu', // Can be: menu, options, submenu
+        'menu_title'  => 'Premium Settings',
         'page_title'  => 'Plugin Optimizer Premium Settings',
         'menu_slug'   => 'plugin_optimizer_premium_settings',
-        // 'parent_slug' => 'plugin_optimizer',
+        'parent_slug' => 'plugin_optimizer',
     );
-    $client_prem->license()->add_settings_page( $args );
+    $sospo_appsero["premium"]->license()->add_settings_page( $args );
 }
 appsero_init_tracker_plugin_optimizer();
 
