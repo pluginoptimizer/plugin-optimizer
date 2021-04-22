@@ -57,21 +57,20 @@ body{
 #toplevel_page_plugin_optimizer.wp-menu-open .wp-menu-image{
     background-image: url('../../assets/icon-128x128-white.png');
 }
-/* #toplevel_page_plugin_optimizer ul li:nth-child(9), */
-/* #toplevel_page_plugin_optimizer ul li:nth-child(7), */
-/* #toplevel_page_plugin_optimizer ul li:nth-child(5), */
-/* #toplevel_page_plugin_optimizer ul li:nth-child(3){ */
-    /* border-top: 1px dashed gray; */
-/* } */
-#toplevel_page_plugin_optimizer ul li:nth-child(8),
-#toplevel_page_plugin_optimizer ul li:nth-child(6),
-#toplevel_page_plugin_optimizer ul li:nth-child(4){
+#toplevel_page_plugin_optimizer ul li:nth-child(9),
+#toplevel_page_plugin_optimizer ul li:nth-child(7),
+#toplevel_page_plugin_optimizer ul li:nth-child(5),
+#toplevel_page_plugin_optimizer ul li:nth-child(3){
     border-top: 1px dashed gray;
 }
+/* #toplevel_page_plugin_optimizer ul li:nth-child(8), */
+/* #toplevel_page_plugin_optimizer ul li:nth-child(6), */
+/* #toplevel_page_plugin_optimizer ul li:nth-child(4){ */
+    /* border-top: 1px dashed gray; */
+/* } */
 #adminmenu #toplevel_page_plugin_optimizer ul li{
     margin-left: 5px;
     margin-right: 10px;
-    /* padding: 0 15px; */
 }
 
 
