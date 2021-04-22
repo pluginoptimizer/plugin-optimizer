@@ -149,18 +149,20 @@ body.po_page_overview #overview_summary{
     background: #fff;
     box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
     border-radius: 8px;
+}
+body.po_page_overview #overview_summary .summary_row{
     display: flex;
     flex-flow: row nowrap;
     align-items: stretch;
 }
-body.po_page_overview #overview_summary > *{
+body.po_page_overview #overview_summary .summary_row .half{
     width: 50%;
     padding: 16px;
 }
-body.po_page_overview #overview_summary .first_half{
+body.po_page_overview #overview_summary .summary_row .first_half{
     position: relative;
 }
-body.po_page_overview #overview_summary .first_half:after{
+body.po_page_overview #overview_summary .summary_row .first_half:after{
     content: " ";
     display: block;
     width: 1px;
@@ -171,16 +173,86 @@ body.po_page_overview #overview_summary .first_half:after{
     background: #f1f1f1;
 }
 
+body.po_page_overview #overview_summary #licence_section{
+    padding: 16px;
+}
+body.po_page_overview #overview_summary #licence_section.valid .appsero-license-title span{
+    font-size: 0px;
+}
+body.po_page_overview #overview_summary #licence_section.valid .appsero-license-title span:after{
+    content: "License is activated";
+    line-height: 1.4em;
+    font-size: 17px;
+}
+body.po_page_overview #overview_summary #licence_section .appsero-license-details{
+    padding: 20px 10px;
+    /* padding-bottom: 10px; */
+}
+body.po_page_overview #overview_summary #licence_section.valid .appsero-license-details > p{
+    display: none;
+}
+body.po_page_overview #overview_summary #licence_section .appsero-license-details .license-input-fields{
+    margin-bottom: 0;
+}
+
+body.po_page_overview #overview_summary #licence_section.invalid{
+    /* background: red; */
+}
+
+body.po_page_overview #overview_summary #licence_section .appsero-license-settings-wrapper{
+    margin: 0;
+    width: 100%;
+}
+body.po_page_overview #overview_summary #licence_section .appsero-license-settings-wrapper svg{
+    fill: #369451;
+}
+body.po_page_overview #overview_summary #licence_section .appsero-license-settings-wrapper > br,
+body.po_page_overview #overview_summary #licence_section .appsero-license-settings-wrapper > h1{
+    display: none;
+}
+
+body.po_page_overview #overview_summary #licence_section .active-license-info{
+    margin: 0 auto;
+    display: block;
+    display: none;
+}
+body.po_page_overview #overview_summary #licence_section .single-license-info{
+    display: flex;
+    flex-basis: initial;
+}
+body.po_page_overview #overview_summary #licence_section .single-license-info h3{
+    font-weight: normal;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.4;
+}
+body.po_page_overview #overview_summary #licence_section .single-license-info p{
+    color: #369451;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+body.po_page_overview #overview_summary #licence_teaser{
+    padding: 0 10px;
+    justify-content: space-between;
+}
+body.po_page_overview #overview_summary #licence_teaser .first_half{
+    width: 100%;
+}
+body.po_page_overview #overview_summary #licence_teaser .second_half{
+    min-width: 209px;
+}
+
 @media all and (max-width: 800px){
 
 
-body.po_page_overview #overview_summary{
+body.po_page_overview #overview_summary .summary_row{
     display: block;
 }
-body.po_page_overview #overview_summary > *{
+body.po_page_overview #overview_summary .summary_row .half{
     width: 100%;
 }
-body.po_page_overview #overview_summary .first_half:after{
+body.po_page_overview #overview_summary .summary_row .first_half:after{
     width: 70%;
     height: 1px;
     left: 15%;
@@ -430,6 +502,7 @@ body.po_page_overview .hidden-info_overview .row > .col-6:last-of-type h4{
     width: 100px;
 }
 
+body.po_page_overview #overview_summary .license-input-fields button,
 .sos-wrap button.po_green_button{
     padding: 5px 15px;
     text-transform: uppercase;
@@ -442,8 +515,25 @@ body.po_page_overview .hidden-info_overview .row > .col-6:last-of-type h4{
     cursor: pointer;
     transition: all 300ms ease;
 }
+body.po_page_overview #overview_summary .license-input-fields button{
+    height: initial;
+    max-width: initial;
+    font-size: 16px;
+}
+body.po_page_overview #overview_summary .license-input-fields button:hover,
 .sos-wrap button.po_green_button:hover{
     background-image: none;
+}
+body.po_page_overview #overview_summary #licence_section.valid .license-input-fields button{
+    border: 1px solid lightgray;
+    background-color: #fff;
+    color: gray;
+    transition: all 300ms ease;
+}
+body.po_page_overview #overview_summary #licence_section.valid .license-input-fields button:hover{
+    border: 1px solid lightgray;
+    background-color: lightgray;
+    color: gray;
 }
 
 .sos-wrap button.po_secondary_button{
@@ -913,7 +1003,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     padding: 7px 20px 6px;
 }
 
-.sos-wrap .notice{
+.sos-wrap .notice:not(.appsero-license-section){
     display: none;
 }
 

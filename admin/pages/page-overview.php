@@ -1,3 +1,4 @@
+<?php global $sospo_appsero; ?>
 <div class="wrap container">
     <div class="wrap sos-wrap">
         <div class="container">
@@ -11,35 +12,62 @@
             
                 <div id="overview_summary" class="bootcamp">
                 
-                    <div class="first_half">
-                    
                     <?php if( sospo_mu_plugin()->has_premium ){ ?>
+                    
+                        <div class="summary_row" id="licence_section">
                         
-                        <div>Thank you for buying Premium!</div>
-                        <p>You currently have X premium filters.</p>
-                        <p>There are currently X premium filters available for your site.</p>
-                        
-                    <?php } else { ?>
-                        
-                        <div>Get Premium!</div>
-                        <p>You could benefit from X premium filters available for your site.</p>
-                        
+                            <?php $sospo_appsero["premium"]->license()->menu_output() ?>
+                            
+                            <?php $validity_class = $sospo_appsero["premium"]->license()->is_valid() ? "valid" : "invalid"; ?>
+                            
+                            <script>// Fixes:
+                                
+                                // WP automatically moves .notice to the top with javascript (!)
+                                jQuery('.notice.appsero-license-section').addClass('inline');
+                                
+                                // We can asign a class only after license()->menu_output()
+                                jQuery('#licence_section').addClass('<?php echo $validity_class; ?>');
+                            </script>
+                        </div>
+                    
                     <?php } ?>
                     
-                    </div>
+                    <div class="summary_row" id="licence_teaser">
                     
-                    <div class="second_half">
+                        <div class="half first_half">
+                        
+                            <?php if( sospo_mu_plugin()->has_premium ){ ?>
+                            
+                                <?php if( $sospo_appsero["premium"]->license()->is_valid() ){ ?>
+                                    
+                                    <div>Thank you for buying Premium!</div>
+                                    <p>You currently have X premium filters.</p>
+                                    <p>There are currently X premium filters available for your site.</p>
+                                    
+                                <?php } else { ?>
+                                    
+                                    <div>Please activate your license.</div>
+                                    <p>You could benefit from X premium filters available for your site.</p>
+                                    
+                                <?php } ?>
+                            
+                            <?php } else { ?>
+                                
+                                <div>Get Premium!</div>
+                                <p>You could benefit from X premium filters available for your site.</p>
+                                
+                            <?php } ?>
+                        
+                        </div>
                     
-                    <?php if( sospo_mu_plugin()->has_premium ){ ?>
+                        <div class="half second_half">
                         
-                    <?php } else { ?>
-                        
-                    <?php } ?>
+                            <div>Knowledgebase</div>
+                            <p><a href="/">Contact Support</a></p>
+                            <p><a href="/">Read FAQ</a></p>
+                            
+                        </div>
                     
-                        <div>Knowledgebase</div>
-                        <p><a href="/">Contact Support</a></p>
-                        <p><a href="/">Read FAQ</a></p>
-                        
                     </div>
                     
                 </div>

@@ -54,7 +54,7 @@ class SOSPO_Admin {
 		add_action( 'init',                         [ $this, 'register_post_types'      ] );
 		add_action( 'init',                         [ $this, 'register_taxonomies'      ] );
         
-		add_action( 'in_admin_header',              [ $this, 'disable_all_notice_nags'  ] );
+		// add_action( 'in_admin_header',              [ $this, 'disable_all_notice_nags'  ] );
         
 		add_action( 'save_post_page',               [ $this, 'add_item_to_worklist'     ] );
 		add_action( 'save_post_post',               [ $this, 'add_item_to_worklist'     ] );
