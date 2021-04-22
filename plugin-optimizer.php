@@ -19,6 +19,28 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
+ * Current plugin version.
+ * Use SemVer - https://semver.org
+ */
+define( 'SOSPO_VERSION', '1.0.7' );
+
+// let's install the MU plugin if it's missing or outdated and refresh
+if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') || ! function_exists("sospo_mu_plugin") || sospo_mu_plugin()->version !== SOSPO_VERSION ){
+    
+    if( ! file_exists( WPMU_PLUGIN_DIR ) ){
+        
+        mkdir( WPMU_PLUGIN_DIR );
+        chmod( WPMU_PLUGIN_DIR, 0755 );
+    }
+
+    copy( __DIR__ . '/includes/class-po-mu.php', WPMU_PLUGIN_DIR . '/class-po-mu.php' );
+    
+    header("Refresh:0");
+    
+    return;
+}
+
+/**
  * Initialize the plugin tracker
  *
  * @return void
@@ -37,12 +59,6 @@ function appsero_init_tracker_plugin_optimizer() {
 appsero_init_tracker_plugin_optimizer();
 
 /**
- * Currently plugin version.
- * Use SemVer - https://semver.org
- */
-define( 'SOSPO_VERSION', '1.0.7' );
-
-/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-po-activator.php
  */
@@ -50,6 +66,7 @@ function activate_plugin_optimizer() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-activator.php';
 	SOSPO_Activator::activate();
 }
+register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
 
 /**
  * The code that runs during plugin deactivation.
@@ -59,33 +76,7 @@ function deactivate_plugin_optimizer() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-deactivator.php';
 	SOSPO_Deactivator::deactivate();
 }
-
-register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
 register_deactivation_hook( __FILE__, 'deactivate_plugin_optimizer' );
-
-// let's install the MU plugin if it's missing and refresh
-$should_copy_mu = false;
-
-if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') || ! function_exists("sospo_mu_plugin") || sospo_mu_plugin()->version !== SOSPO_VERSION ){
-    
-    $should_copy_mu = true;
-    
-}
-
-if( $should_copy_mu ){
-    
-    if( ! file_exists( WPMU_PLUGIN_DIR ) ){
-        
-        mkdir( WPMU_PLUGIN_DIR );
-        chmod( WPMU_PLUGIN_DIR, 0755 );
-    }
-
-    copy( __DIR__ . '/includes/class-po-mu.php', WPMU_PLUGIN_DIR . '/class-po-mu.php' );
-    
-    header("Refresh:0");
-    
-    return;
-}
 
 
 /**
@@ -94,18 +85,11 @@ if( $should_copy_mu ){
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-po.php';
 
-/**
- * Begins execution of the plugin.
- */
-function run_plugin_optimizer() {
+new PluginOptimizer();
 
-	$plugin = new PluginOptimizer();
+// ------------------------ Helpers and Testers
 
-}
-
-run_plugin_optimizer();
-
-if( ! function_exists( 'write_log' ) ){//                                                           Write to debug.log
+if( ! function_exists( 'write_log' ) ){
     
     function write_log ( $log, $text = "write_log: ", $file_name = "debug.log" )  {
         

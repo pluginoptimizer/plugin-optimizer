@@ -40,11 +40,8 @@ class PluginOptimizer {
 	 *
 	 */
 	public function __construct() {
-		if ( defined( 'SOSPO_VERSION' ) ) {
-			$this->version = SOSPO_VERSION;
-		} else {
-			$this->version = '1.0.7';
-		}
+		
+        $this->version     = SOSPO_VERSION;
 		$this->plugin_name = 'plugin-optimizer';
 
 		$this->include_dependencies();
