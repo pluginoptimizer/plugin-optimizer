@@ -62,8 +62,24 @@ class SOSPO_Admin {
 
 		add_action( 'upgrader_process_complete',    [ $this, 'do_after_plugin_update'   ], 10, 2 );
 
+		add_filter( 'plugin_action_links',          [ $this, 'plugin_action_links'      ], 10, 2 );
+
 	}
     
+    
+	function plugin_action_links(  $links, $file ){
+        
+        if( $file == 'plugin-optimizer/plugin-optimizer.php' ){
+            
+            $settings_link = '<a href="' . admin_url('admin.php?page=plugin_optimizer_settings') . '">Settings</a>';
+            
+            // array_unshift( $links, $settings_link );// put it first
+            $links[] = $settings_link;// put it last
+        }
+        
+        return $links;
+	}
+
     
 	function do_after_plugin_update(  $wp_upgrader_object, $options ){
         
