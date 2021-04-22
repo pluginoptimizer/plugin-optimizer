@@ -41,26 +41,48 @@ if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') || ! function_exists("s
 }
 
 /**
- * Initialize the plugin tracker
+ * Initialize the plugin trackers
  *
  * @return void
  */
+global $poplicense;
 function appsero_init_tracker_plugin_optimizer() {
+    
+    global $poplicense;
+    
     if ( ! class_exists( 'Appsero\Client' ) ) {
-        // require_once __DIR__ . '/appsero/src/Client.php';
         require_once __DIR__ . '/vendor/autoload.php';
     }
-    $client = new Appsero\Client( 'c5104b7b-7b26-4f52-b690-45ef58f9ba31', 'Plugin Optimizer', __FILE__ );
-    // Active insights
-    $client->insights()->init();
-    // Active automatic updater
-    $client->updater();
+    
+    $client_free = new Appsero\Client( 'c5104b7b-7b26-4f52-b690-45ef58f9ba31', 'Plugin Optimizer', __FILE__ );
+    $client_free->insights()->init();// Activate insights
+    $client_free->updater();//          Activate automatic updater
+    
+    if( ! in_array( "plugin-optimizer-premium/plugin-optimizer-premium.php", sospo_mu_plugin()->original_active_plugins ) ){
+        
+        return;
+    }
+    
+    $client_prem = new Appsero\Client( 'ae74f660-483b-425f-9c31-eced50ca019f', 'Plugin Optimizer Premium', plugin_dir_path( __DIR__ ) . 'plugin-optimizer-premium/plugin-optimizer-premium.php' );
+    $client_prem->insights()->init();// Activate insights
+    $client_prem->updater();//          Activate automatic updater
+    
+    $poplicense = $client_prem->license()->is_valid();
+    
+    // Activate license page and checker
+    $args = array(
+        'type'        => 'options',
+        'menu_title'  => 'Plugin Optimizer Premium',
+        'page_title'  => 'Plugin Optimizer Premium Settings',
+        'menu_slug'   => 'plugin_optimizer_premium_settings',
+        // 'parent_slug' => 'plugin_optimizer',
+    );
+    $client_prem->license()->add_settings_page( $args );
 }
 appsero_init_tracker_plugin_optimizer();
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-po-activator.php
  */
 function activate_plugin_optimizer() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-activator.php';
@@ -70,7 +92,6 @@ register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-po-deactivator.php
  */
 function deactivate_plugin_optimizer() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-deactivator.php';
