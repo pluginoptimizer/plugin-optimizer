@@ -497,6 +497,10 @@ body.po_page_overview .hidden-info_overview .row > .col-6:last-of-type h4{
     text-transform: none;
     font-weight: bold;
 }
+.sos-wrap .sos-content table #the-list .filter_is_premium{
+    text-transform: uppercase;
+    color: #369451;
+}
 .sos-wrap .sos-content table .toggle_filter{
     min-width: 100px;
     width: 100px;
