@@ -60,7 +60,10 @@ function appsero_init_tracker_plugin_optimizer() {
     $sospo_appsero["free"]->insights()->init();// Activate insights
     $sospo_appsero["free"]->updater();//          Activate automatic updater
     
-    if( ! in_array( "plugin-optimizer-premium/plugin-optimizer-premium.php", sospo_mu_plugin()->original_active_plugins ) ){
+    
+    $active_plugins = ! empty( sospo_mu_plugin()->original_active_plugins ) ? sospo_mu_plugin()->original_active_plugins : get_option('active_plugins');
+    
+    if( ! in_array( "plugin-optimizer-premium/plugin-optimizer-premium.php", $active_plugins ) ){
         
         return;
     }
@@ -77,7 +80,7 @@ function appsero_init_tracker_plugin_optimizer() {
         'menu_slug'   => 'plugin_optimizer_premium_settings',
         'parent_slug' => 'plugin_optimizer',
     );
-    $sospo_appsero["premium"]->license()->add_settings_page( $args );
+    // $sospo_appsero["premium"]->license()->add_settings_page( $args );
 }
 appsero_init_tracker_plugin_optimizer();
 
