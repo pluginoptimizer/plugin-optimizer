@@ -43,7 +43,7 @@ if( $categories ){
         
         <div class="row col-12">
             <div class="col-12">
-                <table id="categories_table" class="sos_table">
+                <table id="categories_table" class="po_table">
                     <thead>
                         <tr>
                             <th class="cat_checkbox"><input type="checkbox" id="check_all"></th>

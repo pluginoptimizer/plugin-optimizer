@@ -37,7 +37,7 @@ if( $filters ){
         
         <div class="row col-12">
             <div class="col-12">
-                <table class="sos_table">
+                <table class="po_table">
                     <thead>
                         <tr>
                             <th><input type="checkbox" id="check_all"></th>
