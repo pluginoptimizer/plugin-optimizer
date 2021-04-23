@@ -4,7 +4,7 @@
  * Plugin Name:       Plugin Optimizer
  * Plugin URI:        https://pluginoptimizer.com
  * Description:       The Most Powerful Performance Plugin for WordPress is now available for FREE.
- * Version:           1.0.7
+ * Version:           1.0.8
  * Author:            Plugin Optimizer
  * Author URI:        https://pluginoptimizer.com/about/
  * License:           GPL-2.0+
@@ -22,7 +22,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Current plugin version.
  * Use SemVer - https://semver.org
  */
-define( 'SOSPO_VERSION', '1.0.7' );
+define( 'SOSPO_VERSION', '1.0.8' );
 
 // let's install the MU plugin if it's missing or outdated and refresh
 if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') || ! function_exists("sospo_mu_plugin") || sospo_mu_plugin()->version !== SOSPO_VERSION ){

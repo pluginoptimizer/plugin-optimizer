@@ -3,7 +3,7 @@
  * Plugin Name:       Plugin Optimizer MU
  * Plugin URI:        https://pluginoptimizer.com
  * Description:       This MU plugin is required by the Plugin Optimizer plugin. It will be removed upon deactivation.
- * Version:           1.0.7
+ * Version:           1.0.8
  * Author:            Plugin Optimizer
  * Author URI:        https://pluginoptimizer.com/about/
  * License:           GPL-2.0+
@@ -12,7 +12,7 @@
 
 class SOSPO_MU {
     
-    public $version                 = "1.0.7";
+    public $version                 = "1.0.8";
     
     protected static $instance      = null;
     
