@@ -18,6 +18,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+include 'config.php';
+
 /**
  * Current plugin version.
  * Use SemVer - https://semver.org

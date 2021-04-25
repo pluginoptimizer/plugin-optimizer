@@ -54,7 +54,7 @@ class SOSPO_Admin {
 		add_action( 'init',                         [ $this, 'register_post_types'      ] );
 		add_action( 'init',                         [ $this, 'register_taxonomies'      ] );
         
-		// add_action( 'in_admin_header',              [ $this, 'disable_all_notice_nags'  ] );
+		add_action( 'in_admin_header',              [ $this, 'disable_all_notice_nags'  ] );
         
 		add_action( 'save_post_page',               [ $this, 'add_item_to_worklist'     ] );
 		add_action( 'save_post_post',               [ $this, 'add_item_to_worklist'     ] );
@@ -64,6 +64,7 @@ class SOSPO_Admin {
 
 		add_filter( 'plugin_action_links',          [ $this, 'plugin_action_links'      ], 10, 2 );
 
+        add_action( 'admin_menu',                   [ $this, 'po_wp_menu'               ], 101);
 	}
     
     
@@ -577,6 +578,165 @@ class SOSPO_Admin {
 		}
 		add_post_meta( $post_id, 'post_link', $post_link );
 	}
+
+    
+    /**
+     * Compiles a flat array list of the admin menu directory
+     * @param  object  $menu              global registered menu
+     * @param  object  $submenu           global registered submenu
+     * @param  boolean $submenu_as_parent [description]
+     * @return array                     array of admin menu links
+     */
+    function po_wp_menu_output( $menu, $submenu, $submenu_as_parent = true ) {
+
+        if( ! is_admin() ) return;
+
+        global $self, $parent_file, $submenu_file, $plugin_page, $pagenow, $typenow;
+
+        $first = true;
+        // 0 = name, 1 = capability, 2 = file, 3 = class, 4 = id, 5 = icon src
+        foreach ( $menu as $key => $item ) {
+            $admin_is_parent = false;
+            $class = array();
+            $aria_attributes = 'tabindex="1"';
+
+            if ( $first ) {
+                $class[] = 'wp-first-item';
+                $first = false;
+            }
+
+            $submenu_items = false;
+            if ( ! empty( $submenu[$item[2]] ) ) {
+                $class[] = 'wp-has-submenu';
+                $submenu_items = $submenu[$item[2]];
+            }
+
+            if ( ( $parent_file && $item[2] == $parent_file ) || ( empty($typenow) && $self == $item[2] ) ) {
+                $class[] = ! empty( $submenu_items ) ? 'wp-has-current-submenu wp-menu-open' : 'current';
+            } else {
+                $class[] = 'wp-not-current-submenu';
+                if ( ! empty( $submenu_items ) )
+                    $aria_attributes .= ' aria-haspopup="true"';
+            }
+
+            if ( ! empty( $item[4] ) )
+                $class[] = $item[4];
+
+            $class = $class ? ' class="' . join( ' ', $class ) . '"' : '';
+            $id = ! empty( $item[5] ) ? ' id="' . preg_replace( '|[^a-zA-Z0-9_:.]|', '-', $item[5] ) . '"' : '';
+            $img = '';
+            if ( ! empty( $item[6] ) )
+                $img = ( 'div' === $item[6] ) ? '<br />' : '<img src="' . $item[6] . '" alt="" />';
+            $arrow = '<div class="wp-menu-arrow"><div></div></div>';
+
+            $title = wptexturize( $item[0] );
+            $aria_label = esc_attr( strip_tags( $item[0] ) ); // strip the comment/plugins/updates bubbles spans but keep the pending number if any
+
+            
+
+            if ( false !== strpos( $class, 'wp-menu-separator' ) ) {
+                
+            } elseif ( $submenu_as_parent && ! empty( $submenu_items ) ) {
+                $submenu_items = array_values( $submenu_items );  // Re-index.
+                $menu_hook = get_plugin_page_hook( $submenu_items[0][2], $item[2] );
+                $menu_file = $submenu_items[0][2];
+                if ( false !== ( $pos = strpos( $menu_file, '?' ) ) )
+                    $menu_file = substr( $menu_file, 0, $pos );
+                if ( ! empty( $menu_hook ) || ( ('index.php' != $submenu_items[0][2]) && file_exists( WP_PLUGIN_DIR . "/$menu_file" ) ) ) {
+                    $admin_is_parent = true;
+                    $menu_items[] = '/wp-admin/'."admin.php?page={$submenu_items[0][2]}";
+                } else {
+                    $menu_items[] = '/wp-admin/'.$submenu_items[0][2];
+                }
+            } elseif ( ! empty( $item[2] ) && current_user_can( $item[1] ) ) {
+                $menu_hook = get_plugin_page_hook( $item[2], 'admin.php' );
+                $menu_file = $item[2];
+                if ( false !== ( $pos = strpos( $menu_file, '?' ) ) )
+                    $menu_file = substr( $menu_file, 0, $pos );
+                if ( ! empty( $menu_hook ) || ( ('index.php' != $item[2]) && file_exists( WP_PLUGIN_DIR . "/$menu_file" ) ) ) {
+                    $admin_is_parent = true;
+                    $menu_items[] = '/wp-admin/'."admin.php?page={$item[2]}";
+                } else {
+                    $menu_items[] = '/wp-admin/'.$item[2];
+                }
+            }
+
+            if ( ! empty( $submenu_items ) ) {
+                $first = true;
+                foreach ( $submenu_items as $sub_key => $sub_item ) {
+                    if ( ! current_user_can( $sub_item[1] ) )
+                        continue;
+
+                    $aria_attributes = 'tabindex="1"';
+                    $class = array();
+                    if ( $first ) {
+                        $class[] = 'wp-first-item';
+                        $first = false;
+                    }
+
+                    $menu_file = $item[2];
+
+                    if ( false !== ( $pos = strpos( $menu_file, '?' ) ) )
+                        $menu_file = substr( $menu_file, 0, $pos );
+
+                    // Handle current for post_type=post|page|foo pages, which won't match $self.
+                    $self_type = ! empty( $typenow ) ? $self . '?post_type=' . $typenow : 'nothing';
+
+                    if ( isset( $submenu_file ) ) {
+                        if ( $submenu_file == $sub_item[2] )
+                            $class[] = 'current';
+                    // If plugin_page is set the parent must either match the current page or not physically exist.
+                    // This allows plugin pages with the same hook to exist under different parents.
+                    } else if (
+                        ( ! isset( $plugin_page ) && $self == $sub_item[2] ) ||
+                        ( isset( $plugin_page ) && $plugin_page == $sub_item[2] && ( $item[2] == $self_type || $item[2] == $self || file_exists($menu_file) === false ) )
+                    ) {
+                        $class[] = 'current';
+                    }
+
+                    $class = $class ? ' class="' . join( ' ', $class ) . '"' : '';
+
+                    $menu_hook = get_plugin_page_hook($sub_item[2], $item[2]);
+                    $sub_file = $sub_item[2];
+                    if ( false !== ( $pos = strpos( $sub_file, '?' ) ) )
+                        $sub_file = substr($sub_file, 0, $pos);
+
+                    $title = wptexturize($sub_item[0]);
+
+                    if ( ! empty( $menu_hook ) || ( ('index.php' != $sub_item[2]) && file_exists( WP_PLUGIN_DIR . "/$sub_file" ) ) ) {
+                        // If admin.php is the current page or if the parent exists as a file in the plugins or admin dir
+                        if ( (!$admin_is_parent && file_exists(WP_PLUGIN_DIR . "/$menu_file") && !is_dir(WP_PLUGIN_DIR . "/{$item[2]}")) || file_exists($menu_file) )
+                            $sub_item_url = add_query_arg( array('page' => $sub_item[2]), $item[2] );
+                        else
+                            $sub_item_url = add_query_arg( array('page' => $sub_item[2]), 'admin.php' );
+
+                        $sub_item_url = esc_url( $sub_item_url );
+                        $menu_items[] = '/wp-admin/'.$sub_item_url;
+                    } else {
+                        $menu_items[] = '/wp-admin/'.$sub_item[2];
+                    }
+                }
+            }
+        }
+        $menu_items = array_unique($menu_items);
+        return $menu_items;
+    }
+
+    /**
+     * Creates a JSON of the current admin menu directory
+     * @return NULL
+     */
+    function po_wp_menu(){
+
+        global $menu, $submenu, $parent_file; //For when admin-header is included from within a function.
+        $parent_file = apply_filters("parent_file", $parent_file); // For plugins to move submenu tabs around.
+        get_admin_page_parent();
+        $menu_items = $this->po_wp_menu_output( $menu, $submenu );
+        $menu_items = array('endpoints' => $menu_items);
+        $f = fopen(dirname(__DIR__) . '/menu.json', 'w');
+        fwrite($f, stripslashes(json_encode($menu_items)));
+        fclose($f);
+    }
 
 }
 
