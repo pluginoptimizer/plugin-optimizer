@@ -44,6 +44,14 @@ $checked = $should_alphabetize ? ' checked="checked"' : '';
                 
             </div>
             
+            <div class="row align-items-center">
+            
+                <div class="col-12">
+                    For Support please contact us here 👉 <a href="https://pluginoptimizer.com/support/">https://pluginoptimizer.com/support/</a>
+                </div>
+                
+            </div>
+            
         </div>
     </div>
     
