@@ -3,6 +3,30 @@ jQuery( document ).ready( function($){
     
     recalculate__special_grid_lists();
     
+    // display the fresh number of Premium Filters the user could benefit from
+    $('#scan-now').on('click', function(){
+        $.ajax({
+            url: po_object.ajax_url,
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                action: 'po_scan_prospector'
+            },
+            beforeSend: function(){
+                $('#scan-container .results').remove();
+                $('#scan-now').prop('disabled', true);
+            },
+            success: function(d){
+                if( d.status == 'success' ){
+                    $('#scan-container').append('<div class="results">Your site could benefit from '+d.data.count+' Premium Filters.</div>');
+                }
+            }, 
+            complete: function(){
+                $('#scan-now').prop('disabled', false);
+            }
+        })
+    });
+
 
     // Edit  screen - Hover a tooltip - Start
     $('#the-list').on('mouseenter', '.has_tooltip > .tooltip_trigger[data-tooltip-list]', function(){

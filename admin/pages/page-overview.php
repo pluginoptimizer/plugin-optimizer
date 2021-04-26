@@ -11,8 +11,7 @@
             <div class="sos-content">
             
                 <div id="scan-container">
-                    <button id="scan-now">Scan Now</button> Scan now to see how many Plugin Optimizer Premium filters we have that match your site.
-
+                    <button id="scan-now">Scan Now</button> Scan now to see how many Premium filters we have that match your site.
                 </div>
 
                 <div id="overview_summary" class="bootcamp">
@@ -133,30 +132,3 @@
         </div>
     </div>
 </div>
-<script>
-    jQuery(document).ready(function($){
-
-        $('#scan-now').on('click', function(){
-            $.ajax({
-                url: '<?php echo admin_url( 'admin-ajax.php' ); ?>',
-                type: 'GET',
-                dataType: 'json',
-                data: {
-                    action: 'po_scan_prospector'
-                },
-                beforeSend: function(){
-                    $('#scan-container .results').remove();
-                },
-                success: function(d){
-                    if( d.status == 'success' ){
-                        $('#scan-container').append('<div class="results">Your site could benefit from '+d.data.count+' Premium Filters.</div>');
-                    }
-                }, 
-                complete: function(){
-
-                }
-            })
-        });
-
-    })
-</script>
