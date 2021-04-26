@@ -3,7 +3,7 @@ Contributors: pluginoptimizer,simpleonlinesystems,andrija
 Tags: Plugin Optimizer, Speed Up, Optimization, Save Time, Page Speed, Performance
 Requires at least: 5.0
 Tested up to: 5.7
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -56,6 +56,10 @@ By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/suppo
 3. Go to Plugin Optimizer -> Create Filter and start making filters.
 
 == Changelog ==
+
+= 1.0.8 = April 2021
+* Included the Overview page
+* Integrated with the Premium plugin
 
 = 1.0.7 = April 2021
 * Bugfixes and UI polishing

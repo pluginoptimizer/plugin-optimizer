@@ -44,6 +44,9 @@ if( $filter ){
     $filter_categories  = get_post_meta( $filter->ID, "categories", true );
     $endpoints          = SOSPO_Admin_Helper::get_filter_endpoints( $filter );
     
+    $premium_filter     = get_post_meta( $filter->ID, 'premium_filter',   true );
+    $is_premium         = $premium_filter === "true";
+    
     if( ! empty( $plugins_to_block ) ){
         $plugins_to_block   = array_keys( $plugins_to_block );
     }
@@ -77,6 +80,13 @@ if( $filter ){
     <?php SOSPO_Admin_Helper::content_part__header( $page_title, "filters" ); ?>
     
 	<div id="edit_filter" class="sos-content">
+    
+    <?php if( $is_premium ){ ?>
+        
+        <div id="forbid_premium_edit">Premium filters can not be edited</div>
+        
+    <?php } else {?>
+        
 		<div class="row content-new-element">
 			<div class="col-12">
 				<div class="content-filter">
@@ -226,5 +236,7 @@ if( $filter ){
 
 			</div>
 		</div>
+        
+    <?php } ?>
 	</div>
 </div>

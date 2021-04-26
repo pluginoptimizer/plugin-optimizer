@@ -4,7 +4,7 @@
  * Plugin Name:       Plugin Optimizer
  * Plugin URI:        https://pluginoptimizer.com
  * Description:       The Most Powerful Performance Plugin for WordPress is now available for FREE.
- * Version:           1.0.7
+ * Version:           1.0.8
  * Author:            Plugin Optimizer
  * Author URI:        https://pluginoptimizer.com/about/
  * License:           GPL-2.0+
@@ -18,61 +18,16 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/**
- * Initialize the plugin tracker
- *
- * @return void
- */
-function appsero_init_tracker_plugin_optimizer() {
-    if ( ! class_exists( 'Appsero\Client' ) ) {
-        // require_once __DIR__ . '/appsero/src/Client.php';
-        require_once __DIR__ . '/vendor/autoload.php';
-    }
-    $client = new Appsero\Client( 'c5104b7b-7b26-4f52-b690-45ef58f9ba31', 'Plugin Optimizer', __FILE__ );
-    // Active insights
-    $client->insights()->init();
-    // Active automatic updater
-    $client->updater();
-}
-appsero_init_tracker_plugin_optimizer();
+include 'config.php';
 
 /**
- * Currently plugin version.
+ * Current plugin version.
  * Use SemVer - https://semver.org
  */
-define( 'SOSPO_VERSION', '1.0.7' );
+define( 'SOSPO_VERSION', '1.0.8' );
 
-/**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-po-activator.php
- */
-function activate_plugin_optimizer() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-activator.php';
-	SOSPO_Activator::activate();
-}
-
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-po-deactivator.php
- */
-function deactivate_plugin_optimizer() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-deactivator.php';
-	SOSPO_Deactivator::deactivate();
-}
-
-register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
-register_deactivation_hook( __FILE__, 'deactivate_plugin_optimizer' );
-
-// let's install the MU plugin if it's missing and refresh
-$should_copy_mu = false;
-
+// let's install the MU plugin if it's missing or outdated and refresh
 if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') || ! function_exists("sospo_mu_plugin") || sospo_mu_plugin()->version !== SOSPO_VERSION ){
-    
-    $should_copy_mu = true;
-    
-}
-
-if( $should_copy_mu ){
     
     if( ! file_exists( WPMU_PLUGIN_DIR ) ){
         
@@ -87,6 +42,68 @@ if( $should_copy_mu ){
     return;
 }
 
+/**
+ * Initialize the plugin trackers
+ *
+ * @return void
+ */
+global $sospo_appsero;
+function appsero_init_tracker_plugin_optimizer() {
+    
+    global $sospo_appsero;
+    
+    $sospo_appsero = [];
+    
+    if ( ! class_exists( 'Appsero\Client' ) ) {
+        require_once __DIR__ . '/vendor/autoload.php';
+    }
+    
+    $sospo_appsero["free"] = new Appsero\Client( 'c5104b7b-7b26-4f52-b690-45ef58f9ba31', 'Plugin Optimizer', __FILE__ );
+    $sospo_appsero["free"]->insights()->init();// Activate insights
+    $sospo_appsero["free"]->updater();//          Activate automatic updater
+    
+    
+    $active_plugins = ! empty( sospo_mu_plugin()->original_active_plugins ) ? sospo_mu_plugin()->original_active_plugins : get_option('active_plugins');
+    
+    if( ! in_array( "plugin-optimizer-premium/plugin-optimizer-premium.php", $active_plugins ) ){
+        
+        return;
+    }
+    
+    $sospo_appsero["premium"] = new Appsero\Client( 'ae74f660-483b-425f-9c31-eced50ca019f', 'Plugin Optimizer Premium', plugin_dir_path( __DIR__ ) . 'plugin-optimizer-premium/plugin-optimizer-premium.php' );
+    $sospo_appsero["premium"]->insights()->init();// Activate insights
+    $sospo_appsero["premium"]->updater();//          Activate automatic updater
+    
+    // Activate license page and checker
+    $args = array(
+        'type'        => 'submenu', // Can be: menu, options, submenu
+        'menu_title'  => 'Premium Settings',
+        'page_title'  => 'Plugin Optimizer Premium Settings',
+        'menu_slug'   => 'plugin_optimizer_premium_settings',
+        'parent_slug' => 'plugin_optimizer',
+    );
+    // $sospo_appsero["premium"]->license()->add_settings_page( $args );
+}
+appsero_init_tracker_plugin_optimizer();
+
+/**
+ * The code that runs during plugin activation.
+ */
+function activate_plugin_optimizer() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-activator.php';
+	SOSPO_Activator::activate();
+}
+register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
+
+/**
+ * The code that runs during plugin deactivation.
+ */
+function deactivate_plugin_optimizer() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-deactivator.php';
+	SOSPO_Deactivator::deactivate();
+}
+register_deactivation_hook( __FILE__, 'deactivate_plugin_optimizer' );
+
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -94,18 +111,11 @@ if( $should_copy_mu ){
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-po.php';
 
-/**
- * Begins execution of the plugin.
- */
-function run_plugin_optimizer() {
+new PluginOptimizer();
 
-	$plugin = new PluginOptimizer();
+// ------------------------ Helpers and Testers
 
-}
-
-run_plugin_optimizer();
-
-if( ! function_exists( 'write_log' ) ){//                                                           Write to debug.log
+if( ! function_exists( 'write_log' ) ){
     
     function write_log ( $log, $text = "write_log: ", $file_name = "debug.log" )  {
         

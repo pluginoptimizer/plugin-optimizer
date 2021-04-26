@@ -220,6 +220,9 @@ EOF;
                 $data_type        = get_post_meta( $filter->ID, 'filter_type',      true );
                 $blocking_plugins = get_post_meta( $filter->ID, 'plugins_to_block', true );
                 $turned_off       = get_post_meta( $filter->ID, 'turned_off',       true );
+                $premium_filter   = get_post_meta( $filter->ID, 'premium_filter',   true );
+                
+                $is_premium       = $premium_filter === "true";
                 
                 sort( $blocking_plugins );
                 
@@ -251,8 +254,16 @@ EOF;
                 
 				?>
                 <tr class="block_info" id="filter-<?php echo  $filter->ID ?>" data-status="<?php echo $filter->post_status ?>" data-date="<?php echo $date ?>" data-type="<?php echo $type ?>">
-                    <td><input type="checkbox" id="<?php echo $filter->ID ?>"></td>
-                    <td class="align-left normal-text"><?php echo $filter->post_title ?><br/><a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ) ?>">Edit</a><br/></td>
+                    <td><?php if( ! $is_premium ){ ?><input type="checkbox" id="<?php echo $filter->ID ?>"><?php } ?></td>
+                    <td class="align-left normal-text"><?php echo $filter->post_title ?>
+                        <br/>
+                        <?php if( $is_premium ){ ?>
+                            <span class="filter_is_premium">Premium Filter</span>
+                        <?php } else { ?>
+                            <a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ) ?>">Edit</a>
+                        <?php } ?>
+                        <br/>
+                    </td>
                     <td class="align-left normal-text"><?php echo $categories ?></td>
                     <td class="data-trigger align-left normal-text"><?php echo $trigger ?></td>
                     <td class="list_of_plugins <?php echo $has_tooltip_class; ?>">
@@ -390,6 +401,11 @@ EOF;
 
 		foreach ( $active_plugins as $plugin_id ) {
             
+            if( empty( $all_plugins[ $plugin_id ] ) ){
+                
+                continue;
+            }
+            
             if( ! in_array( $plugin_id, sospo_mu_plugin()->po_plugins ) || ! $remove_po ){
                 $plugins_simple_list["active"][ $plugin_id ] = $all_plugins[ $plugin_id ][ 'Name' ];
                 $plugins_simple_list["all"][ $plugin_id ]    = $all_plugins[ $plugin_id ][ 'Name' ];
@@ -405,6 +421,11 @@ EOF;
 		}
 
 		foreach ( $all_plugins as $plugin_id => $plugin_data ) {
+            
+            if( empty( $all_plugins[ $plugin_id ] ) ){
+                
+                continue;
+            }
             
             if( ! in_array( $plugin_id, sospo_mu_plugin()->po_plugins ) || ! $remove_po ){
                 $plugins_simple_list["inactive"][ $plugin_id ] = $all_plugins[ $plugin_id ][ 'Name' ];

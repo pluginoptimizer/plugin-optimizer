@@ -3,7 +3,7 @@
  * Plugin Name:       Plugin Optimizer MU
  * Plugin URI:        https://pluginoptimizer.com
  * Description:       This MU plugin is required by the Plugin Optimizer plugin. It will be removed upon deactivation.
- * Version:           1.0.7
+ * Version:           1.0.8
  * Author:            Plugin Optimizer
  * Author URI:        https://pluginoptimizer.com/about/
  * License:           GPL-2.0+
@@ -12,7 +12,7 @@
 
 class SOSPO_MU {
     
-    public $version                 = "1.0.7";
+    public $version                 = "1.0.8";
     
     protected static $instance      = null;
     
@@ -34,6 +34,8 @@ class SOSPO_MU {
     public $blocked_plugins         = [];
     public $filters_in_use          = [];
 
+    public $has_premium             = false;
+
     private function __construct() {
         
         $this->current_full_url         = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -46,7 +48,7 @@ class SOSPO_MU {
         $this->po_plugins = [
             "plugin-optimizer/plugin-optimizer.php",
             "plugin-optimizer-agent/plugin-optimizer-agent.php",
-            "plugin-optimizer-premiumplugin-optimizer-premium.php",
+            "plugin-optimizer-premium/plugin-optimizer-premium.php",
         ];
         $this->po_pages = [
             "/wp-admin/admin.php?page=plugin_optimizer",
@@ -98,6 +100,11 @@ class SOSPO_MU {
     function complete_action_once_plugins_are_loaded(){
 
         remove_filter('option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
+        
+        if( in_array( "plugin-optimizer-premium/plugin-optimizer-premium.php", $this->original_active_plugins ) ){
+            
+            $this->has_premium = true;
+        }
         
     }
 

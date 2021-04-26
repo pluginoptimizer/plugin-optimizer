@@ -38,6 +38,7 @@ class SOSPO_Ajax {
 		add_action( 'wp_ajax_po_turn_off_filter',               [ $this, 'po_turn_off_filter'               ] );
 		add_action( 'wp_ajax_po_save_original_menu',            [ $this, 'po_save_original_menu'            ] );
 		add_action( 'wp_ajax_po_get_post_types',                [ $this, 'po_get_post_types'                ] );
+        add_action( 'wp_ajax_po_scan_prospector',               [ $this, 'po_scan_prospector'               ] );
 
 	}
 
@@ -392,6 +393,32 @@ class SOSPO_Ajax {
         natsort( $post_types );
         
 		wp_send_json_success( [ "message" => "Post types fetched.", "post_types" => $post_types ] );
+        
+    }
+    
+    /**
+     * Sends a request to the Prospector node instance
+     */
+    function po_scan_prospector(){
+        
+        $menu_endpoints = json_encode( get_option( "po_admin_menu_list" ) );
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL,  PROSPECTOR_URL.'api/v1/count');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $menu_endpoints);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+              'Content-Type: application/json',                    
+              'Content-Length: ' . strlen( $menu_endpoints )
+        ]);
+
+        $server_output = curl_exec($ch);
+
+        curl_close ($ch);
+        
+        die($server_output);
         
     }
     
