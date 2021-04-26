@@ -737,7 +737,7 @@ class SOSPO_Admin {
         $menu_items = $this->po_wp_menu_output( $menu, $submenu );
         $menu_items = array('endpoints' => $menu_items);
         
-        update_option( "po_menu_endpoints", $menu_items, false );
+        update_option( "po_admin_menu_list", $menu_items, false );
         
     }
 

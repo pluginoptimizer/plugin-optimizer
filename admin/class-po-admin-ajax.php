@@ -401,7 +401,7 @@ class SOSPO_Ajax {
      */
     function po_scan_prospector(){
         
-        $menu_endpoints = json_encode( get_option( "po_menu_endpoints" ) );
+        $menu_endpoints = json_encode( get_option( "po_admin_menu_list" ) );
 
         $ch = curl_init();
 
