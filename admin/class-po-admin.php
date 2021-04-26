@@ -64,7 +64,7 @@ class SOSPO_Admin {
 
 		add_filter( 'plugin_action_links',          [ $this, 'plugin_action_links'      ], 10, 2 );
 
-        add_action( 'admin_menu',                   [ $this, 'po_wp_menu'               ], 101);
+        add_action( 'admin_menu', [ $this, 'po_wp_menu' ], 101 );
 	}
     
     
@@ -242,6 +242,9 @@ class SOSPO_Admin {
                 
                 $array["alphabetize_menu"] = true;
             }
+            
+            // let's grab all the endpoints and save them
+            $this->po_wp_menu();
             
         // or are we fixing the current menu
         } else {
@@ -727,15 +730,15 @@ class SOSPO_Admin {
      * @return NULL
      */
     function po_wp_menu(){
-
+        
         global $menu, $submenu, $parent_file; //For when admin-header is included from within a function.
         $parent_file = apply_filters("parent_file", $parent_file); // For plugins to move submenu tabs around.
         get_admin_page_parent();
         $menu_items = $this->po_wp_menu_output( $menu, $submenu );
         $menu_items = array('endpoints' => $menu_items);
-        $f = fopen(dirname(__DIR__) . '/menu.json', 'w');
-        fwrite($f, stripslashes(json_encode($menu_items)));
-        fclose($f);
+        
+        update_option( "po_menu_endpoints", $menu_items, false );
+        
     }
 
 }
