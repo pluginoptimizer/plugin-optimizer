@@ -493,7 +493,7 @@ body.po_page_overview .hidden-info_overview .row > .col-6:last-of-type h4{
 .sos-wrap thead th.left-10 {
     padding-left: 10px;
 }
-.sos-wrap tbody td.data-trigger b{
+.sos-wrap tbody td[data-label="triggers"] b{
     text-transform: none;
     font-weight: bold;
 }
@@ -635,6 +635,31 @@ body.po_page_overview #overview_summary #licence_section.valid .license-input-fi
 #the-list.filter_on__status_publish > :not([data-status="publish"]),
 #the-list.filter_on__status_trash > :not([data-status="trash"]){
     display: none;
+}
+
+input.search_filter{
+    opacity: 0.5;
+    transition: all 300ms ease;
+}
+input.search_filter:not(:placeholder-shown),
+input.search_filter:focus,
+input.search_filter:hover{
+    opacity: 1;
+}
+
+.po_table .sort_able{
+    cursor: pointer;
+    user-select: none;
+}
+.po_table .sort_able:hover{
+    color: #000;
+}
+.po_table .sort_able.sort_active:after{
+    content: "↓";
+    margin-left: 5px;
+}
+.po_table .sort_able.sort_active.sort_reversed:after{
+    content: "↑";
 }
 
 

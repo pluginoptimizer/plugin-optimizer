@@ -39,14 +39,7 @@ if( $filters ){
             <div class="col-12">
                 <table class="po_table">
                     <thead>
-                        <tr>
-                            <th><input type="checkbox" id="check_all"></th>
-                            <th class="left-10 align-left">Title</th>
-                            <th class="left-10 align-left">Categories</th>
-                            <th>Triggers</th>
-                            <th>Blocked plugins</th>
-                            <th class="toggle_filter">Turned On</th>
-                        </tr>
+                    
                     <?php if( sospo_mu_plugin()->has_agent ){ ?>
                         <tr>
                             <th></th>
@@ -54,9 +47,27 @@ if( $filters ){
                             <th data-label="categories" class="left-10 align-left"><input type="text" placeholder="Search Categories..." class="search_filter"/></th>
                             <th data-label="triggers"><input type="text" placeholder="Search Triggers..." class="search_filter"/></th>
                             <th data-label="plugins"><input type="text" placeholder="Search Plugins..." class="search_filter"/></th>
+                            <th></th>
+                            <th></th>
                             <th class="toggle_filter"></th>
                         </tr>
                     <?php } ?>
+                    
+                        <tr>
+                            <th><input type="checkbox" id="check_all"></th>
+                            <th data-label="title" class="left-10 align-left sort_able sort_active">Title</th>
+                            <th class="left-10 align-left">Categories</th>
+                            <th>Triggers</th>
+                            <th data-label="plugins" class="sort_able">Blocked plugins</th>
+                            
+                        <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                            <th data-label="created" class="sort_able">Created</th>
+                            <th data-label="modified" class="sort_able">Modified</th>
+                        <?php } ?>
+                        
+                            <th class="toggle_filter">Turned On</th>
+                        </tr>
+                        
                     </thead>
                     <tbody id="the-list" class="filter_on__status_publish">
                         <?php SOSPO_Admin_Helper::list_content__filters( $filters ); ?>

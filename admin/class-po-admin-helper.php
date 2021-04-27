@@ -266,10 +266,14 @@ EOF;
                         <br/>
                     </td>
                     <td data-label="categories" class="align-left normal-text"><?php echo $categories ?></td>
-                    <td data-label="triggers" class="data-trigger align-left normal-text"><?php echo $trigger ?></td>
+                    <td data-label="triggers" class="align-left normal-text"><?php echo $trigger ?></td>
                     <td data-label="plugins" class="list_of_plugins <?php echo $has_tooltip_class; ?>">
                         <span <?php echo $tooltip_list; ?>><?php echo count( $blocking_plugins ) ?></span>
                     </td>
+                <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                    <td data-label="created" class="normal-text"><?php echo $filter->post_date ?></td>
+                    <td data-label="modified" class="normal-text"><?php echo $filter->post_modified ?></td>
+                <?php } ?>
                     <td class="toggle_filter">
                         <label>
                             <span class="switch">

@@ -549,10 +549,10 @@ jQuery( document ).ready( function($){
     });
     
     // Filter by search box
-    $('body').on('keyup', '.search_filter', function(){
+    $('body').on('keyup paste change', '.search_filter', function(){
         
         let search = $(this).val();
-        let type   = $(this).parent().data("label");
+        let type   = $(this).parent().data('label');
         
         // console.log( "search: ", search );
         // console.log( "type: ", type );
@@ -579,6 +579,43 @@ jQuery( document ).ready( function($){
         
     });
     
+    // Sort by list header items
+    $('body').on('click', '.sort_able', function(){
+        
+        let sort = $(this).data('label');
+        
+        let was_active   = $(this).hasClass('sort_active');
+        let was_reversed = $(this).hasClass('sort_reversed');
+        
+        $('.sort_able').removeClass('sort_reversed').removeClass('sort_active');
+        
+        $(this).addClass('sort_active').toggleClass('sort_reversed', was_active && ! was_reversed );
+        
+        let is_active   = $(this).hasClass('sort_active');
+        let is_reversed = $(this).hasClass('sort_reversed');
+        
+        console.log( "Sorting by: ", sort, ", ", ( is_reversed ? "Reversed" : "Normal" ) );
+        
+        // sort
+        let $container = $('#the-list');
+        
+        $container.children().sort( function( a, b ){
+            
+            let a_title = $(a).children('[data-label="' + sort + '"]').text().trim().toLowerCase();
+            let b_title = $(b).children('[data-label="' + sort + '"]').text().trim().toLowerCase();
+            
+            let compared = a_title.localeCompare( b_title, undefined, {
+                numeric: true,
+                sensitivity: 'base'
+            });
+            
+            return is_reversed ? 0 - compared : compared;
+            
+        }).prependTo( $container );
+        
+        
+    });
+    
     
     
     // Change appearance checkbox all elements
@@ -587,7 +624,7 @@ jQuery( document ).ready( function($){
         if($('#check_all').is( ":checked" )){
             $('#check_all').prop('checked', false);
         }
-        if($('#the-list input:checkbox').length === $('#the-list input:checkbox:checked').length){
+        if($('#the-list .block_info:not([class*="filtered_out__"]) input:checkbox').length === $('#the-list .block_info:not([class*="filtered_out__"]) input:checkbox:checked').length){
             $('#check_all').prop('checked', true);
         }
     });
@@ -595,7 +632,13 @@ jQuery( document ).ready( function($){
     // Select all elements
     $('body').on('change', '#check_all', function(){
         
-        $('#the-list .block_info > td:first-of-type > input:checkbox').prop('checked', $(this).is(":checked") );
+        if( $(this).is(":checked") ){
+            
+            $('#the-list .block_info:not([class*="filtered_out__"]) > td:first-of-type > input:checkbox').prop('checked', true );
+        } else {
+            $('#the-list .block_info > td:first-of-type > input:checkbox').prop('checked', false );
+        }
+        
         
     });
     
