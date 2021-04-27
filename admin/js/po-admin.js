@@ -488,6 +488,8 @@ jQuery( document ).ready( function($){
         }
     });
 
+
+
     // Show only the published items
     $('body').on('click', '#all_elements', function(){
         
@@ -545,6 +547,39 @@ jQuery( document ).ready( function($){
         }
         
     });
+    
+    // Filter by search box
+    $('body').on('keyup', '.search_filter', function(){
+        
+        let search = $(this).val();
+        let type   = $(this).parent().data("label");
+        
+        // console.log( "search: ", search );
+        // console.log( "type: ", type );
+        
+        $('#the-list > *').removeClass("filtered_out__search_" + type );
+        
+        if( search ){
+            
+            let low_search = search.toLowerCase();
+            
+            $(`#the-list > tr > [data-label="${type}"]`).each(function(){
+                
+                let text = type == 'plugins' ? $(this).children('span').attr('data-tooltip-list') : $(this).text();
+                
+                if( ! text || ! text.toLowerCase().includes( low_search ) ){
+                    
+                    $(this).parent().addClass("filtered_out__search_" + type );
+                }
+                
+                // console.log( $(this).text() );
+                
+            });
+        }
+        
+    });
+    
+    
     
     // Change appearance checkbox all elements
     $('body').on('change', '#the-list input:checkbox', function(){

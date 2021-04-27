@@ -255,7 +255,8 @@ EOF;
 				?>
                 <tr class="block_info" id="filter-<?php echo  $filter->ID ?>" data-status="<?php echo $filter->post_status ?>" data-date="<?php echo $date ?>" data-type="<?php echo $type ?>">
                     <td><?php if( ! $is_premium ){ ?><input type="checkbox" id="<?php echo $filter->ID ?>"><?php } ?></td>
-                    <td class="align-left normal-text"><?php echo $filter->post_title ?>
+                    <td data-label="title" class="align-left normal-text">
+                        <?php echo $filter->post_title ?>
                         <br/>
                         <?php if( $is_premium ){ ?>
                             <span class="filter_is_premium">Premium Filter</span>
@@ -264,9 +265,9 @@ EOF;
                         <?php } ?>
                         <br/>
                     </td>
-                    <td class="align-left normal-text"><?php echo $categories ?></td>
-                    <td class="data-trigger align-left normal-text"><?php echo $trigger ?></td>
-                    <td class="list_of_plugins <?php echo $has_tooltip_class; ?>">
+                    <td data-label="categories" class="align-left normal-text"><?php echo $categories ?></td>
+                    <td data-label="triggers" class="data-trigger align-left normal-text"><?php echo $trigger ?></td>
+                    <td data-label="plugins" class="list_of_plugins <?php echo $has_tooltip_class; ?>">
                         <span <?php echo $tooltip_list; ?>><?php echo count( $blocking_plugins ) ?></span>
                     </td>
                     <td class="toggle_filter">

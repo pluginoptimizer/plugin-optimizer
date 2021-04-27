@@ -624,6 +624,10 @@ body.po_page_overview #overview_summary #licence_section.valid .license-input-fi
     font-weight: 700;
 }
 
+#the-list > .filtered_out__search_title,
+#the-list > .filtered_out__search_categories,
+#the-list > .filtered_out__search_triggers,
+#the-list > .filtered_out__search_plugins,
 #the-list > .filtered_out__type,
 #the-list > .filtered_out__date{
     display: none;

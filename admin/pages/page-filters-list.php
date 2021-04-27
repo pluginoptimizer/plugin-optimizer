@@ -47,6 +47,16 @@ if( $filters ){
                             <th>Blocked plugins</th>
                             <th class="toggle_filter">Turned On</th>
                         </tr>
+                    <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                        <tr>
+                            <th></th>
+                            <th data-label="title" class="left-10 align-left"><input type="text" placeholder="Search Title..." class="search_filter"/></th>
+                            <th data-label="categories" class="left-10 align-left"><input type="text" placeholder="Search Categories..." class="search_filter"/></th>
+                            <th data-label="triggers"><input type="text" placeholder="Search Triggers..." class="search_filter"/></th>
+                            <th data-label="plugins"><input type="text" placeholder="Search Plugins..." class="search_filter"/></th>
+                            <th class="toggle_filter"></th>
+                        </tr>
+                    <?php } ?>
                     </thead>
                     <tbody id="the-list" class="filter_on__status_publish">
                         <?php SOSPO_Admin_Helper::list_content__filters( $filters ); ?>
