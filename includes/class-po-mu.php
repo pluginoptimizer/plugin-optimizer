@@ -12,7 +12,7 @@
 
 class SOSPO_MU {
     
-    public $version                 = "1.0.8";
+    public $version                 = "1.0.8-2";
     
     protected static $instance      = null;
     
@@ -35,6 +35,7 @@ class SOSPO_MU {
     public $filters_in_use          = [];
 
     public $has_premium             = false;
+    public $has_agent               = false;
 
     private function __construct() {
         
@@ -104,6 +105,11 @@ class SOSPO_MU {
         if( in_array( "plugin-optimizer-premium/plugin-optimizer-premium.php", $this->original_active_plugins ) ){
             
             $this->has_premium = true;
+        }
+        
+        if( in_array( "plugin-optimizer-agent/plugin-optimizer-agent.php", $this->original_active_plugins ) ){
+            
+            $this->has_agent = true;
         }
         
     }

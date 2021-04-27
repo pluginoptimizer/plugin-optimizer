@@ -49,7 +49,7 @@ if( $filter ){
     $premium_filter     = get_post_meta( $filter->ID, 'premium_filter',   true );
     $is_premium         = $premium_filter === "true";
     
-    $block_editing      = $is_premium && ! in_array( "plugin-optimizer-agent/plugin-optimizer-agent.php", get_option('active_plugins') );
+    $block_editing      = ( $is_premium && ! sospo_mu_plugin()->has_agent );
     
     if( ! empty( $plugins_to_block ) ){
         $plugins_to_block   = array_keys( $plugins_to_block );
