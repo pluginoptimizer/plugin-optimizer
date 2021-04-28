@@ -557,8 +557,10 @@ jQuery( document ).ready( function($){
         
     });
     
+    
     // Filter by date
-    $('body').on('click', '#btn_date_filter', function(){
+    // $('body').on('click', '#btn_date_filter', function(){
+    $('body').on('change', '#filter_by_date', function(){
         
         let date_filter = $('#filter_by_date').val();
         
@@ -572,7 +574,8 @@ jQuery( document ).ready( function($){
     });
     
     // Filter by type (filters only)
-    $('body').on('click', '#btn_type_filter', function(){
+    // $('body').on('click', '#btn_type_filter', function(){
+    $('body').on('change', '#filter_by_type', function(){
         
         let date_filter = $('#filter_by_type').val();
         
@@ -584,6 +587,7 @@ jQuery( document ).ready( function($){
         }
         
     });
+    
     
     // Filter by search box
     $('body').on('keyup paste change', '.search_filter', function(){

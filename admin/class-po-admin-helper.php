@@ -158,7 +158,6 @@ EOF;
             }
             
             $filter_type_html .= '</select>';
-            $filter_type_html .= '<button id="btn_type_filter" class="po_secondary_button">Filter</button>';
             $filter_type_html .= '</div>';
             
         }
@@ -174,7 +173,6 @@ EOF;
                             <option value="default">All dates</option>
                             $months_html
                         </select>
-                        <button id="btn_date_filter" class="po_secondary_button">Filter</button>
                     </div>
                     $filter_type_html
                 </div>
