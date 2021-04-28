@@ -3,6 +3,7 @@ jQuery( document ).ready( function($){
     
     recalculate__special_grid_lists();
     
+    // Plugins section on Filter Edit screen, multi-select
     $('.block-plugin-wrapper .special_grid_list').selectable({
         filter: '.single_plugin',
         selected: function( event, ui ) {
