@@ -58,7 +58,7 @@ if( $filters ){
                             <th class="toggle_filter"></th>
                         </tr>
                     
-                        <tr>
+                        <tr id="po_table_header">
                             <th><input type="checkbox" id="check_all"></th>
                             <th data-label="title" class="left-10 align-left sort_able sort_active">Title</th>
                             <th class="left-10 align-left">Categories</th>

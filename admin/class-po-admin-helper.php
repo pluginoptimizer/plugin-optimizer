@@ -150,7 +150,7 @@ EOF;
         if( count( $filter_types ) >= 2 ){
             
             $filter_type_html .= '<div>';
-            $filter_type_html .= '<select id="filter_by_type">';
+            $filter_type_html .= '<select id="filter_by_type" class="filter_select">';
             $filter_type_html .= '    <option value="default">All types</option>';
             
             foreach( $filter_types as $filter_type => $filter_type_label ){
@@ -162,7 +162,7 @@ EOF;
             $filter_type_html .= '</div>';
             
             $filter_state_html .= '<div>';
-            $filter_state_html .= '<select id="filter_by_state">';
+            $filter_state_html .= '<select id="filter_by_state" class="filter_select">';
             $filter_state_html .= '    <option value="default">All states</option>';
             
             $filter_state_html .= '<option value="turned_on">'  . 'Turned On'  . '</option>';
@@ -180,20 +180,20 @@ EOF;
                         Filtering options:
                     </div>
                     <div>
-                        <select id="filter_by_date">
+                        <select id="filter_by_date" class="filter_select">
                             <option value="default">All dates</option>
                             $months_html
                         </select>
                     </div>
                     $filter_type_html
                     $filter_state_html
+                    <div id="clear_filter_options" class="manipulate_filter_options">
+                        Clear Filtering Options
+                    </div>
                 </div>
                 <script>jQuery('#filter_options').hide();</script>
             
 EOF;
-                // <div id="clear_filter_options" class="manipulate_filter_options">
-                    // Clear Filtering Options
-                // </div>
     
     }
     

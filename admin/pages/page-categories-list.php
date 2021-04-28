@@ -36,6 +36,9 @@ if( $categories ){
             </div>
         </div>
         
+        <div id="filter_options" class="toggle_filter_options" style="padding: 0;"></div>
+        <script>jQuery('#filter_options').hide();</script>
+        
         <div class="row col-12">
             <div class="col-12">
                 <table id="categories_table" class="po_table">
@@ -45,13 +48,13 @@ if( $categories ){
                     <?php } ?>
                         <tr id="search_boxes" class="toggle_filter_options hidden">
                             <th></th>
-                            <th></th>
+                            <th class="cat_edit"></th>
                             <th data-label="title" class="align-left"><input type="text" placeholder="Search Title..." class="search_filter"/></th>
                             <th data-label="description" class="align-left"><input type="text" placeholder="Search Description..." class="search_filter"/></th>
                             <th></th>
                         </tr>
                     
-                        <tr>
+                        <tr id="po_table_header">
                             <th class="cat_checkbox"><input type="checkbox" id="check_all"></th>
                             <th class="cat_edit"></th>
                             <th data-label="title" class="cat_title sort_able sort_active">Title</th>

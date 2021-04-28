@@ -12,6 +12,7 @@ jQuery( document ).ready( function($){
         }
     });
     
+
     // display the fresh number of Premium Filters the user could benefit from
     $('#scan-now').on('click', function(){
         $.ajax({
@@ -505,7 +506,6 @@ jQuery( document ).ready( function($){
         $(this).hide();
         
         $('#hide_filter_options').show();
-        $('#clear_filter_options').show();
         
         $('.toggle_filter_options').slideDown(200);
         
@@ -517,12 +517,19 @@ jQuery( document ).ready( function($){
         $(this).hide();
         
         $('#show_filter_options').show();
-        $('#clear_filter_options').hide();
         
         $('.toggle_filter_options').slideUp(200);
         
     });
     
+    // Reset filtering options
+    $('#clear_filter_options').on('click', function(){
+        
+        $('.filter_select').val('default').change();
+        $('#search_boxes .search_filter').val('').change();
+        
+    });
+
     
     // Show only the published items
     $('body').on('click', '#all_elements', function(){
