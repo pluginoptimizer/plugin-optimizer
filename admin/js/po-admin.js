@@ -490,6 +490,43 @@ jQuery( document ).ready( function($){
 
 
 
+    // 
+    $('body').on('click', '#show_filter_options', function(){
+        
+        $(this).hide();
+        
+        $('#hide_filter_options').show();
+        $('#clear_filter_options').show();
+        
+        $('.toggle_filter_options')
+        // .slideDown({
+            // start: function () {
+                
+                // if( $(this).attr('id') == 'filter_options' ){
+                    
+                    // $(this).css({
+                        // display: "flex"
+                    // });
+                // }
+            // }
+        // })
+        .removeClass("hidden");
+        
+    });
+    
+    // 
+    $('body').on('click', '#hide_filter_options', function(){
+        
+        $(this).hide();
+        
+        $('#show_filter_options').show();
+        $('#clear_filter_options').hide();
+        
+        $('.toggle_filter_options').addClass("hidden");
+        
+    });
+    
+    
     // Show only the published items
     $('body').on('click', '#all_elements', function(){
         
@@ -523,7 +560,7 @@ jQuery( document ).ready( function($){
     // Filter by date
     $('body').on('click', '#btn_date_filter', function(){
         
-        let date_filter = $('#filter_all_elements').val();
+        let date_filter = $('#filter_by_date').val();
         
         $('#the-list > *').removeClass("filtered_out__date");
         
@@ -565,7 +602,7 @@ jQuery( document ).ready( function($){
             
             $(`#the-list > tr > [data-label="${type}"]`).each(function(){
                 
-                let text = type == 'plugins' ? $(this).children('span').attr('data-tooltip-list') : $(this).text();
+                let text = type == 'plugins_tooltip' ? $(this).children('span').attr('data-tooltip-list') : $(this).text();
                 
                 if( ! text || ! text.toLowerCase().includes( low_search ) ){
                     
@@ -702,8 +739,10 @@ jQuery( document ).ready( function($){
                 data    : data,
                 success : function (response) {
                     
+                    // reset the filters
                     $('#bulk_actions select').val('default');
                     $('#bulk_actions button:not(#btn_apply)').click();
+                    // TODO reset the latest filters
                     
                     
                     $('#check_all').prop('checked', false);

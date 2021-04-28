@@ -17,15 +17,18 @@ if( $groups ){
     <?php SOSPO_Admin_Helper::content_part__header("Groups", "groups"); ?>
     
     <div class="sos-content">
-        <div class="row justify-content-between global-information">
+        <div class="justify-content-between global-information">
         
-            <div class="col-3">
+            <div class="col-9 left_information">
                 <a href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_groups') ?>">
                     <button class="po_green_button" id="add_elements">Create Group</button>
                 </a>
+                
+                <?php SOSPO_Admin_Helper::content_part__bulk_actions(); ?>
+                
+                <?php SOSPO_Admin_Helper::content_part__manipulate_filter_options(); ?>
+                
             </div>
-            
-            <?php SOSPO_Admin_Helper::content_part__bulk_actions( $groups ); ?>
             
             <div class="col-3 quantity">
                 <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?php echo wp_count_posts( 'plgnoptmzr_group' )->publish; ?></span>)
@@ -35,16 +38,29 @@ if( $groups ){
             
         </div>
         
+        <?php SOSPO_Admin_Helper::content_part__filter_options( $groups ); ?>
+        
         <div class="row col-12">
             <div class="col-12">
                 <table class="po_table">
                     <thead>
+                    
+                    <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                    <?php } ?>
+                        <tr id="search_boxes" class="toggle_filter_options hidden">
+                            <th></th>
+                            <th data-label="title" class="left-10 align-left"><input type="text" placeholder="Search Title..." class="search_filter"/></th>
+                            <th data-label="plugins"><input type="text" placeholder="Search Plugins..." class="search_filter"/></th>
+                            <th></th>
+                        </tr>
+                    
                         <tr>
                             <th><input type="checkbox" id="check_all"></th>
-                            <th class="left-10 align-left">Title</th>
-                            <th>Plugins</th>
-                            <th>Count</th>
+                            <th data-label="title" class="left-10 align-left sort_able sort_active">Title</th>
+                            <th data-label="plugins">Plugins</th>
+                            <th data-label="count" class="sort_able">Count</th>
                         </tr>
+                        
                     </thead>
                     <tbody id="the-list" class="filter_on__status_publish">
                         <?php SOSPO_Admin_Helper::list_content__groups( $groups ); ?>

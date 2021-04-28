@@ -597,6 +597,13 @@ body.po_page_overview #overview_summary #licence_section.valid .license-input-fi
 }
 .sos-wrap .global-information {
     /* margin-top: 10px; */
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.sos-wrap .global-information .left_information{
+    display: flex;
+    align-items: center;
 }
 
 #wpcontent{
@@ -624,17 +631,16 @@ body.po_page_overview #overview_summary #licence_section.valid .license-input-fi
     font-weight: 700;
 }
 
-#the-list > .filtered_out__search_title,
-#the-list > .filtered_out__search_categories,
-#the-list > .filtered_out__search_triggers,
-#the-list > .filtered_out__search_plugins,
-#the-list > .filtered_out__type,
-#the-list > .filtered_out__date{
+#the-list > [class*="filtered_out__"]{
     display: none;
 }
 #the-list.filter_on__status_publish > :not([data-status="publish"]),
 #the-list.filter_on__status_trash > :not([data-status="trash"]){
     display: none;
+}
+
+#search_boxes > th{
+    padding-bottom: 30px;
 }
 
 input.search_filter{
@@ -654,9 +660,13 @@ input.search_filter:hover{
 .po_table .sort_able:hover{
     color: #000;
 }
-.po_table .sort_able.sort_active:after{
-    content: "↓";
+.po_table .sort_able:after{
+    content: "";
     margin-left: 5px;
+}
+.po_table .sort_able.sort_active:after,
+.po_table .sort_able:not(.sort_active.sort_reversed):hover:after{
+    content: "↓";
 }
 .po_table .sort_able.sort_active.sort_reversed:after{
     content: "↑";
@@ -845,19 +855,53 @@ input.search_filter:hover{
 }
 
 
-
+#add_elements{
+    min-width: 180px;
+    margin-right: 20px;
+}
 
 #bulk_actions{
     display: flex;
-}
-#bulk_actions > div:not(:last-of-type){
+    align-items: center;
     margin-right: 20px;
 }
-#bulk_actions > div{
+#bulk_actions > select{
+    margin-right: 10px;
+}
+
+.manipulate_filter_options{
+    user-select: none;
+    cursor: pointer;
+}
+.manipulate_filter_options:hover{
+    color: #3A5683;
+}
+#hide_filter_options{
+    margin-right: 30px;
+}
+#hide_filter_options,
+#clear_filter_options{
+    display: none;
+}
+
+#filter_options{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 15px;
+    margin: 34px 0 24px;
+}
+#filter_options.hidden{
+    display: none;
+}
+#filter_options > div:not(:last-of-type){
+    margin-right: 20px;
+}
+#filter_options > div{
     display: flex;
     align-items: center;
 }
-#bulk_actions > div > select{
+#filter_options > div > select{
     margin-right: 10px;
     min-height: 32px;
 }

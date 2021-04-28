@@ -76,7 +76,36 @@ EOF;
         
     }
     
-	static function content_part__bulk_actions( $posts ) {
+	static function content_part__bulk_actions() {
+        
+        echo <<<EOF
+        
+                <div id="bulk_actions">
+                    <select id="check_all_elements">
+                        <option value="default">Bulk actions</option>
+                        <option value="delete">Delete</option>
+                    </select>
+                    <button id="btn_apply" class="po_secondary_button">Apply</button>
+                </div>
+EOF;
+    
+    }
+    
+	static function content_part__manipulate_filter_options() {
+        
+        echo <<<EOF
+        
+                <div id="show_filter_options" class="manipulate_filter_options">
+                    Show Filter Options
+                </div>
+                <div id="hide_filter_options" class="manipulate_filter_options">
+                    Hide Filter Options
+                </div>
+EOF;
+    
+    }
+    
+	static function content_part__filter_options( $posts ) {
         
         $months           = [];
         $months_html      = '';
@@ -105,7 +134,7 @@ EOF;
                 }
                 
             }
-            // sospo_mu_plugin()->write_log( $post->filter_type, "content_part__bulk_actions-post-filter_type" );
+            // sospo_mu_plugin()->write_log( $post->filter_type, "content_part__filter_options-post-filter_type" );
             // break;
         }
         
@@ -136,26 +165,25 @@ EOF;
         
         echo <<<EOF
         
-                <div id="bulk_actions" class="col-6">
+                <div id="filter_options" class="toggle_filter_options hidden">
                     <div>
-                        <select id="check_all_elements">
-                            <option value="default">Bulk actions</option>
-                            <option value="delete">Delete</option>
-                        </select>
-                        <button id="btn_apply" class="po_secondary_button">Apply</button>
+                        Filter options:
                     </div>
                     <div>
-                        <select id="filter_all_elements">
+                        <select id="filter_by_date">
                             <option value="default">All dates</option>
                             $months_html
                         </select>
                         <button id="btn_date_filter" class="po_secondary_button">Filter</button>
                     </div>
                     $filter_type_html
+                <div id="clear_filter_options" class="manipulate_filter_options">
+                    Clear Filter Options
+                </div>
                 </div>
             
 EOF;
-        
+    
     }
     
 	static function content_part__plugins( $args = [] ) {
@@ -267,7 +295,7 @@ EOF;
                     </td>
                     <td data-label="categories" class="align-left normal-text"><?php echo $categories ?></td>
                     <td data-label="triggers" class="align-left normal-text"><?php echo $trigger ?></td>
-                    <td data-label="plugins" class="list_of_plugins <?php echo $has_tooltip_class; ?>">
+                    <td data-label="plugins_tooltip" class="list_of_plugins <?php echo $has_tooltip_class; ?>">
                         <span <?php echo $tooltip_list; ?>><?php echo count( $blocking_plugins ) ?></span>
                     </td>
                 <?php if( sospo_mu_plugin()->has_agent ){ ?>
@@ -305,9 +333,9 @@ EOF;
 				?>
                 <tr class="block_info" id="group_<?php echo $group->ID; ?>" data-status="<?php echo $group->post_status ?>" data-date="<?php echo $date ?>">
                     <td><input type="checkbox" id="<?php echo $group->ID; ?>"></td>
-                    <td class="align-left normal-text"><?php echo $group->post_title; ?><br/><a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_groups&group_id=' . $group->ID ) ?>">Edit</a><br/></td>
-                    <td><?php echo implode( '<br/>', $group_plugins ) ?></td>
-                    <td><?php echo $group_plugins ? count( $group_plugins ) : 0 ?></td>
+                    <td data-label="title" class="align-left normal-text"><?php echo $group->post_title; ?><br/><a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_groups&group_id=' . $group->ID ) ?>">Edit</a><br/></td>
+                    <td data-label="plugins"><?php echo implode( '<br/>', $group_plugins ) ?></td>
+                    <td data-label="count"><?php echo $group_plugins ? count( $group_plugins ) : 0 ?></td>
                 </tr>
 			<?php
             }
@@ -364,10 +392,10 @@ EOF;
                 <tr class="block_info" id="cat-<?php echo $cat->term_id ?>" data-status="publish">
                     <td class="cat_checkbox"><input type="checkbox" id="<?php echo $cat->term_id ?>"></td>
                     <td class="cat_edit"><a href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_categories&cat_id=' . $cat->term_id ) ?>">Edit</a></td>
-                    <td class="cat_title"><?php echo $cat->cat_name ?></td>
-                    <td class="cat_description"><?php echo $cat->description ? $cat->description : "-" ?></td>
+                    <td data-label="title" class="cat_title"><?php echo $cat->cat_name ?></td>
+                    <td data-label="description" class="cat_description"><?php echo $cat->description ? $cat->description : "-" ?></td>
                     <?php // TODO add a link to filter the filters by category ?>
-                    <td class="cat_filters"><?php echo $cat->count ?></td>
+                    <td data-label="count" class="cat_filters"><?php echo $cat->count ?></td>
                 </tr>
 			<?php }
         } else {

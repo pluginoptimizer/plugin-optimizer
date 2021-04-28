@@ -13,9 +13,17 @@ $worklists = get_posts( array(
     <div class="sos-content">
         <div class="row justify-content-between global-information">
         
-            <?php SOSPO_Admin_Helper::content_part__bulk_actions( $worklists ); ?>
+            <div class="col-3 left_information">
+                <div id="bulk_actions">
+                    <select id="check_all_elements">
+                        <option value="default">Bulk actions</option>
+                        <option value="delete">Delete</option>
+                    </select>
+                    <button id="btn_apply" class="po_secondary_button">Apply</button>
+                </div>
+            </div>
             
-            <div class="col-3"></div>
+            <?php SOSPO_Admin_Helper::content_part__filter_options( $worklists ); ?>
             
             <div class="col-3 quantity">
                 <span id="all_elements" class="filtered">Published</span> (<span id="count_all_elements"><?php echo wp_count_posts( 'plgnoptmzr_work' )->publish; ?></span>)
