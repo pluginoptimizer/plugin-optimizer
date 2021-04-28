@@ -3,6 +3,14 @@ jQuery( document ).ready( function($){
     
     recalculate__special_grid_lists();
     
+    $('.block-plugin-wrapper .special_grid_list').selectable({
+        filter: '.single_plugin',
+        selected: function( event, ui ) {
+            
+            ui.selected.click();
+        }
+    });
+    
     // display the fresh number of Premium Filters the user could benefit from
     $('#scan-now').on('click', function(){
         $.ajax({

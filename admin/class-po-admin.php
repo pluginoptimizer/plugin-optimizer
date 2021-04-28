@@ -182,7 +182,8 @@ class SOSPO_Admin {
 		if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) ) {
             
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/po-admin.css', array(), $this->version, 'all' );
-            wp_enqueue_style( $this->plugin_name . '-simplebar', plugin_dir_url( __FILE__ ) . 'css/simplebar.css', array(), $this->version, 'all' );
+            wp_enqueue_style( $this->plugin_name . '-simplebar',  plugin_dir_url( __FILE__ ) . 'css/simplebar.css', array(), $this->version, 'all' );
+            wp_enqueue_style( $this->plugin_name . '-selectable', plugin_dir_url( __FILE__ ) . 'css/selectable-ui.min.css', array(), $this->version, 'all' );
 		}
 	}
 
@@ -198,6 +199,7 @@ class SOSPO_Admin {
             'user_id'   => get_current_user_id(),
         );
         
+        // get the menu from the database
         if( function_exists("sospo_mu_plugin") && ( count( sospo_mu_plugin()->blocked_plugins ) >= 1 || get_option("po_should_alphabetize_menu") == "1" ) ){
             
             $original_menu = get_option("plgnoptmzr_original_menu");
@@ -209,6 +211,7 @@ class SOSPO_Admin {
             
         }
         
+        // get the topbar from the database
         if( function_exists("sospo_mu_plugin") && count( sospo_mu_plugin()->blocked_plugins ) >= 1 ){
             
             $topbar_menu   = get_option("plgnoptmzr_topbar_menu");
@@ -259,8 +262,12 @@ class SOSPO_Admin {
 		wp_register_script( $this->plugin_name . '-simplebar', plugin_dir_url( __FILE__ ) . 'js/simplebar.min.js', array( 'jquery' ), $version, true );
 		wp_enqueue_script(  $this->plugin_name . '-simplebar' );
         
+        $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/selectable-ui.min.js' ));
+		wp_register_script( $this->plugin_name . '-selectable', plugin_dir_url( __FILE__ ) . 'js/selectable-ui.min.js', array( 'jquery' ), $version, true );
+		wp_enqueue_script(  $this->plugin_name . '-selectable' );
+        
         $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/po-admin.js' ));
-		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/po-admin.js', array( 'jquery' ), $version, true );
+		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/po-admin.js', array( 'jquery', $this->plugin_name . '-selectable' ), $version, true );
 		wp_localize_script( $this->plugin_name, 'po_object', $array );
 		wp_enqueue_script(  $this->plugin_name );
 
