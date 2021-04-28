@@ -593,7 +593,7 @@ body.po_page_overview #overview_summary #licence_section.valid .license-input-fi
 
 .sos-wrap .row {
     margin-bottom: 10px;
-    padding: 5px;
+    padding: 0 5px;
 }
 .sos-wrap .global-information {
     /* margin-top: 10px; */
@@ -639,6 +639,8 @@ body.po_page_overview #overview_summary #licence_section.valid .license-input-fi
     display: none;
 }
 
+#search_boxes{
+}
 #search_boxes > th{
     padding-bottom: 30px;
 }
@@ -888,8 +890,8 @@ input.search_filter:hover{
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 15px;
-    margin: 34px 0 24px;
+    padding: 34px 0 24px;
+    margin: 0 15px;
 }
 #filter_options.hidden{
     display: none;

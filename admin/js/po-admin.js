@@ -498,19 +498,7 @@ jQuery( document ).ready( function($){
         $('#hide_filter_options').show();
         $('#clear_filter_options').show();
         
-        $('.toggle_filter_options')
-        // .slideDown({
-            // start: function () {
-                
-                // if( $(this).attr('id') == 'filter_options' ){
-                    
-                    // $(this).css({
-                        // display: "flex"
-                    // });
-                // }
-            // }
-        // })
-        .removeClass("hidden");
+        $('.toggle_filter_options').slideDown(200);
         
     });
     
@@ -522,7 +510,7 @@ jQuery( document ).ready( function($){
         $('#show_filter_options').show();
         $('#clear_filter_options').hide();
         
-        $('.toggle_filter_options').addClass("hidden");
+        $('.toggle_filter_options').slideUp(200);
         
     });
     
@@ -559,7 +547,6 @@ jQuery( document ).ready( function($){
     
     
     // Filter by date
-    // $('body').on('click', '#btn_date_filter', function(){
     $('body').on('change', '#filter_by_date', function(){
         
         let date_filter = $('#filter_by_date').val();
@@ -574,7 +561,6 @@ jQuery( document ).ready( function($){
     });
     
     // Filter by type (filters only)
-    // $('body').on('click', '#btn_type_filter', function(){
     $('body').on('change', '#filter_by_type', function(){
         
         let date_filter = $('#filter_by_type').val();
@@ -584,6 +570,25 @@ jQuery( document ).ready( function($){
         if( date_filter != "default" ){
             
             $(`#the-list > *:not([data-type="${date_filter}"])`).addClass("filtered_out__type");
+        }
+        
+    });
+    
+    // Filter by state (filters only)
+    $('body').on('change', '#filter_by_state', function(){
+        
+        let state_filter = $('#filter_by_state').val();
+        
+        $('#the-list > *').removeClass("filtered_out__state");
+        
+        if( state_filter == "turned_on" ){
+            
+            $('#the-list .turn_off_filter:not(:checked)').parents('.block_info').addClass("filtered_out__state");
+        }
+        
+        if( state_filter == "turned_off" ){
+            
+            $('#the-list .turn_off_filter:checked').parents('.block_info').addClass("filtered_out__state");
         }
         
     });

@@ -107,10 +107,11 @@ EOF;
     
 	static function content_part__filter_options( $posts ) {
         
-        $months           = [];
-        $months_html      = '';
-        $filter_types     = [];
-        $filter_type_html = '';
+        $months            = [];
+        $months_html       = '';
+        $filter_types      = [];
+        $filter_type_html  = '';
+        $filter_state_html = '';
         
         foreach( $posts as $post ){
             
@@ -145,7 +146,7 @@ EOF;
             $months_html .= '<option value="' . $value . '">' . $label . '</option>';
         }
         
-        
+        // only if we're on the Filters List page
         if( count( $filter_types ) >= 2 ){
             
             $filter_type_html .= '<div>';
@@ -160,11 +161,21 @@ EOF;
             $filter_type_html .= '</select>';
             $filter_type_html .= '</div>';
             
+            $filter_state_html .= '<div>';
+            $filter_state_html .= '<select id="filter_by_state">';
+            $filter_state_html .= '    <option value="default">All states</option>';
+            
+            $filter_state_html .= '<option value="turned_on">'  . 'Turned On'  . '</option>';
+            $filter_state_html .= '<option value="turned_off">' . 'Turned Off' . '</option>';
+            
+            $filter_state_html .= '</select>';
+            $filter_state_html .= '</div>';
+            
         }
         
         echo <<<EOF
         
-                <div id="filter_options" class="toggle_filter_options hidden">
+                <div id="filter_options" class="toggle_filter_options">
                     <div>
                         Filtering options:
                     </div>
@@ -175,7 +186,9 @@ EOF;
                         </select>
                     </div>
                     $filter_type_html
+                    $filter_state_html
                 </div>
+                <script>jQuery('#filter_options').hide();</script>
             
 EOF;
                 // <div id="clear_filter_options" class="manipulate_filter_options">
