@@ -490,7 +490,7 @@ jQuery( document ).ready( function($){
 
 
 
-    // 
+    // Show filtering options
     $('body').on('click', '#show_filter_options', function(){
         
         $(this).hide();
@@ -514,7 +514,7 @@ jQuery( document ).ready( function($){
         
     });
     
-    // 
+    // Hide filtering options
     $('body').on('click', '#hide_filter_options', function(){
         
         $(this).hide();

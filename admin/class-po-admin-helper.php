@@ -96,10 +96,10 @@ EOF;
         echo <<<EOF
         
                 <div id="show_filter_options" class="manipulate_filter_options">
-                    Show Filter Options
+                    Show Filtering Options
                 </div>
                 <div id="hide_filter_options" class="manipulate_filter_options">
-                    Hide Filter Options
+                    Hide Filtering Options
                 </div>
 EOF;
     
@@ -167,7 +167,7 @@ EOF;
         
                 <div id="filter_options" class="toggle_filter_options hidden">
                     <div>
-                        Filter options:
+                        Filtering options:
                     </div>
                     <div>
                         <select id="filter_by_date">
@@ -177,12 +177,12 @@ EOF;
                         <button id="btn_date_filter" class="po_secondary_button">Filter</button>
                     </div>
                     $filter_type_html
-                <div id="clear_filter_options" class="manipulate_filter_options">
-                    Clear Filter Options
-                </div>
                 </div>
             
 EOF;
+                // <div id="clear_filter_options" class="manipulate_filter_options">
+                    // Clear Filtering Options
+                // </div>
     
     }
     
