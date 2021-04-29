@@ -1024,6 +1024,7 @@ table.po_table{
 }
 table.po_table #po_table_header th{
     padding-top: 20px;
+    user-select: none;
 }
 
 .sos-wrap tbody tr {
