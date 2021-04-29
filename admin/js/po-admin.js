@@ -575,11 +575,11 @@ jQuery( document ).ready( function($){
     // Filter by date
     $('body').on('change', '#filter_by_date', function(){
         
-        let date_filter = $('#filter_by_date').val();
+        let filter = $('#filter_by_date').val();
         
         $('#the-list > *').removeClass("filtered_out__date");
         
-        if( date_filter != "default" ){
+        if( filter != "default" ){
             
             $(`#the-list > *:not([data-date="${date_filter}"])`).addClass("filtered_out__date");
         }
@@ -588,13 +588,13 @@ jQuery( document ).ready( function($){
     });
     
     // Filter by type (filters only)
-    $('body').on('change', '#filter_by_type', function(){
+    $('body').on('change', '#filter_by_trigger', function(){
         
-        let date_filter = $('#filter_by_type').val();
+        let filter = $('#filter_by_trigger').val();
         
         $('#the-list > *').removeClass("filtered_out__type");
         
-        if( date_filter != "default" ){
+        if( filter != "default" ){
             
             $(`#the-list > *:not([data-type="${date_filter}"])`).addClass("filtered_out__type");
         }
@@ -605,16 +605,16 @@ jQuery( document ).ready( function($){
     // Filter by state (filters only)
     $('body').on('change', '#filter_by_state', function(){
         
-        let state_filter = $('#filter_by_state').val();
+        let filter = $('#filter_by_state').val();
         
         $('#the-list > *').removeClass("filtered_out__state");
         
-        if( state_filter == "turned_on" ){
+        if( filter == "turned_on" ){
             
             $('#the-list .turn_off_filter:not(:checked)').parents('.block_info').addClass("filtered_out__state");
         }
         
-        if( state_filter == "turned_off" ){
+        if( filter == "turned_off" ){
             
             $('#the-list .turn_off_filter:checked').parents('.block_info').addClass("filtered_out__state");
         }

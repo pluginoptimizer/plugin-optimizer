@@ -162,8 +162,8 @@ EOF;
         if( count( $filter_types ) >= 2 ){
             
             $filter_type_html .= '<div>';
-            $filter_type_html .= '<select id="filter_by_type" class="filter_select">';
-            $filter_type_html .= '    <option value="default">All types</option>';
+            $filter_type_html .= '<select id="filter_by_trigger" class="filter_select">';
+            $filter_type_html .= '    <option value="default">All triggers</option>';
             
             foreach( $filter_types as $filter_type => $filter_type_label ){
                 
