@@ -581,22 +581,47 @@ jQuery( document ).ready( function($){
         
         if( filter != "default" ){
             
-            $(`#the-list > *:not([data-date="${date_filter}"])`).addClass("filtered_out__date");
+            $(`#the-list > *:not([data-date="${filter}"])`).addClass("filtered_out__date");
         }
         
         $('#check_all, #the-list input.main_selector').prop('checked', false );
     });
     
     // Filter by type (filters only)
-    $('body').on('change', '#filter_by_trigger', function(){
+    $('body').on('change', '#filter_by_type', function(){
         
-        let filter = $('#filter_by_trigger').val();
+        let filter = $('#filter_by_type').val();
         
         $('#the-list > *').removeClass("filtered_out__type");
         
         if( filter != "default" ){
             
-            $(`#the-list > *:not([data-type="${date_filter}"])`).addClass("filtered_out__type");
+            $('#the-list > tr').each(function(){
+                
+                let is_premium = ( $(this).find('.filter_is_premium').length >= 1 );
+                
+                if( ( is_premium && filter == 'free' ) || ( ! is_premium && filter == 'premium' ) ){
+                    
+                    $(this).addClass("filtered_out__type");
+                }
+                
+            });
+            
+        }
+        
+        $('#check_all, #the-list input.main_selector').prop('checked', false );
+    });
+    
+    // Filter by trigger (filters only)
+    $('body').on('change', '#filter_by_trigger', function(){
+        
+        let filter = $('#filter_by_trigger').val();
+        
+        $('#the-list > *').removeClass("filtered_out__trigger");
+        
+        if( filter != "default" ){
+            
+            $(`#the-list > *:not([data-type="${filter}"])`).addClass("filtered_out__trigger");
         }
         
         $('#check_all, #the-list input.main_selector').prop('checked', false );

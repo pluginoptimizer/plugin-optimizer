@@ -119,11 +119,12 @@ EOF;
     
 	static function content_part__filter_options( $posts ) {
         
-        $months            = [];
-        $months_html       = '';
-        $filter_types      = [];
-        $filter_type_html  = '';
-        $filter_state_html = '';
+        $months                 = [];
+        $months_html            = '';
+        $filter_triggers        = [];
+        $filter_trigger_html    = '';
+        $filter_state_html      = '';
+        $filter_type_html       = '';
         
         foreach( $posts as $post ){
             
@@ -134,20 +135,20 @@ EOF;
             
             $months[ $date_value ] = $date_label;
             
-            if( $post->post_type == "plgnoptmzr_filter" && ! in_array( $post->filter_type, array_keys( $filter_types ) ) ){
+            if( $post->post_type == "plgnoptmzr_filter" && ! in_array( $post->filter_trigger, array_keys( $filter_triggers ) ) ){
                 
                 if( $post->filter_type == "_endpoint" ){
                     
-                    $filter_types["_endpoint"] = "Endpoint";
+                    $filter_triggers["_endpoint"] = "Endpoint";
                     
                 } else {
                     
-                    $filter_types["_edit_screen"] = "Post type";
+                    $filter_triggers["_edit_screen"] = "Post type";
                     
                 }
                 
             }
-            // sospo_mu_plugin()->write_log( $post->filter_type, "content_part__filter_options-post-filter_type" );
+            // sospo_mu_plugin()->write_log( $post->filter_trigger, "content_part__filter_options-post-filter_trigger" );
             // break;
         }
         
@@ -159,19 +160,31 @@ EOF;
         }
         
         // only if we're on the Filters List page
-        if( count( $filter_types ) >= 2 ){
+        if( count( $filter_triggers ) >= 2 ){
+            
+            $filter_trigger_html .= '<div>';
+            $filter_trigger_html .= '<select id="filter_by_trigger" class="filter_select">';
+            $filter_trigger_html .= '    <option value="default">All triggers</option>';
+            
+            foreach( $filter_triggers as $filter_trigger => $filter_trigger_label ){
+                
+                $filter_trigger_html .= '<option value="' . $filter_trigger . '">' . $filter_trigger_label . '</option>';
+            }
+            
+            $filter_trigger_html .= '</select>';
+            $filter_trigger_html .= '</div>';
+            
             
             $filter_type_html .= '<div>';
-            $filter_type_html .= '<select id="filter_by_trigger" class="filter_select">';
-            $filter_type_html .= '    <option value="default">All triggers</option>';
+            $filter_type_html .= '<select id="filter_by_type" class="filter_select">';
+            $filter_type_html .= '    <option value="default">All types</option>';
             
-            foreach( $filter_types as $filter_type => $filter_type_label ){
-                
-                $filter_type_html .= '<option value="' . $filter_type . '">' . $filter_type_label . '</option>';
-            }
+            $filter_type_html .= '<option value="free">'    . 'Free'    . '</option>';
+            $filter_type_html .= '<option value="premium">' . 'Premium' . '</option>';
             
             $filter_type_html .= '</select>';
             $filter_type_html .= '</div>';
+            
             
             $filter_state_html .= '<div>';
             $filter_state_html .= '<select id="filter_by_state" class="filter_select">';
@@ -191,13 +204,14 @@ EOF;
                     <div>
                         Filtering options:
                     </div>
+                    $filter_type_html
+                    $filter_trigger_html
                     <div>
                         <select id="filter_by_date" class="filter_select">
                             <option value="default">All dates</option>
                             $months_html
                         </select>
                     </div>
-                    $filter_type_html
                     $filter_state_html
                     <div id="clear_filter_options" class="manipulate_filter_options">
                         Clear Filtering Options
