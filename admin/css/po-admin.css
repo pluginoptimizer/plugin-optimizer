@@ -625,10 +625,12 @@ body.po_page_overview #overview_summary #licence_section.valid .license-input-fi
 .quantity #all_elements,
 .quantity #trash_elements{
     cursor: pointer;
+    user-select: none;
 }
 .quantity #all_elements.filtered,
 .quantity #trash_elements.filtered{
     font-weight: 700;
+    cursor: initial;
 }
 
 #the-list > [class*="filtered_out__"]{

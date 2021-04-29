@@ -25,7 +25,7 @@ if( $categories ){
                     <button class="po_green_button" id="add_elements">Create Category</button>
                 </a>
                 
-                <?php SOSPO_Admin_Helper::content_part__bulk_actions(); ?>
+                <?php SOSPO_Admin_Helper::content_part__bulk_actions( false, false ); ?>
                 
                 <?php SOSPO_Admin_Helper::content_part__manipulate_filter_options(); ?>
                 

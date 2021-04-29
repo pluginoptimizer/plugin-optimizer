@@ -532,7 +532,7 @@ jQuery( document ).ready( function($){
 
     
     // Show only the published items
-    $('body').on('click', '#all_elements', function(){
+    $('body').on('click', '#all_elements:not(.filtered)', function(){
         
         $('#all_elements').addClass("filtered");
         $('#trash_elements').removeClass("filtered");
@@ -540,14 +540,19 @@ jQuery( document ).ready( function($){
         $('#the-list').addClass("filter_on__status_publish");
         $('#the-list').removeClass("filter_on__status_trash");
         
-        $('select#check_all_elements option[value="restore"]').remove();
+        $('#the-list .toggle_filter label').css('visibility', 'initial' );
         
-        $('#the-list input:checked').prop('checked', false );
+        $('select#check_all_elements option[value="default"]').after('<option value="turn_off">Turn Off</option>');
+        $('select#check_all_elements option[value="default"]').after('<option value="turn_on">Turn On</option>');
+        $('select#check_all_elements option[value="restore"]').remove();
+        $('select#check_all_elements option[value="delete"]').html('Trash');
+        
+        $('#check_all, #the-list input.main_selector').prop('checked', false );
         
     });
     
     // Show only the trashed items
-    $('body').on('click', '#trash_elements', function(){
+    $('body').on('click', '#trash_elements:not(.filtered)', function(){
         
         $('#trash_elements').addClass("filtered");
         $('#all_elements').removeClass("filtered");
@@ -555,9 +560,14 @@ jQuery( document ).ready( function($){
         $('#the-list').addClass("filter_on__status_trash");
         $('#the-list').removeClass("filter_on__status_publish");
         
-        $('select#check_all_elements option[value="delete"]').before('<option value="restore">Restore</option>');
+        $('#the-list .toggle_filter label').css('visibility', 'hidden' );
         
-        $('#the-list input:checked').prop('checked', false );
+        $('select#check_all_elements option[value="turn_on"]').remove();
+        $('select#check_all_elements option[value="turn_off"]').remove();
+        $('select#check_all_elements option[value="delete"]').before('<option value="restore">Restore</option>');
+        $('select#check_all_elements option[value="delete"]').html('Permanently Delete');
+        
+        $('#check_all, #the-list input.main_selector').prop('checked', false );
         
     });
     
@@ -574,6 +584,7 @@ jQuery( document ).ready( function($){
             $(`#the-list > *:not([data-date="${date_filter}"])`).addClass("filtered_out__date");
         }
         
+        $('#check_all, #the-list input.main_selector').prop('checked', false );
     });
     
     // Filter by type (filters only)
@@ -588,6 +599,7 @@ jQuery( document ).ready( function($){
             $(`#the-list > *:not([data-type="${date_filter}"])`).addClass("filtered_out__type");
         }
         
+        $('#check_all, #the-list input.main_selector').prop('checked', false );
     });
     
     // Filter by state (filters only)
@@ -607,6 +619,7 @@ jQuery( document ).ready( function($){
             $('#the-list .turn_off_filter:checked').parents('.block_info').addClass("filtered_out__state");
         }
         
+        $('#check_all, #the-list input.main_selector').prop('checked', false );
     });
     
     
@@ -639,6 +652,7 @@ jQuery( document ).ready( function($){
             });
         }
         
+        $('#check_all, #the-list input.main_selector').prop('checked', false );
     });
     
     // Sort by list header items
@@ -681,12 +695,12 @@ jQuery( document ).ready( function($){
     
     
     // Change appearance checkbox all elements
-    $('body').on('change', '#the-list input:checkbox', function(){
+    $('body').on('change', '#the-list input.main_selector', function(){
         
         if($('#check_all').is( ":checked" )){
             $('#check_all').prop('checked', false);
         }
-        if($('#the-list .block_info:not([class*="filtered_out__"]) input:checkbox').length === $('#the-list .block_info:not([class*="filtered_out__"]) input:checkbox:checked').length){
+        if($('#the-list .block_info:not([class*="filtered_out__"]) input.main_selector').length === $('#the-list .block_info:not([class*="filtered_out__"]) input.main_selector:checked').length){
             $('#check_all').prop('checked', true);
         }
     });
@@ -696,9 +710,9 @@ jQuery( document ).ready( function($){
         
         if( $(this).is(":checked") ){
             
-            $('#the-list .block_info:not([class*="filtered_out__"]) > td:first-of-type > input:checkbox').prop('checked', true );
+            $('#the-list .block_info:not([class*="filtered_out__"]) input.main_selector').prop('checked', true );
         } else {
-            $('#the-list .block_info > td:first-of-type > input:checkbox').prop('checked', false );
+            $('#the-list .block_info input.main_selector').prop('checked', false );
         }
         
         
@@ -734,7 +748,7 @@ jQuery( document ).ready( function($){
             return;
         }
 
-        if($('#check_all_elements option:selected').text() === 'Delete'){
+        if( $('#check_all_elements').val() === 'delete' ){
             
             data = {
                 action          : 'po_delete_elements',
@@ -743,10 +757,26 @@ jQuery( document ).ready( function($){
                 'id_elements'   : selected_ids,
             };
             
-        } else if($('#check_all_elements option:selected').text() === 'Restore'){
+        } else if( $('#check_all_elements').val() === 'restore' ){
         
             data = {
                 action          : 'po_publish_elements',
+                'name_post_type': name_post_type,
+                'id_elements'   : selected_ids,
+            };
+            
+        } else if( $('#check_all_elements').val() === 'turn_on' ){
+        
+            data = {
+                action          : 'po_turn_filter_on',
+                'name_post_type': name_post_type,
+                'id_elements'   : selected_ids,
+            };
+            
+        } else if( $('#check_all_elements').val() === 'turn_off' ){
+        
+            data = {
+                action          : 'po_turn_filter_off',
                 'name_post_type': name_post_type,
                 'id_elements'   : selected_ids,
             };
@@ -772,9 +802,11 @@ jQuery( document ).ready( function($){
                     
                     $('#check_all').prop('checked', false);
                     
-                    let publish = ( data.action == 'po_publish_elements' );
-                    let trash   = ( data.action == 'po_delete_elements' && data.type_elements == 'all' );
-                    let remove  = ( data.action == 'po_delete_elements' && data.type_elements == 'trash' );
+                    let publish     = ( data.action == 'po_publish_elements' );
+                    let trash       = ( data.action == 'po_delete_elements' && data.type_elements == 'all' );
+                    let remove      = ( data.action == 'po_delete_elements' && data.type_elements == 'trash' );
+                    let turned_on   = ( data.action == 'po_turn_filter_on' );
+                    let turned_off  = ( data.action == 'po_turn_filter_off' );
                         
                     $.each( selected_ids, function( index, id ){
                         
@@ -784,6 +816,10 @@ jQuery( document ).ready( function($){
                             $('input#' + id ).parents('.block_info').attr("data-status", ( publish ? "publish" : "trash" ) );
                         } else if( remove ){
                             $('input#' + id ).parents('.block_info').remove();
+                        } else if( turned_on ){
+                            $('input#' + id ).parents('.block_info').find('input.turn_off_filter').prop('checked', true );
+                        } else if( turned_off ){
+                            $('input#' + id ).parents('.block_info').find('input.turn_off_filter').prop('checked', false );
                         }
                         
                     });

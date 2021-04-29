@@ -76,14 +76,26 @@ EOF;
         
     }
     
-	static function content_part__bulk_actions() {
+	static function content_part__bulk_actions( $include_turn_on = false, $allow_trash = true ){
+        
+        $turn_on_html = "";
+        
+        if( $include_turn_on ){
+            
+            $turn_on_html .= '<option value="turn_on">Turn On</option>';
+            $turn_on_html .= '<option value="turn_off">Turn Off</option>';
+            
+        }
+        
+        $trash_label = $allow_trash ? "Trash" : "Permanently Delete";
         
         echo <<<EOF
         
                 <div id="bulk_actions">
                     <select id="check_all_elements">
                         <option value="default">Bulk actions</option>
-                        <option value="delete">Delete</option>
+                        $turn_on_html
+                        <option value="delete">$trash_label</option>
                     </select>
                     <button id="btn_apply" class="po_secondary_button">Apply</button>
                 </div>
@@ -293,7 +305,7 @@ EOF;
                 
 				?>
                 <tr class="block_info" id="filter-<?php echo  $filter->ID ?>" data-status="<?php echo $filter->post_status ?>" data-date="<?php echo $date ?>" data-type="<?php echo $type ?>">
-                    <td><?php if( ! $is_premium ){ ?><input type="checkbox" id="<?php echo $filter->ID ?>"><?php } ?></td>
+                    <td><?php if( ! $is_premium ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID ?>"><?php } ?></td>
                     <td data-label="title" class="align-left normal-text">
                         <?php echo $filter->post_title ?>
                         <br/>
@@ -343,7 +355,7 @@ EOF;
                 
 				?>
                 <tr class="block_info" id="group_<?php echo $group->ID; ?>" data-status="<?php echo $group->post_status ?>" data-date="<?php echo $date ?>">
-                    <td><input type="checkbox" id="<?php echo $group->ID; ?>"></td>
+                    <td><input type="checkbox" class="main_selector" id="<?php echo $group->ID; ?>"></td>
                     <td data-label="title" class="align-left normal-text"><?php echo $group->post_title; ?><br/><a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_groups&group_id=' . $group->ID ) ?>">Edit</a><br/></td>
                     <td data-label="plugins"><?php echo implode( '<br/>', $group_plugins ) ?></td>
                     <td data-label="count"><?php echo $group_plugins ? count( $group_plugins ) : 0 ?></td>
@@ -375,7 +387,7 @@ EOF;
                 
                 ?>
                 <tr class="block_info" data-status="<?php echo $work_item->post_status ?>" data-date="<?php echo $date ?>">
-                    <td><input type="checkbox" id="<?php echo $work_item->ID ?>"></td>
+                    <td><input type="checkbox" class="main_selector" id="<?php echo $work_item->ID ?>"></td>
                     <td class="align-left normal-text"><?php echo $work_item->post_title ?></td>
                     <td class="align-left normal-text"><?php echo get_post_meta( $work_item->ID, 'post_link', true ) ?></td>
                     <td><?php echo substr( str_replace( '-', '/', str_replace( " ", " at ", $work_item->post_date ) ), 0, - 3 ) . ' pm' ?></td>
@@ -401,7 +413,7 @@ EOF;
 			foreach ( $categories as $cat ){
                 ?>
                 <tr class="block_info" id="cat-<?php echo $cat->term_id ?>" data-status="publish">
-                    <td class="cat_checkbox"><input type="checkbox" id="<?php echo $cat->term_id ?>"></td>
+                    <td class="cat_checkbox"><input type="checkbox" class="main_selector" id="<?php echo $cat->term_id ?>"></td>
                     <td class="cat_edit"><a href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_categories&cat_id=' . $cat->term_id ) ?>">Edit</a></td>
                     <td data-label="title" class="cat_title"><?php echo $cat->cat_name ?></td>
                     <td data-label="description" class="cat_description"><?php echo $cat->description ? $cat->description : "-" ?></td>

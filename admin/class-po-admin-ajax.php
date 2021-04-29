@@ -33,6 +33,8 @@ class SOSPO_Ajax {
 		add_action( 'wp_ajax_po_create_category',               [ $this, 'po_create_category'               ] );
 		add_action( 'wp_ajax_po_delete_elements',               [ $this, 'po_delete_elements'               ] );
 		add_action( 'wp_ajax_po_publish_elements',              [ $this, 'po_publish_elements'              ] );
+		add_action( 'wp_ajax_po_turn_filter_on',                [ $this, 'po_turn_filter_on'                ] );
+		add_action( 'wp_ajax_po_turn_filter_off',               [ $this, 'po_turn_filter_off'               ] );
 		add_action( 'wp_ajax_po_mark_tab_complete',             [ $this, 'po_mark_tab_complete'             ] );
 		add_action( 'wp_ajax_po_save_option_alphabetize_menu',  [ $this, 'po_save_option_alphabetize_menu'  ] );
 		add_action( 'wp_ajax_po_turn_off_filter',               [ $this, 'po_turn_off_filter'               ] );
@@ -298,6 +300,48 @@ class SOSPO_Ajax {
 		}
         
 		wp_send_json_success( [ "message" => "Items are restored." ] );
+        
+	}
+    
+	/**
+	 * Bulk turn filters on
+	 */
+	function po_turn_filter_on() {
+        
+		$name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
+        $id_elements    = array_map( 'intval', $_POST['id_elements'] );
+
+		$posts = get_posts( array(
+			'post_type'   => $name_post_type,
+			'include'     => $id_elements,
+		) );
+
+		foreach ( $posts as $post ) {
+			update_post_meta( $post->ID, "turned_off", false );
+		}
+        
+		wp_send_json_success( [ "message" => count( $posts) . " filters are turned on." ] );
+        
+	}
+    
+	/**
+	 * Bulk turn filters off
+	 */
+	function po_turn_filter_off() {
+        
+		$name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
+        $id_elements    = array_map( 'intval', $_POST['id_elements'] );
+
+		$posts = get_posts( array(
+			'post_type'   => $name_post_type,
+			'include'     => $id_elements,
+		) );
+
+		foreach ( $posts as $post ) {
+			update_post_meta( $post->ID, "turned_off", true );
+		}
+        
+		wp_send_json_success( [ "message" => count( $posts) . " filters are turned off." ] );
         
 	}
     

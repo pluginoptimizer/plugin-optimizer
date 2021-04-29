@@ -24,7 +24,7 @@ if( $filters ){
                     <button class="po_green_button" id="add_elements">Create Filter</button>
                 </a>
                 
-                <?php SOSPO_Admin_Helper::content_part__bulk_actions(); ?>
+                <?php SOSPO_Admin_Helper::content_part__bulk_actions( true ); ?>
                 
                 <?php SOSPO_Admin_Helper::content_part__manipulate_filter_options(); ?>
                 
