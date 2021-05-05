@@ -1185,13 +1185,16 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     user-select: none;
 }
 .sos-wrap .special_grid_list .single_plugin.inactive{
-    background-color: #ddd;
-    border: 1px solid #ddd;
+    background-color: lightyellow;
+    border: 1px solid lightyellow;
 }
 .sos-wrap .special_grid_list .single_plugin.blocked{
     background-color: rgba(255, 196, 196, 0.8);
     border: 1px solid rgba(255, 196, 196, 0.8);
     color: #212529;
+}
+.sos-wrap .special_grid_list .single_plugin.blocked{
+    /* color: #212529; */
 }
 
 .sos-wrap .special_grid_list .single_plugin.ui-selecting{
@@ -1202,7 +1205,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 }
 
 
-.sos-wrap .special_grid_list .single_plugin:not(.inactive) .plugin_name:before{
+.sos-wrap .special_grid_list .single_plugin .plugin_name:before{
     content: "✓";
     margin-right: 10px;
 }
