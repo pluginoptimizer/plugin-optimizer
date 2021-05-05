@@ -12,7 +12,7 @@
 
 class SOSPO_MU {
 
-    public $version                 = "1.0.8-4";
+    public $version                 = "1.0.8-5";
 
     protected static $instance      = null;
 
@@ -57,17 +57,17 @@ class SOSPO_MU {
             'po_save_option_alphabetize_menu',
             'po_turn_off_filter',
             'po_save_original_menu',
-            // 'po_get_post_types',// excluded because it wouldn't work
+            // 'po_get_post_types',// excluded because it wouldn't work!
             'po_scan_prospector',
             // Agent
-            'po_retrieve_filters_func',
-            'po_compile_filters_func',
-            'po_submit_filters_func',
-            'po_send_approval_func',
-            'po_delete_filter_func',
+            'PO_retrieve_filters',
+            'PO_compile_filters',
+            'PO_submit_filters',
+            'PO_send_approval',
+            'PO_delete_filter',
             // Premium
-            'po_retrieve_filters_func',
-            'po_compile_filters_func',
+            'PO_retrieve_filters',
+            'PO_compile_filters',
         ];
         $this->po_plugins = [
             "plugin-optimizer/plugin-optimizer.php",
