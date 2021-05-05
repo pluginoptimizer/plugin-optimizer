@@ -12,7 +12,7 @@
 
 class SOSPO_MU {
 
-    public $version                 = "1.0.8-3";
+    public $version                 = "1.0.8-4";
 
     protected static $instance      = null;
 
@@ -57,7 +57,7 @@ class SOSPO_MU {
             'po_save_option_alphabetize_menu',
             'po_turn_off_filter',
             'po_save_original_menu',
-            'po_get_post_types',
+            // 'po_get_post_types',// excluded because it wouldn't work
             'po_scan_prospector',
             // Agent
             'po_retrieve_filters_func',
