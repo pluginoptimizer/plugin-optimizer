@@ -451,7 +451,7 @@ jQuery( document ).ready( function($){
     $('body').on('click', '#add_endpoint', function(){
         
         $('#endpoints_wrapper > div:eq(-1)').after(`
-			<div class="col-12 additional_endpoint_wrapper">
+			<div class="additional_endpoint_wrapper">
                 <input class="additional_endpoint" type="text" name="SOSPO_filter_data[endpoints][]" placeholder="Put your URL here" value=""/>
                 <div class="remove_additional_endpoint circle_button remove_something">-</div>
 			</div>

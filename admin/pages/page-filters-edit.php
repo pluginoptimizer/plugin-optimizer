@@ -70,6 +70,32 @@ if( $filter ){
     
 }
 
+$title_class = 'col-9';
+
+if( sospo_mu_plugin()->has_agent ){
+    
+    $title_class = 'col-6';
+    
+    $belongs_to  =  $filter ? get_post_meta( $filter->ID, "belongs_to", true ) : '';
+    // $belongs_to  =  'oxygen-gutenberg/oxygen-gutenberg.php';
+    
+    $belongs_to_core_selected = $belongs_to === "_core" ? ' selected="selected"' : '';
+    
+    // write_log( sospo_mu_plugin(), "sospo_mu_plugin()-page-filters-edit" );
+    
+    $plugin_select_options = '';
+    
+    foreach( sospo_mu_plugin()->all_plugins as $plugin_id => $plugin ){
+        
+        $selected = ! $belongs_to || $belongs_to !== $plugin_id ? '' : ' selected="selected"';
+        
+        $plugin_select_options .= '<option value="' . $plugin_id . '"' . $selected . '>';
+        $plugin_select_options .=      $plugin["Name"];
+        $plugin_select_options .= '</option>';
+        $plugin_select_options .= PHP_EOL;
+    }
+    
+}
 
 ?>
 
@@ -89,7 +115,7 @@ if( $filter ){
         
         <div id="forbid_premium_edit">Premium filters can not be edited</div>
         
-    <?php } else {?>
+    <?php } else { ?>
         
 		<div class="row content-new-element">
 			<div class="col-12">
@@ -99,7 +125,7 @@ if( $filter ){
                         
                         <input type="hidden" name="SOSPO_filter_data[ID]" value="<?php echo $filter ? $filter->ID : "" ?>"/>
                         
-						<div class="col-9">
+						<div class="<?php echo $title_class ?>">
 							<div class="header">Title</div>
 							<div>
 								<div class="content enter-data">
@@ -125,22 +151,44 @@ if( $filter ){
 							</div>
 						</div>
                         
+                    <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                        
+						<div class="col-3">
+							<div class="header">Belongs to:</div>
+							<div>
+								<div class="content enter-data">
+                                    <span>
+                                        <select name="SOSPO_filter_data[belongs_to]" id="set_belongs_to" data-selected="<?php echo $belongs_to; ?>">
+                                            <optgroup label="Default:">
+                                                <option value="_core"<?php echo $belongs_to_core_selected; ?>>Core</option>
+                                            </optgroup>
+                                            <optgroup label="Plugin:">
+                                                <?php echo $plugin_select_options; ?>
+                                            </optgroup>
+                                        </select>
+                                    </span>
+								</div>
+							</div>
+						</div>
+                        
+                    <?php } ?>
+                        
 					</div>
 					
                     <div class="row select_trigger" id="endpoints_wrapper">
                     
-						<div class="col-12">
+						<div class="">
 							<div class="header">Endpoints</div>
 						</div>
                         
-						<div class="col-12 additional_endpoint_wrapper">
+						<div class="additional_endpoint_wrapper">
                             <input id="first_endpoint" type="text" name="SOSPO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?php echo ! empty( $endpoints ) ? $endpoints[0] : "" ?>"/>
                             <div id="add_endpoint" class="circle_button add_something">+</div>
 						</div>
                         
                         <?php for( $i = 1; $i < count( $endpoints ); $i++ ){ ?>
                         
-                            <div class="col-12 additional_endpoint_wrapper">
+                            <div class="additional_endpoint_wrapper">
                                 <input class="additional_endpoint" type="text" name="SOSPO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?php echo $endpoints[ $i ] ?>"/>
                                 <div class="remove_additional_endpoint circle_button remove_something">-</div>
                             </div>

@@ -1255,6 +1255,7 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
 #edit_filter #endpoints_wrapper{
     display: none;
     flex-flow: row wrap;
+    margin: 0;
 }
 
 #edit_filter #endpoints_wrapper .additional_endpoint_wrapper{
@@ -1274,6 +1275,9 @@ select[name="block_plugins"], select[name="block_group_plugins"], select[name="p
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     white-space: nowrap;
+}
+#edit_filter #endpoints_wrapper .additional_endpoint_wrapper:last-of-type{
+    margin-bottom: 10px;
 }
 
 #edit_filter #endpoints_wrapper .additional_endpoint_wrapper.error__empty_input:after{
@@ -1380,8 +1384,8 @@ input[type="text"].additional_endpoint{
     display: none;
 }
 
-#content_type{
-    display: none;
+#set_belongs_to{
+    width: 100%;
 }
 
 .change_content{
