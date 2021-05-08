@@ -286,6 +286,16 @@ EOF;
                 $blocking_plugins = get_post_meta( $filter->ID, 'plugins_to_block', true );
                 $turned_off       = get_post_meta( $filter->ID, 'turned_off',       true );
                 $premium_filter   = get_post_meta( $filter->ID, 'premium_filter',   true );
+                $belongs_to_value = get_post_meta( $filter->ID, 'belongs_to',       true );
+                
+                if( ! empty( $belongs_to_value ) ){
+                    
+                    $belongs_to       = $belongs_to_value === '_core' ? '<b>The Core</b>' : sospo_mu_plugin()->all_plugins[ $belongs_to_value ]["Name"];
+                    
+                } else {
+                    
+                    $belongs_to       = "-";
+                }
                 
                 $is_premium       = $premium_filter === "true";
                 
@@ -332,6 +342,9 @@ EOF;
                     </td>
                     <td data-label="categories" class="align-left normal-text"><?php echo $categories ?></td>
                     <td data-label="triggers" class="align-left normal-text"><?php echo $trigger ?></td>
+                <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                    <td data-label="belongs_to" class="align-left normal-text"><?php echo $belongs_to ?></td>
+                <?php } ?>
                     <td data-label="plugins_tooltip" class="list_of_plugins <?php echo $has_tooltip_class; ?>">
                         <span <?php echo $tooltip_list; ?>><?php echo count( $blocking_plugins ) ?></span>
                     </td>
