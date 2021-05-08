@@ -329,13 +329,14 @@ EOF;
                 
 				?>
                 <tr class="block_info" id="filter-<?php echo  $filter->ID ?>" data-status="<?php echo $filter->post_status ?>" data-date="<?php echo $date ?>" data-type="<?php echo $type ?>">
-                    <td><?php if( ! $is_premium ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID ?>"><?php } ?></td>
+                    <td><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID ?>"><?php } ?></td>
                     <td data-label="title" class="align-left normal-text">
                         <?php echo $filter->post_title ?>
                         <br/>
                         <?php if( $is_premium ){ ?>
                             <span class="filter_is_premium">Premium Filter</span>
-                        <?php } else { ?>
+                        <?php } ?>
+                        <?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?>
                             <a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ) ?>">Edit</a>
                         <?php } ?>
                         <br/>

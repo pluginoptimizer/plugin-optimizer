@@ -77,7 +77,6 @@ if( sospo_mu_plugin()->has_agent ){
     $title_class = 'col-6';
     
     $belongs_to  =  $filter ? get_post_meta( $filter->ID, "belongs_to", true ) : '';
-    // $belongs_to  =  'oxygen-gutenberg/oxygen-gutenberg.php';
     
     $belongs_to_core_selected = $belongs_to === "_core" ? ' selected="selected"' : '';
     
