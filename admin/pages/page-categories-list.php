@@ -47,7 +47,7 @@ if( $categories ){
                     <?php if( sospo_mu_plugin()->has_agent ){ ?>
                     <?php } ?>
                         <tr id="search_boxes" class="toggle_filter_options hidden">
-                            <th></th>
+                            <th data-label="checkbox"></th>
                             <th class="cat_edit"></th>
                             <th data-label="title" class="align-left"><input type="text" placeholder="Search Title..." class="search_filter"/></th>
                             <th data-label="description" class="align-left"><input type="text" placeholder="Search Description..." class="search_filter"/></th>
@@ -55,7 +55,7 @@ if( $categories ){
                         </tr>
                     
                         <tr id="po_table_header">
-                            <th class="cat_checkbox"><input type="checkbox" id="check_all"></th>
+                            <th data-label="checkbox" class="cat_checkbox"><input type="checkbox" id="check_all"></th>
                             <th class="cat_edit"></th>
                             <th data-label="title" class="cat_title sort_able sort_active">Title</th>
                             <th data-label="description" class="cat_description">Description</th>

@@ -1,3 +1,6 @@
+#wpbody-content{
+    overflow: auto;
+}
 
 body.po_page_overview #wpwrap{
     background: #f1f1f1;
@@ -652,7 +655,6 @@ body.po_page_overview #overview_summary #licence_section.valid .license-input-fi
     padding-bottom: 15px;
 }
 #search_boxes:after{
-    content: " ";
     position: absolute;
     left: 0;
     right: 0;
@@ -1021,10 +1023,15 @@ table.po_table{
     border-collapse: separate;
     border-spacing: 0 5px;
     margin-top: -5px;
+    table-layout: fixed;
+    width: 100%;
 }
 table.po_table #po_table_header th{
     padding-top: 20px;
     user-select: none;
+}
+table.po_table [data-label="checkbox"]{
+    width: 40px;
 }
 
 .sos-wrap tbody tr {

@@ -48,14 +48,14 @@ if( $groups ){
                     <?php if( sospo_mu_plugin()->has_agent ){ ?>
                     <?php } ?>
                         <tr id="search_boxes" class="toggle_filter_options hidden">
-                            <th></th>
+                            <th data-label="checkbox"></th>
                             <th data-label="title" class="left-10 align-left"><input type="text" placeholder="Search Title..." class="search_filter"/></th>
                             <th data-label="plugins"><input type="text" placeholder="Search Plugins..." class="search_filter"/></th>
                             <th></th>
                         </tr>
                     
                         <tr id="po_table_header">
-                            <th><input type="checkbox" id="check_all"></th>
+                            <th data-label="checkbox"><input type="checkbox" id="check_all"></th>
                             <th data-label="title" class="left-10 align-left sort_able sort_active">Title</th>
                             <th data-label="plugins">Plugins</th>
                             <th data-label="count" class="sort_able">Count</th>

@@ -46,7 +46,7 @@ if( $filters ){
                     <thead>
                     
                         <tr id="search_boxes" class="toggle_filter_options hidden">
-                            <th></th>
+                            <th data-label="checkbox"></th>
                             <th data-label="title" class="align-left"><input type="text" placeholder="Search Title..." class="search_filter"/></th>
                             <th data-label="categories" class="align-left"><input type="text" placeholder="Search Categories..." class="search_filter"/></th>
                             <th data-label="triggers"><input type="text" placeholder="Search Triggers..." class="search_filter"/></th>
@@ -55,19 +55,19 @@ if( $filters ){
                         <?php } ?>
                             <th data-label="plugins_tooltip"><input type="text" placeholder="Search Plugins..." class="search_filter"/></th>
                         <?php if( sospo_mu_plugin()->has_agent ){ ?>
-                            <th></th>
-                            <th></th>
+                            <th data-label="created"></th>
+                            <th data-label="modified"></th>
                         <?php } ?>
                             <th class="toggle_filter"></th>
                         </tr>
                     
                         <tr id="po_table_header">
-                            <th><input type="checkbox" id="check_all"></th>
+                            <th data-label="checkbox"><input type="checkbox" id="check_all"></th>
                             <th data-label="title" class="left-10 align-left sort_able sort_active">Title</th>
-                            <th class="left-10 align-left">Categories</th>
-                            <th>Triggers</th>
+                            <th data-label="categories"class="left-10 align-left">Categories</th>
+                            <th data-label="triggers">Triggers</th>
                         <?php if( sospo_mu_plugin()->has_agent ){ ?>
-                            <th>Belongs to</th>
+                            <th data-label="belongs_to">Belongs to</th>
                         <?php } ?>
                             <th data-label="plugins_tooltip" class="sort_able">Blocked plugins</th>
                         <?php if( sospo_mu_plugin()->has_agent ){ ?>
