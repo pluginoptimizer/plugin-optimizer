@@ -330,6 +330,9 @@ EOF;
 				?>
                 <tr class="block_info" id="filter-<?php echo  $filter->ID ?>" data-status="<?php echo $filter->post_status ?>" data-date="<?php echo $date ?>" data-type="<?php echo $type ?>">
                     <td data-label="checkbox"><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID ?>"><?php } ?></td>
+                <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                    <td data-label="status">?<br/>&nbsp;</td>
+                <?php } ?>
                     <td data-label="title" class="align-left normal-text">
                         <?php echo $filter->post_title ?>
                         <br/>
@@ -350,8 +353,8 @@ EOF;
                         <span <?php echo $tooltip_list; ?>><?php echo count( $blocking_plugins ) ?></span>
                     </td>
                 <?php if( sospo_mu_plugin()->has_agent ){ ?>
-                    <td data-label="created" class="normal-text"><?php echo $filter->post_date ?></td>
-                    <td data-label="modified" class="normal-text"><?php echo $filter->post_modified ?></td>
+                    <td data-label="created" class="normal-text"><?php  echo date( "m/d/Y", strtotime( $filter->post_date     ) );?></td>
+                    <td data-label="modified" class="normal-text"><?php echo date( "m/d/Y", strtotime( $filter->post_modified ) ); ?></td>
                 <?php } ?>
                     <td class="toggle_filter">
                         <label>

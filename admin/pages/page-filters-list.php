@@ -47,6 +47,9 @@ if( $filters ){
                     
                         <tr id="search_boxes" class="toggle_filter_options hidden">
                             <th data-label="checkbox"></th>
+                        <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                            <th data-label="status"></th>
+                        <?php } ?>
                             <th data-label="title" class="align-left"><input type="text" placeholder="Search Title..." class="search_filter"/></th>
                             <th data-label="categories" class="align-left"><input type="text" placeholder="Search Categories..." class="search_filter"/></th>
                             <th data-label="triggers"><input type="text" placeholder="Search Triggers..." class="search_filter"/></th>
@@ -63,13 +66,16 @@ if( $filters ){
                     
                         <tr id="po_table_header">
                             <th data-label="checkbox"><input type="checkbox" id="check_all"></th>
+                        <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                            <th data-label="status">Status</th>
+                        <?php } ?>
                             <th data-label="title" class="left-10 align-left sort_able sort_active">Title</th>
                             <th data-label="categories"class="left-10 align-left">Categories</th>
                             <th data-label="triggers">Triggers</th>
                         <?php if( sospo_mu_plugin()->has_agent ){ ?>
                             <th data-label="belongs_to">Belongs to</th>
                         <?php } ?>
-                            <th data-label="plugins_tooltip" class="sort_able">Blocked plugins</th>
+                            <th data-label="plugins_tooltip" class="sort_able">Blocking</th>
                         <?php if( sospo_mu_plugin()->has_agent ){ ?>
                             <th data-label="created" class="sort_able">Created</th>
                             <th data-label="modified" class="sort_able">Modified</th>

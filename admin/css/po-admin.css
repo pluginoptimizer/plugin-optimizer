@@ -1034,6 +1034,16 @@ table.po_table #po_table_header th{
 table.po_table [data-label="checkbox"]{
     width: 40px;
 }
+table.po_table [data-label="status"]{
+    width: 80px;
+}
+table.po_table [data-label="plugins_tooltip"]{
+    width: 80px;
+}
+table.po_table [data-label="created"],
+table.po_table [data-label="modified"]{
+    width: 100px;
+}
 
 .sos-wrap tbody tr {
     background: #C6B9CD;
