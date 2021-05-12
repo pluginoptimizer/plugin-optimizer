@@ -90,7 +90,7 @@ class SOSPO_Ajax {
         if( in_array('plugin-optimizer-agent/plugin-optimizer-agent.php', get_option('active_plugins')) ){
             
             // if it is installed then add 'premium_filter' meta key to the post_id
-            update_post_meta( $post_id, 'premium_filter', true);
+            update_post_meta( $post_id, 'premium_filter', 'true');
         }
 
 
