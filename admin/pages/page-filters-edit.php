@@ -258,7 +258,7 @@ if( sospo_mu_plugin()->has_agent ){
 								<?php
 								if ( $categories ){
 									foreach ( $categories as $cat ){
-                                        $selected = in_array( $cat->term_id, $filter_categories );
+                                        $selected = is_array($filter_categories) ? in_array( $cat->term_id, $filter_categories ) : false;
                                         $checked  = $selected ? ' checked="checked"' : '';
 										?>
 										<div class="single_category content<?php echo $selected ? " blocked" : "" ?>">
