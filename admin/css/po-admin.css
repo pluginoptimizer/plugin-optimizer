@@ -929,7 +929,7 @@ input.search_filter:hover{
     align-items: center;
     justify-content: center;
     padding: 30px 0 15px;
-    margin: 0 15px;
+    /* margin: 0 15px; */
     background: #ddd;
     background: rgba(198, 255, 205, 0.2);
     border: 1px solid rgba(54, 148, 81, 0.5);
