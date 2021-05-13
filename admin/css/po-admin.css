@@ -921,8 +921,6 @@ input.search_filter:hover{
 }
 #hide_filter_options{
     margin-right: 30px;
-}
-#hide_filter_options{
     display: none;
 }
 

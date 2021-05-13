@@ -28,6 +28,13 @@ if( $filters ){
                 
                 <?php SOSPO_Admin_Helper::content_part__manipulate_filter_options(); ?>
                 
+                <div id="show_toggle_columns" class="toggle_columns">
+                    Show Toggle Columns
+                </div>
+                <div id="hide_toggle_columns" class="toggle_columns">
+                    Hide Toggle Columns
+                </div>
+                
             </div>
             
             <div class="col-3 quantity">
