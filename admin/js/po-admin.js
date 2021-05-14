@@ -500,22 +500,76 @@ jQuery( document ).ready( function($){
 
 
 
+    // Show toggle columns
+    $('body').on('click', '#show_toggle_columns', function(){
+        
+        $('#show_toggle_columns').hide();
+        $('#hide_toggle_columns').show();
+        
+        $('.toggle_columns_options').slideDown(200);
+        
+        $('#hide_filter_options').hide();
+        $('#show_filter_options').show();
+        
+        $('.toggle_filter_options').hide();
+        
+    });
+    
+    // Hide toggle columns
+    $('body').on('click', '#hide_toggle_columns', function(){
+        
+        $('#hide_toggle_columns').hide();
+        $('#show_toggle_columns').show();
+        
+        $('.toggle_columns_options').slideUp(200);
+        
+    });
+    
+    // actually show/hide columns
+    $('body').on('change', '#full_columns_list .single_column_state input', function(){
+        
+        let displayed = $(this).prop('checked');
+        let column_id = $(this).data('id');
+        
+        $('table.po_table [data-label="' + column_id + '"]').toggle( displayed );
+        
+    });
+    
+    // show all columns
+    $('body').on('click', '#show_all_columns', function(){
+        
+        $('#full_columns_list .single_column_state input').prop('checked', true ).change();
+        
+    });
+    
+    // hide all columns
+    $('body').on('click', '#hide_all_columns', function(){
+        
+        $('#full_columns_list .single_column_state input').prop('checked', false ).change();
+        
+    });
+    
+
+
     // Show filtering options
     $('body').on('click', '#show_filter_options', function(){
         
-        $(this).hide();
-        
+        $('#show_filter_options').hide();
         $('#hide_filter_options').show();
         
         $('.toggle_filter_options').slideDown(200);
+        
+        $('#hide_toggle_columns').hide();
+        $('#show_toggle_columns').show();
+        
+        $('.toggle_columns_options').hide();
         
     });
     
     // Hide filtering options
     $('body').on('click', '#hide_filter_options', function(){
         
-        $(this).hide();
-        
+        $('#hide_filter_options').hide();
         $('#show_filter_options').show();
         
         $('.toggle_filter_options').slideUp(200);
@@ -529,6 +583,8 @@ jQuery( document ).ready( function($){
         $('#search_boxes .search_filter').val('').change();
         
     });
+
+
 
     
     // Show only the published items
@@ -570,6 +626,8 @@ jQuery( document ).ready( function($){
         $('#check_all, #the-list input.main_selector').prop('checked', false );
         
     });
+    
+    
     
     
     // Filter by date

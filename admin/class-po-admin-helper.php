@@ -117,6 +117,21 @@ EOF;
     
     }
     
+	static function content_part__manipulate_toggle_columns() {
+        
+        echo <<<EOF
+        
+                <div id="show_toggle_columns" class="manipulate_toggle_columns">
+                    Show Toggle Columns
+                </div>
+                <div id="hide_toggle_columns" class="manipulate_toggle_columns">
+                    Hide Toggle Columns
+                </div>
+                
+EOF;
+    
+    }
+    
 	static function content_part__filter_options( $posts ) {
         
         $months                 = [];
@@ -218,6 +233,95 @@ EOF;
                     </div>
                 </div>
                 <script>jQuery('#filter_options').hide();</script>
+            
+EOF;
+    
+    }
+    
+	static function content_part__toggle_columns_options(){
+        
+        $column_names = [
+            'status'            => "Status",
+            'title'             => "Title",
+            'categories'        => "Categories",
+            'triggers'          => "Triggers",
+            'belongs_to'        => "Belongs to",
+            'plugins_tooltip'   => "Blocking",
+            'created'           => "Created",
+            'modified'          => "Modified",
+            'toggle_filter'     => "Turned On",
+        ];
+        
+        $column_order = [
+            // 20 => 'title',// we should at least keep the title
+            30 => 'categories',
+            40 => 'triggers',
+            60 => 'plugins_tooltip',
+            90 => 'toggle_filter',
+        ];
+        
+        if( sospo_mu_plugin()->has_agent ){
+            
+            $column_order[ 10 ] = 'status';
+            $column_order[ 50 ] = 'belongs_to';
+            $column_order[ 70 ] = 'created';
+            $column_order[ 80 ] = 'modified';
+        }
+        
+        ksort( $column_order );
+        
+        // sospo_mu_plugin()->write_log( $column_order, "content_part__toggle_columns_options-column_order" );
+        
+        $columns = [];
+        $column_html = "";
+        
+        foreach( $column_order as $column_id ){
+            
+            if( in_array( $column_id, array_keys( $column_names ) ) ){
+                
+                $columns[ $column_id ] = $column_names[ $column_id ];
+                
+                $column_name = $column_names[ $column_id ];
+                
+                $checked = true ? ' checked="checked"' : '';
+                
+                $column_html .= <<<EOF
+                
+                        <div class="single_column">
+                            <div class="single_column_name">
+                                {$column_names[ $column_id ]}
+                            </div>
+                            <div class="single_column_state">
+                                <label>
+                                    <span class="switch">
+                                        <input data-id="{$column_id}" type="checkbox"{$checked}/>
+                                        <span class="slider round"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        
+EOF;
+                
+            }
+            
+        }
+        
+        // sospo_mu_plugin()->write_log( $columns, "content_part__toggle_columns_options-columns" );
+        
+        echo <<<EOF
+        
+                <div id="toggle_columns" class="toggle_columns_options">
+                    <div id="full_columns_list">
+                        $column_html
+                    </div>
+                    <div>
+                        <div id="show_all_columns" class="manipulate_toggle_columns">Show all columns</div>
+                        <div id="hide_all_columns" class="manipulate_toggle_columns">Hide all columns</div>
+                        <button id="save_columns_state" class="po_green_button">Save</button>
+                    </div>
+                </div>
+                <script>jQuery('#toggle_columns').hide();</script>
             
 EOF;
     
