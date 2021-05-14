@@ -90,6 +90,9 @@ if( $filters ){
                 <tbody id="the-list" class="filter_on__status_publish">
                     <?php SOSPO_Admin_Helper::list_content__filters( $filters ); ?>
                 </tbody>
+                <script>
+                    jQuery('table.po_table [data-label]:not([data-label="checkbox"]):not([data-label="title"])').hide();
+                </script>
             </table>
         </div>
     </div>

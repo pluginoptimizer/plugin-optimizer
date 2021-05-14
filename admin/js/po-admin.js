@@ -535,6 +535,8 @@ jQuery( document ).ready( function($){
         
     });
     
+    $('#full_columns_list .single_column_state input').change();
+    
     // show all columns
     $('body').on('click', '#show_all_columns', function(){
         
@@ -1049,6 +1051,37 @@ jQuery( document ).ready( function($){
             
             if( response.data.message ){
                 
+                
+            }
+            
+        }, "json");
+        
+    });
+    
+    // Filters List screen: Save columns state
+    $('body').on('click', '#save_columns_state', function(){
+        
+        let columns_state = [];
+        
+        columns_state = columns_state.concat(
+            $('#full_columns_list input[type=checkbox]:not(:checked)').map(function(){
+                return this.name;
+            }).get()
+        );
+        
+        console.log( "save_columns_state-columns_state: ", columns_state );
+        
+        $.post( po_object.ajax_url, { action  : 'po_save_columns_state', data : columns_state }, function( response ) {
+            console.log( "po_save_columns_state: ", response );
+            
+            alert( response.data.message );
+            
+            if( response.success ){
+                
+                $('#hide_toggle_columns').hide();
+                $('#show_toggle_columns').show();
+                
+                $('.toggle_columns_options').slideUp(200);
                 
             }
             

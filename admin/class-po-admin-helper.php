@@ -272,6 +272,10 @@ EOF;
         
         // sospo_mu_plugin()->write_log( $column_order, "content_part__toggle_columns_options-column_order" );
         
+        $hidden_columns = get_user_meta( get_current_user_id(), "sospo_filter_columns", true );
+        
+        // sospo_mu_plugin()->write_log( $hidden_columns, "content_part__toggle_columns_options-hidden_columns" );
+        
         $columns = [];
         $column_html = "";
         
@@ -283,7 +287,7 @@ EOF;
                 
                 $column_name = $column_names[ $column_id ];
                 
-                $checked = true ? ' checked="checked"' : '';
+                $checked = is_array( $hidden_columns ) && in_array( $column_id, $hidden_columns ) ? '' : ' checked="checked"';
                 
                 $column_html .= <<<EOF
                 
@@ -294,7 +298,7 @@ EOF;
                             <div class="single_column_state">
                                 <label>
                                     <span class="switch">
-                                        <input data-id="{$column_id}" type="checkbox"{$checked}/>
+                                        <input name="{$column_id}" data-id="{$column_id}" type="checkbox"{$checked}/>
                                         <span class="slider round"></span>
                                     </span>
                                 </label>
