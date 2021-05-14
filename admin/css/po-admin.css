@@ -1090,6 +1090,11 @@ table.po_table [data-label="modified"]{
 }
 .sos-wrap tbody tr td {
 }
+.sos-wrap tbody tr td[data-label="triggers"]{
+    overflow: hidden;
+    white-space: wrap;
+    text-overflow: ellipsis;
+}
 
 .block_children{
     font-size: 14px;

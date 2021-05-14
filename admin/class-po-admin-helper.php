@@ -406,12 +406,14 @@ EOF;
                 sort( $blocking_plugins );
                 
                 if( empty( $data_type ) || $data_type == "_endpoint" || $data_type == "none" ){
-                    $trigger = implode( ',<br>', $data_endpoints );
-                    $type    = "_endpoint";
+                    $trigger_title  = implode( PHP_EOL, $data_endpoints );
+                    $trigger        = implode( ',<br>', $data_endpoints );
+                    $type           = "_endpoint";
                 } else {
-                    $trigger = "Editing post type: <b>" . $data_type . "</b>";
-                    $type    = $data_type;
-                    $type    = "_edit_screen";
+                    $trigger_title  = "Editing post type: " . $data_type;
+                    $trigger        = "Editing post type: <b>" . $data_type . "</b>";
+                    $type           = $data_type;// TODO check if this needs to get removed
+                    $type           = "_edit_screen";
                 }
                 
                 $categories = get_post_meta( $filter->ID, 'categories', true );
@@ -432,26 +434,26 @@ EOF;
                 }
                 
 				?>
-                <tr class="block_info" id="filter-<?php echo  $filter->ID ?>" data-status="<?php echo $filter->post_status ?>" data-date="<?php echo $date ?>" data-type="<?php echo $type ?>">
-                    <td data-label="checkbox"><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID ?>"><?php } ?></td>
+                <tr class="block_info" id="filter-<?php echo  $filter->ID; ?>" data-status="<?php echo $filter->post_status; ?>" data-date="<?php echo $date; ?>" data-type="<?php echo $type; ?>">
+                    <td data-label="checkbox"><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID; ?>"><?php } ?></td>
                 <?php if( sospo_mu_plugin()->has_agent ){ ?>
                     <td data-label="status">?<br/>&nbsp;</td>
                 <?php } ?>
                     <td data-label="title" class="align-left normal-text">
-                        <?php echo $filter->post_title ?>
+                        <?php echo $filter->post_title; ?>
                         <br/>
                         <?php if( $is_premium ){ ?>
                             <span class="filter_is_premium">Premium Filter</span>
                         <?php } ?>
                         <?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?>
-                            <a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ) ?>">Edit</a>
+                            <a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ); ?>">Edit</a>
                         <?php } ?>
                         <br/>
                     </td>
-                    <td data-label="categories" class="align-left normal-text"><?php echo $categories ?></td>
-                    <td data-label="triggers" class="align-left normal-text"><?php echo $trigger ?></td>
+                    <td data-label="categories" class="align-left normal-text"><?php echo $categories; ?></td>
+                    <td data-label="triggers" class="align-left normal-text" title="<?php echo $trigger_title; ?>"><?php echo $trigger; ?></td>
                 <?php if( sospo_mu_plugin()->has_agent ){ ?>
-                    <td data-label="belongs_to" class="align-left normal-text"><?php echo $belongs_to ?></td>
+                    <td data-label="belongs_to" class="align-left normal-text"><?php echo $belongs_to; ?></td>
                 <?php } ?>
                     <td data-label="plugins_tooltip" class="list_of_plugins <?php echo $has_tooltip_class; ?>">
                         <span <?php echo $tooltip_list; ?>><?php echo count( $blocking_plugins ) ?></span>
@@ -463,7 +465,7 @@ EOF;
                     <td class="toggle_filter">
                         <label>
                             <span class="switch">
-                                <input class="turn_off_filter" data-id="<?php echo $filter->ID ?>" type="checkbox"<?php echo $turned_on_checked ?>/>
+                                <input class="turn_off_filter" data-id="<?php echo $filter->ID; ?>" type="checkbox"<?php echo $turned_on_checked; ?>/>
                                 <span class="slider round"></span>
                             </span>
                         </label>
