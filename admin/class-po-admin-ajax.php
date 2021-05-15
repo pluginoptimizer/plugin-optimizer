@@ -41,6 +41,7 @@ class SOSPO_Ajax {
 		add_action( 'wp_ajax_po_save_original_menu',            [ $this, 'po_save_original_menu'            ] );
 		add_action( 'wp_ajax_po_get_post_types',                [ $this, 'po_get_post_types'                ] );
         add_action( 'wp_ajax_po_scan_prospector',               [ $this, 'po_scan_prospector'               ] );
+        add_action( 'wp_ajax_po_save_columns_state',            [ $this, 'po_save_columns_state'            ] );
 
 	}
 
@@ -464,6 +465,38 @@ class SOSPO_Ajax {
         
         die($server_output);
         
+    }
+    
+    /**
+     * Saves the current state of visible columns on the Filters List screen
+     */
+    function po_save_columns_state(){
+        
+        // sospo_mu_plugin()->write_log( $_POST, "po_save_columns_state-_POST" );
+        
+        if( empty( $_POST['action'] ) || $_POST['action'] !== "po_save_columns_state" ){    wp_send_json_error( [ "message" => "We have somehow triggered the wrong action!" ] ); }
+        
+        $data = empty( $_POST['data'] ) ? [] : $_POST['data'];
+        
+        // sospo_mu_plugin()->write_log( $data, "po_save_columns_state-data" );
+        
+        if( $data ){
+            
+            foreach( $data as $index => $data_item ){
+                
+                $data[ $index ] = sanitize_text_field( $data_item );
+                
+            }
+            
+        }
+        
+        
+        // sospo_mu_plugin()->write_log( get_current_user_id(), "po_save_columns_state-get_current_user_id" );
+        
+        update_user_meta( get_current_user_id(), "sospo_filter_columns", $data );
+        
+		wp_send_json_success( [ "message" => "All good, the columns are saved." ] );
+
     }
     
 }

@@ -117,6 +117,21 @@ EOF;
     
     }
     
+	static function content_part__manipulate_toggle_columns() {
+        
+        echo <<<EOF
+        
+                <div id="show_toggle_columns" class="manipulate_toggle_columns">
+                    Show Toggle Columns
+                </div>
+                <div id="hide_toggle_columns" class="manipulate_toggle_columns">
+                    Hide Toggle Columns
+                </div>
+                
+EOF;
+    
+    }
+    
 	static function content_part__filter_options( $posts ) {
         
         $months                 = [];
@@ -223,6 +238,99 @@ EOF;
     
     }
     
+	static function content_part__toggle_columns_options(){
+        
+        $column_names = [
+            'status'            => "Status",
+            'title'             => "Title",
+            'categories'        => "Categories",
+            'triggers'          => "Triggers",
+            'belongs_to'        => "Belongs to",
+            'plugins_tooltip'   => "Blocking",
+            'created'           => "Created",
+            'modified'          => "Modified",
+            'toggle_filter'     => "Turned On",
+        ];
+        
+        $column_order = [
+            // 20 => 'title',// we should at least keep the title
+            30 => 'categories',
+            40 => 'triggers',
+            60 => 'plugins_tooltip',
+            90 => 'toggle_filter',
+        ];
+        
+        if( sospo_mu_plugin()->has_agent ){
+            
+            $column_order[ 10 ] = 'status';
+            $column_order[ 50 ] = 'belongs_to';
+            $column_order[ 70 ] = 'created';
+            $column_order[ 80 ] = 'modified';
+        }
+        
+        ksort( $column_order );
+        
+        // sospo_mu_plugin()->write_log( $column_order, "content_part__toggle_columns_options-column_order" );
+        
+        $hidden_columns = get_user_meta( get_current_user_id(), "sospo_filter_columns", true );
+        
+        // sospo_mu_plugin()->write_log( $hidden_columns, "content_part__toggle_columns_options-hidden_columns" );
+        
+        $columns = [];
+        $column_html = "";
+        
+        foreach( $column_order as $column_id ){
+            
+            if( in_array( $column_id, array_keys( $column_names ) ) ){
+                
+                $columns[ $column_id ] = $column_names[ $column_id ];
+                
+                $column_name = $column_names[ $column_id ];
+                
+                $checked = is_array( $hidden_columns ) && in_array( $column_id, $hidden_columns ) ? '' : ' checked="checked"';
+                
+                $column_html .= <<<EOF
+                
+                        <div class="single_column">
+                            <div class="single_column_name">
+                                {$column_names[ $column_id ]}
+                            </div>
+                            <div class="single_column_state">
+                                <label>
+                                    <span class="switch">
+                                        <input name="{$column_id}" data-id="{$column_id}" type="checkbox"{$checked}/>
+                                        <span class="slider round"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        
+EOF;
+                
+            }
+            
+        }
+        
+        // sospo_mu_plugin()->write_log( $columns, "content_part__toggle_columns_options-columns" );
+        
+        echo <<<EOF
+        
+                <div id="toggle_columns" class="toggle_columns_options">
+                    <div id="full_columns_list">
+                        $column_html
+                    </div>
+                    <div>
+                        <div id="show_all_columns" class="manipulate_toggle_columns">Show all columns</div>
+                        <div id="hide_all_columns" class="manipulate_toggle_columns">Hide all columns</div>
+                        <button id="save_columns_state" class="po_green_button">Save</button>
+                    </div>
+                </div>
+                <script>jQuery('#toggle_columns').hide();</script>
+            
+EOF;
+    
+    }
+    
 	static function content_part__plugins( $args = [] ) {
         
         $defaults = [
@@ -302,12 +410,14 @@ EOF;
                 sort( $blocking_plugins );
                 
                 if( empty( $data_type ) || $data_type == "_endpoint" || $data_type == "none" ){
-                    $trigger = implode( ',<br>', $data_endpoints );
-                    $type    = "_endpoint";
+                    $trigger_title  = implode( PHP_EOL, $data_endpoints );
+                    $trigger        = implode( ',<br>', $data_endpoints );
+                    $type           = "_endpoint";
                 } else {
-                    $trigger = "Editing post type: <b>" . $data_type . "</b>";
-                    $type    = $data_type;
-                    $type    = "_edit_screen";
+                    $trigger_title  = "Editing post type: " . $data_type;
+                    $trigger        = "Editing post type: <b>" . $data_type . "</b>";
+                    $type           = $data_type;// TODO check if this needs to get removed
+                    $type           = "_edit_screen";
                 }
                 
                 $categories = get_post_meta( $filter->ID, 'categories', true );
@@ -328,26 +438,26 @@ EOF;
                 }
                 
 				?>
-                <tr class="block_info" id="filter-<?php echo  $filter->ID ?>" data-status="<?php echo $filter->post_status ?>" data-date="<?php echo $date ?>" data-type="<?php echo $type ?>">
-                    <td data-label="checkbox"><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID ?>"><?php } ?></td>
+                <tr class="block_info" id="filter-<?php echo  $filter->ID; ?>" data-status="<?php echo $filter->post_status; ?>" data-date="<?php echo $date; ?>" data-type="<?php echo $type; ?>">
+                    <td data-label="checkbox"><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID; ?>"><?php } ?></td>
                 <?php if( sospo_mu_plugin()->has_agent ){ ?>
                     <td data-label="status">?<br/>&nbsp;</td>
                 <?php } ?>
                     <td data-label="title" class="align-left normal-text">
-                        <?php echo $filter->post_title ?>
+                        <?php echo $filter->post_title; ?>
                         <br/>
                         <?php if( $is_premium ){ ?>
                             <span class="filter_is_premium">Premium Filter</span>
                         <?php } ?>
                         <?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?>
-                            <a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ) ?>">Edit</a>
+                            <a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ); ?>">Edit</a>
                         <?php } ?>
                         <br/>
                     </td>
-                    <td data-label="categories" class="align-left normal-text"><?php echo $categories ?></td>
-                    <td data-label="triggers" class="align-left normal-text"><?php echo $trigger ?></td>
+                    <td data-label="categories" class="align-left normal-text"><?php echo $categories; ?></td>
+                    <td data-label="triggers" class="align-left normal-text" title="<?php echo $trigger_title; ?>"><?php echo $trigger; ?></td>
                 <?php if( sospo_mu_plugin()->has_agent ){ ?>
-                    <td data-label="belongs_to" class="align-left normal-text"><?php echo $belongs_to ?></td>
+                    <td data-label="belongs_to" class="align-left normal-text"><?php echo $belongs_to; ?></td>
                 <?php } ?>
                     <td data-label="plugins_tooltip" class="list_of_plugins <?php echo $has_tooltip_class; ?>">
                         <span <?php echo $tooltip_list; ?>><?php echo count( $blocking_plugins ) ?></span>
@@ -359,7 +469,7 @@ EOF;
                     <td class="toggle_filter">
                         <label>
                             <span class="switch">
-                                <input class="turn_off_filter" data-id="<?php echo $filter->ID ?>" type="checkbox"<?php echo $turned_on_checked ?>/>
+                                <input class="turn_off_filter" data-id="<?php echo $filter->ID; ?>" type="checkbox"<?php echo $turned_on_checked; ?>/>
                                 <span class="slider round"></span>
                             </span>
                         </label>

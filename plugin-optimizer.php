@@ -24,7 +24,7 @@ include 'config.php';
  * Current plugin version.
  * Use SemVer - https://semver.org
  */
-define( 'SOSPO_VERSION', '1.0.8-5' );
+define( 'SOSPO_VERSION', '1.0.8-6' );
 
 // let's install the MU plugin if it's missing or outdated and refresh
 if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') || ! function_exists("sospo_mu_plugin") || sospo_mu_plugin()->version !== SOSPO_VERSION ){

@@ -28,12 +28,7 @@ if( $filters ){
                 
                 <?php SOSPO_Admin_Helper::content_part__manipulate_filter_options(); ?>
                 
-                <div id="show_toggle_columns" class="toggle_columns" style="display: none;">
-                    Show Toggle Columns
-                </div>
-                <div id="hide_toggle_columns" class="toggle_columns" style="display: none;">
-                    Hide Toggle Columns
-                </div>
+                <?php SOSPO_Admin_Helper::content_part__manipulate_toggle_columns(); ?>
                 
             </div>
             
@@ -46,6 +41,8 @@ if( $filters ){
         </div>
         
         <?php SOSPO_Admin_Helper::content_part__filter_options( $filters ); ?>
+        
+        <?php SOSPO_Admin_Helper::content_part__toggle_columns_options(); ?>
         
         <div>
             <table class="po_table">
@@ -93,6 +90,9 @@ if( $filters ){
                 <tbody id="the-list" class="filter_on__status_publish">
                     <?php SOSPO_Admin_Helper::list_content__filters( $filters ); ?>
                 </tbody>
+                <script>
+                    jQuery('table.po_table [data-label]:not([data-label="checkbox"]):not([data-label="title"])').hide();
+                </script>
             </table>
         </div>
     </div>
