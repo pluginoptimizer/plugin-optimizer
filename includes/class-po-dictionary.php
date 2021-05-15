@@ -22,7 +22,7 @@ class SOSPO_Dictionary{
         
     }
 
-    function retrieve( $send_out ){
+    function retrieve( $send_out = [] ){
         
         $json = json_encode( $send_out );
         
@@ -52,7 +52,7 @@ class SOSPO_Dictionary{
 
     function get_relevant_filters(){
         
-        sospo_mu_plugin()->write_log( array_keys( get_plugins() ), "test-123-get_plugins" );
+        // sospo_mu_plugin()->write_log( array_keys( get_plugins() ), "test-123-get_plugins" );
         
         $send_out = [ 'belongsTo' => array_keys( get_plugins() ) ];
         
