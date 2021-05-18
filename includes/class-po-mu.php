@@ -40,6 +40,10 @@ class SOSPO_MU {
 
     private function __construct() {
 
+        if( $this->should_abort() ){
+            return;
+        }
+
         $this->current_full_url         = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $this->current_wp_relative_url  = str_replace( site_url(), "", $this->current_full_url );
 
@@ -97,10 +101,6 @@ class SOSPO_MU {
             "plgnoptmzr_work",
         ];
 
-        if( $this->should_abort() ){
-            return;
-        }
-
         $this->set_hooks();
 
     }
@@ -108,6 +108,11 @@ class SOSPO_MU {
     private function should_abort(){
 
         if( wp_doing_cron() ){
+
+            return true;
+        }
+
+        if( defined( 'WP_CLI' ) && WP_CLI ){
 
             return true;
         }
