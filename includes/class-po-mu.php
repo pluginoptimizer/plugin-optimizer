@@ -12,7 +12,7 @@
 
 class SOSPO_MU {
 
-    public $version                 = "1.0.8-7";
+    public $version                 = "1.0.8-8";
 
     protected static $instance      = null;
 
@@ -262,7 +262,8 @@ class SOSPO_MU {
             if( ! empty( $_POST["action"] ) && $_POST["action"] == "update-plugin" && ! empty( $_POST["plugin"] ) ){
                 $this->write_log( $_POST["plugin"], "get_plugins_to_block_for_current_url-update_plugin-post-plugin" );
                 
-                $block_plugins = array_diff( $block_plugins, [ $_POST["plugin"] ] );
+                // disabled this because some plugins need their dependency plugins
+                // $block_plugins = array_diff( $block_plugins, [ $_POST["plugin"] ] );
             }
             
             $this->is_skipped = true;
