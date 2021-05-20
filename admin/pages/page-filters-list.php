@@ -18,7 +18,7 @@ $test = sospo_dictionary()->retrieve();
 // sospo_mu_plugin()->write_log( $relevant_filters, "page_filters_list-relevant_filters" );
 // sospo_mu_plugin()->write_log( $pending_filters,  "page_filters_list-pending_filters" );
 // sospo_mu_plugin()->write_log( $approved_filters, "page_filters_list-approved_filters" );
-sospo_mu_plugin()->write_log( $test, "page_filters_list-test" );
+// sospo_mu_plugin()->write_log( $test, "page_filters_list-test" );
 
 ?>
 
