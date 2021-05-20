@@ -79,6 +79,9 @@ class PluginOptimizer {
             
         }
 		
+		// The class responsible for all communication with the Dictionary
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-po-dictionary.php';
+
 	}
 
 	/**
