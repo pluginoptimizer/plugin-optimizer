@@ -12,7 +12,7 @@
 
 class SOSPO_MU {
 
-    public $version                 = "1.0.8-6";
+    public $version                 = "1.0.8-7";
 
     protected static $instance      = null;
 
@@ -40,15 +40,12 @@ class SOSPO_MU {
 
     private function __construct() {
 
-        if( $this->should_abort() ){
-            return;
-        }
-
-        $this->current_full_url         = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        $this->current_wp_relative_url  = str_replace( site_url(), "", $this->current_full_url );
-
         $this->po_ajax_actions = [
-            // Free
+        
+            // WP Core
+            'update-plugin',
+            
+            // PO Free
             'po_save_filter',
             'po_save_group',
             'po_save_category',
@@ -61,18 +58,21 @@ class SOSPO_MU {
             'po_save_option_alphabetize_menu',
             'po_turn_off_filter',
             'po_save_original_menu',
-            // 'po_get_post_types',// excluded because it wouldn't work!
+                // 'po_get_post_types',// excluded because it wouldn't work!
             'po_scan_prospector',
             'po_save_columns_state',
-            // Agent
+            
+            // PO Agent
             'PO_retrieve_filters',
             'PO_compile_filters',
             'PO_submit_filters',
             'PO_send_approval',
             'PO_delete_filter',
-            // Premium
+            
+            // PO Premium
             'PO_retrieve_filters',
             'PO_compile_filters',
+            
         ];
         $this->po_plugins = [
             "plugin-optimizer/plugin-optimizer.php",
@@ -101,6 +101,13 @@ class SOSPO_MU {
             "plgnoptmzr_work",
         ];
 
+        if( $this->should_abort() ){
+            return;
+        }
+
+        $this->current_full_url         = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $this->current_wp_relative_url  = str_replace( site_url(), "", $this->current_full_url );
+
         $this->set_hooks();
 
     }
@@ -118,6 +125,10 @@ class SOSPO_MU {
         }
 
         if( wp_doing_ajax() ){
+            
+            
+            // $this->write_log( $_POST, "mu_plugin-should_abort-doing_ajax-post" );
+            // $this->write_log( $_GET,  "mu_plugin-should_abort-doing_ajax-get" );
 
             if( empty( $_POST["action"] ) ){
 
@@ -127,6 +138,7 @@ class SOSPO_MU {
 
             if( ! in_array( $_POST["action"], $this->po_ajax_actions ) ){
 
+                // $this->write_log( $this->po_ajax_actions, "mu_plugin-should_abort-doing_ajax-po_ajax_actions" );
                 // $this->write_log( $_POST["action"], "mu_plugin-should_abort-doing_ajax-not_po_action" );
                 return true;
             }
@@ -243,9 +255,18 @@ class SOSPO_MU {
 
         // On PO Ajax requests we are blocking all plugins, except PO
         if( wp_doing_ajax() && ! empty( $_POST["action"] ) && in_array( $_POST["action"], $this->po_ajax_actions ) ){
-            // $this->write_log( "blocking all plugins!", "get_plugins_to_block_for_current_url-po_ajax-request" );
+            
+            $block_plugins = array_diff( $this->original_active_plugins, $this->po_plugins );
+            
+            // $this->write_log( $_POST, "get_plugins_to_block_for_current_url-post" );
+            if( ! empty( $_POST["action"] ) && $_POST["action"] == "update-plugin" && ! empty( $_POST["plugin"] ) ){
+                $this->write_log( $_POST["plugin"], "get_plugins_to_block_for_current_url-update_plugin-post-plugin" );
+                
+                $block_plugins = array_diff( $block_plugins, [ $_POST["plugin"] ] );
+            }
+            
             $this->is_skipped = true;
-            return array_diff( $this->original_active_plugins, $this->po_plugins );
+            return $block_plugins;
         }
 
         // some URLs just need all plugins to get blocked
