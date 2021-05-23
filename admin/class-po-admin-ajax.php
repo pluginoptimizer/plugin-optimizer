@@ -446,24 +446,9 @@ class SOSPO_Ajax {
      */
     function po_scan_prospector(){
         
-        $menu_endpoints = json_encode( get_option( "po_admin_menu_list" ) );
-
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL,  PROSPECTOR_URL.'api/v1/count');
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $menu_endpoints);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-              'Content-Type: application/json',                    
-              'Content-Length: ' . strlen( $menu_endpoints )
-        ]);
-
-        $server_output = curl_exec($ch);
-
-        curl_close ($ch);
+        $count = sospo_dictionary()->get_prospector_count();
         
-        die($server_output);
+        die( json_encode( [ "count" => $count ] ) );
         
     }
     

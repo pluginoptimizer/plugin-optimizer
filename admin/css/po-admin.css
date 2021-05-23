@@ -357,7 +357,8 @@ body.po_page_overview .hidden-info_overview .row > .col-6:last-of-type h4{
     display: flex;
     align-items: flex-end;
     justify-content: flex-start;
-    padding: 20px 0 20px 30px;
+    padding: 20px;
+    padding-left: 30px;
 }
 #main_title h1{
     padding: 0;
@@ -393,9 +394,19 @@ body.po_page_overview .hidden-info_overview .row > .col-6:last-of-type h4{
     font-size: 18px;
 }
 
-
+#filters_list__go_premium,
+#filters_list__activate_licence,
+#filters_list__sync_now{
+    margin: 0 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
 
 /*New design*/
+
+.flex_spacer{
+    flex-grow: 10;
+}
 
 .sos-wrap * {
     text-transform: uppercase;

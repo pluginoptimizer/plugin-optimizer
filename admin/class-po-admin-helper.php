@@ -43,6 +43,8 @@ class SOSPO_Admin_Helper {
     
 	static function content_part__header( $page_title, $class = "default" ) {
         
+        global $sospo_appsero;
+        
         $tabs = [
             "Filters",
             "Categories",
@@ -61,11 +63,67 @@ class SOSPO_Admin_Helper {
             
         }
         
+        $premium_stuff = '';
+        
+        // we're displaying Premium Info only on Filters List screen
+        if( $class == "filters" ){
+            
+            if( sospo_mu_plugin()->has_premium ){
+                // Has Premium
+                
+                $premium_plugins_info = SOSPO_Admin_Helper::premium_plugins_info();
+                
+                if( ! empty( $premium_plugins_info["count"] ) ){
+                    
+                    $premium_stuff .= '<span id=""> You have <b>' . $premium_plugins_info["count"] . '</b> Premium Filters </span>';
+                }
+                
+                
+                
+                if( $sospo_appsero["premium"]->license()->is_valid() ){
+                    // Thank you for buying Premium!
+                    
+                    $premium_stuff .= '<button id="filters_list__sync_now" class="po_green_button">' . "Sync Now" . '</button>';
+                    
+                } else {
+                    // Please activate your license.
+                    
+                    $premium_stuff .= '<a href="https://pluginoptimizer.com/">' . '<button id="filters_list__activate_licence" class="po_green_button">' . "Activate Licence" . '</button>' . '</a>';
+                    
+                }
+                
+                
+                $last_synced_date = "You never grabbed those premium filters!";
+
+                if( $premium_plugins_info["synced"] ){
+                    $last_synced_date = "Last Sync: " . date('F j, Y', strtotime( $premium_plugins_info["synced"] ) );
+                }
+                
+                $premium_stuff .= '<span id="last_synced_date"> ' . $last_synced_date . ' </span>';
+                
+            } else {
+                // Get Premium!
+                
+                $premium_stuff .= 'You are running the free version ';
+                $premium_stuff .= '<a href="https://pluginoptimizer.com/" target="_blank">' . '<button id="filters_list__go_premium" class="po_green_button">' . "Go Premium!" . '</button>' . '</a>';
+                
+                $prospector_count = sospo_dictionary()->get_prospector_count();
+                
+                if( ! empty( $prospector_count ) ){
+                    
+                    $premium_stuff .= ' You could benefit from <b>' . $prospector_count . '</b> Premium Filters';
+                }
+            }
+            
+            $premium_stuff = '<div class="flex_spacer"></div>' . '<div id="premium_stuff">' . $premium_stuff . '</div>';
+        }
+        
         echo <<<EOF
         
         <div id="main_title">
             <h1>Plugin Optimizer</h1>
             <h2 id="name_page" class="$class">$page_title</h2>
+            $premium_stuff
         </div>
 
         <div id="main_tab_navigation" class="wrap-tabs">
@@ -395,6 +453,7 @@ EOF;
                 $turned_off       = get_post_meta( $filter->ID, 'turned_off',       true );
                 $premium_filter   = get_post_meta( $filter->ID, 'premium_filter',   true );
                 $belongs_to_value = get_post_meta( $filter->ID, 'belongs_to',       true );
+                $dictionary_id    = get_post_meta( $filter->ID, 'dict_id',          true );
                 
                 if( ! empty( $belongs_to_value ) ){
                     
@@ -441,7 +500,7 @@ EOF;
                 <tr class="block_info" id="filter-<?php echo  $filter->ID; ?>" data-status="<?php echo $filter->post_status; ?>" data-date="<?php echo $date; ?>" data-type="<?php echo $type; ?>">
                     <td data-label="checkbox"><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID; ?>"><?php } ?></td>
                 <?php if( sospo_mu_plugin()->has_agent ){ ?>
-                    <td data-label="status">?<br/>&nbsp;</td>
+                    <td data-label="status"<?php echo ( $is_premium ) ? ' data-id="' . $dictionary_id . '"' : ""; ?>><span>?</span><br/>&nbsp;</td>
                 <?php } ?>
                     <td data-label="title" class="align-left normal-text">
                         <?php echo $filter->post_title; ?>
@@ -569,6 +628,44 @@ EOF;
             </tr>
 		<?php
         }
+	}
+
+
+	static function premium_plugins_info(){
+        
+        global $wpdb;
+        
+        $query = "
+            SELECT      count(*) AS count,
+                        p.post_modified
+                        
+            FROM        {$wpdb->prefix}posts AS p
+            
+            JOIN        {$wpdb->prefix}postmeta AS m
+                ON      p.ID = m.post_id
+                
+            WHERE       m.meta_key   = 'premium_filter'
+                AND     m.meta_value = 'true'
+            
+        ";
+
+        $rows = $wpdb->get_results( $query );
+        
+        $info = [
+            "count"  => 0,
+            "synced" => false,
+        ];
+        
+        if( $rows ){
+            
+            $info = [
+                "count"  => $rows[0]->count,
+                "synced" => $rows[0]->post_modified,
+            ];
+            
+        }
+
+        return $info;
 	}
 
 
