@@ -13,7 +13,7 @@ if( $filters ){
 // $relevant_filters = sospo_dictionary()->get_relevant_filters();
 // $pending_filters  = sospo_dictionary()->get_pending_filters();
 // $approved_filters = sospo_dictionary()->get_approved_filters();
-$test = sospo_dictionary()->retrieve();
+// $test = sospo_dictionary()->retrieve();
 
 // sospo_mu_plugin()->write_log( $relevant_filters, "page_filters_list-relevant_filters" );
 // sospo_mu_plugin()->write_log( $pending_filters,  "page_filters_list-pending_filters" );

@@ -12,7 +12,7 @@
 
 class SOSPO_MU {
 
-    public $version                 = "1.0.8-8";
+    public $version                 = "1.0.8-9";
 
     protected static $instance      = null;
 
@@ -68,6 +68,7 @@ class SOSPO_MU {
             'PO_submit_filters',
             'PO_send_approval',
             'PO_delete_filter',
+            'po_get_premium_filters_status',
             
             // PO Premium
             'PO_retrieve_filters',

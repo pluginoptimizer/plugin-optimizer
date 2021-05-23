@@ -271,6 +271,15 @@ class SOSPO_Admin {
 		wp_localize_script( $this->plugin_name, 'po_object', $array );
 		wp_enqueue_script(  $this->plugin_name );
 
+        // enqueue premium scripts
+        if( function_exists("sospo_mu_plugin") && sospo_mu_plugin()->has_premium ){
+            
+            $version  = date("ymd-Gis", filemtime( plugin_dir_path( __DIR__ ) . '../plugin-optimizer-premium/js/po-admin-premium.js' ));
+            wp_register_script( $this->plugin_name . "_premium", plugin_dir_url( __DIR__ ) . '../plugin-optimizer-premium/js/po-admin-premium.js', array( 'jquery' ), $version, false );
+            wp_enqueue_script(  $this->plugin_name . "_premium" );
+            
+        }
+        
 	}
 
 

@@ -2,6 +2,7 @@ jQuery( document ).ready( function($){
     'use strict';
     
     recalculate__special_grid_lists();
+    fetch__agent_filters_status();
     
     // Plugins section on Filter Edit screen, multi-select
     $('.block-plugin-wrapper .special_grid_list').selectable({
@@ -26,10 +27,9 @@ jQuery( document ).ready( function($){
                 $('#scan-container .results').remove();
                 $('#scan-now').prop('disabled', true);
             },
-            success: function(d){
-                if( d.status == 'success' ){
-                    $('#scan-container').append('<div class="results">Your site could benefit from '+d.data.count+' Premium Filters.</div>');
-                }
+            success: function( response ){
+                // console.log( "scan-now response:", response );
+                $('#scan-container').append('<div class="results">Your site could benefit from ' + response.count + ' Premium Filters.</div>');
             }, 
             complete: function(){
                 $('#scan-now').prop('disabled', false);
@@ -1004,7 +1004,7 @@ jQuery( document ).ready( function($){
         
         $(this).remove();
         
-        $.post( po_object.ajax_url, { action  : 'po_mark_tab_complete', tab_id : tab_id, user_id : po_object.user_id }, function( response ) {
+        $.post( po_object.ajax_url, { action : 'po_mark_tab_complete', tab_id : tab_id, user_id : po_object.user_id }, function( response ) {
             // console.log( "po_mark_tab_complete: ", response );
             
             if( response.data.message ){
@@ -1115,5 +1115,69 @@ jQuery( document ).ready( function($){
         });
         
     }
+    
+    // On agent sites, we need to get the premium filters status from the dictionary
+    function fetch__agent_filters_status(){
+        
+        if( ! ( $('body').hasClass('plugin-optimizer_page_plugin_optimizer_filters') && $('#the-list td[data-label="status"]').length >= 1 ) ){
+            
+            return;
+        }
+        
+        console.log( "Agent plugin found - fetching filters status." );
+        
+        let dictionary_ids = [];
+        
+        $('#the-list td[data-label="status"]').each(function( index, el ){
+            
+            let dictionary_id = $(el).data("id");
+            
+            if( ! dictionary_id ){
+                
+                $(el).html('');
+            } else {
+                
+                dictionary_ids.push( dictionary_id );
+            }
+            
+        });
+        
+        if( dictionary_ids.length == 0 ){
+            
+            return;
+        }
+        
+        // console.log( "Dictionary IDs: ", dictionary_ids );
+        
+        $.post( po_object.ajax_url, { action : 'po_get_premium_filters_status', dictionary_ids : dictionary_ids }, function( response ) {
+            // console.log( "po_mark_tab_complete: ", response );
+            
+            if( response.data.message ){
+                
+                $('#the-list td[data-label="status"][data-id]').html('!<br/>&nbsp;');
+                
+                // console.log( "#1293175193: ", response.data );
+                
+                $.each( response.data.statuses, function( index, item ){
+                    
+                    // console.log( "#873563456 Item: ", item );
+                    
+                    let status = item.status == "approved" ? "Approved" : "Pending";
+                    
+                    $('#the-list td[data-label="status"][data-id="' + item.id + '"]').html( status + '<br/>&nbsp;');
+                    
+                });
+            }
+            
+        }, "json");
+        
+    }
+    
+    // If the user has Premium (and) activated, he can pull Premium Filters
+    $('#filters_list__sync_now').on('click', function(){
+        var el = this;
+        window.po.retrieve_filters(el);
+    });
+    
     
 });
