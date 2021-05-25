@@ -88,7 +88,10 @@ class SOSPO_Admin_Helper {
                 } else {
                     // Please activate your license.
                     
-                    $premium_stuff .= '<a href="https://pluginoptimizer.com/">' . '<button id="filters_list__activate_licence" class="po_green_button">' . "Activate Licence" . '</button>' . '</a>';
+                    // TODO Change the link for activate the licence
+                    $premium_stuff .= '<a href="' . admin_url('admin.php?page=plugin_optimizer') . '">';
+                    $premium_stuff .=   '<button id="filters_list__activate_licence" class="po_green_button">' . "Activate Licence" . '</button>';
+                    $premium_stuff .= '</a>';
                     
                 }
                 
