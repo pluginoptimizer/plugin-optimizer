@@ -23,11 +23,13 @@ class SOSPO_Dictionary{
         
     }
 
-    function retrieve( $send_out = [] ){
+    function retrieve( $dictionary_ids = [] ){
         
-        $json = json_encode( $send_out );
+        $url  = empty( $dictionary_ids ) ? 'api/v1/retrieve' : 'api/v1/retrieveById';
         
-        $ch = curl_init();
+        $json = empty( $dictionary_ids ) ? json_encode( $dictionary_ids ) : json_encode( [ "ids" => $dictionary_ids ] );
+        
+        $ch   = curl_init();
 
         $headers = [
             'Content-Type: application/json',                    
@@ -35,7 +37,7 @@ class SOSPO_Dictionary{
         ];
         
         $options = [
-            CURLOPT_URL             => $this->dictionary_url . 'api/v1/retrieve',
+            CURLOPT_URL             => $this->dictionary_url . $url,
             CURLOPT_POST            => 1,
             CURLOPT_POSTFIELDS      => $json,
             CURLOPT_RETURNTRANSFER  => true,
@@ -114,6 +116,8 @@ class SOSPO_Dictionary{
     function get_prospector_count(){
         
         $menu_endpoints = json_encode( get_option( "po_admin_menu_list" ) );
+        
+        // write_log( json_decode( $menu_endpoints ), "get_prospector_count-menu_endpoints" );
 
         $ch = curl_init();
 

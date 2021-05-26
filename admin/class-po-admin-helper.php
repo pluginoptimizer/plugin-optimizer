@@ -647,6 +647,8 @@ EOF;
             WHERE       m.meta_key   = 'premium_filter'
                 AND     m.meta_value = 'true'
             
+            ORDER BY    p.post_modified ASC
+            
         ";
 
         $rows = $wpdb->get_results( $query );
