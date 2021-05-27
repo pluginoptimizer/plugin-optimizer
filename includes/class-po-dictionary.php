@@ -25,9 +25,9 @@ class SOSPO_Dictionary{
 
     function retrieve( $dictionary_ids = [] ){
         
-        $url  = empty( $dictionary_ids ) ? 'api/v1/retrieve' : 'api/v1/retrieveById';
+        $url  = empty( $dictionary_ids ) ? $this->dictionary_url . 'api/v1/retrieve' : $this->prospector_url . 'api/v1/retrieveById';
         
-        $json = empty( $dictionary_ids ) ? json_encode( $dictionary_ids ) : json_encode( [ "ids" => $dictionary_ids ] );
+        $json = empty( $dictionary_ids ) ? json_encode( $dictionary_ids ) : json_encode( [ "ids" => $dictionary_ids, "columns" => [ "_id", "status" ], ] );
         
         $ch   = curl_init();
 
@@ -37,7 +37,7 @@ class SOSPO_Dictionary{
         ];
         
         $options = [
-            CURLOPT_URL             => $this->dictionary_url . $url,
+            CURLOPT_URL             => $url,
             CURLOPT_POST            => 1,
             CURLOPT_POSTFIELDS      => $json,
             CURLOPT_RETURNTRANSFER  => true,
