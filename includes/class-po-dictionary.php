@@ -23,6 +23,97 @@ class SOSPO_Dictionary{
         
     }
 
+    // main method for creating a cURL request
+    function request( $args , $endpoint = "count", $prospector = false ){
+        
+        $json = json_encode( $args );
+
+        $ch = curl_init();
+
+        $headers = [
+            'Content-Type: application/json',                    
+            'Content-Length: ' . strlen( $json ),
+        ];
+        
+        $options = [
+            CURLOPT_URL             => ( $prospector ? $this->prospector_url : $this->dictionary_url ) . 'api/v1/' . $endpoint,
+            CURLOPT_POST            => 1,
+            CURLOPT_POSTFIELDS      => $json,
+            CURLOPT_RETURNTRANSFER  => true,
+            CURLOPT_HTTPHEADER      => $headers,
+        ];
+
+        curl_setopt_array($ch, $options);
+
+        $server_output = curl_exec($ch);
+
+        curl_close($ch);
+        
+        $response = json_decode( $server_output );
+        
+        write_log( $response, "SOSPO_Dictionary-request-response-" . $endpoint );
+        
+        if( $response->status == "success" && ! empty( $response->data ) ){
+            
+            return $response->data;
+        }
+        
+        return new \WP_Error( 'server', $response->message );
+    }
+    
+    // main method for getting the count of the filters in the collection
+    function count( $args, $prospector = false ){
+        
+        $data = $this->request( $args, "count", $prospector );
+        
+        if( ! is_wp_error( $data ) ){
+            
+            $data = $data->count;
+        }
+        
+        return $data;
+    }
+    
+    // main method for getting the filters from the collection
+    function get( $args, $prospector = false  ){
+        
+        $data = $this->request( $args, "get", $prospector );
+        
+        if( ! is_wp_error( $data ) ){
+            
+            $data = $data->filters;
+        }
+        
+        return $data;
+    }
+    
+    
+    
+    function get_prospector_count(){
+        
+        $menu_endpoints = get_option( "po_admin_menu_list" );
+        
+        $args = [
+            "query" => [
+                'endpoint' =>  [
+                    '$in' => array_values( $menu_endpoints["endpoints"] )
+                ],
+            ],
+        ];
+        
+        
+        $args = $this->get_benefit_filters_query();
+        
+        write_log( json_encode( $args["query"] ), "SOSPO_Dictionary-get_prospector_count-query" );
+        
+        $count = $this->count( $args, true );
+        
+        return is_wp_error( $count ) ? "unknown" : $count;
+    }
+    
+    
+    
+    
     function retrieve( $dictionary_ids = [] ){
         
         $url  = empty( $dictionary_ids ) ? $this->dictionary_url . 'api/v1/retrieve' : $this->prospector_url . 'api/v1/retrieveById';
@@ -113,45 +204,48 @@ class SOSPO_Dictionary{
         return $server_output;
     }
 
-    function get_prospector_count(){
+    private function get_benefit_filters_query(){
         
-        $menu_endpoints = json_encode( get_option( "po_admin_menu_list" ) );
-        
-        // write_log( json_decode( $menu_endpoints ), "get_prospector_count-menu_endpoints" );
-
-        $ch = curl_init();
-
-        $headers = [
-            'Content-Type: application/json',                    
-            'Content-Length: ' . strlen( $menu_endpoints ),
-        ];
-        
-        $options = [
-            CURLOPT_URL             => $this->prospector_url . 'api/v1/count',
-            CURLOPT_POST            => 1,
-            CURLOPT_POSTFIELDS      => $menu_endpoints,
-            CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_HTTPHEADER      => $headers,
-        ];
-
-        curl_setopt_array($ch, $options);
-
-        $server_output = curl_exec($ch);
-
-        curl_close($ch);
-        
-        $response = json_decode( $server_output );
-        
-        $count = 0;
-        
-        if( $response->status == "success" && ! empty( $response->data->count ) ){
-            
-            $count = $response->data->count;
+        if ( ! function_exists( 'get_plugins' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
         
-        return $count;
+        $plugins = get_plugins();
+        
+        $args = [
+            "query" => [
+                '$and' => [
+                    [ 'belongsTo' => [ '$in' => array_merge( array_keys( $plugins ), [ '_core' ] ) ] ],
+                    // [ 'status' => 'pending' ],
+                    [ 'status' => 'approved' ],
+                ],
+            ],
+        ];
+        
+        // $args = [
+            // "query" => [
+                // '$and' => [
+                    // [ '$or' => [
+                        // [ 'belongsTo' => [ '$in' => array_keys( $plugins ) ] ],
+                        // [ 'belongsTo' => '_core' ],
+                    // ] ],
+                    // [ 'status' => 'approved' ],
+                // ],
+            // ],
+        // ];
+        
+        // $args = [
+            // "query" => [
+                // 'belongsTo' => [ '$in' => array_merge( array_keys( $plugins ), [ '_core' ] ) ],
+            // ],
+        // ];
+        
+        
+        
+        // TODO We need to add the 'status' => 'approved' as a condition
+        
+        return $args;
     }
-    
 }
 
 function sospo_dictionary(){
