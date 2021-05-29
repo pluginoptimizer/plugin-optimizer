@@ -51,7 +51,7 @@ class SOSPO_Dictionary{
         
         $response = json_decode( $server_output );
         
-        write_log( $response, "SOSPO_Dictionary-request-response-" . $endpoint );
+        // write_log( $response, "SOSPO_Dictionary-request-response-" . $endpoint );
         
         if( $response->status == "success" && ! empty( $response->data ) ){
             
@@ -104,13 +104,56 @@ class SOSPO_Dictionary{
         
         $args = $this->get_benefit_filters_query();
         
-        write_log( json_encode( $args["query"] ), "SOSPO_Dictionary-get_prospector_count-query" );
+        // write_log( json_encode( $args["query"] ), "SOSPO_Dictionary-get_prospector_count-query" );
         
         $count = $this->count( $args, true );
         
         return is_wp_error( $count ) ? "unknown" : $count;
     }
     
+    private function get_benefit_filters_query(){
+        
+        if ( ! function_exists( 'get_plugins' ) ) {
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+        
+        $plugins = get_plugins();
+        
+        $args = [
+            "query" => [
+                '$and' => [
+                    [ 'belongsTo' => [ '$in' => array_merge( array_keys( $plugins ), [ '_core' ] ) ] ],
+                    // [ 'status' => 'pending' ],
+                    [ 'status' => 'approved' ],
+                ],
+            ],
+        ];
+        
+        // $args = [
+            // "query" => [
+                // '$and' => [
+                    // [ '$or' => [
+                        // [ 'belongsTo' => [ '$in' => array_keys( $plugins ) ] ],
+                        // [ 'belongsTo' => '_core' ],
+                    // ] ],
+                    // [ 'status' => 'approved' ],
+                // ],
+            // ],
+        // ];
+        
+        // $args = [
+            // "query" => [
+                // 'belongsTo' => [ '$in' => array_merge( array_keys( $plugins ), [ '_core' ] ) ],
+            // ],
+        // ];
+        
+        
+        
+        // TODO We need to add the 'status' => 'approved' as a condition
+        
+        return $args;
+    }
+
     
     
     
@@ -204,48 +247,6 @@ class SOSPO_Dictionary{
         return $server_output;
     }
 
-    private function get_benefit_filters_query(){
-        
-        if ( ! function_exists( 'get_plugins' ) ) {
-            require_once ABSPATH . 'wp-admin/includes/plugin.php';
-        }
-        
-        $plugins = get_plugins();
-        
-        $args = [
-            "query" => [
-                '$and' => [
-                    [ 'belongsTo' => [ '$in' => array_merge( array_keys( $plugins ), [ '_core' ] ) ] ],
-                    // [ 'status' => 'pending' ],
-                    [ 'status' => 'approved' ],
-                ],
-            ],
-        ];
-        
-        // $args = [
-            // "query" => [
-                // '$and' => [
-                    // [ '$or' => [
-                        // [ 'belongsTo' => [ '$in' => array_keys( $plugins ) ] ],
-                        // [ 'belongsTo' => '_core' ],
-                    // ] ],
-                    // [ 'status' => 'approved' ],
-                // ],
-            // ],
-        // ];
-        
-        // $args = [
-            // "query" => [
-                // 'belongsTo' => [ '$in' => array_merge( array_keys( $plugins ), [ '_core' ] ) ],
-            // ],
-        // ];
-        
-        
-        
-        // TODO We need to add the 'status' => 'approved' as a condition
-        
-        return $args;
-    }
 }
 
 function sospo_dictionary(){
