@@ -20,15 +20,16 @@ $categories = get_categories( [
 // sospo_mu_plugin()->write_log( $categories, "page-add-filters-categories" );
 
 // defaults
-$page_title        = "Create a new Filter";
-$filter_title      = "";
-$filter_type       = "_endpoint";
-$plugins_to_block  = [];
-$groups_to_block   = [];
-$filter_categories = [];
-$endpoints         = [];
-$is_premium        = false;
-$block_editing     = false;
+$page_title         = "Create a new Filter";
+$filter_title       = "";
+$filter_type        = "_endpoint";
+$plugins_to_block   = [];
+$groups_to_block    = [];
+$filter_categories  = [];
+$endpoints          = [];
+$is_premium         = false;
+$block_editing      = false;
+$viewing_dictionary = false;
 
 // Editing existing filter?
 
@@ -61,6 +62,11 @@ if( $filter ){
     
     $filter_title = sanitize_text_field( $_GET["work_title"] );
     $endpoints    = [ esc_url( $_GET["work_link"] ) ];
+    
+} elseif( ! empty( $_GET["dictionary_id"] ) ){
+    
+    $viewing_dictionary = true;
+    $page_title = "Dictionary filter: " . sanitize_text_field( $_GET["dictionary_id"] );
     
 }
 
@@ -274,10 +280,12 @@ if( sospo_mu_plugin()->has_agent ){
 					</div>
 
 				</div>
-
+            
+            <?php if( ! $viewing_dictionary ){ ?>
 				<div class="row">
 					<button id="save_filter" class="po_green_button">Save Filter</button>
 				</div>
+            <?php } ?>
 
 			</div>
 		</div>
