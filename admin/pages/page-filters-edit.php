@@ -51,17 +51,11 @@ if( $filter ){
     
     $block_editing      = ( $is_premium && ! sospo_mu_plugin()->has_agent );
     
-    if( ! empty( $plugins_to_block ) ){
-        $plugins_to_block   = array_keys( $plugins_to_block );
-    }
+    $plugins_to_block   = ! empty( $plugins_to_block  ) ? array_keys( $plugins_to_block  ) : [];
+    $groups_to_block    = ! empty( $groups_to_block   ) ? array_keys( $groups_to_block   ) : [];
+    $filter_categories  = ! empty( $filter_categories ) ? array_keys( $filter_categories ) : [];
     
-    if( ! empty( $groups_to_block ) ){
-        $groups_to_block    = array_keys( $groups_to_block );
-    }
-    
-    if( ! empty( $filter_categories ) ){
-        $filter_categories  = array_keys( $filter_categories );
-    }
+    // sospo_mu_plugin()->write_log( $groups_to_block, "sospo_mu_plugin()-page-filters-edit-groups_to_block" );
     
 } elseif( ! empty( $_GET["work_title"] ) && ! empty( $_GET["work_link"] ) ){
     
