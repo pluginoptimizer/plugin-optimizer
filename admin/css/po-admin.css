@@ -1460,6 +1460,25 @@ input[type="text"].additional_endpoint{
     background-color: #888;
     margin-bottom: 10px;
 }
+.sos-wrap .content-filter .header.attribute-plugin.dictionary_view{
+    justify-content: left;
+    padding-left: 30px;
+    cursor: pointer;
+}
+.sos-wrap .content-filter .header.attribute-plugin.dictionary_view span.name{
+    display: inline-block;
+    min-width: 180px;
+}
+.sos-wrap .content-filter .header.attribute-plugin.dictionary_view span.number{
+    display: inline-block;
+    min-width: 40px;
+    text-align: right;
+}
+
+.sos-wrap .content-filter ul.dictionary_view_plugins_list{
+    display: none;
+    padding-left: 30px;
+}
 
 .groups-names{
     font-size: 12px;

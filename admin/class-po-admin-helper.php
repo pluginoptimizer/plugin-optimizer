@@ -65,8 +65,8 @@ class SOSPO_Admin_Helper {
         
         $premium_stuff = '';
         
-        // we're displaying Premium Info only on Filters List screen
-        if( $class == "filters" ){
+        // we're displaying Premium Info only on Filters List screen, but not for agents
+        if( $class == "filters" && ! sospo_mu_plugin()->has_agent ){
             
             if( sospo_mu_plugin()->has_premium ){
                 // Has Premium

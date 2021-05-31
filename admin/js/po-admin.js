@@ -209,12 +209,19 @@ jQuery( document ).ready( function($){
     }
     
     // Edit Filter screen - Select a category for a new filter, does nothing but marks the selected category
-    $('#edit_filter').on('click', '.category-wrapper .single_category', function(){
+    $('#edit_filter').on('click', '.category-wrapper .single_category:not(.dictionary_view)', function(){
 
         $(this).toggleClass('blocked');
         
         let $checkbox = $(this).find('input[type="checkbox"]');
         $checkbox.prop( "checked", ! $checkbox.prop("checked") );
+        
+    });
+    
+    // Edit Filter screen - Dictionary view - toggle the plugins list
+    $('#edit_filter').on('click', '.header.attribute-plugin.dictionary_view', function(){
+
+        $(this).next('.dictionary_view_plugins_list').slideToggle();
         
     });
     

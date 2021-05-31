@@ -63,11 +63,6 @@ if( $filter ){
     $filter_title = sanitize_text_field( $_GET["work_title"] );
     $endpoints    = [ esc_url( $_GET["work_link"] ) ];
     
-} elseif( ! empty( $_GET["dictionary_id"] ) ){
-    
-    $viewing_dictionary = true;
-    $page_title = "Dictionary filter: " . sanitize_text_field( $_GET["dictionary_id"] );
-    
 }
 
 $title_class = 'col-9';
@@ -94,6 +89,49 @@ if( sospo_mu_plugin()->has_agent ){
         $plugin_select_options .= PHP_EOL;
     }
     
+    if( ! empty( $_GET["dictionary_id"] ) ){
+        
+        $dictionary_id = sanitize_text_field( $_GET["dictionary_id"] );
+        
+        $page_title = "Dictionary filter: " . $dictionary_id;
+        
+        $args = [
+            "query" => [
+                '_id' =>  $dictionary_id,
+            ],
+            // "exclude_fields" => [
+                // "plugins",
+                // "proposed",
+            // ],
+        ];
+        
+        $filters = sospo_dictionary()->get( $args, true );
+        
+        if( ! empty( $filters ) ){
+            
+            $viewing_dictionary = true;
+            
+            $dictionary_filter = $filters[0];
+            
+            // write_log( $filters, "sospo_mu_plugin()-page-filters-agent-dictionary_filter" );
+            
+            $page_title = "Dictionary filter: " . $dictionary_id;
+            
+            $filter_title       = $dictionary_filter->title;
+            $filter_type        = "_endpoint";
+            $groups_to_block    = [];
+            $filter_categories  = $dictionary_filter->categories;
+            $endpoints          = [ $dictionary_filter->endpoint ];
+            $belongs_to         = $dictionary_filter->belongsTo;
+            
+            $plugins_proposed   = $dictionary_filter->proposed;
+            $plugins_approved   = $dictionary_filter->plugins;
+            $plugins_added      = array_diff( $plugins_proposed, $plugins_approved );
+            $plugins_removed    = array_diff( $plugins_approved, $plugins_proposed );
+            
+        }
+       
+    }
 }
 
 ?>
@@ -199,6 +237,8 @@ if( sospo_mu_plugin()->has_agent ){
                     <div class="row block-plugin-wrapper">
 						<div class="col-12">
                         
+                        <?php if( ! $viewing_dictionary ){ ?>
+                        
 							<div class="header">
 								<div class="title">Plugins <span class="disabled">- <?php echo count( $plugins["all"] ); ?></span></div>
 								<span class="count-plugin">( Active: <?php echo count( $plugins["active"] ); ?>   |   Inactive: <?php echo count( $plugins["inactive"] ); ?> )</span>
@@ -206,16 +246,114 @@ if( sospo_mu_plugin()->has_agent ){
 							</div>
                             
                             <div class="header attribute-plugin">Active plugins</div>
-                                
+                            
 							<?php SOSPO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["active"],   "inactive" => [],                   "blocked" => $plugins_to_block ] ); ?>
                             
                             <div class="header attribute-plugin" style="margin-top: 10px;">Inactive plugins</div>
                             
 							<?php SOSPO_Admin_Helper::content_part__plugins( [ "plugins" => $plugins["inactive"], "inactive" => $plugins["inactive"], "blocked" => $plugins_to_block ] ); ?>
                             
+                        <?php } else { ?>
+                            
+							<div class="header">
+								<div class="title">Plugins</div>
+								<span class="count-plugin"></span>
+							</div>
+                            
+                            <div class="header attribute-plugin dictionary_view">
+                                <span class="name">Proposed plugins:</span>
+                                <span class="number"><?php echo count( $plugins_proposed ); ?></span>
+                            </div>
+                            
+                            <ul class="dictionary_view_plugins_list">
+                                <?php
+                                    if( ! empty( $plugins_proposed ) ){
+                                        
+                                        natsort( $plugins_proposed );
+                                        
+                                        foreach( $plugins_proposed as $plugin_id ){
+                                            
+                                            echo '<li>' . $plugin_id . '</li>';
+                                        }
+                                        
+                                    } else {
+                                        echo '<li>Empty list</li>';
+                                    }
+                                ?>
+                            </ul>
+                            
+                            <div class="header attribute-plugin dictionary_view" style="margin-top: 10px;">
+                                <span class="name">Already approved plugins:</span>
+                                <span class="number"><?php echo count( $plugins_approved ); ?></span>
+                            </div>
+                            
+                            <ul class="dictionary_view_plugins_list">
+                                <?php
+                                    if( ! empty( $plugins_approved ) ){
+                                        
+                                        natsort( $plugins_approved );
+                                        
+                                        foreach( $plugins_approved as $plugin_id ){
+                                            
+                                            echo '<li>' . $plugin_id . '</li>';
+                                        }
+                                        
+                                    } else {
+                                        echo '<li>Empty list</li>';
+                                    }
+                                ?>
+                            </ul>
+                            
+                            <div class="header attribute-plugin dictionary_view" style="margin-top: 10px;">
+                                <span class="name">Removed plugins:</span>
+                                <span class="number"><?php echo count( $plugins_removed ); ?></span>
+                            </div>
+                            
+                            <ul class="dictionary_view_plugins_list">
+                                <?php
+                                    if( ! empty( $plugins_removed ) ){
+                                        
+                                        natsort( $plugins_removed );
+                                        
+                                        foreach( $plugins_removed as $plugin_id ){
+                                            
+                                            echo '<li>' . $plugin_id . '</li>';
+                                        }
+                                        
+                                    } else {
+                                        echo '<li>Empty list</li>';
+                                    }
+                                ?>
+                            </ul>
+                            
+                            <div class="header attribute-plugin dictionary_view" style="margin-top: 10px;">
+                                <span class="name">Added plugins:</span>
+                                <span class="number"><?php echo count( $plugins_added ); ?></span>
+                            </div>
+                            
+                            <ul class="dictionary_view_plugins_list">
+                                <?php
+                                    if( ! empty( $plugins_added ) ){
+                                        
+                                        natsort( $plugins_added );
+                                        
+                                        foreach( $plugins_added as $plugin_id ){
+                                            
+                                            echo '<li>' . $plugin_id . '</li>';
+                                        }
+                                        
+                                    } else {
+                                        echo '<li>Empty list</li>';
+                                    }
+                                ?>
+                            </ul>
+                            
+                        <?php } ?>
+                            
 						</div>
 					</div>
                     
+                    <?php if( ! $viewing_dictionary ){ ?>
 					<div class="row block-group-plugin-wrapper">
 						<div class="col-12">
 							<div class="header">
@@ -248,17 +386,19 @@ if( sospo_mu_plugin()->has_agent ){
 							</div>
 						</div>
 					</div>
+                    <?php } ?>
                     
 					<div class="row category-wrapper">
 						<div class="col-12">
 							<div class="header">
 								<div class="title">Categories</div>
 							</div>
+                            
 							<div class="special_grid_list">
 								<?php
-								if ( $categories ){
+								if ( ! $viewing_dictionary && $categories ){
 									foreach ( $categories as $cat ){
-                                        $selected = is_array($filter_categories) ? in_array( $cat->term_id, $filter_categories ) : false;
+                                        $selected = is_array( $filter_categories ) ? in_array( $cat->term_id, $filter_categories ) : false;
                                         $checked  = $selected ? ' checked="checked"' : '';
 										?>
 										<div class="single_category content<?php echo $selected ? " blocked" : "" ?>">
@@ -268,14 +408,34 @@ if( sospo_mu_plugin()->has_agent ){
 									<?php
 									}
 								}
+                                
+								if ( $viewing_dictionary && $filter_categories ){
+									foreach ( $filter_categories as $category_name ){
+                                        $selected = true;
+                                        $checked  = $selected ? ' checked="checked"' : '';
+										?>
+										<div class="single_category content blocked dictionary_view">
+                                            <input class="noeyes" type="checkbox" name="SOSPO_filter_data[categories][<?php echo $category_name ?>]" value="<?php echo $category_name ?>" checked="checked"/>
+											<span value="<?php echo $category_name; ?>"><?php echo $category_name; ?></span>
+										</div>
+									<?php
+									}
+								}
 								?>
-								<div class="content before_add" id="add_category">
-                                    <span class="circle_button add_something before_add">+</span><span class="before_add"> Create New</span>
-                                    <input class="during_add" type="text" name="new_category_name" value="" placeholder="Category Name"/>
-                                    <span class="circle_button remove_something during_add cancel">-</span>
-                                    <span class="circle_button add_something during_add ok">&#10003;</span>
-								</div>
+                                
+                                <?php if( ! $viewing_dictionary ){ ?>
+                                
+                                    <div class="content before_add" id="add_category">
+                                        <span class="circle_button add_something before_add">+</span><span class="before_add"> Create New</span>
+                                        <input class="during_add" type="text" name="new_category_name" value="" placeholder="Category Name"/>
+                                        <span class="circle_button remove_something during_add cancel">-</span>
+                                        <span class="circle_button add_something during_add ok">&#10003;</span>
+                                    </div>
+                                    
+                                <?php } ?>
+                                
 							</div>
+                            
 						</div>
 					</div>
 
