@@ -5,6 +5,11 @@
 
 class SOSPO_Admin_Helper {
     
+    static function sort__by_title( $a, $b ){
+        
+        return strnatcasecmp( $a->title, $b->title );
+    }
+
     static function sort__by_post_title( $a, $b ){
         
         return strnatcasecmp( $a->post_title, $b->post_title );
