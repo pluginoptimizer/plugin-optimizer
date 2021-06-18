@@ -20,7 +20,13 @@ class SOSPO_Admin_Helper {
         return strnatcasecmp( $a->cat_name, $b->cat_name );
     }
 
-	static function get_filter_endpoints( $filter, $add_home = false ) {
+    /**
+     * Get the endpoints related to the filter
+     * @param  Obj  $filter   The filter we are getting from
+     * @param  boolean $add_home Tack on the domain?
+     * @return array            The array of strings, endpoints
+     */
+	  static function get_filter_endpoints( $filter, $add_home = false ) {
         
         $endpoints = get_post_meta( $filter->ID, "endpoints", true );
         
@@ -46,7 +52,7 @@ class SOSPO_Admin_Helper {
     }
     
     
-	static function content_part__header( $page_title, $class = "default" ) {
+	  static function content_part__header( $page_title, $class = "default" ) {
         
         global $sospo_appsero;
         
@@ -56,6 +62,7 @@ class SOSPO_Admin_Helper {
             "Groups",
             // "Worklist",
             "Settings",
+            "Premium"
         ];
         
         $tabs_html = '';

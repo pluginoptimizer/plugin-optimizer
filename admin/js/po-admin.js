@@ -962,7 +962,7 @@ jQuery( document ).ready( function($){
     });
     
     // switch between tabs menu pages
-    $('body').on('click', '#window_filters, #window_categories, #window_groups, #window_worklist, #window_settings', function(){
+    $('body').on('click', '#window_filters, #window_categories, #window_groups, #window_worklist, #window_settings, #window_premium', function(){
         
         $('#main_tab_navigation > div.tabs').removeClass('current');
         
@@ -989,6 +989,9 @@ jQuery( document ).ready( function($){
                 break;
             case 'window_settings':
                 location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_settings';
+                break;
+            case 'window_premium':
+                location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_premium';
                 break;
         }
 

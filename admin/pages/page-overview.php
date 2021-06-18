@@ -9,10 +9,12 @@
             </div>
 
             <div class="sos-content">
-            
+              
+              <?php if( !is_plugin_active( 'plugin-optimizer-premium/plugin-optimizer-premium.php' ) ):?>
                 <div id="scan-container">
                     <button id="scan-now">Scan Now</button> Scan now to see how many Premium filters we have that match your site.
                 </div>
+              <?php endif;?>
 
                 <div id="overview_summary" class="bootcamp">
                 

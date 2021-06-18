@@ -793,9 +793,6 @@ input.search_filter:hover{
 .sos-wrap #settings_plugins{
     display: none;
 }
-.sos-wrap #settings_premium{
-    display: none;
-}
 .sos-wrap #settings_debug{
     display: none;
 }

@@ -88,7 +88,11 @@ class SOSPO_Dictionary{
     }
     
     
-    
+    /**
+     * Constructs the query to send to prospector
+     * So far this sends the admin menu endpoints
+     * @return int Count of filters
+     */
     function get_prospector_count(){
         
         $menu_endpoints = get_option( "po_admin_menu_list" );
@@ -111,6 +115,11 @@ class SOSPO_Dictionary{
         return is_wp_error( $count ) ? "unknown" : $count;
     }
     
+    /**
+     * Constructs the query to send to prospector
+     * So far this sends all installed plugins
+     * @return int Count of filters
+     */
     private function get_benefit_filters_query(){
         
         if ( ! function_exists( 'get_plugins' ) ) {
@@ -129,34 +138,18 @@ class SOSPO_Dictionary{
             ],
         ];
         
-        // $args = [
-            // "query" => [
-                // '$and' => [
-                    // [ '$or' => [
-                        // [ 'belongsTo' => [ '$in' => array_keys( $plugins ) ] ],
-                        // [ 'belongsTo' => '_core' ],
-                    // ] ],
-                    // [ 'status' => 'approved' ],
-                // ],
-            // ],
-        // ];
-        
-        // $args = [
-            // "query" => [
-                // 'belongsTo' => [ '$in' => array_merge( array_keys( $plugins ), [ '_core' ] ) ],
-            // ],
-        // ];
-        
-        
-        
         // TODO We need to add the 'status' => 'approved' as a condition
+        // Jake's note: Not sure what the condition is for, talk to Craig
         
         return $args;
     }
 
-    
-    
-    
+    /**
+     * Retrieves from dictionary if passing ids param
+     * otherwise goes to prospector
+     * @param  array  $dictionary_ids document index from mongo
+     * @return json   server response
+     */
     function retrieve( $dictionary_ids = [] ){
         
         $url  = empty( $dictionary_ids ) ? $this->dictionary_url . 'api/v1/retrieve' : $this->prospector_url . 'api/v1/retrieveById';
@@ -187,6 +180,10 @@ class SOSPO_Dictionary{
         return $server_output;
     }
 
+    /**
+     * Retrieve filters when belongs to currently installed plugins
+     * @return json Server response
+     */
     function get_relevant_filters(){
         
         // sospo_mu_plugin()->write_log( array_keys( get_plugins() ), "test-123-get_plugins" );
@@ -196,6 +193,10 @@ class SOSPO_Dictionary{
         return $this->retrieve( $send_out );
     }
     
+    /**
+     * Retrieve filters that have pending status
+     * @return json Server response
+     */
     function get_pending_filters(){
         
         $ch = curl_init();
@@ -217,6 +218,12 @@ class SOSPO_Dictionary{
         return $server_output;
     }
     
+    /**
+     * Retrieve filters that have approved status
+     * @param  string $index specifies if what we search filters by ie. endpoint/plugin
+     * @param  string $query specifies the query passed into mongoose on node server
+     * @return json          Server response
+     */
     function get_approved_filters( $index = 'all', $query = '' ){
 
         $send_out = [ 'index' => $index, 'query' => $query ];
