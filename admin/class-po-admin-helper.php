@@ -78,7 +78,7 @@ class SOSPO_Admin_Helper {
         $premium_stuff = '';
         
         // we're displaying Premium Info only on Filters List screen, but not for agents
-        if( $class == "filters" && ! sospo_mu_plugin()->has_agent ){
+        if( $class == "filters"/* && ! sospo_mu_plugin()->has_agent*/ ){
             
             if( sospo_mu_plugin()->has_premium ){
                 // Has Premium
@@ -90,12 +90,34 @@ class SOSPO_Admin_Helper {
                     $premium_stuff .= '<span id=""> You have <b>' . $premium_plugins_info["count"] . '</b> Premium Filters </span>';
                 }
                 
-                
-                
                 if( $sospo_appsero["premium"]->license()->is_valid() ){
                     // Thank you for buying Premium!
                     
                     $premium_stuff .= '<button id="filters_list__sync_now" class="po_green_button">' . "Sync Now" . '</button>';
+
+                    if( is_plugin_active('plugin-optimizer-agent/plugin-optimizer-agent.php') ){
+                    $premium_stuff .= '<button id="filters_list__submit_now" class="po_green_button">' . "Submit Filters" . '</button>';
+
+                      $premium_stuff .= '<div id="sync-form">
+                          <h4>Retrieve filters by Group:</h4>
+                          <select name="belongsTo" id="belongsTo">';
+
+                          global $wpdb;
+                          $belongsTo = $wpdb->get_results("SELECT DISTINCT `meta_value` FROM `{$wpdb->prefix}postmeta` WHERE `meta_key` = 'belongsTo'");
+                          $belongsTo = wp_list_pluck( $belongsTo, 'belongsTo' );
+                          $premium_stuff .= '<option value="all">All Filters</option>';
+                          $premium_stuff .= '<option value="_core">Core Plugins</option>';
+
+                          if($belongsTo)
+                          foreach( $belongsTo as $bt ){
+                            if((bool)$bt){
+                              $premium_stuff .= '<option value="'.$bt.'">'.$bt.'</option>';
+                            }
+                          }
+                      $premium_stuff .= '</select>
+                      </div>';
+                      
+                    }
                     
                 } else {
                     // Please activate your license.

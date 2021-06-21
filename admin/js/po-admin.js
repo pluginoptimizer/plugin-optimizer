@@ -1183,11 +1183,43 @@ jQuery( document ).ready( function($){
         
     }
     
-    // If the user has Premium (and) activated, he can pull Premium Filters
-    $('#filters_list__sync_now').on('click', function(){
-        var el = this;
-        window.po.retrieve_filters(el);
-    });
-    
+    var sync_now = $('#filters_list__sync_now');
+
+    if( $( "#sync-form" ).length > 0 ){
+
+      var dialog = $( "#sync-form" ).dialog({
+        autoOpen: false,
+        maxWidth: 350,
+        modal: true,
+        resizable: false,
+        classes: {
+          "ui-button": "highlight"
+        },
+        buttons: {
+          "Start Sync": function(){
+            var sync_now = $('#filters_list__sync_now');
+            window.po.retrieve_filters(sync_now[0]);
+          },
+          Cancel: function() {
+            dialog.dialog( "close" );
+          }
+        },
+        close: function() {
+        }
+      });
+
+      $( "#filters_list__sync_now" ).click(function() {
+        $( "#sync-form" ).dialog( "open" );
+      });
+
+    } else {
+
+      // If the user has Premium (and) activated, he can pull Premium Filters
+      $('#filters_list__sync_now').on('click', function(){
+          var el = this;
+          window.po.retrieve_filters(el);
+      });
+      
+    }    
     
 });

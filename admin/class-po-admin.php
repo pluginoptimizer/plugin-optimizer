@@ -280,6 +280,7 @@ class SOSPO_Admin {
             
         }
         
+        wp_enqueue_script( 'dialog','//code.jquery.com/ui/1.12.1/jquery-ui.js', ['jquery'], false, false );
 	}
 
 

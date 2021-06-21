@@ -4,6 +4,7 @@ $tabs = apply_filters( "plgnoptmzr_overview_tabs", $tabs );
 
 $completed_tabs = get_user_meta( get_current_user_id(), "completed_overview_tabs", true );
 
+if( is_array($completed_tabs) )
 foreach( $tabs as $index => $tab ){
     
     $tabs[ $index ]["completed"] = in_array( $index, $completed_tabs );
