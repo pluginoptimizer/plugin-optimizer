@@ -5,7 +5,7 @@ class SOSPO_Dictionary{
     protected static $instance = null;
     
     protected $dictionary_url = 'https://po-dictionary.herokuapp.com/';
-    protected $prospector_url = 'https://po-prospector.herokuapp.com/';
+    protected $prospector_url = 'http://po-prospector.herokuapp.com/';
 
     private function __construct() {
         
@@ -34,9 +34,9 @@ class SOSPO_Dictionary{
             'Content-Type: application/json',                    
             'Content-Length: ' . strlen( $json ),
         ];
-        
+
         $options = [
-            CURLOPT_URL             => ( $prospector ? $this->prospector_url : $this->dictionary_url ) . 'api/v1/' . $endpoint,
+            CURLOPT_URL             => ( $prospector ? $this->prospector_url : $this->dictionary_url ) . '/api/v1/' . $endpoint,
             CURLOPT_POST            => 1,
             CURLOPT_POSTFIELDS      => $json,
             CURLOPT_RETURNTRANSFER  => true,
@@ -62,7 +62,7 @@ class SOSPO_Dictionary{
     }
     
     // main method for getting the count of the filters in the collection
-    function count( $args, $prospector = false ){
+    function count( $args, $prospector = true ){
         
         $data = $this->request( $args, "count", $prospector );
         
@@ -96,18 +96,20 @@ class SOSPO_Dictionary{
     function get_prospector_count(){
         
         $menu_endpoints = get_option( "po_admin_menu_list" );
-        
+
+        $plugins = array_keys(get_plugins());
+
         $args = [
             "query" => [
+                'status'  => 'approved',
                 'endpoint' =>  [
                     '$in' => array_values( $menu_endpoints["endpoints"] )
-                ],
+                ]
             ],
         ];
         
         
-        $args = $this->get_benefit_filters_query();
-        
+        //$args = $this->get_benefit_filters_query();
         // write_log( json_encode( $args["query"] ), "SOSPO_Dictionary-get_prospector_count-query" );
         
         $count = $this->count( $args, true );
@@ -127,7 +129,7 @@ class SOSPO_Dictionary{
         }
         
         $plugins = get_plugins();
-        
+
         $args = [
             "query" => [
                 '$and' => [

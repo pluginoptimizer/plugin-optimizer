@@ -167,5 +167,4 @@ function test_temp(){
    sospo_mu_plugin()->write_log( print_r( $GLOBALS['wp_scripts']->registered, true ), "test_temp-globals-wp_scripts" );
 }
 // add_action( "shutdown", "test_temp" );
-
-
+// 
