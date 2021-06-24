@@ -812,7 +812,12 @@ input.search_filter:hover{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-bottom: 20px;
+    background-color: #fefefe;
+    max-width: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 .ui-dialog[role="dialog"] {
   display: flex !important;
@@ -1558,8 +1563,102 @@ input::placeholder{
 .enter-data{
     padding: 0 !important;
 }
-
+#go-premium {
+  font-size: 19px;
+  padding: 10px 15px;
+  text-transform: uppercase;
+  box-shadow: -1px 1px 0 rgba(255, 255, 255, 0.55), inset 0 0 0 2px rgba(255, 255, 255, 0.3);
+  border: 1px solid #3A5683;
+  background-color: #5A76A3;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 100%);
+  border-radius: 4px;
+  color: white;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all 300ms ease;
+}
 .enter-data > span > *{
     padding: 5px !important;
     height: 43px;
+}
+#scan-container .button-col {
+
+}
+#scan-container .results span {
+  color: #dd1717;
+}
+#scan-container .results strong {
+  display: inline-block;
+  text-transform: none;
+  padding-top: 10px;
+}
+#scan-container .message-col {
+  font-size: 18px;
+  text-transform: none;
+  padding-top: 0;
+  padding-left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#scan-container {
+  display: flex;
+  flex-direction: row;
+  font-size: 20px;
+  text-transform: uppercase;
+  margin-top: 15px;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+#wpbody #scan-now {
+  width: 140px;
+  font-weight: normal;
+  font-size: 19px;
+  padding: 10px 15px;
+}
+
+.scan-modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.scan-modal .modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.scan-modal-footer {
+  padding: 8px 16px;
+  margin-top: 10px;
+}
+/* The Close Button */
+.scan-modal .close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  background-color: #fefefe;
+}
+
+.scan-modal .close:hover,
+.scan-modal .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }

@@ -1,5 +1,5 @@
 === Plugin Optimizer - Speed Up Your WordPress Like Never Before ===
-Contributors: pluginoptimizer,simpleonlinesystems,andrija
+Contributors: pluginoptimizer,simpleonlinesystems,andrija,jacobrossdev
 Tags: Plugin Optimizer, Speed Up, Optimization, Save Time, Page Speed, Performance
 Requires at least: 5.0
 Tested up to: 5.7

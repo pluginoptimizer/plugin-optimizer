@@ -94,32 +94,9 @@ class SOSPO_Admin_Helper {
                     // Thank you for buying Premium!
                     
                     $premium_stuff .= '<button id="filters_list__sync_now" class="po_green_button">' . "Sync Now" . '</button>';
-
-                    if( is_plugin_active('plugin-optimizer-agent/plugin-optimizer-agent.php') ){
-                    $premium_stuff .= '<button id="filters_list__submit_now" class="po_green_button">' . "Submit Filters" . '</button>';
-
-                      $premium_stuff .= '<div id="sync-form">
-                          <h4>Retrieve filters by Group:</h4>
-                          <select name="belongsTo" id="belongsTo">';
-
-                          global $wpdb;
-                          $belongsTo = $wpdb->get_results("SELECT DISTINCT `meta_value` FROM `{$wpdb->prefix}postmeta` WHERE `meta_key` = 'belongsTo'");
-                          $belongsTo = wp_list_pluck( $belongsTo, 'belongsTo' );
-                          $premium_stuff .= '<option value="all">All Filters</option>';
-                          $premium_stuff .= '<option value="_core">Core Plugins</option>';
-
-                          if($belongsTo)
-                          foreach( $belongsTo as $bt ){
-                            if((bool)$bt){
-                              $premium_stuff .= '<option value="'.$bt.'">'.$bt.'</option>';
-                            }
-                          }
-                      $premium_stuff .= '</select>
-                      </div>';
-                      
-                    }
                     
-                } else {
+                }
+                else {
                     // Please activate your license.
                     
                     // TODO Change the link for activate the licence
@@ -139,16 +116,52 @@ class SOSPO_Admin_Helper {
                 $premium_stuff .= '<span id="last_synced_date"> ' . $last_synced_date . ' </span>';
                 
             } else {
-                // Get Premium!
-                
-                $premium_stuff .= 'You are running the free version ';
-                $premium_stuff .= '<a href="https://pluginoptimizer.com/" target="_blank">' . '<button id="filters_list__go_premium" class="po_green_button">' . "Go Premium!" . '</button>' . '</a>';
-                
-                $prospector_count = sospo_dictionary()->get_prospector_count();
-                
-                if( ! empty( $prospector_count ) ){
+
+               if( is_plugin_active('plugin-optimizer-agent/plugin-optimizer-agent.php') ){
+
+                    $premium_stuff .= '<button id="filters_list__sync_now" class="po_green_button">' . "Sync Now" . '</button>';
+                    $premium_stuff .= '<button id="filters_list__submit_now" class="po_green_button">' . "Submit Filters" . '</button>';
+
+                    $premium_stuff .= '<div id="myModal" class="scan-modal">
+                      <div id="sync-form">
+                          <h4>Retrieve filters by Group:</h4>
+                          <select name="belongsTo" id="belongsTo">';
+
+                          global $wpdb;
+                          $belongsTo = $wpdb->get_results("SELECT DISTINCT `meta_value` FROM `{$wpdb->prefix}postmeta` WHERE `meta_key` = 'belongsTo'");
+                          $belongsTo = wp_list_pluck( $belongsTo, 'belongsTo' );
+                          $premium_stuff .= '<option value="all">All Filters</option>';
+                          $premium_stuff .= '<option value="_core">Core Plugins</option>';
+
+                          if($belongsTo)
+                          foreach( $belongsTo as $bt ){
+                            if((bool)$bt){
+                              $premium_stuff .= '<option value="'.$bt.'">'.$bt.'</option>';
+                            }
+                          }
+                          $premium_stuff .= '</select>
+
+                          <div class="scan-modal-footer">
+                            <button class="po_green_button scan-modal-close">Cancel</button> 
+                            <button class="po_green_button scan-modal-scan"> Scan Now</button>
+                          </div>
+                      </div>
+                    </div>';
                     
-                    $premium_stuff .= ' You could benefit from <b>' . $prospector_count . '</b> Premium Filters';
+                } else {
+
+
+                  // Get Premium!
+                
+                  $premium_stuff .= 'You are running the free version ';
+                  $premium_stuff .= '<a href="https://pluginoptimizer.com/" target="_blank">' . '<button id="filters_list__go_premium" class="po_green_button">' . "Go Premium!" . '</button>' . '</a>';
+                  
+                  $prospector_count = sospo_dictionary()->get_prospector_count();
+                  
+                  if( ! empty( $prospector_count ) ){
+                      
+                      $premium_stuff .= ' You could benefit from <b>' . $prospector_count . '</b> Premium Filters';
+                  }
                 }
             }
             

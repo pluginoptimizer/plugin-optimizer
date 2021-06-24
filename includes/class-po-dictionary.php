@@ -5,7 +5,7 @@ class SOSPO_Dictionary{
     protected static $instance = null;
     
     protected $dictionary_url = 'https://po-dictionary.herokuapp.com/';
-    protected $prospector_url = 'http://po-prospector.herokuapp.com/';
+    protected $prospector_url = 'https://po-prospector.herokuapp.com/';//'http://po-prospector.herokuapp.com/';
 
     private function __construct() {
         
@@ -36,7 +36,7 @@ class SOSPO_Dictionary{
         ];
 
         $options = [
-            CURLOPT_URL             => ( $prospector ? $this->prospector_url : $this->dictionary_url ) . '/api/v1/' . $endpoint,
+            CURLOPT_URL             => ( $prospector ? $this->prospector_url : $this->dictionary_url ) . 'api/v1/' . $endpoint,
             CURLOPT_POST            => 1,
             CURLOPT_POSTFIELDS      => $json,
             CURLOPT_RETURNTRANSFER  => true,
@@ -50,8 +50,6 @@ class SOSPO_Dictionary{
         curl_close($ch);
         
         $response = json_decode( $server_output );
-        
-        // write_log( $response, "SOSPO_Dictionary-request-response-" . $endpoint );
         
         if( $response->status == "success" && ! empty( $response->data ) ){
             
@@ -111,7 +109,7 @@ class SOSPO_Dictionary{
         
         //$args = $this->get_benefit_filters_query();
         // write_log( json_encode( $args["query"] ), "SOSPO_Dictionary-get_prospector_count-query" );
-        
+
         $count = $this->count( $args, true );
         
         return is_wp_error( $count ) ? "unknown" : $count;

@@ -12,7 +12,12 @@
               
               <?php if( !is_plugin_active( 'plugin-optimizer-premium/plugin-optimizer-premium.php' ) ):?>
                 <div id="scan-container">
-                    <button id="scan-now">Scan Now</button> Scan now to see how many Premium filters we have that match your site.
+                    <div class="button-col">                      
+                      <button id="scan-now" class="po_green_button">Scan Now</button>
+                    </div>
+                    <div class="message-col">
+                      Scan now to see how many Premium filters we have that match your site.
+                    </div>
                 </div>
               <?php endif;?>
 
@@ -60,7 +65,8 @@
                             <?php } else { ?>
                                 
                                 <div>Get Premium!</div>
-                                <p>You could benefit from X premium filters available for your site.</p>
+                                <p style="padding-bottom: 10px">Get hand-crafted Plugin Optmizer settings that are tailored to your Wordpress configuration.</p>
+                                <p><a id="go-premium" href="https://pluginoptimizer.com/" class="po_secondary_button">Go Premium</a></p>
                                 
                             <?php } ?>
                         

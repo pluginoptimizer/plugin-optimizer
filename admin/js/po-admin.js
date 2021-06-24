@@ -24,12 +24,12 @@ jQuery( document ).ready( function($){
                 action: 'po_scan_prospector'
             },
             beforeSend: function(){
-                $('#scan-container .results').remove();
+                $('#scan-container .message-col .results').remove();
                 $('#scan-now').prop('disabled', true);
             },
             success: function( response ){
                 // console.log( "scan-now response:", response );
-                $('#scan-container').append('<div class="results">Your site could benefit from ' + response.count + ' Premium Filters.</div>');
+                $('#scan-container .message-col').append('<div class="results"> <strong>Your site could benefit from <span>' + response.count + '</span> Premium Filters.</strong> </div>');
             }, 
             complete: function(){
                 $('#scan-now').prop('disabled', false);
@@ -1183,34 +1183,97 @@ jQuery( document ).ready( function($){
         
     }
     
-    var sync_now = $('#filters_list__sync_now');
 
     if( $( "#sync-form" ).length > 0 ){
 
-      var dialog = $( "#sync-form" ).dialog({
-        autoOpen: false,
-        maxWidth: 350,
-        modal: true,
-        resizable: false,
-        classes: {
-          "ui-button": "highlight"
-        },
-        buttons: {
-          "Start Sync": function(){
-            var sync_now = $('#filters_list__sync_now');
-            window.po.retrieve_filters(sync_now[0]);
-          },
-          Cancel: function() {
-            dialog.dialog( "close" );
-          }
-        },
-        close: function() {
+     
+      var API_URL = 'https://po-dictionary.herokuapp.com';
+      //var API_URL = 'http://localhost:5000';
+      
+      
+      if( typeof window.po === 'undefined' ){
+        
+        window.po = [];
+      
+        window.po.show_loading = function(el){
+            // $(el).append('<img id="loadingif" style="width: 15px; margin-left: 5px;" src="<?php echo plugin_dir_url( __DIR__ )?>partials/loading.gif" />');
+            $(el).append('<span id="loading_text">Loading...</span>');
         }
-      });
 
-      $( "#filters_list__sync_now" ).click(function() {
-        $( "#sync-form" ).dialog( "open" );
-      });
+        window.po.hide_loading = function(){
+            // $('img#loadingif').remove();
+            $('#loading_text').remove();
+        }
+
+        window.po.retrieve_filters = function(el){
+
+            var belongsTo = $('#belongsTo').val();
+
+            $.ajax({
+                url: po_object.ajax_url,
+                type: 'GET',
+                data: {
+                    action: 'PO_retrieve_filters',
+                    belongsTo: belongsTo
+                },
+                dataType: 'json',
+                beforeSend: function(){
+                    window.po.show_loading(el);
+                    $('.PO-loading-container').show();
+                },
+                success: function(d){
+                    // console.log( 'PO_retrieve_filters: ', d );
+                    if( d.status == 'success' ){
+                        window.po.success_message('All premium filters are successfully retrieved.');
+                        location.reload();
+                    } else {
+                        window.po.success_message(d.message);
+                    }
+                },
+                complete: function(){
+                    window.po.hide_loading();
+                    $('.PO-loading-container').hide();
+                }
+            });
+        }
+
+        window.po.success_message = function(message){
+
+            alert(message);
+        }
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("filters_list__sync_now");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("scan-modal-close")[0];
+
+        // When the user clicks on the button, open the modal
+        btn.onclick = function() {
+          modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        } 
+
+        $('button.scan-modal-scan').on('click', function(){
+            modal.style.display = "none";
+            var el = $('#filters_list__sync_now');
+            window.po.retrieve_filters(el[0]);
+        });
+      }
 
     } else {
 
