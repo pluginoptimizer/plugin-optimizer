@@ -1183,6 +1183,29 @@ jQuery( document ).ready( function($){
         
     }
     
+    if( $('.inline-approval-button').length ){
+
+      $('.inline-approval-button').click(function(){
+          var el = this;
+          $.ajax({
+            url : po_object.ajax_url,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+              action: 'PO_send_approval',
+              filter_id: $('.inline-approval-button').data('filter_id')
+            },
+            success: function(d){
+              if( d.status == 'success' ){
+                $(el).closest('tr').find('td[data-label="status"]').text('Approved')
+              }
+            },
+            complete: function(){
+
+            }
+          });
+      });
+    }
 
     if( $( "#sync-form" ).length > 0 ){
 

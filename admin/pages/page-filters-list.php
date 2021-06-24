@@ -53,7 +53,7 @@ if( $filters ){
         <?php SOSPO_Admin_Helper::content_part__filter_options( $filters ); ?>
         
         <?php SOSPO_Admin_Helper::content_part__toggle_columns_options(); ?>
-        
+
         <div>
             <table class="po_table">
                 <thead>

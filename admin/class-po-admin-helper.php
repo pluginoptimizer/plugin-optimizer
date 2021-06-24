@@ -550,7 +550,8 @@ EOF;
                 <tr class="block_info" id="filter-<?php echo  $filter->ID; ?>" data-status="<?php echo $filter->post_status; ?>" data-date="<?php echo $date; ?>" data-type="<?php echo $type; ?>">
                     <td data-label="checkbox"><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID; ?>"><?php } ?></td>
                 <?php if( sospo_mu_plugin()->has_agent ){ ?>
-                    <td data-label="status"<?php echo ( $is_premium ) ? ' data-id="' . $dictionary_id . '"' : ""; ?>><span>?</span><br/>&nbsp;</td>
+                    <td data-label="status"<?php echo ( $is_premium ) ? ' data-id="' . $dictionary_id . '"' : ""; ?>><span>?</span><br/>&nbsp;
+                    </td>
                 <?php } ?>
                     <td data-label="title" class="align-left normal-text">
                         <?php echo $filter->post_title; ?>
@@ -561,6 +562,9 @@ EOF;
                         <?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?>
                             <a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ); ?>">Edit</a>
                         <?php } ?>
+                        <?php if( sospo_mu_plugin()->has_agent ): ?>
+                          <button class="po_green_button inline-approval-button" data-filter_id="<?php echo get_post_meta( $filter->ID, 'dict_id', true); ?>" style="font-size: 12px; text-transform: uppercase; margin-top: 3px;"> Approve now?</button>
+                        <?php endif; ?>
                         <br/>
                     </td>
                     <td data-label="categories" class="align-left normal-text"><?php echo $categories; ?></td>
