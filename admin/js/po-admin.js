@@ -2,7 +2,7 @@ jQuery( document ).ready( function($){
     'use strict';
     
     recalculate__special_grid_lists();
-    fetch__agent_filters_status();
+    //fetch__agent_filters_status();
     
     // Plugins section on Filter Edit screen, multi-select
     $('.block-plugin-wrapper .special_grid_list').selectable({
@@ -1186,24 +1186,67 @@ jQuery( document ).ready( function($){
     if( $('.inline-approval-button').length ){
 
       $('.inline-approval-button').click(function(){
-          var el = this;
-          $.ajax({
-            url : po_object.ajax_url,
-            type: 'POST',
-            dataType: 'json',
-            data: {
-              action: 'PO_send_approval',
-              filter_id: $('.inline-approval-button').data('filter_id')
-            },
-            success: function(d){
-              if( d.status == 'success' ){
-                $(el).closest('tr').find('td[data-label="status"]').text('Approved')
-              }
-            },
-            complete: function(){
 
-            }
-          });
+          var r = confirm("Are you sure you want to approve this filter?");
+
+          if (r == true) {
+
+            var el = this;
+            $.ajax({
+              url : po_object.ajax_url,
+              type: 'POST',
+              dataType: 'json',
+              data: {
+                action: 'PO_send_approval',
+                filter_id: $(el).data('filter_id')
+              },
+              success: function(d){
+                if( d.status == 'success' ){
+                  $(el).closest('tr').find('td[data-label="status"]').text('Approved')
+                  $(el).addClass('inline-pending-button');
+                  $(el).removeClass('inline-approval-button');
+                  $(el).text('Make Pending');
+                }
+              },
+              complete: function(){
+
+              }
+            });
+          }
+
+      });
+    }
+    
+    if( $('.inline-pending-button').length ){
+
+      $('.inline-pending-button').click(function(){
+
+          var r = confirm("Are you sure you want to mark this filter as pending?");
+
+          if (r == true) {
+
+            var el = this;
+            $.ajax({
+              url : po_object.ajax_url,
+              type: 'POST',
+              dataType: 'json',
+              data: {
+                action: 'PO_send_pending',
+                filter_id: $(el).data('filter_id')
+              },
+              success: function(d){
+                if( d.status == 'success' ){
+                  $(el).closest('tr').find('td[data-label="status"]').text('Pending');
+                  $(el).addClass('inline-approval-button');
+                  $(el).removeClass('inline-pending-button');
+                  $(el).text('Approve');
+                }
+              },
+              complete: function(){
+
+              }
+            });
+          }
       });
     }
 
@@ -1307,5 +1350,115 @@ jQuery( document ).ready( function($){
       });
       
     }    
+
+
+    $('#submit-filters').on('click', function(){
+        var el = this;
+        submit_filters(el);
+    });
+
+    function submit_filters(el){
+
+        var counter = 0;
+        var index = 0;
+        
+        console.log( "Compiling filters..." );
+
+        // Get the modal
+        var modal = document.getElementById("submitModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("scan-modal-close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        } 
+
+        
+        $.ajax({
+            url: po_object.ajax_url,
+            data: {
+                action: 'PO_compile_filters'
+            },
+            type: 'POST',
+            dataType: 'json',
+            beforeSend: function(){
+                modal.style.display = "block";
+            },
+            success: function(d){
+                
+                console.log( "Compiling done." );
+                
+                // console.log( "Compiled data: ", d );
+
+                if( d.status == 'success' ){
+                    
+                    let total_count = d.data.length;
+                    counter     = d.data.length;
+                    index       = counter-1;
+                    
+                    window.getData=function(index){
+                        
+                        console.log( "Submitting filter " + ( total_count - index ) + "..." );
+                        $('.PO-loading-container').text( "Submitting filter " + ( total_count - index ) + "/" + total_count );
+
+                        $.ajax({
+                            /* The whisperingforest.org URL is not longer valid, I found a new one that is similar... */
+                            url: po_object.ajax_url,
+                            async: true,
+                            type: 'POST',
+                            dataType: 'json',
+                            data: {
+                                action: 'PO_submit_filters',
+                                filter: d.data[index]
+                            },
+                            success:function(data){
+                                
+                                counter--;
+                                index--;
+                                
+                                console.log( "Submitting filter " + ( total_count - index ) + " done." );
+                                $('.PO-loading-container').text( "Submitting filter " + ( total_count - index ) + " done." );
+                                
+                                // let percentage = Math.ceil( ( total_count - index ) / total_count * 100 );
+                                // $('#po_submit_status_bar').css('background', "linear-gradient(90deg, #0073AA " + percentage + "%, #FFFFFF " + percentage + "%)");
+                                
+                                // if( percentage >= 50 ){
+                                //     $('.PO-loading-container').css("color", "#aaa");
+                                // }
+                                
+                                if (index >= 0) {
+                                    getData(index);
+                                } else {
+                                    $('.PO-loading-container').hide();
+                                    $('.PO-loading-container').html('');
+                                    modal.style.display = "none";
+                                    success_message();
+                                }
+                            }
+                        });
+                    }
+
+                    getData(index);
+                }
+
+            },
+            complete: function(){
+            }
+        })
+    }
+
+    function success_message(action){
+
+        alert('All premium filters are successfully '+action);
+    }
     
 });

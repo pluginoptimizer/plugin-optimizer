@@ -277,7 +277,8 @@ class SOSPO_Admin {
         
         $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/po-admin.js' ));
 		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/po-admin.js', array( 'jquery', $this->plugin_name . '-selectable' ), $version, true );
-		wp_localize_script( $this->plugin_name, 'po_object', $array );
+		  $array['plugin_dir_url'] = plugin_dir_url(__FILE__);
+    wp_localize_script( $this->plugin_name, 'po_object', $array );
 		wp_enqueue_script(  $this->plugin_name );
 
         // enqueue premium scripts

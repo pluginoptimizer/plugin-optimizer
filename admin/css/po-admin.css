@@ -1082,6 +1082,9 @@ th[data-label="title"] {
     min-width: 150px !important;
     width: 150px;
 }
+th[data-label="title"] {
+    width: 260px;
+}
 table.po_table{
     border-collapse: separate;
     border-spacing: 0 5px;
@@ -1645,6 +1648,8 @@ input::placeholder{
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
+  max-width: 400px;
+  min-height: 70px;
 }
 
 .scan-modal-footer {

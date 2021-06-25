@@ -120,7 +120,7 @@ class SOSPO_Admin_Helper {
                if( is_plugin_active('plugin-optimizer-agent/plugin-optimizer-agent.php') ){
 
                     $premium_stuff .= '<button id="filters_list__sync_now" class="po_green_button">' . "Sync Now" . '</button>';
-                    $premium_stuff .= '<button id="filters_list__submit_now" class="po_green_button">' . "Submit Filters" . '</button>';
+                    $premium_stuff .= '<button id="submit-filters" class="po_green_button">' . "Submit Filters" . '</button>';
 
                     $premium_stuff .= '<div id="myModal" class="scan-modal">
                       <div id="sync-form">
@@ -131,6 +131,7 @@ class SOSPO_Admin_Helper {
                           $belongsTo = $wpdb->get_results("SELECT DISTINCT `meta_value` FROM `{$wpdb->prefix}postmeta` WHERE `meta_key` = 'belongsTo'");
                           $belongsTo = wp_list_pluck( $belongsTo, 'belongsTo' );
                           $premium_stuff .= '<option value="all">All Filters</option>';
+                          $premium_stuff .= '<option value="relevant"> Only Active Plugins</option>';
                           $premium_stuff .= '<option value="_core">Core Plugins</option>';
 
                           if($belongsTo)
@@ -146,6 +147,10 @@ class SOSPO_Admin_Helper {
                             <button class="po_green_button scan-modal-scan"> Scan Now</button>
                           </div>
                       </div>
+                    </div>';
+
+                    $premium_stuff .= '<div id="submitModal" class="scan-modal">
+                      <div class="PO-loading-container fa fa-spinner fa-pulse"></div>
                     </div>';
                     
                 } else {
@@ -504,6 +509,7 @@ EOF;
                 $premium_filter   = get_post_meta( $filter->ID, 'premium_filter',   true );
                 $belongs_to_value = get_post_meta( $filter->ID, 'belongs_to',       true );
                 $dictionary_id    = get_post_meta( $filter->ID, 'dict_id',          true );
+                $status           = get_post_meta( $filter->ID, 'status',           true );
                 
                 if( ! empty( $belongs_to_value ) ){
                     
@@ -550,8 +556,7 @@ EOF;
                 <tr class="block_info" id="filter-<?php echo  $filter->ID; ?>" data-status="<?php echo $filter->post_status; ?>" data-date="<?php echo $date; ?>" data-type="<?php echo $type; ?>">
                     <td data-label="checkbox"><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID; ?>"><?php } ?></td>
                 <?php if( sospo_mu_plugin()->has_agent ){ ?>
-                    <td data-label="status"<?php echo ( $is_premium ) ? ' data-id="' . $dictionary_id . '"' : ""; ?>><span>?</span><br/>&nbsp;
-                    </td>
+                    <td data-label="status"><?php echo ucfirst($status); ?></td>
                 <?php } ?>
                     <td data-label="title" class="align-left normal-text">
                         <?php echo $filter->post_title; ?>
@@ -559,12 +564,19 @@ EOF;
                         <?php if( $is_premium ){ ?>
                             <span class="filter_is_premium">Premium Filter</span>
                         <?php } ?>
-                        <?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?>
+                        <?php if( sospo_mu_plugin()->has_agent  && ($status && $status != 'approved') ): ?>
+                          <a class="inline-approval-button" 
+                            data-filter_id="<?php echo get_post_meta( $filter->ID, 'dict_id', true); ?>" 
+                            style="cursor: pointer; font-size: 12px; text-transform: uppercase; margin-top: 3px;"> Approve</a>
+                        <?php elseif( sospo_mu_plugin()->has_agent  && ($status && $status != 'pending') ):?>
+
+                          <a class="inline-pending-button" 
+                            data-filter_id="<?php echo get_post_meta( $filter->ID, 'dict_id', true); ?>" 
+                            style="cursor: pointer; font-size: 12px; text-transform: uppercase; margin-top: 3px;"> Make Pending</a>
+                        <?php endif; ?>
+                        <?php if( ! $is_premium || sospo_mu_plugin()->has_agent){ ?>
                             <a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ); ?>">Edit</a>
                         <?php } ?>
-                        <?php if( sospo_mu_plugin()->has_agent ): ?>
-                          <button class="po_green_button inline-approval-button" data-filter_id="<?php echo get_post_meta( $filter->ID, 'dict_id', true); ?>" style="font-size: 12px; text-transform: uppercase; margin-top: 3px;"> Approve now?</button>
-                        <?php endif; ?>
                         <br/>
                     </td>
                     <td data-label="categories" class="align-left normal-text"><?php echo $categories; ?></td>
