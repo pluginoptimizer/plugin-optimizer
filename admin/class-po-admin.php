@@ -206,6 +206,8 @@ class SOSPO_Admin {
             'ajax_url'  => admin_url( 'admin-ajax.php' ),
             'home_url'  => home_url(),
             'user_id'   => get_current_user_id(),
+            'dict_url'  => DICTIONARY_URL,
+            'pros_url'  => PROSPECTOR_URL
         );
         
         // get the menu from the database

@@ -181,7 +181,8 @@ class SOSPO_MU {
             $this->has_premium = true;
         }
 
-        if( in_array( "plugin-optimizer-agent/plugin-optimizer-agent.php", $this->original_active_plugins ) ){
+        //if( in_array( "plugin-optimizer-agent/plugin-optimizer-agent.php", $this->original_active_plugins ) ){
+        if( is_plugin_active("plugin-optimizer-agent/plugin-optimizer-agent.php") )
 
             $this->has_agent = true;
         }

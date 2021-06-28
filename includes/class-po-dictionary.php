@@ -7,11 +7,7 @@ class SOSPO_Dictionary{
     protected $dictionary_url = 'https://po-dictionary.herokuapp.com/';
     protected $prospector_url = 'https://po-prospector.herokuapp.com/';//'http://po-prospector.herokuapp.com/';
 
-    private function __construct() {
-        
-        
-        
-    }
+    private function __construct() {}
 
     static function get_instance() {
         
@@ -20,7 +16,6 @@ class SOSPO_Dictionary{
         }
 
         return self::$instance;
-        
     }
 
     // main method for creating a cURL request

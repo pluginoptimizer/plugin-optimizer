@@ -77,7 +77,7 @@ if( $filters ){
                         <th class="toggle_filter"></th>
                     </tr>
                 
-                    <tr id="po_table_header">
+                    <tr id="po_table_header 33">
                         <th data-label="checkbox"><input type="checkbox" id="check_all"></th>
                     <?php if( sospo_mu_plugin()->has_agent ){ ?>
                         <th data-label="status">Status</th>

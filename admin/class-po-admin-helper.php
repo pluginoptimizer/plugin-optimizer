@@ -119,8 +119,16 @@ class SOSPO_Admin_Helper {
 
                if( is_plugin_active('plugin-optimizer-agent/plugin-optimizer-agent.php') ){
 
-                    $premium_stuff .= '<button id="filters_list__sync_now" class="po_green_button">' . "Sync Now" . '</button>';
-                    $premium_stuff .= '<button id="submit-filters" class="po_green_button">' . "Submit Filters" . '</button>';
+                    if( !isset($_GET['filter_id']) ){
+                      $premium_stuff .= '<button id="filters_list__sync_now" class="po_green_button">' . "Sync Now" . '</button>';
+                      $premium_stuff .= '<button id="submit-filters" class="po_green_button">' . "Submit Filters" . '</button>';
+                    } else {
+                      $version = get_post_meta( $_GET['filter_id'], 'version', true );
+
+                      if( $version && is_array($version) && count($version) ){
+                        $premium_stuff .= '<button id="rollback-filter" class="po_green_button">' . "Rollback Filter" . '</button>';
+                      }
+                    }
 
                     $premium_stuff .= '<div id="myModal" class="scan-modal">
                       <div id="sync-form">
@@ -510,6 +518,7 @@ EOF;
                 $belongs_to_value = get_post_meta( $filter->ID, 'belongs_to',       true );
                 $dictionary_id    = get_post_meta( $filter->ID, 'dict_id',          true );
                 $status           = get_post_meta( $filter->ID, 'status',           true );
+                $statusChanged    = get_post_meta( $filter->ID, 'statusChanged',    true );
                 
                 if( ! empty( $belongs_to_value ) ){
                     
@@ -555,28 +564,42 @@ EOF;
 				?>
                 <tr class="block_info" id="filter-<?php echo  $filter->ID; ?>" data-status="<?php echo $filter->post_status; ?>" data-date="<?php echo $date; ?>" data-type="<?php echo $type; ?>">
                     <td data-label="checkbox"><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID; ?>"><?php } ?></td>
+
                 <?php if( sospo_mu_plugin()->has_agent ){ ?>
-                    <td data-label="status"><?php echo ucfirst($status); ?></td>
+                    <td data-label="status"><?php 
+                      if( !$statusChanged ){ $statusChanged = $filter->post_date; }
+                      echo ucfirst($status) . "<br />" . date('F j, Y h:i:s A', strtotime($statusChanged)); ?>
+                    </td>
                 <?php } ?>
                     <td data-label="title" class="align-left normal-text">
                         <?php echo $filter->post_title; ?>
                         <br/>
+
                         <?php if( $is_premium ){ ?>
                             <span class="filter_is_premium">Premium Filter</span>
                         <?php } ?>
+
+
                         <?php if( sospo_mu_plugin()->has_agent  && ($status && $status != 'approved') ): ?>
+
                           <a class="inline-approval-button" 
                             data-filter_id="<?php echo get_post_meta( $filter->ID, 'dict_id', true); ?>" 
                             style="cursor: pointer; font-size: 12px; text-transform: uppercase; margin-top: 3px;"> Approve</a>
+
                         <?php elseif( sospo_mu_plugin()->has_agent  && ($status && $status != 'pending') ):?>
 
                           <a class="inline-pending-button" 
                             data-filter_id="<?php echo get_post_meta( $filter->ID, 'dict_id', true); ?>" 
                             style="cursor: pointer; font-size: 12px; text-transform: uppercase; margin-top: 3px;"> Make Pending</a>
+
                         <?php endif; ?>
+
+
                         <?php if( ! $is_premium || sospo_mu_plugin()->has_agent){ ?>
                             <a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ); ?>">Edit</a>
                         <?php } ?>
+
+
                         <br/>
                     </td>
                     <td data-label="categories" class="align-left normal-text"><?php echo $categories; ?></td>

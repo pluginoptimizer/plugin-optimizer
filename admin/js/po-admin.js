@@ -12,7 +12,6 @@ jQuery( document ).ready( function($){
             ui.selected.click();
         }
     });
-    
 
     // display the fresh number of Premium Filters the user could benefit from
     $('#scan-now').on('click', function(){
@@ -36,8 +35,6 @@ jQuery( document ).ready( function($){
             }
         })
     });
-
-
     // Edit  screen - Hover a tooltip - Start
     $('#the-list').on('mouseenter', '.has_tooltip > .tooltip_trigger[data-tooltip-list]', function(){
         
@@ -107,7 +104,6 @@ jQuery( document ).ready( function($){
         });
         
         $tooltip.show();
-        
     });
 
     // Edit  screen - Hover a tooltip - End
@@ -117,9 +113,7 @@ jQuery( document ).ready( function($){
         $(this).parent().find(".active_tooltip").remove();
 
         // console.log( "Over and out" );
-        
     });
-    
 
     // Edit Filter screen - fetch post types
     if( $('#set_filter_type').length >= 1 ){
@@ -151,7 +145,6 @@ jQuery( document ).ready( function($){
             $('#set_filter_type').val( selected ).change().slideDown();
             
         }, "json");
-        
     }
     
     // Edit Filter screen, Edit Group screen - Clicking on a plugin
@@ -161,7 +154,6 @@ jQuery( document ).ready( function($){
         
         let $checkbox = $(this).find('input[type="checkbox"]');
         $checkbox.prop( "checked", ! $checkbox.prop("checked") );
-        
     });
 
     // Edit Filter screen - Clicking on a group
@@ -205,7 +197,6 @@ jQuery( document ).ready( function($){
             
             $(`.single_plugin span.group_name span[data-name="${group_name}"]`).remove();
         }
-        
     }
     
     // Edit Filter screen - Select a category for a new filter, does nothing but marks the selected category
@@ -215,14 +206,12 @@ jQuery( document ).ready( function($){
         
         let $checkbox = $(this).find('input[type="checkbox"]');
         $checkbox.prop( "checked", ! $checkbox.prop("checked") );
-        
     });
     
     // Edit Filter screen - Dictionary view - toggle the plugins list
     $('#edit_filter').on('click', '.header.attribute-plugin.dictionary_view', function(){
 
         $(this).next('.dictionary_view_plugins_list').slideToggle();
-        
     });
     
     // Edit Filter screen - Create new category, show input field
@@ -231,7 +220,6 @@ jQuery( document ).ready( function($){
         $('#add_category').removeClass('before_add');
         $('#add_category').addClass('during_add');
         $('#add_category input').focus();
-        
     });
     
     // Edit Filter screen - Create new category, Cancel
@@ -239,7 +227,6 @@ jQuery( document ).ready( function($){
 
         $('#add_category').removeClass('during_add');
         $('#add_category').addClass('before_add');
-        
     });
     
     // Edit Filter screen - Create new category, OK
@@ -288,14 +275,12 @@ jQuery( document ).ready( function($){
             }
             
         }, "json");
-        
     });
     
     // Edit Filter screen - Toggle plugins for already selected groups on page load
     $('#edit_filter .block-group-plugin-wrapper .single_group.blocked').each(function(){
         
         toggle_plugins_by_group( $(this), true );
-        
     });
     
     // Edit Filter screen - Change filter type
@@ -308,8 +293,6 @@ jQuery( document ).ready( function($){
         } else {
             $('#edit_filter #endpoints_wrapper').slideUp();
         }
-        
-        
     }).change();
     
     // Edit Filter screen - Save filter
@@ -340,7 +323,6 @@ jQuery( document ).ready( function($){
             }
             
         }, "json");
-        
     });
     
     // Edit Group screen - Save Group
@@ -371,7 +353,6 @@ jQuery( document ).ready( function($){
             }
             
         }, "json");
-        
     });
     
     // Edit Category screen - Save Category
@@ -403,7 +384,6 @@ jQuery( document ).ready( function($){
             }
             
         }, "json");
-        
     });
     
     // On a new Filter or new Group pages: disable/enable all in a section
@@ -465,7 +445,6 @@ jQuery( document ).ready( function($){
         `);
         
         $('#endpoints_wrapper > div:eq(-1) input.additional_endpoint').focus();
-        
     });
 
     // On the Edit Filter screen, the button #add_endpoint is used to add new endpoint to the filter
@@ -494,7 +473,6 @@ jQuery( document ).ready( function($){
             
             $(this).parent().addClass("error__empty_input");
         }
-        
     });
 
     // On the Edit Filter screen, #first_endpoint is the input field where you put the initial permalink/endpoint for the filter
@@ -504,8 +482,6 @@ jQuery( document ).ready( function($){
             $('#add_endpoint').click();
         }
     });
-
-
 
     // Show toggle columns
     $('body').on('click', '#show_toggle_columns', function(){
@@ -519,7 +495,6 @@ jQuery( document ).ready( function($){
         $('#show_filter_options').show();
         
         $('.toggle_filter_options').hide();
-        
     });
     
     // Hide toggle columns
@@ -529,7 +504,6 @@ jQuery( document ).ready( function($){
         $('#show_toggle_columns').show();
         
         $('.toggle_columns_options').slideUp(200);
-        
     });
     
     // actually show/hide columns
@@ -539,7 +513,6 @@ jQuery( document ).ready( function($){
         let column_id = $(this).data('id');
         
         $('table.po_table [data-label="' + column_id + '"]').toggle( displayed );
-        
     });
     
     $('#full_columns_list .single_column_state input').change();
@@ -548,18 +521,14 @@ jQuery( document ).ready( function($){
     $('body').on('click', '#show_all_columns', function(){
         
         $('#full_columns_list .single_column_state input').prop('checked', true ).change();
-        
     });
     
     // hide all columns
     $('body').on('click', '#hide_all_columns', function(){
         
         $('#full_columns_list .single_column_state input').prop('checked', false ).change();
-        
     });
     
-
-
     // Show filtering options
     $('body').on('click', '#show_filter_options', function(){
         
@@ -572,7 +541,6 @@ jQuery( document ).ready( function($){
         $('#show_toggle_columns').show();
         
         $('.toggle_columns_options').hide();
-        
     });
     
     // Hide filtering options
@@ -582,7 +550,6 @@ jQuery( document ).ready( function($){
         $('#show_filter_options').show();
         
         $('.toggle_filter_options').slideUp(200);
-        
     });
     
     // Reset filtering options
@@ -590,11 +557,7 @@ jQuery( document ).ready( function($){
         
         $('.filter_select').val('default').change();
         $('#search_boxes .search_filter').val('').change();
-        
     });
-
-
-
     
     // Show only the published items
     $('body').on('click', '#all_elements:not(.filtered)', function(){
@@ -613,7 +576,6 @@ jQuery( document ).ready( function($){
         $('select#check_all_elements option[value="delete"]').html('Trash');
         
         $('#check_all, #the-list input.main_selector').prop('checked', false );
-        
     });
     
     // Show only the trashed items
@@ -633,12 +595,8 @@ jQuery( document ).ready( function($){
         $('select#check_all_elements option[value="delete"]').html('Permanently Delete');
         
         $('#check_all, #the-list input.main_selector').prop('checked', false );
-        
     });
-    
-    
-    
-    
+        
     // Filter by date
     $('body').on('change', '#filter_by_date', function(){
         
@@ -714,7 +672,6 @@ jQuery( document ).ready( function($){
         $('#check_all, #the-list input.main_selector').prop('checked', false );
     });
     
-    
     // Filter by search box
     $('body').on('keyup paste change', '.search_filter', function(){
         
@@ -780,12 +737,8 @@ jQuery( document ).ready( function($){
             return is_reversed ? 0 - compared : compared;
             
         }).prependTo( $container );
-        
-        
     });
-    
-    
-    
+        
     // Change appearance checkbox all elements
     $('body').on('change', '#the-list input.main_selector', function(){
         
@@ -806,8 +759,6 @@ jQuery( document ).ready( function($){
         } else {
             $('#the-list .block_info input.main_selector').prop('checked', false );
         }
-        
-        
     });
     
     // Bulk actions button (usually delete or restore element)
@@ -926,7 +877,6 @@ jQuery( document ).ready( function($){
             });
             
         }
-        
     });
 
     // Overview page - toggle free bootcamp
@@ -994,7 +944,6 @@ jQuery( document ).ready( function($){
                 location.href = po_object.admin_url + 'admin.php?page=plugin_optimizer_premium';
                 break;
         }
-
     });
     
     // Overview: mark tab complete
@@ -1023,7 +972,6 @@ jQuery( document ).ready( function($){
             }
             
         }, "json");
-        
     });
     
     // Overview: mark tab complete
@@ -1044,7 +992,6 @@ jQuery( document ).ready( function($){
             }
             
         }, "json");
-        
     });
     
     // Filters List screen: turn filter on/off
@@ -1065,7 +1012,6 @@ jQuery( document ).ready( function($){
             }
             
         }, "json");
-        
     });
     
     // Filters List screen: Save columns state
@@ -1096,8 +1042,340 @@ jQuery( document ).ready( function($){
             }
             
         }, "json");
-        
     });
+
+    // This is approve button in the filter table row
+    if( $('.inline-approval-button').length ){
+
+      $('.inline-approval-button').click(function(){
+
+          var r = confirm("Are you sure you want to approve this filter?");
+
+          if (r == true) {
+
+            var el = this;
+            $.ajax({
+              url : po_object.ajax_url,
+              type: 'POST',
+              dataType: 'json',
+              data: {
+                action: 'PO_send_approval',
+                filter_id: $(el).data('filter_id')
+              },
+              success: function(d){
+                if( d.status == 'success' ){
+                  $(el).closest('tr').find('td[data-label="status"]').text('Approved')
+                  $(el).addClass('inline-pending-button');
+                  $(el).removeClass('inline-approval-button');
+                  $(el).text('Make Pending');
+                }
+              },
+              complete: function(){
+
+              }
+            });
+          }
+
+      });
+    }
+    
+    // this is the pending button in the same row
+    if( $('.inline-pending-button').length ){
+
+      $('.inline-pending-button').click(function(){
+
+          var r = confirm("Are you sure you want to mark this filter as pending?");
+
+          if (r == true) {
+
+            var el = this;
+            $.ajax({
+              url : po_object.ajax_url,
+              type: 'POST',
+              dataType: 'json',
+              data: {
+                action: 'PO_send_pending',
+                filter_id: $(el).data('filter_id')
+              },
+              success: function(d){
+                if( d.status == 'success' ){
+                  $(el).closest('tr').find('td[data-label="status"]').text('Pending');
+                  $(el).addClass('inline-approval-button');
+                  $(el).removeClass('inline-pending-button');
+                  $(el).text('Approve');
+                }
+              },
+              complete: function(){
+
+              }
+            });
+          }
+      });
+    }
+
+    // SYNC FILTERS
+    // ----------------------------------------------
+    if( $( "#sync-form" ).length > 0 ){
+          
+      if( typeof window.po === 'undefined' ){
+        
+        window.po = [];
+      
+        window.po.show_loading = function(el){
+            // $(el).append('<img id="loadingif" style="width: 15px; margin-left: 5px;" src="<?php echo plugin_dir_url( __DIR__ )?>partials/loading.gif" />');
+            $(el).text('Loading...');
+        }
+
+        window.po.hide_loading = function(){
+            // $('img#loadingif').remove();
+            $('#loading_text').remove();
+        }
+
+        window.po.retrieve_filters = function(el){
+
+            var belongsTo = $('#belongsTo').val();
+
+            $.ajax({
+                url: po_object.ajax_url,
+                type: 'GET',
+                data: {
+                    action: 'PO_retrieve_filters',
+                    belongsTo: belongsTo
+                },
+                dataType: 'json',
+                beforeSend: function(){
+                    window.po.show_loading(el);
+                    $('.PO-loading-container').show();
+                },
+                success: function(d){
+                    // console.log( 'PO_retrieve_filters: ', d );
+                    if( d.status == 'success' ){
+                        window.po.success_message('All premium filters are successfully retrieved.');
+                        //location.reload();
+                    } else {
+                        window.po.success_message(d.message);
+                    }
+                },
+                complete: function(){
+                    window.po.hide_loading();
+                    $('.PO-loading-container').hide();
+                }
+            });
+        }
+
+        window.po.success_message = function(message){
+
+            alert(message);
+        }
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        if( $('#filters_list__sync_now').length ){
+
+          // Get the button that opens the modal
+          var btn = document.getElementById("filters_list__sync_now");
+
+          // When the user clicks on the button, open the modal
+          btn.onclick = function() {
+            modal.style.display = "block";
+          }
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("scan-modal-close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        } 
+
+        $('button.scan-modal-scan').on('click', function(){
+            modal.style.display = "none";
+            var el = $('#filters_list__sync_now');
+            window.po.retrieve_filters(el[0]);
+        });
+      }
+
+    } else {
+
+      // If the user has Premium (and) activated, he can pull Premium Filters
+      $('#filters_list__sync_now').on('click', function(){
+          var el = this;
+          window.po.retrieve_filters(el);
+      });
+      
+    }    
+
+    // OPERATIONS
+    // ----------------------------------------------
+    if( $('#rollback-filter').length ){
+
+      function rollback_filter(el){ 
+
+        $.ajax({
+          url: po_object.ajax_url,
+          data: {
+            action: 'PO_rollback_filter',
+            post_id : getParameterByName('filter_id')
+          },
+          type: 'POST',
+          dataType: 'json',
+          beforeSend: function(){
+            $(el).text('Retrieving...')
+          },
+          success: function(data){
+            $(el).text('Rollback Filter');
+            if( data.status != 'success' ){
+              alert(data.message);
+            } else {
+              //window.location.reload();
+            }
+          }
+        })
+      }
+
+      $('#rollback-filter').on('click', function(){
+          var el = this;
+
+          var r = confirm("Are you sure you want to rollback this filter?");
+          if( r == true ){
+            rollback_filter(el);
+          }
+      });
+    }
+
+    // Save to the database;
+    if( $('#submit-filters').length ){
+
+      function submit_filters(el){
+
+          var counter = 0;
+          var index = 0;
+          
+          console.log( "Compiling filters..." );
+
+          // Get the modal
+          var modal = document.getElementById("submitModal");
+
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("scan-modal-close")[0];
+
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() {
+            modal.style.display = "none";
+          }
+
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+            if (event.target == modal) {
+              modal.style.display = "none";
+            }
+          }
+          
+          $.ajax({
+              url: po_object.ajax_url,
+              data: {
+                  action: 'PO_compile_filters'
+              },
+              type: 'POST',
+              dataType: 'json',
+              beforeSend: function(){
+                  modal.style.display = "block";
+              },
+              success: function(d){
+                  
+                  console.log( "Compiling done." );
+                  
+                  if( d.status == 'success' ){
+                    
+                    let total_count = d.data.length;
+                    counter     = d.data.length;
+                    index       = counter-1;
+                    
+                    window.getData=function(index){
+                        
+                      console.log( "Submitting filter " + ( total_count - index ) + "..." );
+                      $('.PO-loading-container').text( "Submitting filter " + ( total_count - index ) + "/" + total_count );
+
+                      $.ajax({
+                        url: po_object.ajax_url,
+                        async: true,
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            action: 'PO_submit_filters',
+                            filter: d.data[index]
+                        },
+                        success:function(data){
+                            
+                          counter--;
+                          index--;
+                          
+                          console.log( "Submitting filter " + ( total_count - index ) + " done." );
+                          $('.PO-loading-container').text( "Submitting filter " + ( total_count - index ) + " done." );
+                          
+                          /*
+                            TODO: Reinstate this where applicable
+
+                            let percentage = Math.ceil( ( total_count - index ) / total_count * 100 );
+                            $('#po_submit_status_bar').css('background', "linear-gradient(90deg, #0073AA " + percentage + "%, #FFFFFF " + percentage + "%)");
+                            
+                            if( percentage >= 50 ){
+                                $('.PO-loading-container').css("color", "#aaa");
+                            }
+
+                          */
+                          
+                          if (index >= 0) {
+                              getData(index);
+                          } else {
+                              $('.PO-loading-container').hide();
+                              $('.PO-loading-container').html('');
+                              modal.style.display = "none";
+                              success_message();
+                          }
+                        }
+                      });
+                    }
+
+                    getData(index);
+                  }
+
+              },
+              complete: function(){
+              }
+          })
+      }
+
+      $('#submit-filters').on('click', function(){
+          var el = this;
+          submit_filters(el);
+      });
+    }
+
+    // HELPERS
+    // ----------------------------------------------
+    function getParameterByName(name, url = window.location.href) {
+      name = name.replace(/[\[\]]/g, '\\$&');
+      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    function success_message(action){
+
+        alert('All premium filters are successfully '+action);
+    }    
     
     // check if all plugins from groups have been manually enabled
     function check_group_plugins_state(){
@@ -1108,24 +1386,21 @@ jQuery( document ).ready( function($){
     // we need to calculate the rows and columns of .special_grid_list
     function recalculate__special_grid_lists( columns = 3 ){
         
-        $('.special_grid_list').each(function( index ){
-            
-            let $grid_list = $(this);
-            
-            let items_no   = $grid_list.children().length;
-            
-            let rows       = Math.ceil( items_no / columns );
-            
-            // console.log( "Items: ", items_no );
-            // console.log( "rows: ",  rows     );
-            
-            $grid_list.css("grid-template-columns", "repeat(" + columns + ", 1fr  )" );
-            $grid_list.css("grid-template-rows",    "repeat(" + rows    + ", auto )" );
-            
-        });
-        
+      $('.special_grid_list').each(function( index ){
+          
+          let $grid_list = $(this);
+          
+          let items_no   = $grid_list.children().length;
+          
+          let rows       = Math.ceil( items_no / columns );
+                    
+          $grid_list.css("grid-template-columns", "repeat(" + columns + ", 1fr  )" );
+          $grid_list.css("grid-template-rows",    "repeat(" + rows    + ", auto )" );
+          
+      });
     }
     
+    // DEPRECATED: Leave for parts;
     // On agent sites, we need to get the premium filters status from the dictionary
     function fetch__agent_filters_status(){
         
@@ -1180,285 +1455,6 @@ jQuery( document ).ready( function($){
             }
             
         }, "json");
-        
-    }
-    
-    if( $('.inline-approval-button').length ){
-
-      $('.inline-approval-button').click(function(){
-
-          var r = confirm("Are you sure you want to approve this filter?");
-
-          if (r == true) {
-
-            var el = this;
-            $.ajax({
-              url : po_object.ajax_url,
-              type: 'POST',
-              dataType: 'json',
-              data: {
-                action: 'PO_send_approval',
-                filter_id: $(el).data('filter_id')
-              },
-              success: function(d){
-                if( d.status == 'success' ){
-                  $(el).closest('tr').find('td[data-label="status"]').text('Approved')
-                  $(el).addClass('inline-pending-button');
-                  $(el).removeClass('inline-approval-button');
-                  $(el).text('Make Pending');
-                }
-              },
-              complete: function(){
-
-              }
-            });
-          }
-
-      });
-    }
-    
-    if( $('.inline-pending-button').length ){
-
-      $('.inline-pending-button').click(function(){
-
-          var r = confirm("Are you sure you want to mark this filter as pending?");
-
-          if (r == true) {
-
-            var el = this;
-            $.ajax({
-              url : po_object.ajax_url,
-              type: 'POST',
-              dataType: 'json',
-              data: {
-                action: 'PO_send_pending',
-                filter_id: $(el).data('filter_id')
-              },
-              success: function(d){
-                if( d.status == 'success' ){
-                  $(el).closest('tr').find('td[data-label="status"]').text('Pending');
-                  $(el).addClass('inline-approval-button');
-                  $(el).removeClass('inline-pending-button');
-                  $(el).text('Approve');
-                }
-              },
-              complete: function(){
-
-              }
-            });
-          }
-      });
-    }
-
-    if( $( "#sync-form" ).length > 0 ){
-
-     
-      var API_URL = 'https://po-dictionary.herokuapp.com';
-      //var API_URL = 'http://localhost:5000';
-      
-      
-      if( typeof window.po === 'undefined' ){
-        
-        window.po = [];
-      
-        window.po.show_loading = function(el){
-            // $(el).append('<img id="loadingif" style="width: 15px; margin-left: 5px;" src="<?php echo plugin_dir_url( __DIR__ )?>partials/loading.gif" />');
-            $(el).append('<span id="loading_text">Loading...</span>');
-        }
-
-        window.po.hide_loading = function(){
-            // $('img#loadingif').remove();
-            $('#loading_text').remove();
-        }
-
-        window.po.retrieve_filters = function(el){
-
-            var belongsTo = $('#belongsTo').val();
-
-            $.ajax({
-                url: po_object.ajax_url,
-                type: 'GET',
-                data: {
-                    action: 'PO_retrieve_filters',
-                    belongsTo: belongsTo
-                },
-                dataType: 'json',
-                beforeSend: function(){
-                    window.po.show_loading(el);
-                    $('.PO-loading-container').show();
-                },
-                success: function(d){
-                    // console.log( 'PO_retrieve_filters: ', d );
-                    if( d.status == 'success' ){
-                        window.po.success_message('All premium filters are successfully retrieved.');
-                        location.reload();
-                    } else {
-                        window.po.success_message(d.message);
-                    }
-                },
-                complete: function(){
-                    window.po.hide_loading();
-                    $('.PO-loading-container').hide();
-                }
-            });
-        }
-
-        window.po.success_message = function(message){
-
-            alert(message);
-        }
-
-        // Get the modal
-        var modal = document.getElementById("myModal");
-
-        // Get the button that opens the modal
-        var btn = document.getElementById("filters_list__sync_now");
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("scan-modal-close")[0];
-
-        // When the user clicks on the button, open the modal
-        btn.onclick = function() {
-          modal.style.display = "block";
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-          modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        } 
-
-        $('button.scan-modal-scan').on('click', function(){
-            modal.style.display = "none";
-            var el = $('#filters_list__sync_now');
-            window.po.retrieve_filters(el[0]);
-        });
-      }
-
-    } else {
-
-      // If the user has Premium (and) activated, he can pull Premium Filters
-      $('#filters_list__sync_now').on('click', function(){
-          var el = this;
-          window.po.retrieve_filters(el);
-      });
-      
-    }    
-
-
-    $('#submit-filters').on('click', function(){
-        var el = this;
-        submit_filters(el);
-    });
-
-    function submit_filters(el){
-
-        var counter = 0;
-        var index = 0;
-        
-        console.log( "Compiling filters..." );
-
-        // Get the modal
-        var modal = document.getElementById("submitModal");
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("scan-modal-close")[0];
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-          modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-          if (event.target == modal) {
-            modal.style.display = "none";
-          }
-        } 
-
-        
-        $.ajax({
-            url: po_object.ajax_url,
-            data: {
-                action: 'PO_compile_filters'
-            },
-            type: 'POST',
-            dataType: 'json',
-            beforeSend: function(){
-                modal.style.display = "block";
-            },
-            success: function(d){
-                
-                console.log( "Compiling done." );
-                
-                // console.log( "Compiled data: ", d );
-
-                if( d.status == 'success' ){
-                    
-                    let total_count = d.data.length;
-                    counter     = d.data.length;
-                    index       = counter-1;
-                    
-                    window.getData=function(index){
-                        
-                        console.log( "Submitting filter " + ( total_count - index ) + "..." );
-                        $('.PO-loading-container').text( "Submitting filter " + ( total_count - index ) + "/" + total_count );
-
-                        $.ajax({
-                            /* The whisperingforest.org URL is not longer valid, I found a new one that is similar... */
-                            url: po_object.ajax_url,
-                            async: true,
-                            type: 'POST',
-                            dataType: 'json',
-                            data: {
-                                action: 'PO_submit_filters',
-                                filter: d.data[index]
-                            },
-                            success:function(data){
-                                
-                                counter--;
-                                index--;
-                                
-                                console.log( "Submitting filter " + ( total_count - index ) + " done." );
-                                $('.PO-loading-container').text( "Submitting filter " + ( total_count - index ) + " done." );
-                                
-                                // let percentage = Math.ceil( ( total_count - index ) / total_count * 100 );
-                                // $('#po_submit_status_bar').css('background', "linear-gradient(90deg, #0073AA " + percentage + "%, #FFFFFF " + percentage + "%)");
-                                
-                                // if( percentage >= 50 ){
-                                //     $('.PO-loading-container').css("color", "#aaa");
-                                // }
-                                
-                                if (index >= 0) {
-                                    getData(index);
-                                } else {
-                                    $('.PO-loading-container').hide();
-                                    $('.PO-loading-container').html('');
-                                    modal.style.display = "none";
-                                    success_message();
-                                }
-                            }
-                        });
-                    }
-
-                    getData(index);
-                }
-
-            },
-            complete: function(){
-            }
-        })
-    }
-
-    function success_message(action){
-
-        alert('All premium filters are successfully '+action);
     }
     
 });
