@@ -119,12 +119,12 @@ class SOSPO_Admin_Helper {
 
                if( is_plugin_active('plugin-optimizer-agent/plugin-optimizer-agent.php') ){
 
+
+                    $premium_stuff .= '<button id="submit-filters" class="po_green_button">' . "Submit Filters" . '</button>';
                     if( !isset($_GET['filter_id']) ){
                       $premium_stuff .= '<button id="filters_list__sync_now" class="po_green_button">' . "Sync Now" . '</button>';
-                      $premium_stuff .= '<button id="submit-filters" class="po_green_button">' . "Submit Filters" . '</button>';
                     } else {
                       $version = get_post_meta( $_GET['filter_id'], 'version', true );
-
                       if( $version && is_array($version) && count($version) ){
                         $premium_stuff .= '<button id="rollback-filter" class="po_green_button">' . "Rollback Filter" . '</button>';
                       }
