@@ -1279,15 +1279,22 @@ jQuery( document ).ready( function($){
               modal.style.display = "none";
             }
           }
-          
+            
+          var sendData = {
+                  action: 'PO_compile_filters'
+              };
+
+          var filter_id = '';
+          if( filter_id = getParameterByName('filter_id') ){
+            sendData.filter_id = filter_id;
+          }
+
           $.ajax({
               url: po_object.ajax_url,
-              data: {
-                  action: 'PO_compile_filters'
-              },
+              data: sendData,
               type: 'POST',
               dataType: 'json',
-              beforeSend: function(){
+              beforeSend: function(){ 
                   modal.style.display = "block";
               },
               success: function(d){
