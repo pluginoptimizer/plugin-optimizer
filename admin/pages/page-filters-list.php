@@ -77,10 +77,13 @@ if( $filters ){
                         <th class="toggle_filter"></th>
                     </tr>
                 
-                    <tr id="po_table_header 33">
+                    <tr id="po_table_header">
                         <th data-label="checkbox"><input type="checkbox" id="check_all"></th>
+
+
                     <?php if( sospo_mu_plugin()->has_agent ){ ?>
-                        <th data-label="status">Status</th>
+                        <th data-label="delete" style="width: 70px;">Delete</th>
+                        <th data-label="status" style="width: 100px;">Status</th>
                     <?php } ?>
                         <th data-label="title" class="left-10 align-left sort_able sort_active">Title</th>
                         <th data-label="categories"class="left-10 align-left">Categories</th>
@@ -100,9 +103,6 @@ if( $filters ){
                 <tbody id="the-list" class="filter_on__status_publish">
                     <?php SOSPO_Admin_Helper::list_content__filters( $filters ); ?>
                 </tbody>
-                <script>
-                    jQuery('table.po_table [data-label]:not([data-label="checkbox"]):not([data-label="title"])').hide();
-                </script>
             </table>
         </div>
     </div>

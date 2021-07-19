@@ -335,7 +335,7 @@ if( sospo_mu_plugin()->has_agent ){
                <div class="row block-group-plugin-wrapper">
                   <div class="col-12">
                      <div class="header">
-                        <div class="title">Groups <span class="disabled">- <?php echo count( $groups ); ?></span>
+                        <div class="title">Blocked Plugin Groups <span class="disabled">- <?php echo count( $groups ); ?></span>
                         </div>
                         <span class="all-check toggle_groups">Disable All</span>
                      </div>
@@ -351,11 +351,6 @@ if( sospo_mu_plugin()->has_agent ){
                         <div class="single_group content<?php echo $blocked ?>" data-plugins="<?php echo htmlspecialchars(json_encode($block_plugins_in_group)) ?>">
                            <input class="noeyes" type="checkbox" name="SOSPO_filter_data[groups][<?php echo $group->ID ?>]" value="<?php echo $group->post_title ?>"<?php echo $checked ?>/>
                            <span><?php echo $group->post_title; ?></span>
-                           <?php foreach ( $block_plugins_in_group as $block_plugin_in_group ){ ?>
-                           <div class="hidden_content">
-                              - <span><?php echo $block_plugin_in_group; ?></span>
-                           </div>
-                           <?php } ?>
                         </div>
                         <?php
                            }

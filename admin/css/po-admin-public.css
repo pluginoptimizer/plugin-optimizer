@@ -140,3 +140,40 @@ body.po_is_blocking_plugins ul#adminmenu .wp-menu-image img{
     background-repeat: no-repeat;
     background-position: center;
 }
+
+#wp-admin-bar-plugin_optimizer_running_plugins .ab-sub-wrapper,
+#wp-admin-bar-plugin_optimizer_blocked_plugins .ab-sub-wrapper {
+  overflow-y: scroll;
+  max-height: 430px;
+}
+
+#wp-admin-bar-plugin_optimizer_running_plugins .ab-sub-wrapper::-webkit-scrollbar,
+#wp-admin-bar-plugin_optimizer_blocked_plugins .ab-sub-wrapper::-webkit-scrollbar {
+  width: 1em;
+}
+ 
+#wp-admin-bar-plugin_optimizer_running_plugins .ab-sub-wrapper::-webkit-scrollbar-track,
+#wp-admin-bar-plugin_optimizer_blocked_plugins .ab-sub-wrapper::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+ 
+#wp-admin-bar-plugin_optimizer_running_plugins .ab-sub-wrapper::-webkit-scrollbar-thumb,
+#wp-admin-bar-plugin_optimizer_blocked_plugins .ab-sub-wrapper::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+.overflow-box::-webkit-scrollbar {
+  width: 0.75em;
+}
+.overflow-box::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+.overflow-box::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+.overflow-box {
+  padding: 8px 0;
+  overflow-y: auto;
+}
