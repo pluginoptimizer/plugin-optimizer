@@ -1047,7 +1047,7 @@ jQuery( document ).ready( function($){
     // This is approve button in the filter table row
     if( $('.inline-approval-button').length ){
 
-      $('.inline-approval-button').click(function(){
+      $(document).on('click','.inline-approval-button', function(){
 
           var r = confirm("Are you sure you want to approve this filter?");
 
@@ -1064,7 +1064,10 @@ jQuery( document ).ready( function($){
               },
               success: function(d){
                 if( d.status == 'success' ){
-                  $(el).closest('tr').find('td[data-label="status"]').text('Approved')
+                  var text = $(el).closest('tr').find('td[data-label="status"]').text()
+                  var amended = text.replace('Pending', 'Approved<br />');
+
+                  $(el).closest('tr').find('td[data-label="status"]').html(amended)
                   $(el).addClass('inline-pending-button');
                   $(el).removeClass('inline-approval-button');
                   $(el).text('Make Pending');
@@ -1082,7 +1085,7 @@ jQuery( document ).ready( function($){
     // this is the pending button in the same row
     if( $('.inline-pending-button').length ){
 
-      $('.inline-pending-button').click(function(){
+      $(document).on('click','.inline-pending-button', function(){
 
           var r = confirm("Are you sure you want to mark this filter as pending?");
 
@@ -1099,7 +1102,10 @@ jQuery( document ).ready( function($){
               },
               success: function(d){
                 if( d.status == 'success' ){
-                  $(el).closest('tr').find('td[data-label="status"]').text('Pending');
+                  var text = $(el).closest('tr').find('td[data-label="status"]').text()
+                  var amended = text.replace('Approved', 'Pending<br />');
+
+                  $(el).closest('tr').find('td[data-label="status"]').html(amended);
                   $(el).addClass('inline-approval-button');
                   $(el).removeClass('inline-pending-button');
                   $(el).text('Approve');
@@ -1123,6 +1129,8 @@ jQuery( document ).ready( function($){
       
         window.po.show_loading = function(el){
             // $(el).append('<img id="loadingif" style="width: 15px; margin-left: 5px;" src="<?php echo plugin_dir_url( __DIR__ )?>partials/loading.gif" />');
+            console.log(el);
+            $(el).text();
             $(el).text('Loading...');
         }
 
@@ -1151,7 +1159,7 @@ jQuery( document ).ready( function($){
                     // console.log( 'PO_retrieve_filters: ', d );
                     if( d.status == 'success' ){
                         window.po.success_message('All premium filters are successfully retrieved.');
-                        //location.reload();
+                        location.reload();
                     } else {
                         window.po.success_message(d.message);
                     }
@@ -1251,123 +1259,7 @@ jQuery( document ).ready( function($){
           }
       });
     }
-
-    // Save to the database;
-    if( $('#submit-filters').length ){
-
-      function submit_filters(el){
-
-          var counter = 0;
-          var index = 0;
-          
-          console.log( "Compiling filters..." );
-
-          // Get the modal
-          var modal = document.getElementById("submitModal");
-
-          // Get the <span> element that closes the modal
-          var span = document.getElementsByClassName("scan-modal-close")[0];
-
-          // When the user clicks on <span> (x), close the modal
-          span.onclick = function() {
-            modal.style.display = "none";
-          }
-
-          // When the user clicks anywhere outside of the modal, close it
-          window.onclick = function(event) {
-            if (event.target == modal) {
-              modal.style.display = "none";
-            }
-          }
-            
-          var sendData = {
-                  action: 'PO_compile_filters'
-              };
-
-          var filter_id = '';
-          if( filter_id = getParameterByName('filter_id') ){
-            sendData.filter_id = filter_id;
-          }
-
-          $.ajax({
-              url: po_object.ajax_url,
-              data: sendData,
-              type: 'POST',
-              dataType: 'json',
-              beforeSend: function(){ 
-                  modal.style.display = "block";
-              },
-              success: function(d){
-                  
-                  console.log( "Compiling done." );
-                  
-                  if( d.status == 'success' ){
-                    
-                    let total_count = d.data.length;
-                    counter     = d.data.length;
-                    index       = counter-1;
-                    
-                    window.getData=function(index){
-                        
-                      console.log( "Submitting filter " + ( total_count - index ) + "..." );
-                      $('.PO-loading-container').text( "Submitting filter " + ( total_count - index ) + "/" + total_count );
-
-                      $.ajax({
-                        url: po_object.ajax_url,
-                        async: true,
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            action: 'PO_submit_filters',
-                            filter: d.data[index]
-                        },
-                        success:function(data){
-                            
-                          counter--;
-                          index--;
-                          
-                          console.log( "Submitting filter " + ( total_count - index ) + " done." );
-                          $('.PO-loading-container').text( "Submitting filter " + ( total_count - index ) + " done." );
-                          
-                          /*
-                            TODO: Reinstate this where applicable
-
-                            let percentage = Math.ceil( ( total_count - index ) / total_count * 100 );
-                            $('#po_submit_status_bar').css('background', "linear-gradient(90deg, #0073AA " + percentage + "%, #FFFFFF " + percentage + "%)");
-                            
-                            if( percentage >= 50 ){
-                                $('.PO-loading-container').css("color", "#aaa");
-                            }
-
-                          */
-                          
-                          if (index >= 0) {
-                              getData(index);
-                          } else {
-                              $('.PO-loading-container').hide();
-                              $('.PO-loading-container').html('');
-                              modal.style.display = "none";
-                              success_message();
-                          }
-                        }
-                      });
-                    }
-
-                    getData(index);
-                  }
-
-              },
-              complete: function(){
-              }
-          })
-      }
-
-      $('#submit-filters').on('click', function(){
-          var el = this;
-          submit_filters(el);
-      });
-    }
-
+    
     // HELPERS
     // ----------------------------------------------
     function getParameterByName(name, url = window.location.href) {
@@ -1407,9 +1299,68 @@ jQuery( document ).ready( function($){
       });
     }
     
+    $('.trashbutton').on('click', function(){
+      var table_row = $(this).closest('tr');
+      var id = $(table_row).attr('id').split('-');
+      var id = id[1];
+
+      // need to send delete request to server
+      var yes = confirm('Are you sure you want to delete this filter? Wordpress will place in trash, but will delete from PO Dictionary');
+
+      if( yes ){
+
+        $.ajax({
+          url: po_object.ajax_url,
+          data: {
+            action: 'PO_delete_filter',
+            post_id: id
+          },
+          type: 'POST',
+          dataType: 'json',
+          success: function(d){
+
+            // on success, need to delete on wordpress
+            if( d.status == 'success' ){
+
+              delete_filter_from_wp(id, table_row);
+            } else {
+
+              alert(d.message);              
+              delete_filter_from_wp(id, table_row);
+            }
+          }
+        });
+      }
+
+    });
+
+    function delete_filter_from_wp(post_id, table_row){
+
+      $.ajax({
+        url : po_object.ajax_url,
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          action: 'po_delete_elements',
+          name_post_type: 'plgnoptmzr_filter',
+          type_elements: 'all',
+          id_elements: [post_id],
+        },
+        success: function(d){
+          if( d.success ){
+            if( typeof table_row !== 'undefined' ){
+              $(table_row).remove();
+            } else {
+              window.location.reload();
+            }
+          }
+        }
+      });
+    }
+
     // DEPRECATED: Leave for parts;
     // On agent sites, we need to get the premium filters status from the dictionary
-    function fetch__agent_filters_status(){
+    /*function fetch__agent_filters_status(){
         
         if( ! ( $('body').hasClass('plugin-optimizer_page_plugin_optimizer_filters') && $('#the-list td[data-label="status"]').length >= 1 ) ){
             
@@ -1462,6 +1413,6 @@ jQuery( document ).ready( function($){
             }
             
         }, "json");
-    }
+    }*/
     
 });

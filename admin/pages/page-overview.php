@@ -1,4 +1,9 @@
-<?php global $sospo_appsero; ?>
+<?php global $sospo_appsero;
+
+  if( get_option('just-activated') == 'true' ){
+    delete_option( 'po-just-activated' );
+  }
+?>
 <div class="wrap container">
     <div class="wrap sos-wrap">
         <div class="container">
@@ -75,7 +80,7 @@
                         <div class="half second_half">
                         
                             <div>Knowledgebase</div>
-                            <p><a href="/">Contact Support</a></p>
+                            <p><a href="https://pluginoptimizer.com/support/">Contact Support</a></p>
                             <p><a href="/">Read FAQ</a></p>
                             
                         </div>

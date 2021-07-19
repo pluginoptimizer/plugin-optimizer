@@ -242,7 +242,7 @@ class SOSPO_Ajax {
 				wp_delete_term( $id_element, 'plgnoptmzr_categories' );
 			}
 
-			wp_send_json_success( [ "message" => "Categories are deleted." ] );
+			wp_send_json_success( [ "status" => "success", "message" => "Categories are deleted." ] );
             
 		} elseif ( $type_elements === 'all' ) {
          
@@ -250,7 +250,7 @@ class SOSPO_Ajax {
 				wp_trash_post( $post_id );
 			}
             
-			wp_send_json_success( [ "message" => "Items are moved to trash." ] );
+			wp_send_json_success( [ "status" => "success", "message" => "Items are moved to trash." ] );
             
 		} else {
             
@@ -264,7 +264,7 @@ class SOSPO_Ajax {
 				wp_delete_post( $post->ID, true );
 			}
             
-			wp_send_json_success( [ "message" => "Items are permanently deleted." ] );
+			wp_send_json_success( [ "status" => "success", "message" => "Items are permanently deleted." ] );
             
 		}
 	}

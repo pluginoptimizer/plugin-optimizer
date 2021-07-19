@@ -42,7 +42,7 @@ if( $groups ){
         
         <div class="row col-12">
             <div class="col-12">
-                <table class="po_table">
+                <table class="po_table groups">
                     <thead>
                     
                     <?php if( sospo_mu_plugin()->has_agent ){ ?>

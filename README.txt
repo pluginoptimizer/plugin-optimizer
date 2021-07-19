@@ -43,6 +43,48 @@ Speed up the back-end development environment and speed up the front-end user ex
 * Reduction in server load - get great results with even basic shared server accounts
 * Works great in combination with a cache plugin (e.g. WP Rocket, WP Fastest Cache, W3 Total Cache), a hosting company that offers packages with server-level caching available (e.g. WordKeeper) or a service like Cloudflare that has page caching enabled.
 
+
+== FAQ ==
+
+**Q: How does PO speed up my site?**
+
+**A:** Using Filters, Plugin Optimizer blocks selected Plugins from running where they aren't needed, thereby reducing the overall page size, load time and resources used! You end up with a FASTER Site!
+
+
+**Q: Will using PO help me save money?**
+
+**A:** Yes! PO will extend the life of your current server from needing an upgrade. By running PO you will use far less of your server resources when opening any page. This allows for more users to be able to interact with your site before you need to increase the size of your servers or bandwidth. In some cases we have recorded resource usage decreases of up to 40%.
+
+
+**Q: What Plugins does PO work with?**
+
+**A:** Plugin Optimizer works with 100s of the top WordPress Plugins and we are adding more filters daily. If there is a plugin Premium PO Members need a filter built for and it's not already available, we'll make it by just requesting!
+
+
+**Q: Is Plugin Optimizer easy to setup?**
+
+**A:** There are step-by-step videos to help you and with PO Premium it's easy to add filters and speed up your site!
+
+
+**Q: Does PO work with other page speed or site speed plugins?**
+
+**A:** YES! You can use Plugin Optimizer with most of the top cache, minify, image optimization and other speed plugins to really speed up your site!
+
+
+**Q: Should I use Plugin Optimizer or a cacheing plugin first?**
+
+**A:** Use both!
+
+
+**Q: Does Plugin Optimizer work on both front and backend pages?**
+
+**A:** Yes, there are Pre-configured filters for the backend and you can create custom filters for the front end on any WordPress site!
+
+
+**Q: I heard there is a free version of Plugin Optimizer?**
+
+**A:** Yes, there is a free version available in the WordPress repository [here](https://wordpress.org/plugins/plugin-optimizer/).
+
 == Support ==
 
 If you have questions, comments, or suggestions contact us here:

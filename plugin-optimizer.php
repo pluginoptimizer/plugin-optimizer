@@ -83,8 +83,9 @@ function appsero_init_tracker_plugin_optimizer() {
         'parent_slug' => 'plugin_optimizer',
     );
     // $sospo_appsero["premium"]->license()->add_settings_page( $args );
+    
 }
-appsero_init_tracker_plugin_optimizer();
+add_action('plugins_loaded', 'appsero_init_tracker_plugin_optimizer');
 
 /**
  * The code that runs during plugin activation.
