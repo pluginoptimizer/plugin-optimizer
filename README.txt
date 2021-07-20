@@ -97,6 +97,16 @@ By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/suppo
 2. Activate the plugin
 3. Go to Plugin Optimizer -> Create Filter and start making filters.
 
+== Screenshots ==
+
+1. filter-list.jpg
+2. filter-create.jpg
+3. group-list.jpg
+4. group-create.jpg
+5. category-list.jpg
+6. category-create.jpg
+7. settings.jpg
+
 == Changelog ==
 
 = 1.0.8 = April 2021
