@@ -116,8 +116,8 @@ class SOSPO_MU {
     private function should_abort(){
 
         if( wp_doing_cron() ){
-
-            return true;
+            // changing to false. This should never be blocked.
+            return false;
         }
 
         if( defined( 'WP_CLI' ) && WP_CLI ){
@@ -158,18 +158,19 @@ class SOSPO_MU {
         }
 
         return self::$instance;
-
     }
 
 
     function set_hooks() {
 
+
         add_filter( 'option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
 
+        // This sets a boolean whether agent and/or premium is installed
         add_action( 'plugins_loaded',        [ $this, 'complete_action_once_plugins_are_loaded' ], 5 );
 
+        // This isn't doing anything at the moment
         add_action( 'shutdown',              [ $this, 'update_worklist_if_needed' ] );
-
     }
 
     function complete_action_once_plugins_are_loaded(){
@@ -186,9 +187,7 @@ class SOSPO_MU {
 
             $this->has_agent = true;
         }
-
     }
-
 
     function filter_active_plugins_option_value( $active_plugins ) {
 
@@ -228,7 +227,6 @@ class SOSPO_MU {
         if( strpos( $url, 'plugin-install.php?tab=plugin-information&plugin=' ) !== false ){
             return true;
         }
-
     }
 
     function should_skip_url( $url ) {
@@ -268,37 +266,90 @@ class SOSPO_MU {
                 // $block_plugins = array_diff( $block_plugins, [ $_POST["plugin"] ] );
             }
             
-            $this->is_skipped = true;
+            $this->is_skipped = true; /* not doing anything */
+            return $block_plugins;
+        }
+
+        // On PO Ajax requests we are blocking all plugins, except PO
+        if( wp_doing_ajax() && ! empty( $_POST["action"] ) ){
+                        
+            $block_plugins = array_diff( $this->original_active_plugins, $this->po_plugins );
+            
+            $filters = get_posts([
+                'post_type'   => 'plgnoptmzr_filter',
+                'numberposts' => - 1,
+            ]);
+
+            foreach( $filters as $filter ){
+
+                if( $filter->turned_off ){
+
+                    continue;
+                }
+
+                // Filter by URL
+
+                $endpoints = is_array( $filter->endpoints ) ? $filter->endpoints : [ $filter->endpoints ];
+
+                $protocol = isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+
+                $index = strlen($protocol .'://'.$_SERVER['HTTP_HOST']);
+
+                $referer = substr($_SERVER['HTTP_REFERER'], $index );
+
+                if( in_array( $referer, $endpoints ) ){
+
+                    $this->use_filter( $filter );
+
+                } else {
+
+                    foreach( $endpoints as $endpoint ){
+
+                        if( fnmatch( $endpoint, $this->current_wp_relative_url, FNM_PATHNAME | FNM_CASEFOLD ) ){
+
+                            $this->use_filter( $filter );
+
+                            break;
+                        }
+
+                    }
+
+                }
+
+            }
+
+            
+            $this->is_skipped = true; /* not doing anything */
             return $block_plugins;
         }
 
         // some URLs just need all plugins to get blocked
         if( $this->should_block_all( $this->current_wp_relative_url ) ){
-            $this->is_skipped = true;
+            $this->is_skipped = true; /* not doing anything */
             return $this->original_active_plugins;
         }
 
         // some URLs just need to be skipped
         if( $this->should_skip_url( $this->current_wp_relative_url ) ){
-            $this->is_skipped = true;
+            $this->is_skipped = true; /* not doing anything */
             return [];
         }
 
         // when we want to disable blocking on the current page, we use ?disable_po=yes on any page
         if( ! empty( $_GET["disable_po"] ) && $_GET["disable_po"] == "yes" ){
-            $this->is_skipped = true;
+            $this->is_skipped = true; /* not doing anything */
             return [];
         }
 
         // when we are recreating the menu
         if( ! empty( $_GET["po_original_menu"] ) && $_GET["po_original_menu"] == "get" ){
-            $this->is_skipped = true;
+            $this->is_skipped = true; /* not doing anything */
             return [];
         }
 
         $editing_post_type = $this->is_editing_post_type( $this->current_wp_relative_url );
 
-        // --- are we on any of the PO pages?
+        // --- are we on any of the PO pages? yes, second boolean in the condition
         if(
             strpos( $this->current_wp_relative_url, "wp-admin/admin.php?page=plugin_optimizer") !== false ||
             in_array( $this->current_wp_relative_url, $this->po_pages ) ||
@@ -374,13 +425,11 @@ class SOSPO_MU {
         $this->filters_in_use[ $filter->ID ] = $filter->post_title;
 
         return $plugins_to_block;
-
     }
-
 
     function update_worklist_if_needed(){
 
-        if( $this->is_skipped === false && $this->is_being_filtered === false && ! $this->is_po_default_page ){
+        if( $this->is_skipped === false && $this->is_being_filtered === false && ! $this->is_po_default_page ){ /* not doing anything */
 
             if( ! is_admin() ){
 
@@ -391,9 +440,7 @@ class SOSPO_MU {
 
             // $this->write_log( ( is_admin() ? "Back end" : "Front end" ) . ": " . var_export( trim( $this->current_wp_relative_url ), true ), "update_worklist_if_needed-REQUEST_URI" );
         }
-
     }
-
 
     function is_editing_post_type( $url ){
 
@@ -406,7 +453,6 @@ class SOSPO_MU {
         }
 
         return $post_type;
-
     }
 
     function url_to_postid( $url ){
@@ -417,7 +463,6 @@ class SOSPO_MU {
         $post_id = $post_id === 0 && ! empty( $query_vars["post_id"] ) ? $query_vars["post_id"] : $post_id;
 
         return $post_id;
-
     }
 
     function write_log( $log, $text = "write_log: ", $file_name = "debug.log" )  {
@@ -429,7 +474,6 @@ class SOSPO_MU {
         } else {
             error_log( $text . PHP_EOL . $log . PHP_EOL . PHP_EOL, 3, $file );
         }
-
     }
 
     function get_names_list( $array_name, $key = "Name" ){
@@ -454,7 +498,6 @@ class SOSPO_MU {
         natcasesort( $list );
 
         return $list;
-
     }
 
 }

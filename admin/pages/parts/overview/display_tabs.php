@@ -14,12 +14,12 @@ $one_tab_opened = false;
 
 foreach( $tabs as $index => $tab ){
     
-    $class_completed = $tab["completed"] ? " done" : "";
-    $button_complete = $tab["completed"] ? "" : '<div class="tab_complete_wrapper"><button class="po_green_button mark_tab_complete">Mark Complete</button></div>';
+    $class_completed = !empty($tab["completed"]) ? " done" : "";
+    $button_complete = !empty($tab["completed"]) ? "" : '<div class="tab_complete_wrapper"><button class="po_green_button mark_tab_complete">Mark Complete</button></div>';
     $class_opened    = "trigger_closed";
     $content_opened  = "closed";
     
-    if( ! $tab["completed"] && ! $one_tab_opened ){
+    if( empty($tab["completed"]) && ! $one_tab_opened ){
         $class_opened    = "trigger_opened";
         $content_opened  = "opened";
         $one_tab_opened  = true;
