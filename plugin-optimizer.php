@@ -168,4 +168,61 @@ function test_temp(){
    sospo_mu_plugin()->write_log( print_r( $GLOBALS['wp_scripts']->registered, true ), "test_temp-globals-wp_scripts" );
 }
 // add_action( "shutdown", "test_temp" );
-// 
+
+
+//http://stackoverflow.com/a/1597788/1287812
+function sort_arra_asc_so_1597736( $item1, $item2 )
+{
+    if ($item1[0] == $item2[0]) return 0;
+    return ( $item1[0] > $item2[0] ) ? 1 : -1;
+}
+
+add_action( 'admin_menu', 'sort_settings_menu_wpse_2331', 99999 );
+
+function sort_settings_menu_wpse_2331() 
+{
+    global $menu;
+
+    //echo '<pre>'.print_r($menu, 1).'</pre>';die;
+
+    $map = array();
+    foreach( $menu as $key => $m ){
+
+      //seperator
+      if( empty($m[0]) ) continue; 
+
+      $map[$m[0]] = $key;
+    }
+
+    ksort($map);
+    
+    $new_menu = array();
+    foreach( $map as $m ){
+      $new_menu[$m] = $menu[$m];
+    }
+
+
+    //apply_filters('admin_menu', 'custom_menu_order');
+    
+    /*
+    // Sort default items
+    $default = array_slice( $submenu['options-general.php'], 0, 6, true );
+    usort( $default, 'sort_arra_asc_so_1597736' );
+
+    // Sort rest of items
+    $length = count( $submenu['options-general.php'] );
+    $extra = array_slice( $submenu['options-general.php'], 6, $length, true );
+    usort( $extra, 'sort_arra_asc_so_1597736' );
+
+    // Apply
+    $submenu['options-general.php'] = array_merge( $default, $extra );*/
+}
+
+add_filter('custom_menu_order', 'custom_menu_order');
+add_filter('menu_order', 'custom_menu_order');
+function custom_menu_order($menu_ord) {
+  // echo '<pre>'.print_r('fire', 1).'</pre>';
+  // echo '<pre>'.print_r($menu_ord, 1).'</pre>';die;
+       if (!$menu_ord) return true;
+       return array('index.php', 'edit.php', 'edit-comments.php');
+}
