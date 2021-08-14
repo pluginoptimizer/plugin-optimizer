@@ -88,24 +88,24 @@ class SOSPO_Dictionary{
      */
     function get_prospector_count(){
         
+        // The endpoints
         $menu_endpoints = get_option( "po_admin_menu_list" );
 
+        // The plugins
         $plugins = array_keys(get_plugins());
 
-        $args = [
-            "query" => [
-                'status'  => 'approved',
-                'endpoint' =>  [
-                    '$in' => array_values( $menu_endpoints["endpoints"] )
-                ]
-            ],
-        ];
-        
-        
-        //$args = $this->get_benefit_filters_query();
-        // write_log( json_encode( $args["query"] ), "SOSPO_Dictionary-get_prospector_count-query" );
+        $all_plugins = get_plugins();
+        $all_plugins = array('plugins'=>array_keys($all_plugins));
 
-        $count = $this->count( $args, true );
+        // the option only exists if have already retrieved filters from server
+        if( $po_filter_retrieval = get_option( 'po_admin_menu_list') ){
+            $all_plugins = array_merge(array('endpoints' => (array)$menu_endpoints['endpoints']), $all_plugins);
+        }
+
+        // search plugins by belongs to
+        $all_plugins['belongsTo'] = 'relevant';        
+
+        $count = $this->count( $all_plugins, true );
         
         return is_wp_error( $count ) ? "unknown" : $count;
     }
