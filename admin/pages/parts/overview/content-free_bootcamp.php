@@ -24,21 +24,21 @@ class SOSPO_Admin_Overview_Free_Bootcamp{
                 "title"     => "How To Use Wildcards",
                 "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_5()
             ],
-            60 => [
-                "title"     => "EndPoints Vs PostTypes",
-                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_5()
-            ],
-            70 => [
-                "title"     => "Mistakes To Avoid",
-                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_5()
-            ],
+            // 60 => [
+            //     "title"     => "EndPoints Vs PostTypes",
+            //     "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_5()
+            // ],
+            // 70 => [
+            //     "title"     => "Mistakes To Avoid",
+            //     "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_6()
+            // ],
             80 => [
                 "title"     => "Testing Your Filters",
-                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_5()
+                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_7()
             ],
             90 => [
                 "title"     => "Get It Done For You",
-                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_5()
+                "content"   => SOSPO_Admin_Overview_Free_Bootcamp::tab_8()
             ],
         ];
         
@@ -128,10 +128,8 @@ class SOSPO_Admin_Overview_Free_Bootcamp{
         
         ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
-                <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
-                <?php /*
-                    <iframe src="https://www.youtube.com/embed/-x4xg59uJn0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                */ ?>
+                <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560;">
+                <iframe src="https://www.youtube.com/embed/drSc1tZqQ8A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="col-6">
@@ -171,14 +169,12 @@ class SOSPO_Admin_Overview_Free_Bootcamp{
         ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
                 <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
-                <?php /*
-                    <iframe src="https://www.youtube.com/embed/-x4xg59uJn0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                */ ?>
+                  <iframe src="https://www.youtube.com/embed/2LOmVT4s5FY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="col-6">
-                <h4>aaaaaaaaaaaaaaaa</h4>
-                <p>bbbbbbbbbb</p>
+                <h4>Avoid these common mistakes</h4>
+                <p>We'll show you how we test filters to make sure they are working correctly and start saving resources on your WordPress site.</p>
             </div>
         </div><?php
         
@@ -192,14 +188,12 @@ class SOSPO_Admin_Overview_Free_Bootcamp{
         ?><div class="row justify-content-between no_padding no_margin">
             <div class="col-6">
                 <div class="yt_video_wrapper" style="--aspect-ratio: 315 / 560; background-image: url(https://via.placeholder.com/700x400.png?text=Video+Missing);">
-                <?php /*
-                    <iframe src="https://www.youtube.com/embed/-x4xg59uJn0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                */ ?>
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/JwEkSY3seBU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="col-6">
-                <h4>aaaaaaaaaaaaaaaa</h4>
-                <p>bbbbbbbbbb</p>
+                <h4>Want to save time and/or get your site and plugins sped up for you?</h4>
+                <p>Pop on over to the website and let us know what kind of help you need, or purchase a Premium Plugin Optimizer license and download all the preconfigured filters you need for your site!</p>
             </div>
         </div><?php
         
