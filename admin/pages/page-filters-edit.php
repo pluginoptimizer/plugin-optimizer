@@ -49,7 +49,7 @@ if( $post ){
     $groups_to_block    = get_post_meta( $post->ID, "groups_used", true );
     $post_categories    = get_post_meta( $post->ID, "categories", true );
     $endpoints          = SOSPO_Admin_Helper::get_filter_endpoints( $post );
-    
+
     /**
      * Returns false if not a premium filter
      * @var boolean
@@ -80,7 +80,7 @@ if( sospo_mu_plugin()->has_agent ){
     
     $title_class = 'col-6';
     
-    $belongs_to  =  $post ? get_post_meta( $post->ID, "belongs_to", true ) : '';
+    $belongs_to  =  $post ? get_post_meta( $post->ID, "belongsTo", true ) : '';
     
     $belongs_to_core_selected = $belongs_to === "_core" ? ' selected="selected"' : '';
         
@@ -88,11 +88,11 @@ if( sospo_mu_plugin()->has_agent ){
     
 
     // This constructs a BelongsTo dropdown
-    foreach( sospo_mu_plugin()->all_plugins as $plugin_id => $plugin ){
+    foreach( get_plugins() as $plugin_id => $plugin ){
         
         $selected = ! $belongs_to || $belongs_to !== $plugin_id ? '' : ' selected="selected"';
         
-        $plugin_select_options .= '<option value="' . $plugin_id . '"' . $selected . '>';
+        $plugin_select_options .= '<option value="' . $plugin_id . '"' . $selected . ' data-belongs_to="'.get_post_meta( $post->ID, "belongsTo", true ).'" data-plugins="'.$plugin_id.'" data-postid="'.$post->ID.'">';
         $plugin_select_options .=      $plugin["Name"];
         $plugin_select_options .= '</option>';
         $plugin_select_options .= PHP_EOL;
