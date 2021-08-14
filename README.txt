@@ -3,7 +3,7 @@ Contributors: pluginoptimizer,simpleonlinesystems,andrija,jacobrossdev
 Tags: Plugin Optimizer, Speed Up, Optimization, Save Time, Page Speed, Performance
 Requires at least: 5.0
 Tested up to: 5.7
-Stable tag: 1.0.8
+Stable tag: 1.1.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -85,6 +85,12 @@ Speed up the back-end development environment and speed up the front-end user ex
 
 **A:** Yes, there is a free version available in the WordPress repository [here](https://wordpress.org/plugins/plugin-optimizer/).
 
+
+**Q: Are there any known issues?**
+
+**A:** There are some plugins that have admin pages with a hash (#) in the url that our filters will not match. We are working to capture these specific endpoints.
+
+
 == Support ==
 
 If you have questions, comments, or suggestions contact us here:
@@ -108,6 +114,19 @@ By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/suppo
 7. settings.jpg
 
 == Changelog ==
+
+= 1.1.0 = August 2021
+* Filter List: Updated filter sorting
+* Filter List: Toggle Columns to narrow viewable data
+* Filter List: Added Category column
+* Filter Edit: Style the Groups page
+* Filter Edit: Added selection dragging for blocking/unblocking plugins
+* Settings: Added Support link
+* Feature Add: Can scan for an available Premium Filters count
+* Update: Added WooCommerce and Memberpress add-on detection to menu generation
+* Overview: Added Training YouTube videos
+* README: Added FAQ and Screenshots
+* Bugfixes and UI polishing
 
 = 1.0.8 = April 2021
 * Included the Overview page
