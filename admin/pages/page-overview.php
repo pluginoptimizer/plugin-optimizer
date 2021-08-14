@@ -3,6 +3,39 @@
   if( get_option('just-activated') == 'true' ){
     delete_option( 'po-just-activated' );
   }
+
+  $available_count = get_option('po_available_filters');
+
+  if(!$available_count){
+
+      $endpoints = array();
+      $all_plugins = get_plugins();
+      $all_plugins = array('plugins'=>array_keys($all_plugins));
+
+
+      // the option only exists if have already retrieved filters from server
+      if( $po_filter_retrieval = get_option( 'po_admin_menu_list') ){
+          $all_plugins = array_merge(array('endpoints' => $po_filter_retrieval['endpoints']), $all_plugins);
+      }
+
+      $ch = curl_init();
+      $json = json_encode($all_plugins);
+
+      curl_setopt($ch, CURLOPT_URL,  PROSPECTOR_URL.'api/v1/count');
+      curl_setopt($ch, CURLOPT_POST, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',                    
+            'Content-Length: ' . strlen($json)
+      ]);
+
+      $server_output = curl_exec($ch);
+      $server_output = json_decode( $server_output, $assoc_array = false );
+      update_option('po_available_filters', $server_output->data->count);
+      $available_count = $server_output->data->count;
+  }
+
 ?>
 <div class="wrap container">
     <div class="wrap sos-wrap">
@@ -57,13 +90,14 @@
                                 <?php if( $sospo_appsero["premium"]->license()->is_valid() ){ ?>
                                     
                                     <div>Thank you for buying Premium!</div>
-                                    <p>You currently have X premium filters.</p>
-                                    <p>There are currently X premium filters available for your site.</p>
+                                    <?php $q = new WP_Query(array('post_type' => 'plgnoptmzr_filter', 'posts_per_page' => -1, 'meta_key' => 'premium_filter')); ?> 
+                                    <p>You currently have <?php echo count($q->posts)?> premium filters.</p>
+                                    <p>There are currently <?php echo $available_count; ?> premium filters available for your site.</p>
                                     
                                 <?php } else { ?>
                                     
                                     <div>Please activate your license.</div>
-                                    <p>You could benefit from X premium filters available for your site.</p>
+                                    <p>You could benefit from <?php echo $available_count; ?> premium filters available for your site.</p>
                                     
                                 <?php } ?>
                             
