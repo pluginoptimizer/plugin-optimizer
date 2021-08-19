@@ -302,24 +302,28 @@ jQuery( document ).ready( function($){
         
         $.post( po_object.ajax_url, { action  : 'po_save_filter', data : filter_data }, function( response ) {
             // console.log( "po_save_filter: ", response );
-            
-            alert( response.data.message );
+
+
+            // alert( response.data.message );
             
             if( response.data.id ){
                 
-                $('input[name="SOSPO_filter_data[ID]"]').val( response.data.id );
+              const url = new URL( window.location.href );
+              url.searchParams.set( 'filter_id', response.data.id );
+              window.location.href=url;
+            //     $('input[name="SOSPO_filter_data[ID]"]').val( response.data.id );
                 
-                const url = new URL( window.location.href );
-                url.searchParams.set( 'filter_id', response.data.id );
-                window.history.replaceState( null, null, url );
+            //     const url = new URL( window.location.href );
+            //     url.searchParams.set( 'filter_id', response.data.id );
+            //     window.history.replaceState( null, null, url );
                 
-                $('#name_page').html( 'Editing filter: ' + $('#set_title').val() );
+            //     $('#name_page').html( 'Editing filter: ' + $('#set_title').val() );
                 
-                window.scroll({
-                    top: 0,
-                    left: 0,
-                    behavior: 'smooth'
-                });
+            //     window.scroll({
+            //         top: 0,
+            //         left: 0,
+            //         behavior: 'smooth'
+            //     });
             }
             
         }, "json");
@@ -1358,6 +1362,59 @@ jQuery( document ).ready( function($){
       });
     }
 
+    $('tr').on('click', 'a.duplicate', function(){
+
+      if( confirm("Are you sure you want to duplicate this filter?") ){
+
+        var the_row = $(this).closest('tr');
+        var the_row_clone = $(the_row).clone();
+
+        $.ajax({
+          url: po_object.ajax_url,
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            action: 'po_duplicate_filter',
+            filter: $(the_row).attr('id').substr(7)
+          },
+          success: function(d){
+
+            if( d.status == 'success' ){
+              $(the_row_clone).find('a.edit_item').attr('href',po_object.admin_url+'admin.php?page=plugin_optimizer_add_filters&filter='+d.filter_id);
+              var copy_text = $(the_row_clone).find(".filter_title").text() + ' Copy';
+              $(the_row_clone).find(".filter_title").text(copy_text);
+              $(the_row_clone).find(".endpoint-column").text('');
+              $(the_row_clone).insertAfter(the_row);
+
+              alert("Filter duplicated successfully! Note: You must define a unique trigger for this filter");
+            }
+            // 
+          }
+        });
+        }
+
+    });
+
+    $("#po_update_database_button").on("click", function(){
+      var el = this;
+      if( confirm("This will update your database for the newest Plugin Optimizer version. Continue?") ){
+
+        $.ajax({
+          url : po_object.ajax_url,
+          type: "POST",
+          dataType: "json",
+          data: {
+            action : "po_update_database"
+          },
+          success: function(d){
+            alert("Your database has been updated successfully");
+
+            $(el).closest(".notice").find("button.notice-dismiss").click();
+          }
+        });
+
+      }
+    });
     // DEPRECATED: Leave for parts;
     // On agent sites, we need to get the premium filters status from the dictionary
     /*function fetch__agent_filters_status(){

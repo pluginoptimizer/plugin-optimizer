@@ -311,7 +311,7 @@ class SOSPO_Admin {
         // Main top menu item
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'plugin_optimizer',
-			'title' => '<span class="sos-icon"></span> Plugin Optimizer | Memory used: ' . $this->check_memory_usage() . ' Mb<span class="sos-speed"></span>',
+			'title' => '<span class="sos-icon"></span> Plugin Optimizer | Memory used: ' . $this->check_memory_usage() . ' Mb | Load Time: <span class="sos-speed">'.timer_stop(0).'</span>',
 			'href'  => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_settings' ) ),
 		) );
         
@@ -860,3 +860,16 @@ class SOSPO_Admin {
 
 }
 
+
+function rudr_display_status_label( $statuses ) {
+  global $post; // we need it to check current post status
+  global $wpdb;
+  
+  if($row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}po_filtered_endpoints WHERE post_id = '{$post->ID}'")){
+    return array('PO Filtered');
+  }
+
+  return $statuses; // returning the array with default statuses
+}
+ 
+add_filter( 'display_post_states', 'rudr_display_status_label' );

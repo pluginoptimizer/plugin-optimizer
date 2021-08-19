@@ -471,7 +471,6 @@ body.po_page_overview .hidden-info_overview .row > .col-6:last-of-type h4{
 
 .sos-wrap table {
     width: 100%;
-    text-align: center;
 }
 
 /*.sos-wrap table *:not(span):not(a) {
@@ -658,13 +657,12 @@ body.po_page_overview #overview_summary #licence_section.valid .license-input-fi
 
 
 #search_boxes > th{
-    padding-top: 15px;
-    padding-bottom: 15px;
 }
 
 input.search_filter{
     border: 1px solid #888;
     transition: all 300ms ease;
+    width: 80%;
 }
 input.search_filter:not(:placeholder-shown),
 /* input.search_filter:focus, */

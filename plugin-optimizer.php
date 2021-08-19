@@ -247,3 +247,15 @@ function custom_menu_order($menu_ord) {
        if (!$menu_ord) return true;
        return array('index.php', 'edit.php', 'edit-comments.php');
 }
+
+function po_update_db_alert(){
+    global $pagenow;
+
+
+    if ( !get_option( 'po_db_updated-v1.2' ) ) {
+         echo '<div class="notice notice-warning is-dismissible">
+             <p>It looks like you have a new version of <strong>Plugin Optimizer</strong> and your database needs to be updated in order to take advantage of the newest features. &nbsp;<button id="po_update_database_button" class="po_green_button">Update DB Now</button></p>
+         </div>';
+    }
+}
+add_action('admin_notices', 'po_update_db_alert');

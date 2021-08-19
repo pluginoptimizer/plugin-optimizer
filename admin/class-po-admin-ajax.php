@@ -42,6 +42,8 @@ class SOSPO_Ajax {
 		add_action( 'wp_ajax_po_get_post_types',                [ $this, 'po_get_post_types'                ] );
     add_action( 'wp_ajax_po_scan_prospector',               [ $this, 'po_scan_prospector'               ] );
     add_action( 'wp_ajax_po_save_columns_state',            [ $this, 'po_save_columns_state'            ] );
+    add_action( 'wp_ajax_po_duplicate_filter',              [ $this, 'po_duplicate_filter'              ] );
+    add_action( 'wp_ajax_po_update_database',               [ $this, 'po_update_database'               ] );
 
 	}
 
@@ -49,6 +51,8 @@ class SOSPO_Ajax {
 	 * Create/Update filter
 	 */
 	function po_save_filter() {
+
+    global $wpdb;
         
     if( empty( $_POST['data'] ) ){              wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
     
@@ -102,7 +106,32 @@ class SOSPO_Ajax {
         
         update_post_meta( $post_id, $meta_key, $meta_value );
     }
-        
+
+
+    foreach( $data["meta"]["endpoints"] as $page ){
+
+      if( $pid = url_to_postid( site_url() . $page ) ){
+
+        $permalink = get_permalink($pid); 
+
+        $row = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}po_filtered_endpoints 
+          WHERE filter_id = {$post_data['ID']} AND post_id = {$pid} AND url = '{$permalink}'");
+
+        // if this row doesn't already exist, add it
+        if( empty($row) )
+          {
+            $inserted = $wpdb->insert( 
+              $wpdb->prefix . 'po_filtered_endpoints', 
+              array( 
+                'filter_id' => $post_data['ID'], 
+                'post_id' => $pid, 
+                'url' => $permalink, 
+              ) 
+            );
+          }
+      }
+    }
+    
 		wp_send_json_success( [ "message" => "All good, the filter is saved.", "id" => $post_id, ] );
 
 	}
@@ -470,6 +499,54 @@ class SOSPO_Ajax {
 	  wp_send_json_success( [ "message" => "All good, the columns are saved." ] );
 
   }
+
+  function po_duplicate_filter(){
+
+    $filter_id = $_POST['filter'];
+
+    $data_type        = get_post_meta( $filter_id, 'filter_type',      true );
+    $blocking_plugins = get_post_meta( $filter_id, 'plugins_to_block', true );
+    $turned_off       = get_post_meta( $filter_id, 'turned_off',       true );
+    $belongs_to_value = get_post_meta( $filter_id, 'belongs_to',       true );
+
+    $post = (array) get_post( $filter_id ); // Post to duplicate.
+    unset($post['ID']); // Remove id, wp will create new post if not set.
+    $post['post_title'] = $post['post_title'] . ' copy';
+    $new_filter_id = wp_insert_post($post);
+
+    update_post_meta( $new_filter_id, 'filter_type', $data_type );
+    update_post_meta( $new_filter_id, 'plugins_to_block', $blocking_plugins );
+    update_post_meta( $new_filter_id, 'turned_off', $turned_off );
+    update_post_meta( $new_filter_id, 'belongs_to', $belongs_to_value );
+
+    die(json_encode(array('status'=>'success', 'filter'=>$filter_id)));
+  }
+   
+
+  function po_update_database(){
     
+    global $wpdb;
+
+    if( !get_option('po_db_updated-v1.2') ){
+
+      $charset_collate = $wpdb->get_charset_collate();
+
+      $sql = "CREATE TABLE `{$wpdb->prefix}po_filtered_endpoints` (
+        id int(11) NOT NULL AUTO_INCREMENT,
+        filter_id int(11) NOT NULL,
+        post_id int(11) NOT NULL,
+        url varchar(55) DEFAULT '' NOT NULL,
+        PRIMARY KEY  (id)
+      ) $charset_collate;";
+
+      require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+      dbDelta( $sql );
+
+      update_option( 'po_db_updated-v1.2', 'true' );
+
+      die(json_encode(array('status'=>'success')));
+    }
+
+  } 
 }
 

@@ -48,7 +48,7 @@ if( $post ){
     $plugins_to_block   = get_post_meta( $post->ID, "plugins_to_block", true );
     $groups_to_block    = get_post_meta( $post->ID, "groups_used", true );
     $post_categories    = get_post_meta( $post->ID, "categories", true );
-    $endpoints          = SOSPO_Admin_Helper::get_filter_endpoints( $post );
+    $endpoints          = SOSPO_Admin_Helper::get_filter_endpoints( $post->ID );
 
     /**
      * Returns false if not a premium filter
@@ -163,7 +163,12 @@ if( sospo_mu_plugin()->has_agent ){
 </style>
 <div class="sos-wrap">
    <?php SOSPO_Admin_Helper::content_part__header( $page_title, "filters" ); ?>
+
+
    <div id="edit_filter" class="sos-content">
+     <?php if( $post ) : ?>
+      <div class="test-filter-container"><a target="_blank" href="<?php echo site_url() . trim($endpoints[0],'*'); ?>" class="po_blue_button">Test this filter</a></div>
+     <?php endif;?>
       <?php if( $block_editing ){ ?>
       <div id="forbid_premium_edit">Premium filters can not be edited</div>
       <?php } else { ?>
@@ -227,7 +232,7 @@ if( sospo_mu_plugin()->has_agent ){
                      <input id="first_endpoint" type="text" name="SOSPO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?php echo ! empty( $endpoints ) ? $endpoints[0] : "" ?>"/>
                      <div id="add_endpoint" class="circle_button add_something">+</div>
                   </div>
-                  <?php for( $i = 1; $i < count( $endpoints ); $i++ ){ ?>
+                  <?php if( is_array($endpoints) ) for( $i = 1; $i < count( $endpoints ); $i++ ){ ?>
                   <div class="additional_endpoint_wrapper">
                      <input class="additional_endpoint" type="text" name="SOSPO_filter_data[endpoints][]" placeholder="Put your URL here" value="<?php echo $endpoints[ $i ] ?>"/>
                      <div class="remove_additional_endpoint circle_button remove_something">-</div>
