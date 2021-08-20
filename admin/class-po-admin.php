@@ -65,8 +65,57 @@ class SOSPO_Admin {
 		add_filter( 'plugin_action_links',          [ $this, 'plugin_action_links'      ], 10, 2 );
 
     add_action( 'init',                         [ $this, 'maybe_reset_po_admin_menu_list']);
+    add_action( 'wp_loaded',                    [ $this, 'po_toggle_plugins_to_block'],101);
 	}
 
+
+
+  function po_toggle_plugins_to_block(){
+
+    if( !empty($_GET['toggle_plugin']) && !empty($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce']) ){
+
+      if( $_GET['toggle_plugin'] != 'plugin-optimizer/plugin-optimizer.php' ) {
+
+        if( !empty($_GET['mode']) ){
+
+          switch( $_GET['mode'] ){
+
+            case 'enable':
+
+              foreach( sospo_mu_plugin()->filters_in_use as $filter_id => $filter_name ){
+                $plugins_to_block = get_post_meta($filter_id, 'plugins_to_block', true);
+                unset($plugins_to_block[$_GET['toggle_plugin']]);
+                update_post_meta( $filter_id, 'plugins_to_block', $plugins_to_block );
+              }
+            break;
+
+            case 'block':
+
+              foreach( sospo_mu_plugin()->filters_in_use as $filter_id => $filter_name ){
+                $plugins_to_block = get_post_meta($filter_id, 'plugins_to_block', true);
+                $installed_plugins = get_plugins();
+                $plugins_to_block[$_GET['toggle_plugin']] = $installed_plugins[$_GET['toggle_plugin']]['Name'];
+                update_post_meta( $filter_id, 'plugins_to_block', $plugins_to_block );
+              }
+            break;
+          }
+        }
+
+        if( !empty($_GET['redirect_to']) ){
+          wp_redirect( $_GET['redirect_to'], $status = 302 );exit;
+        }
+
+      } else {
+        
+        if( !empty($_GET['redirect_to']) ){
+          wp_redirect( $_GET['redirect_to'], $status = 302 );exit;
+        }
+      }
+
+    }
+    
+  }
+  
   function maybe_reset_po_admin_menu_list(){
 
     if( isset($_GET['po_original_menu']) && $_GET['po_original_menu'] == 'get'){
@@ -345,6 +394,7 @@ class SOSPO_Admin {
 				'parent' => 'plugin_optimizer_blocked_plugins',
 				'id'     => 'plugin_optimizer_blocked_plugin_' . $plugin_path,
 				'title'  => $plugin_name,
+        'href'   => wp_nonce_url( $current_url . ( strpos( $current_url, '?' ) !== false ? '&' : '?' ) . 'toggle_plugin='.$plugin_path.'&mode=enable&redirect_to='.$current_url )
 			) );
 		}
 
@@ -361,6 +411,7 @@ class SOSPO_Admin {
 				'parent' => 'plugin_optimizer_running_plugins',
 				'id'     => 'plugin_optimizer_running_plugin_' . $plugin_path,
 				'title'  => $plugin_name,
+        'href'   => $plugin_name == 'Plugin Optimizer' ? '' : wp_nonce_url( $current_url . ( strpos( $current_url, '?' ) !== false ? '&' : '?' ) . 'toggle_plugin='.$plugin_path.'&mode=block&redirect_to='.$current_url ),
 			) );
 		}
         
