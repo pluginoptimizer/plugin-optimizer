@@ -288,7 +288,7 @@ jQuery( document ).ready( function($){
         
         let type = $(this).val();
         
-        if( type == "_endpoint" ){
+        if( type == "_endpoint" || type == '_ajax'){
             $('#edit_filter #endpoints_wrapper').slideDown();
         } else {
             $('#edit_filter #endpoints_wrapper').slideUp();
@@ -304,7 +304,10 @@ jQuery( document ).ready( function($){
             // console.log( "po_save_filter: ", response );
 
 
-            // alert( response.data.message );
+            if( !response.success ){
+              alert(response.data.message);
+              return;
+            }
             
             if( response.data.id ){
                 

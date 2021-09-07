@@ -855,11 +855,14 @@ input.search_filter:hover{
     font-size: 18px;
 }
 
+.list_of_plugins span {
+  padding: 10px;
+}
 .list_of_plugins{
+    padding: 5px 15px;
     position: relative;
 }
 .list_of_plugins.has_tooltip{
-    padding: 5px 15px;
     cursor: default;
 }
 .list_of_plugins.has_tooltip .tooltip_trigger{

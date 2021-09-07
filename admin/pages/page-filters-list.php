@@ -16,7 +16,7 @@ $filter_query = array_merge($filter_query, array(
       ),
       array(
        'key' => 'premium_filter',
-       'value' => is_plugin_active('plugin-optimizer-premium/plugin-optimizer-premium.php') ? 'true' : ''
+       'value' => is_plugin_active('plugin-optimizer-premium/plugin-optimizer-premium.php') || is_plugin_active('plugin-optimizer-agent/plugin-optimizer-agent.php') ? 'true' : ''
       )
   )
 ));
@@ -126,3 +126,24 @@ if( $filters ){
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<?php $active_plugins = get_option( 'active_plugins' );
+
+  $plugins = get_plugins();
+  $available_plugins = array();
+  foreach( $active_plugins as $plugin_id ){
+    $available_plugins[] = $plugins[$plugin_id]['Name'];
+  }
+
+?>
+  <script>
+  $( function() {
+    var availableTags = '<?php echo json_encode($available_plugins)?>';
+    availableTags = JSON.parse(availableTags);
+    $( ".search_filter" ).autocomplete({
+      source: availableTags
+    });
+  } );
+  </script>
