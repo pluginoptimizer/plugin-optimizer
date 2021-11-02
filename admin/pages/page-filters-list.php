@@ -43,7 +43,7 @@ if( $filters ){
 
 <div class="sos-wrap">
 
-    <?php SOSPO_Admin_Helper::content_part__header("Filters", "filters"); ?>
+    <?php @SOSPO_Admin_Helper::content_part__header("Filters", "filters"); ?>
     
     <div class="sos-content">
         <div class="justify-content-between global-information">

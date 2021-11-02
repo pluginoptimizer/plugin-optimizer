@@ -8,7 +8,7 @@
  */
 
 class SOSPO_Admin_Menu_Pages {
-
+	
 	function __construct() {
         
         add_action( 'admin_menu', [ $this, 'add_menu_pages' ] );
@@ -39,8 +39,19 @@ class SOSPO_Admin_Menu_Pages {
 		add_submenu_page( 'plugin_optimizer', 'Settings',           'Settings',             'manage_options', 'plugin_optimizer_settings',           [ $this, 'render_settings_page'           ] );
 		// add_submenu_page( 'plugin_optimizer', 'Support',            'Support',              'manage_options', 'plugin_optimizer_support',            [ $this, 'render_support_page'            ] );
 
+		if( is_plugin_active('plugin-optimizer-premium/plugin-optimizer-premium.php') ){
+		  add_submenu_page( 'plugin_optimizer', 'Premium', 'Premium', 'manage_options', 'plugin_optimizer_premium', array(
+	        $this,
+	        'render_premium_page'
+	    ) );	
+		}
 	}
 
+
+  function render_premium_page(){
+      
+    include dirname(dirname(__DIR__)) . '/plugin-optimizer-premium/partials/premium.php';
+  }
 
 	function render_overview_page() {
 		include 'pages/page-overview.php';

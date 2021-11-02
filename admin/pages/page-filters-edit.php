@@ -37,6 +37,7 @@ $viewing_dictionary = false;
  */
 $post = ! empty( $_GET["filter_id"] )  ? get_post( intval( $_GET["filter_id"] ) )  : false;
 
+
 if( $post ){
     
     $page_title = "Editing filter: " . $post->post_title;
@@ -76,6 +77,7 @@ elseif( ! empty( $_GET["work_title"] ) && ! empty( $_GET["work_link"] ) ){
 
 $title_class = 'col-9';
 
+if($post){
 if( sospo_mu_plugin()->has_agent ){
     
     $title_class = 'col-6';
@@ -151,6 +153,10 @@ if( sospo_mu_plugin()->has_agent ){
        
     }
 }
+} else {
+   $belongs_to_core_selected = '';
+}
+
 
 ?>
 
@@ -162,7 +168,7 @@ if( sospo_mu_plugin()->has_agent ){
    }
 </style>
 <div class="sos-wrap">
-   <?php SOSPO_Admin_Helper::content_part__header( $page_title, "filters" ); ?>
+   <?php @SOSPO_Admin_Helper::content_part__header( $page_title, "filters" ); ?>
 
 
    <div id="edit_filter" class="sos-content">
