@@ -4,7 +4,7 @@
  * Plugin Name:       Plugin Optimizer
  * Plugin URI:        https://pluginoptimizer.com
  * Description:       The Most Powerful Performance Plugin for WordPress is now available for FREE.
- * Version:           1.1.0
+ * Version:           1.1.2
  * Author:            Plugin Optimizer
  * Author URI:        https://pluginoptimizer.com/about/
  * License:           GPL-2.0+
@@ -15,7 +15,7 @@
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-	die;
+  die;
 }
 
 include 'config.php';
@@ -50,6 +50,23 @@ if( ! file_exists( WPMU_PLUGIN_DIR . '/class-po-mu.php') || ! function_exists("s
 global $sospo_appsero;
 function appsero_init_tracker_plugin_optimizer() {
     
+    // This changed the post type of previous version po
+    $updated = get_option('po_db_updated');
+
+    if( !$updated ){     
+
+      global $wpdb;
+
+      $count = $wpdb->get_var("SELECT count(post_type) as count FROM {$wpdb->prefix}posts WHERE post_type = 'sos_filter'");
+
+      if( $count ){
+
+        $updated = $wpdb->query("UPDATE {$wpdb->prefix}posts SET post_type = 'plgnoptmzr_filter' WHERE post_type = 'sos_filter'");
+
+        if( $updated ) update_option( 'po_db_updated','true' );
+      }
+    }
+
     global $sospo_appsero;
     
     $sospo_appsero = [];
@@ -73,6 +90,9 @@ function appsero_init_tracker_plugin_optimizer() {
     $sospo_appsero["premium"] = new Appsero\Client( 'ae74f660-483b-425f-9c31-eced50ca019f', 'Plugin Optimizer Premium', plugin_dir_path( __DIR__ ) . 'plugin-optimizer-premium/plugin-optimizer-premium.php' );
     $sospo_appsero["premium"]->insights()->init();// Activate insights
     $sospo_appsero["premium"]->updater();//          Activate automatic updater
+
+
+
     
     // Activate license page and checker
     $args = array(
@@ -91,8 +111,9 @@ add_action('plugins_loaded', 'appsero_init_tracker_plugin_optimizer');
  * The code that runs during plugin activation.
  */
 function activate_plugin_optimizer() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-activator.php';
-	SOSPO_Activator::activate();
+
+  require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-activator.php';
+  SOSPO_Activator::activate();
 }
 register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
 
@@ -100,8 +121,8 @@ register_activation_hook( __FILE__, 'activate_plugin_optimizer' );
  * The code that runs during plugin deactivation.
  */
 function deactivate_plugin_optimizer() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-deactivator.php';
-	SOSPO_Deactivator::deactivate();
+  require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-deactivator.php';
+  SOSPO_Deactivator::deactivate();
 }
 register_deactivation_hook( __FILE__, 'deactivate_plugin_optimizer' );
 
