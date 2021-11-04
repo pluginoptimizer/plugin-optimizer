@@ -189,9 +189,6 @@ if( sospo_mu_plugin()->has_agent ){
                                  <optgroup label="Default:">
                                     <option value="_endpoint">Endpoint(s)</option>
                                  </optgroup>
-                                 <optgroup label="Ajax">
-                                    <option value="_ajax">Ajax</option>
-                                 </optgroup>
                                  <optgroup label="Edit page of a Post Type:" id="select_post_types"></optgroup>
                               </select>
                               <span id="loading_post_types">Loading..</span>

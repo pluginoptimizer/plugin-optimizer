@@ -412,7 +412,7 @@ class SOSPO_Ajax {
       
     $post_types = [];
     
-    $post_types_raw = get_post_types( [ "show_in_menu" => true ], "objects" );
+    $post_types_raw = get_post_types( [], "objects" );
     
     // sospo_mu_plugin()->write_log( $post_types_raw, "po_get_post_types-post_types_raw" );
     
