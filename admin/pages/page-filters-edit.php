@@ -185,13 +185,45 @@ if( sospo_mu_plugin()->has_agent ){
                      <div>
                         <div class="content enter-data">
                            <span>
-                              <select name="SOSPO_filter_data[type]" id="set_filter_type" data-selected="<?php echo $post_type; ?>">
+                              <select name="SOSPO_filter_data[type]" id="set_filter_type" data-selected="<?php echo $post_type; ?>" style="display: block;">
                                  <optgroup label="Default:">
-                                    <option value="_endpoint">Endpoint(s)</option>
+                                    <option value="_endpoint" <?php echo $post_type == '_endpoint' ? 'selected="selected"': ''; ?>>Endpoint(s)</option>
                                  </optgroup>
-                                 <optgroup label="Edit page of a Post Type:" id="select_post_types"></optgroup>
+                                 <optgroup label="Edit page of a Post Type:" id="select_post_types">
+                                    <?php
+
+                                        $post_types = [];
+                                        
+                                        $post_types_raw = get_post_types( [], "objects" );
+                                        
+                                        // Check for all filter posts that are assigned to a post type
+                                        global $wpdb;
+
+                                        $post_types_filters = wp_list_pluck( $post_types_raw, 'name' );
+                                        $post_types_filters = implode("','", $post_types_filters);
+                                        $post_types_filters = $wpdb->get_results("SELECT `meta_value` FROM `{$wpdb->prefix}postmeta` WHERE `meta_key` = 'filter_type' AND `meta_value` IN ('{$post_types_filters}')");
+                                        $post_types_filters = wp_list_pluck( $post_types_filters, 'meta_value' );
+
+                                        foreach( $post_types_raw as $pstype ){
+
+                                            //if( in_array($pstype->name, $post_types_filters) && $pstype->name != $post_type ) continue;
+
+                                            $post_types[ $pstype->name ] = $pstype->labels->singular_name . " (" . $pstype->name . ")";
+                                        }
+
+                                        natsort( $post_types );
+
+                                        foreach( $post_types as $key => $pstype ){
+
+                                            echo '<option value="'.$key.'" 
+                                             '.( $post_type == $key ? 'selected="selected"': '' ).' 
+                                             '.( in_array($key, $post_types_filters) && $key != $post_type ? 'disabled' : '').'>
+                                             '.$pstype.'</option>';
+                                        }
+                                        
+                                    ?>
+                                 </optgroup>
                               </select>
-                              <span id="loading_post_types">Loading..</span>
                            </span>
                         </div>
                      </div>

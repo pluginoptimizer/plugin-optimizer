@@ -414,10 +414,19 @@ class SOSPO_Ajax {
     
     $post_types_raw = get_post_types( [], "objects" );
     
-    // sospo_mu_plugin()->write_log( $post_types_raw, "po_get_post_types-post_types_raw" );
-    
+    // Check for all filter posts that are assigned to a post type
+    global $wpdb;
+
+    $post_types_filters = wp_list_pluck( $post_types_raw, 'name' );
+    $post_types_filters = implode("','", $post_types_filters);
+    $post_types_filters = $wpdb->get_results("SELECT `meta_value` FROM `{$wpdb->prefix}postmeta` WHERE `meta_key` = 'filter_type' AND `meta_value` IN ('{$post_types_filters}')");
+    $post_types_filters = wp_list_pluck( $post_types_filters, 'meta_value' );
+
+
     foreach( $post_types_raw as $post_type ){
-        
+
+        if( in_array($post_type->name, $post_types_filters) ) continue;
+
         $post_types[ $post_type->name ] = $post_type->labels->singular_name . " (" . $post_type->name . ")";
         
     }
