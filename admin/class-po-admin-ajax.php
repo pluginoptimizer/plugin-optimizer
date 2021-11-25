@@ -101,7 +101,19 @@ class SOSPO_Ajax {
         // if we have categories, then we resave them.
         $set_categories = wp_set_object_terms( $post_id, $category_ids, "plgnoptmzr_categories" );
     }
-    
+
+    global $wpdb;
+
+    $wpdb->query("DELETE FROM `{$wpdb->prefix}filters_group` WHERE `filter_id` = {$post_id}");
+
+    if( isset($data['meta']['groups_used']) && !empty($data['meta']['groups_used']) ){
+
+      foreach( $data['meta']['groups_used'] as $key => $group ){
+
+        $wpdb->insert("{$wpdb->prefix}filters_group", array('filter_id'=>$post_id,'group_id'=>$key), array('%d','%d'));
+      }
+    }
+
     foreach( $data["meta"] as $meta_key => $meta_value ){
         
         update_post_meta( $post_id, $meta_key, $meta_value );
