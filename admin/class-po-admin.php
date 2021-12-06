@@ -24,7 +24,7 @@ class SOSPO_Admin {
 	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
-
+    private $po_total_time;
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -63,9 +63,10 @@ class SOSPO_Admin {
 		add_action( 'upgrader_process_complete',    [ $this, 'do_after_plugin_update'   ], 10, 2 );
 
 		add_filter( 'plugin_action_links',          [ $this, 'plugin_action_links'      ], 10, 2 );
-
+    add_action('wp_before_admin_bar_render',    [ $this,  'get_total_time'           ] );
     add_action( 'init',                         [ $this, 'maybe_reset_po_admin_menu_list']);
     add_action( 'wp_loaded',                    [ $this, 'po_toggle_plugins_to_block'],101);
+
 	}
 
 
@@ -356,11 +357,11 @@ class SOSPO_Admin {
 	function add_plugin_in_admin_bar( $wp_admin_bar ) {
         
         $current_url = sospo_mu_plugin()->current_full_url;
-        
+        $load_time = get_option('po_total_time');
         // Main top menu item
 		$wp_admin_bar->add_menu( array(
 			'id'    => 'plugin_optimizer',
-			'title' => '<span class="sos-icon"></span> Plugin Optimizer | Memory used: ' . $this->check_memory_usage() . ' Mb | Load Time: <span class="sos-speed">'.timer_stop(0).'</span>',
+			'title' => '<span class="sos-icon"></span> Plugin Optimizer | Load time: '.number_format($load_time,2,'.',',').'s | Memory used: ' . $this->check_memory_usage() . ' Mb</span>',
 			'href'  => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_settings' ) ),
 		) );
         
@@ -907,6 +908,28 @@ class SOSPO_Admin {
 
       }
       
+  }
+
+  public function get_total_time(){
+
+    if ( 'cli' === php_sapi_name() ) {
+      # For the time being, let's not load QM when using the CLI because we've no persistent storage and no means of
+      # outputting collected data on the CLI. This will hopefully change in a future version of QM.
+      return;
+    }
+
+    if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+      # Let's not load during cron events.
+      return;
+    }
+
+    if ( strpos($_SERVER['SCRIPT_NAME'], 'admin-ajax.php') !== FALSE ) {
+      # Let's not load during ajax requests.
+      return;
+    }
+
+    $this->po_total_time = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
+    update_option( 'po_total_time', $this->po_total_time );
   }
 
 }

@@ -3,7 +3,7 @@ Contributors: pluginoptimizer,simpleonlinesystems,andrija,jacobrossdev
 Tags: Plugin Optimizer, Speed Up, Optimization, Save Time, Page Speed, Performance
 Requires at least: 5.0
 Tested up to: 5.7
-Stable tag: 1.1.2
+Stable tag: 1.2.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -114,6 +114,12 @@ By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/suppo
 7. settings.jpg
 
 == Changelog ==
+
+= 1.2.0 = August 2021
+* Feature: Admin Bar shows page load time
+* Feature: Block/Unlock plugins from admin bar menu
+* Filter List: Filters now have a test link to view page
+* Removed premium admin menu
 
 = 1.1.1 = August 2021
 * Bug Fix: Fix display of previous created filters
