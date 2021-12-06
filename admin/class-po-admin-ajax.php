@@ -159,7 +159,6 @@ class SOSPO_Ajax {
 
   }
 
-
   /**
    * Create/Update Group
    */
@@ -279,22 +278,6 @@ class SOSPO_Ajax {
 	    
 	    wp_send_json_success( [ "category_id" => $data['term_id'] ] );
 	}
-
-	/**
-	 * Delete elements
-	 */
-	function po_delete_elements() {
-        
-		$name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
-		$type_elements  = sanitize_textarea_field( $_POST['type_elements'] );
-        $id_elements    = array_map( 'intval', $_POST['id_elements'] );
-
-		if ( $name_post_type === 'cat' ) {
-			
-			foreach ( $id_elements as $id_element ) {
-				wp_delete_term( $id_element, 'plgnoptmzr_categories' );
-			}
-
 
   /**
    * Delete elements
@@ -570,7 +553,6 @@ class SOSPO_Ajax {
 
 		die(json_encode(array('status'=>'success', 'filter'=>$filter_id)));
 	}
-   
 
 	function po_update_database(){
 
@@ -596,6 +578,5 @@ class SOSPO_Ajax {
 		  die(json_encode(array('status'=>'success')));
 		}
 
-	} 
+	}
 }
-
