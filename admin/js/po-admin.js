@@ -116,7 +116,7 @@ jQuery( document ).ready( function($){
     });
 
     // Edit Filter screen - fetch post types
-    if( $('#set_filter_type').length >= 1 ){
+    /*if( $('#set_filter_type').length >= 1 ){
         
         $.post( po_object.ajax_url, { action  : 'po_get_post_types' }, function( response ) {
             
@@ -145,7 +145,7 @@ jQuery( document ).ready( function($){
             $('#set_filter_type').val( selected ).change().slideDown();
             
         }, "json");
-    }
+    }*/
     
     // Edit Filter screen, Edit Group screen - Clicking on a plugin
     $('#edit_filter, #edit_group').on('click', '.block-plugin-wrapper .single_plugin', function(){

@@ -121,6 +121,9 @@ By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/suppo
 * Filter List: Filters now have a test link to view page
 * Removed premium admin menu
 
+= 1.1.2 = August 2021
+* Filter Types: Removed Ajax Filter Type option
+
 = 1.1.1 = August 2021
 * Bug Fix: Fix display of previous created filters
 * Bug Fix: Fix the Available filters count

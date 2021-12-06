@@ -1701,3 +1701,9 @@ input::placeholder{
 .po_table.groups thead th:nth-child(4) {
   width: 150px;
 }
+
+option:disabled {
+    background-color: #ddd;
+    color: #6c6c6c;
+    font-style: italic;
+}

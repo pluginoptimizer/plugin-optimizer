@@ -111,7 +111,6 @@ add_action('plugins_loaded', 'appsero_init_tracker_plugin_optimizer');
  * The code that runs during plugin activation.
  */
 function activate_plugin_optimizer() {
-
   require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-activator.php';
   SOSPO_Activator::activate();
 }
@@ -152,43 +151,6 @@ if( ! function_exists( 'write_log' ) ){
     }
 
 }
-
-
-function test_overview_page_hook( $tabs ){
-    
-    // sospo_mu_plugin()->write_log( $tabs, "test_overview_page_hook-tabs" );
-    
-    
-    $tabs[25] = [
-        "title"     => "Added by a hook",
-        "content"   => "And our content goes here"
-    ];
-    
-    ksort( $tabs );
-    
-    return $tabs;
-}
-// add_filter( "plgnoptmzr_overview_tabs", "test_overview_page_hook", 10, 1 );
-
-
-function test_post_state( $post_states, $post ){
-    
-    sospo_mu_plugin()->write_log( $post_states, "test_post_state-post_id: " . $post->ID . ", post_type: " . $post->post_type );
-    
-    if( $post->ID / 2 != ceil( $post->ID / 2 ) ){
-        
-        $post_states["test"] = "PO Optimized";
-    }
-    
-    return $post_states;
-}
-// add_filter( "display_post_states", "test_post_state", 10, 2 );
-
-function test_temp(){
-    
-   sospo_mu_plugin()->write_log( print_r( $GLOBALS['wp_scripts']->registered, true ), "test_temp-globals-wp_scripts" );
-}
-// add_action( "shutdown", "test_temp" );
 
 
 //http://stackoverflow.com/a/1597788/1287812

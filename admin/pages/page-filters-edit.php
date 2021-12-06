@@ -22,7 +22,7 @@ $categories = get_categories( [
 // defaults
 $page_title         = "Create a new Filter";
 $post_title       = "";
-$post_type        = "_endpoint";
+$filter_type        = "_endpoint";
 $plugins_to_block   = [];
 $groups_to_block    = [];
 $post_categories  = [];
@@ -37,6 +37,7 @@ $viewing_dictionary = false;
  */
 $post = ! empty( $_GET["filter_id"] )  ? get_post( intval( $_GET["filter_id"] ) )  : false;
 
+$filter_type = '_endpoint';
 
 if( $post ){
     
@@ -45,7 +46,7 @@ if( $post ){
     $post_title       = $post->post_title;
 
     // Get Filter Meta
-    $post_type          = get_post_meta( $post->ID, "filter_type", true );
+    $filter_type        = get_post_meta( $post->ID, "filter_type", true );
     $plugins_to_block   = get_post_meta( $post->ID, "plugins_to_block", true );
     $groups_to_block    = get_post_meta( $post->ID, "groups_used", true );
     $post_categories    = get_post_meta( $post->ID, "categories", true );
@@ -138,7 +139,7 @@ if( sospo_mu_plugin()->has_agent ){
             $page_title = "Dictionary filter: " . $dictionary_id;
             
             $post_title       = $dictionary_filter->title;
-            $post_type        = "_endpoint";
+            $filter_type        = "_endpoint";
             $groups_to_block    = [];
             $post_categories  = $dictionary_filter->categories;
             $endpoints          = [ $dictionary_filter->endpoint ];
@@ -196,16 +197,45 @@ if( sospo_mu_plugin()->has_agent ){
                      <div>
                         <div class="content enter-data">
                            <span>
-                              <select name="SOSPO_filter_data[type]" id="set_filter_type" data-selected="<?php echo $post_type; ?>">
+                              <select name="SOSPO_filter_data[type]" id="set_filter_type" data-selected="<?php echo $post_type; ?>" style="display: block;">
                                  <optgroup label="Default:">
-                                    <option value="_endpoint">Endpoint(s)</option>
+                                    <option value="_endpoint" <?php echo $filter_type == '_endpoint' ? 'selected="selected"': ''; ?>>Endpoint(s)</option>
                                  </optgroup>
-                                 <optgroup label="Ajax">
-                                    <option value="_ajax">Ajax</option>
+                                 <optgroup label="Edit page of a Post Type:" id="select_post_types">
+                                    <?php
+
+                                        $post_types = [];
+                                        
+                                        $post_types_raw = get_post_types( [], "objects" );
+                                        
+                                        // Check for all filter posts that are assigned to a post type
+                                        global $wpdb;
+
+                                        $post_types_filters = wp_list_pluck( $post_types_raw, 'name' );
+                                        $post_types_filters = implode("','", $post_types_filters);
+                                        $post_types_filters = $wpdb->get_results("SELECT `meta_value` FROM `{$wpdb->prefix}postmeta` WHERE `meta_key` = 'filter_type' AND `meta_value` IN ('{$post_types_filters}')");
+                                        $post_types_filters = wp_list_pluck( $post_types_filters, 'meta_value' );
+
+                                        foreach( $post_types_raw as $pstype ){
+
+                                            //if( in_array($pstype->name, $post_types_filters) && $pstype->name != $filter_type ) continue;
+
+                                            $post_types[ $pstype->name ] = $pstype->labels->singular_name . " (" . $pstype->name . ")";
+                                        }
+
+                                        natsort( $post_types );
+
+                                        foreach( $post_types as $key => $pstype ){
+
+                                            echo '<option value="'.$key.'" 
+                                             '.( $filter_type == $key ? 'selected="selected"': '' ).' 
+                                             '.( in_array($key, $post_types_filters) && $key != $filter_type ? 'disabled' : '').'>
+                                             '.$pstype.'</option>';
+                                        }
+                                        
+                                    ?>
                                  </optgroup>
-                                 <optgroup label="Edit page of a Post Type:" id="select_post_types"></optgroup>
                               </select>
-                              <span id="loading_post_types">Loading..</span>
                            </span>
                         </div>
                      </div>
@@ -230,7 +260,7 @@ if( sospo_mu_plugin()->has_agent ){
                   </div>
                   <?php } ?>
                </div>
-               <div class="row select_trigger" id="endpoints_wrapper">
+               <div class="row select_trigger" id="endpoints_wrapper" <?php echo $filter_type == '_endpoint' ? 'style="display: block;"' : ''; ?>>
                   <div class="">
                      <div class="header">Endpoints</div>
                   </div>

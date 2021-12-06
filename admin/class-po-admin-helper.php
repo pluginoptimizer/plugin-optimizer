@@ -154,7 +154,7 @@ class SOSPO_Admin_Helper {
                           $belongsTo = $wpdb->get_results("SELECT DISTINCT `meta_value` FROM `{$wpdb->prefix}postmeta` WHERE `meta_key` = 'belongsTo'");
                           $belongsTo = wp_list_pluck( $belongsTo, 'belongsTo' );
                           $mainTitleHTML .= '<option value="all">All Filters</option>';
-                          $mainTitleHTML .= '<option value="relevant"> Only Active Plugins</option>';
+                          $mainTitleHTML .= '<option value="relevant"> Only Installed Plugins</option>';
                           $mainTitleHTML .= '<option value="_core">Core Plugins</option>';
 
                           if($belongsTo)

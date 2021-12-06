@@ -63,69 +63,64 @@ class SOSPO_Admin {
 		add_action( 'upgrader_process_complete',    [ $this, 'do_after_plugin_update'   ], 10, 2 );
 
 		add_filter( 'plugin_action_links',          [ $this, 'plugin_action_links'      ], 10, 2 );
-    add_action('wp_before_admin_bar_render',    [ $this,  'get_total_time'           ] );
-    add_action( 'init',                         [ $this, 'maybe_reset_po_admin_menu_list']);
-    add_action( 'wp_loaded',                    [ $this, 'po_toggle_plugins_to_block'],101);
 
+        add_action( 'wp_before_admin_bar_render',    [$this, 'get_total_time'           ] );
+        add_action( 'init',                         [ $this, 'maybe_reset_po_admin_menu_list']);
+        add_action( 'wp_loaded',                    [ $this, 'po_toggle_plugins_to_block'],101);
 	}
 
+    function po_toggle_plugins_to_block(){
 
+        if( !empty($_GET['toggle_plugin']) && !empty($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce']) ){
 
-  function po_toggle_plugins_to_block(){
+          if( $_GET['toggle_plugin'] != 'plugin-optimizer/plugin-optimizer.php' ) {
 
-    if( !empty($_GET['toggle_plugin']) && !empty($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce']) ){
+            if( !empty($_GET['mode']) ){
 
-      if( $_GET['toggle_plugin'] != 'plugin-optimizer/plugin-optimizer.php' ) {
+              switch( $_GET['mode'] ){
 
-        if( !empty($_GET['mode']) ){
+                case 'enable':
 
-          switch( $_GET['mode'] ){
+                  foreach( sospo_mu_plugin()->filters_in_use as $filter_id => $filter_name ){
+                    $plugins_to_block = get_post_meta($filter_id, 'plugins_to_block', true);
+                    unset($plugins_to_block[$_GET['toggle_plugin']]);
+                    update_post_meta( $filter_id, 'plugins_to_block', $plugins_to_block );
+                  }
+                break;
 
-            case 'enable':
+                case 'block':
 
-              foreach( sospo_mu_plugin()->filters_in_use as $filter_id => $filter_name ){
-                $plugins_to_block = get_post_meta($filter_id, 'plugins_to_block', true);
-                unset($plugins_to_block[$_GET['toggle_plugin']]);
-                update_post_meta( $filter_id, 'plugins_to_block', $plugins_to_block );
+                  foreach( sospo_mu_plugin()->filters_in_use as $filter_id => $filter_name ){
+                    $plugins_to_block = get_post_meta($filter_id, 'plugins_to_block', true);
+                    $installed_plugins = get_plugins();
+                    $plugins_to_block[$_GET['toggle_plugin']] = $installed_plugins[$_GET['toggle_plugin']]['Name'];
+                    update_post_meta( $filter_id, 'plugins_to_block', $plugins_to_block );
+                  }
+                break;
               }
-            break;
+            }
 
-            case 'block':
+            if( !empty($_GET['redirect_to']) ){
+              wp_redirect( $_GET['redirect_to'], $status = 302 );exit;
+            }
 
-              foreach( sospo_mu_plugin()->filters_in_use as $filter_id => $filter_name ){
-                $plugins_to_block = get_post_meta($filter_id, 'plugins_to_block', true);
-                $installed_plugins = get_plugins();
-                $plugins_to_block[$_GET['toggle_plugin']] = $installed_plugins[$_GET['toggle_plugin']]['Name'];
-                update_post_meta( $filter_id, 'plugins_to_block', $plugins_to_block );
-              }
-            break;
+          } else {
+            
+            if( !empty($_GET['redirect_to']) ){
+              wp_redirect( $_GET['redirect_to'], $status = 302 );exit;
+            }
           }
-        }
 
-        if( !empty($_GET['redirect_to']) ){
-          wp_redirect( $_GET['redirect_to'], $status = 302 );exit;
         }
-
-      } else {
         
-        if( !empty($_GET['redirect_to']) ){
-          wp_redirect( $_GET['redirect_to'], $status = 302 );exit;
+    }
+
+    function maybe_reset_po_admin_menu_list(){
+        if( isset($_GET['po_original_menu']) && $_GET['po_original_menu'] == 'get'){
+            update_option( "po_admin_get_menu", true );
         }
-      }
 
     }
-    
-  }
-  
-  function maybe_reset_po_admin_menu_list(){
-
-    if( isset($_GET['po_original_menu']) && $_GET['po_original_menu'] == 'get'){
-
-        update_option( "po_admin_get_menu", true );
-
-    }
-    
-  }
 
 	function plugin_action_links(  $links, $file ){
         
@@ -357,11 +352,12 @@ class SOSPO_Admin {
 	function add_plugin_in_admin_bar( $wp_admin_bar ) {
         
         $current_url = sospo_mu_plugin()->current_full_url;
+
         $load_time = get_option('po_total_time');
         // Main top menu item
-		$wp_admin_bar->add_menu( array(
-			'id'    => 'plugin_optimizer',
-			'title' => '<span class="sos-icon"></span> Plugin Optimizer | Load time: '.number_format($load_time,2,'.',',').'s | Memory used: ' . $this->check_memory_usage() . ' Mb</span>',
+        $wp_admin_bar->add_menu( array(
+            'id'    => 'plugin_optimizer',
+            'title' => '<span class="sos-icon"></span> Plugin Optimizer | Load time: '.number_format($load_time,2,'.',',').'s | Memory used: ' . $this->check_memory_usage() . ' Mb</span>',
 			'href'  => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_settings' ) ),
 		) );
         

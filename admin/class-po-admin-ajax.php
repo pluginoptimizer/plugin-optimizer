@@ -47,141 +47,165 @@ class SOSPO_Ajax {
 
 	}
 
-	/**
-	 * Create/Update filter
-	 */
-	function po_save_filter() {
+  /**
+   * Create/Update filter
+   */
+  function po_save_filter() {
 
-	    global $wpdb;
-	        
-	    if( empty( $_POST['data'] ) ){              wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
-	    
-	    parse_str( $_POST['data'], $array);
-	    
-	    if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
-	    
-	    $data = SOSPO_Admin_Helper::format__save_filter_data( $array['SOSPO_filter_data'] );
-	    
-	    // sospo_mu_plugin()->write_log( $_POST, "po_save_filter-_POST" );
-	    // sospo_mu_plugin()->write_log( $data,  "po_save_filter-data"  );
-	    
-	    if( is_wp_error( $data ) ){
-	        
-	        wp_send_json_error( [ "message" => $data->get_error_message() ] );
-	    }
-	    
-	        
-			$post_data = array(
-				'post_title'  => $data["title"],
-				'post_type'   => 'plgnoptmzr_filter',
-				'post_status' => 'publish',
-				'post_author' => 1,// TODO get_current_user_id() with localize_script in enqueue function
-			);
-	        
-	    if( ! empty( $data["ID"] ) ){
-	        $post_data["ID"] = $data["ID"];
-	    }
-
-			$post_id = wp_insert_post( $post_data, true );
-
-			if ( is_wp_error( $post_id ) ) {
-				wp_send_json_error( [ "message" => $post_id->get_error_message() ] );
-			}
-
-	    // check if the agent plugin is installed
-	    if( in_array('plugin-optimizer-agent/plugin-optimizer-agent.php', get_option('active_plugins')) ){
-	        
-	        // if it is installed then add 'premium_filter' meta key to the post_id
-	        update_post_meta( $post_id, 'premium_filter', 'true');
-	    }
-
-	    if( ! empty( $data["meta"]["categories"] ) ){
-	        
-	        $category_ids = array_map( 'intval', array_keys( $data["meta"]["categories"] ) );
-	        
-	        $set_categories = wp_set_object_terms( $post_id, $category_ids, "plgnoptmzr_categories" );
-	    }
-	    
-	    foreach( $data["meta"] as $meta_key => $meta_value ){
-	        
-	        update_post_meta( $post_id, $meta_key, $meta_value );
-	    }
-
-
-	    foreach( $data["meta"]["endpoints"] as $page ){
-
-	      if( $pid = url_to_postid( site_url() . $page ) ){
-
-	        $permalink = get_permalink($pid); 
-
-	        $row = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}po_filtered_endpoints 
-	          WHERE filter_id = {$post_data['ID']} AND post_id = {$pid} AND url = '{$permalink}'");
-
-	        // if this row doesn't already exist, add it
-	        if( empty($row) )
-	          {
-	            $inserted = $wpdb->insert( 
-	              $wpdb->prefix . 'po_filtered_endpoints', 
-	              array( 
-	                'filter_id' => $post_data['ID'], 
-	                'post_id' => $pid, 
-	                'url' => $permalink, 
-	              ) 
-	            );
-	          }
-	      }
-	    }
-    
-		wp_send_json_success( [ "message" => "All good, the filter is saved.", "id" => $post_id, ] );
-
-	}
-
-	/**
-	 * Create/Update Group
-	 */
-	function po_save_group() {
+    global $wpdb;
         
-	    if( empty( $_POST['data'] ) ){              wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
-	    
-	    parse_str( $_POST['data'], $array);
-	    
-	    if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
-	        
-	    $data = SOSPO_Admin_Helper::format__save_group_data( $array['SOSPO_filter_data'] );
-	    
-	    // sospo_mu_plugin()->write_log( $_POST, "po_save_group-_POST" );
-	    // sospo_mu_plugin()->write_log( $data,  "po_save_group-data"  );
-	    
-	    if( is_wp_error( $data ) ){
-	        
-	        wp_send_json_error( [ "message" => $data->get_error_message() ] );
-	    }
-	        
-			$post_data = array(
-				'post_title'  => $data["title"],
-				'post_type'   => 'plgnoptmzr_group',
-				'post_status' => 'publish',
-				'post_author' => 1,// TODO get_current_user_id() with localize_script in enqueue function
-			);
-	    
-	    if( ! empty( $data["ID"] ) ){
-	        $post_data["ID"] = $data["ID"];
-	    }
+    if( empty( $_POST['data'] ) ){              wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
+    
+    parse_str( $_POST['data'], $array);
+    
+    if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
+    
+    $data = SOSPO_Admin_Helper::format__save_filter_data( $array['SOSPO_filter_data'] );
+    
+    // sospo_mu_plugin()->write_log( $_POST, "po_save_filter-_POST" );
+    // sospo_mu_plugin()->write_log( $data,  "po_save_filter-data"  );
+    
+    if( is_wp_error( $data ) ){
+        
+        wp_send_json_error( [ "message" => $data->get_error_message() ] );
+    }
+    
+        
+		$post_data = array(
+			'post_title'  => $data["title"],
+			'post_type'   => 'plgnoptmzr_filter',
+			'post_status' => 'publish',
+			'post_author' => 1,// TODO get_current_user_id() with localize_script in enqueue function
+		);
+        
+    if( ! empty( $data["ID"] ) ){
+        $post_data["ID"] = $data["ID"];
+    }
 
-			$post_id = wp_insert_post( $post_data, true );
+		$post_id = wp_insert_post( $post_data, true );
 
-			if ( is_wp_error( $post_id ) ) {
-				wp_send_json_error( [ "message" => $post_id->get_error_message() ] );
-			}
+		if ( is_wp_error( $post_id ) ) {
+			wp_send_json_error( [ "message" => $post_id->get_error_message() ] );
+		}
 
-	    foreach( $data["meta"] as $meta_key => $meta_value ){
-	        
-	        update_post_meta( $post_id, $meta_key, $meta_value );
-	    }
-            
-		wp_send_json_success( [ "message" => "All good, the group is saved.", "id" => $post_id, ] );
+    // check if the agent plugin is installed
+    if( in_array('plugin-optimizer-agent/plugin-optimizer-agent.php', get_option('active_plugins')) ){
+        
+        // if it is installed then add 'premium_filter' meta key to the post_id
+        update_post_meta( $post_id, 'premium_filter', 'true');
+    }
 
-	}
+    if( ! empty( $data["meta"]["categories"] ) ){
+        
+        $category_ids = array_map( 'intval', array_keys( $data["meta"]["categories"] ) );
+        
+        $set_categories = wp_set_object_terms( $post_id, $category_ids, "plgnoptmzr_categories" );
+    }
+    
+
+    foreach( $data["meta"]["endpoints"] as $page ){
+
+      if( $pid = url_to_postid( site_url() . $page ) ){
+
+        $permalink = get_permalink($pid); 
+
+        $row = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}po_filtered_endpoints 
+          WHERE filter_id = {$post_data['ID']} AND post_id = {$pid} AND url = '{$permalink}'");
+
+        // if this row doesn't already exist, add it
+        if( empty($row) )
+          {
+            $inserted = $wpdb->insert( 
+              $wpdb->prefix . 'po_filtered_endpoints', 
+              array( 
+                'filter_id' => $post_data['ID'], 
+                'post_id' => $pid, 
+                'url' => $permalink, 
+              ) 
+            );
+          }
+      }
+    }
+    
+    // Let's clear the categories first.
+    $set_categories = wp_set_object_terms( $post_id, array(), "plgnoptmzr_categories" );
+
+    if( ! empty( $data["meta"]["categories"] ) ){
+        
+        $category_ids = array_map( 'intval', array_keys( $data["meta"]["categories"] ) );
+        
+        // if we have categories, then we resave them.
+        $set_categories = wp_set_object_terms( $post_id, $category_ids, "plgnoptmzr_categories" );
+    }
+
+    global $wpdb;
+
+    $wpdb->query("DELETE FROM `{$wpdb->prefix}filters_group` WHERE `filter_id` = {$post_id}");
+
+    if( isset($data['meta']['groups_used']) && !empty($data['meta']['groups_used']) ){
+
+      foreach( $data['meta']['groups_used'] as $key => $group ){
+
+        $wpdb->insert("{$wpdb->prefix}filters_group", array('filter_id'=>$post_id,'group_id'=>$key), array('%d','%d'));
+      }
+    }
+
+    foreach( $data["meta"] as $meta_key => $meta_value ){
+        
+        update_post_meta( $post_id, $meta_key, $meta_value );
+    }
+
+    wp_send_json_success( [ "message" => "All good, the filter is saved.", "id" => $post_id, ] );
+
+  }
+
+
+  /**
+   * Create/Update Group
+   */
+  function po_save_group() {
+      
+    if( empty( $_POST['data'] ) ){              wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
+    
+    parse_str( $_POST['data'], $array);
+    
+    if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
+        
+    $data = SOSPO_Admin_Helper::format__save_group_data( $array['SOSPO_filter_data'] );
+    
+    // sospo_mu_plugin()->write_log( $_POST, "po_save_group-_POST" );
+    // sospo_mu_plugin()->write_log( $data,  "po_save_group-data"  );
+    
+    if( is_wp_error( $data ) ){
+        
+        wp_send_json_error( [ "message" => $data->get_error_message() ] );
+    }
+        
+        $post_data = array(
+            'post_title'  => $data["title"],
+            'post_type'   => 'plgnoptmzr_group',
+            'post_status' => 'publish',
+            'post_author' => 1,// TODO get_current_user_id() with localize_script in enqueue function
+        );
+    
+    if( ! empty( $data["ID"] ) ){
+        $post_data["ID"] = $data["ID"];
+    }
+
+        $post_id = wp_insert_post( $post_data, true );
+
+        if ( is_wp_error( $post_id ) ) {
+            wp_send_json_error( [ "message" => $post_id->get_error_message() ] );
+        }
+
+    foreach( $data["meta"] as $meta_key => $meta_value ){
+        
+        update_post_meta( $post_id, $meta_key, $meta_value );
+    }
+          
+      wp_send_json_success( [ "message" => "All good, the group is saved.", "id" => $post_id, ] );
+
+  }
 
 	/**
 	 * Create/Update Category
@@ -228,7 +252,7 @@ class SOSPO_Ajax {
         
 		wp_send_json_success( [ "message" => "All good, the category is saved.", "id" => $category["term_id"], ] );
 
-	}
+  }
 
 	/**
 	 * Create new category
@@ -271,88 +295,104 @@ class SOSPO_Ajax {
 				wp_delete_term( $id_element, 'plgnoptmzr_categories' );
 			}
 
-			wp_send_json_success( [ "status" => "success", "message" => "Categories are deleted." ] );
-            
-		} elseif ( $type_elements === 'all' ) {
-         
-			foreach ( $id_elements as $post_id ) {
-				wp_trash_post( $post_id );
-			}
-            
-			wp_send_json_success( [ "status" => "success", "message" => "Items are moved to trash." ] );
-            
-		} else {
-            
-			$posts = get_posts( array(
-				'post_type'   => $name_post_type,
-				'include'     => $id_elements,
-				'post_status' => 'trash',
-			) );
 
-			foreach ( $posts as $post ) {
-				wp_delete_post( $post->ID, true );
-			}
-            
-			wp_send_json_success( [ "status" => "success", "message" => "Items are permanently deleted." ] );
-            
-		}
-	}
+  /**
+   * Delete elements
+   */
+  function po_delete_elements() {
+      
+      $name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
+      $type_elements  = sanitize_textarea_field( $_POST['type_elements'] );
+      $id_elements    = array_map( 'intval', $_POST['id_elements'] );
 
-	/**
-	 * Restore works
-	 */
-	function po_publish_elements() {
-        
-		$name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
-        $id_elements    = array_map( 'intval', $_POST['id_elements'] );
+      if ( $name_post_type === 'cat' ) {
+          
+          foreach ( $id_elements as $id_element ) {
+              wp_delete_term( $id_element, 'plgnoptmzr_categories' );
+          }
 
-		$posts = get_posts( array(
-			'post_type'   => $name_post_type,
-			'include'     => $id_elements,
-			'post_status' => 'trash',
-		) );
+          wp_send_json_success( [ "status" => "success", "message" => "Categories are deleted." ] );
+          
+      } elseif ( $type_elements === 'all' ) {
+       
+          foreach ( $id_elements as $post_id ) {
+              wp_trash_post( $post_id );
+          }
+          
+          wp_send_json_success( [ "status" => "success", "message" => "Items are moved to trash." ] );
+          
+      } else {
+          
+          $posts = get_posts( array(
+              'post_type'   => $name_post_type,
+              'include'     => $id_elements,
+              'post_status' => 'trash',
+          ) );
 
-		foreach ( $posts as $post ) {
-			wp_publish_post( $post->ID );
-		}
-        
-		wp_send_json_success( [ "message" => "Items are restored." ] );
-        
-	}
-    
-	/**
-	 * Bulk turn filters on
-	 */
-	function po_turn_filter_on() {
-        
-		$name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
-        $id_elements    = array_map( 'intval', $_POST['id_elements'] );
+          foreach ( $posts as $post ) {
+              wp_delete_post( $post->ID, true );
+          }
+          
+          wp_send_json_success( [ "status" => "success", "message" => "Items are permanently deleted." ] );
+          
+      }
+  }
 
-		$posts = get_posts( array(
-			'post_type'   => $name_post_type,
-			'include'     => $id_elements,
-		) );
+  /**
+   * Restore works
+   */
+  function po_publish_elements() {
+      
+      $name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
+      $id_elements    = array_map( 'intval', $_POST['id_elements'] );
 
-		foreach ( $posts as $post ) {
-			update_post_meta( $post->ID, "turned_off", false );
-		}
-        
-		wp_send_json_success( [ "message" => count( $posts) . " filters are turned on." ] );
-        
-	}
-    
-	/**
-	 * Bulk turn filters off
-	 */
-	function po_turn_filter_off() {
-        
-		$name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
-        $id_elements    = array_map( 'intval', $_POST['id_elements'] );
+      $posts = get_posts( array(
+          'post_type'   => $name_post_type,
+          'include'     => $id_elements,
+          'post_status' => 'trash',
+      ) );
 
-		$posts = get_posts( array(
-			'post_type'   => $name_post_type,
-			'include'     => $id_elements,
-		) );
+      foreach ( $posts as $post ) {
+          wp_publish_post( $post->ID );
+      }
+      
+      wp_send_json_success( [ "message" => "Items are restored." ] );
+      
+  }
+  
+  /**
+   * Bulk turn filters on
+   */
+  function po_turn_filter_on() {
+      
+      $name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
+      $id_elements    = array_map( 'intval', $_POST['id_elements'] );
+
+      $posts = get_posts( array(
+          'post_type'   => $name_post_type,
+          'include'     => $id_elements,
+      ) );
+
+      foreach ( $posts as $post ) {
+          update_post_meta( $post->ID, "turned_off", false );
+      }
+      
+      wp_send_json_success( [ "message" => count( $posts) . " filters are turned on." ] );
+      
+  }
+  
+  /**
+   * Bulk turn filters off
+   */
+  function po_turn_filter_off() {
+      
+      $name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
+      $id_elements    = array_map( 'intval', $_POST['id_elements'] );
+
+      $posts = get_posts( array(
+          'post_type'   => $name_post_type,
+          'include'     => $id_elements,
+      ) );
 
 		foreach ( $posts as $post ) {
 			update_post_meta( $post->ID, "turned_off", true );
@@ -361,33 +401,33 @@ class SOSPO_Ajax {
 		wp_send_json_success( [ "message" => count( $posts) . " filters are turned off." ] );
         
 	}
+  
+  /**
+   * Used for the Overview page
+   */
+  function po_mark_tab_complete(){
     
-	/**
-	 * Used for the Overview page
-	 */
-	function po_mark_tab_complete(){
-
-		$tab_id  = sanitize_textarea_field( $_POST["tab_id"] );
-		$user_id = intval( $_POST["user_id"] );
-
-		$user_tabs_completed = get_user_meta( $user_id, "completed_overview_tabs", true );
-
-		if( empty( $user_tabs_completed ) ){
-		    $user_tabs_completed = [];
-		}
-
-		if( ! in_array( $tab_id, $user_tabs_completed ) ){
-		    
-		    $user_tabs_completed[] = $tab_id;
-		    sort( $user_tabs_completed );
-		    
-		    update_user_meta( $user_id, "completed_overview_tabs", $user_tabs_completed );
-		}
-	  
-	  	wp_send_json_success( [ "message" => "Completed tabs are now remembered." ] );
-	  
-	}
+    $tab_id  = sanitize_textarea_field( $_POST["tab_id"] );
+    $user_id = intval( $_POST["user_id"] );
     
+    $user_tabs_completed = get_user_meta( $user_id, "completed_overview_tabs", true );
+    
+    if( empty( $user_tabs_completed ) ){
+        $user_tabs_completed = [];
+    }
+    
+    if( ! in_array( $tab_id, $user_tabs_completed ) ){
+        
+        $user_tabs_completed[] = $tab_id;
+        sort( $user_tabs_completed );
+        
+        update_user_meta( $user_id, "completed_overview_tabs", $user_tabs_completed );
+    }
+      
+      wp_send_json_success( [ "message" => "Completed tabs are now remembered." ] );
+      
+  }
+        
 	/**
 	 * From the Settings page
 	 */
@@ -401,19 +441,19 @@ class SOSPO_Ajax {
 	  
 	}
     
-	/**
-	 * From the Filters List page
-	 */
-	function po_turn_off_filter(){
-	  
-		$turned_off  = $_POST["turned_off"] === "true";
-		$post_id     = intval( $_POST["post_id"] );
-
-		update_post_meta( $post_id, "turned_off", $turned_off );
-		  
-	  wp_send_json_success( [ "message" => "Filter turned " . ( $turned_off ? "off" : "on" ) . " successfully." ] );
-	  
-	}
+  /**
+   * From the Filters List page
+   */
+  function po_turn_off_filter(){
+      
+    $turned_off  = $_POST["turned_off"] === "true";
+    $post_id     = intval( $_POST["post_id"] );
+    
+    update_post_meta( $post_id, "turned_off", $turned_off );
+      
+      wp_send_json_success( [ "message" => "Filter turned " . ( $turned_off ? "off" : "on" ) . " successfully." ] );
+      
+  }
     
 	/**
 	 * Save the admin menu sidebar HTML in the database
@@ -434,28 +474,37 @@ class SOSPO_Ajax {
 	  
 	}
   
-	/**
-	 * Because Ajax is not being filtered, we can get a full list of post types
-	 */
-	function po_get_post_types(){
-	  
-		$post_types = [];
+  /**
+   * Because Ajax is not being filtered, we can get a full list of post types
+   */
+  function po_get_post_types(){
+      
+    $post_types = [];
+    
+    $post_types_raw = get_post_types( [], "objects" );
+    
+    // Check for all filter posts that are assigned to a post type
+    global $wpdb;
 
-		$post_types_raw = get_post_types( [ "show_in_menu" => true ], "objects" );
+    $post_types_filters = wp_list_pluck( $post_types_raw, 'name' );
+    $post_types_filters = implode("','", $post_types_filters);
+    $post_types_filters = $wpdb->get_results("SELECT `meta_value` FROM `{$wpdb->prefix}postmeta` WHERE `meta_key` = 'filter_type' AND `meta_value` IN ('{$post_types_filters}')");
+    $post_types_filters = wp_list_pluck( $post_types_filters, 'meta_value' );
 
-		// sospo_mu_plugin()->write_log( $post_types_raw, "po_get_post_types-post_types_raw" );
 
-		foreach( $post_types_raw as $post_type ){
+    foreach( $post_types_raw as $post_type ){
 
-			$post_types[ $post_type->name ] = $post_type->labels->singular_name . " (" . $post_type->name . ")";
+        if( in_array($post_type->name, $post_types_filters) ) continue;
 
-		}
-
-		natsort( $post_types );
-	  
-	  	wp_send_json_success( [ "message" => "Post types fetched.", "post_types" => $post_types ] );
-	  
-	}
+        $post_types[ $post_type->name ] = $post_type->labels->singular_name . " (" . $post_type->name . ")";
+        
+    }
+    
+    natsort( $post_types );
+      
+      wp_send_json_success( [ "message" => "Post types fetched.", "post_types" => $post_types ] );
+      
+  }
   
 	/**
 	* Sends a request to the Prospector node instance

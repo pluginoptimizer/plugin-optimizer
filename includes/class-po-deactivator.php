@@ -18,7 +18,9 @@ class SOSPO_Deactivator {
 	 *
 	 */
 	public static function deactivate() {
-		unlink( WPMU_PLUGIN_DIR . '/class-po-mu.php' );
+    if( file_exists(WPMU_PLUGIN_DIR . '/class-po-mu.php') ){
+      unlink( WPMU_PLUGIN_DIR . '/class-po-mu.php' );
+    }
 	}
 
 }
