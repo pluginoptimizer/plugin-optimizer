@@ -250,6 +250,23 @@ class SOSPO_MU {
         return false;
     }
 
+    function po_get_filters(){
+        global $wpdb;
+        $main_query = "
+        SELECT 
+          `p`.`ID`,
+          `p`.`post_title`,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'endpoints' AND `post_id` = `p`.`ID`) as endpoints,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'filter_type' AND `post_id` = `p`.`ID`) as filter_type,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'dict_id' AND `post_id` = `p`.`ID`) as filter_id,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'plugins_to_block' AND `post_id` = `p`.`ID`) as plugins_to_block,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'belongs_to' AND `post_id` = `p`.`ID`) as belongsTo,
+          (SELECT `user_email` FROM {$wpdb->prefix}users as u WHERE `u`.`ID` = `p`.`post_author`) as author
+          FROM {$wpdb->prefix}posts as p WHERE `post_type`='plgnoptmzr_filter' AND `post_status` = 'publish'";
+
+        return $wpdb->get_results($main_query);
+    }
+
     function get_plugins_to_block_for_current_url() {
 
 
@@ -275,10 +292,7 @@ class SOSPO_MU {
                         
             $block_plugins = array_diff( $this->original_active_plugins, $this->po_plugins );
             
-            $filters = get_posts([
-                'post_type'   => 'plgnoptmzr_filter',
-                'numberposts' => - 1,
-            ]);
+            $filters = $this->po_get_filters();
 
             foreach( $filters as $filter ){
 
@@ -289,6 +303,7 @@ class SOSPO_MU {
 
                 // Filter by URL
 
+                $endpoints = unserialize($filter->endpoints);
                 $endpoints = is_array( $filter->endpoints ) ? $filter->endpoints : [ $filter->endpoints ];
 
                 $protocol = isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
@@ -347,6 +362,7 @@ class SOSPO_MU {
             return [];
         }
 
+
         $editing_post_type = $this->is_editing_post_type( $this->current_wp_relative_url );
 
         // --- are we on any of the PO pages? yes, second boolean in the condition
@@ -364,15 +380,11 @@ class SOSPO_MU {
         }
 
         // --- Get plugins to block from all the filters
-
-        $filters = get_posts([
-            'post_type'   => 'plgnoptmzr_filter',
-            'numberposts' => - 1,
-        ]);
+        $filters = $this->po_get_filters();
 
         foreach( $filters as $filter ){
 
-            if( $filter->turned_off ){
+            if( !empty($filter->turned_off) && $filter->turned_off ){
 
                 continue;
             }
@@ -387,12 +399,13 @@ class SOSPO_MU {
             }
 
             // Filter by URL
+            $endpoints = unserialize($filter->endpoints);
+            $endpoints = is_array( $endpoints ) ? $endpoints : [ $endpoints ];
 
-            $endpoints = is_array( $filter->endpoints ) ? $filter->endpoints : [ $filter->endpoints ];
 
-            if( in_array( $this->current_wp_relative_url, $endpoints ) ){
+            if( in_array( urldecode($this->current_wp_relative_url), $endpoints ) ){
 
-                $this->use_filter( $filter );
+                $plugins_to_block = $this->use_filter( $filter );
 
             } else {
 
@@ -418,13 +431,15 @@ class SOSPO_MU {
 
         $this->is_being_filtered = true;
 
+        $filter->plugins_to_block = unserialize($filter->plugins_to_block);
+
         $plugins_to_block = ! empty( $filter->plugins_to_block ) ? array_keys( $filter->plugins_to_block ) : [];
 
         $this->plugins_to_block = array_merge( $this->plugins_to_block, $plugins_to_block );
 
         $this->filters_in_use[ $filter->ID ] = $filter->post_title;
 
-        return $plugins_to_block;
+        return $this->plugins_to_block;
     }
 
     function update_worklist_if_needed(){
