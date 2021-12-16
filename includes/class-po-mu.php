@@ -37,6 +37,11 @@ class SOSPO_MU {
 
     public $has_premium             = false;
     public $has_agent               = false;
+    public $current_query_params    = [];
+
+    public $current_url_host  = '';
+    public $current_url_path  = '';
+    public $current_url_params = [];
 
     private function __construct() {
 
@@ -73,7 +78,6 @@ class SOSPO_MU {
             // PO Premium
             'PO_retrieve_filters',
             'PO_compile_filters',
-            
         ];
         $this->po_plugins = [
             "plugin-optimizer/plugin-optimizer.php",
@@ -109,6 +113,11 @@ class SOSPO_MU {
         $this->current_full_url         = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
         $this->current_wp_relative_url  = str_replace( site_url(), "", $this->current_full_url );
 
+        $pathinfo = parse_url($this->current_full_url);
+
+        $this->current_url_host  = $pathinfo['host'];
+        $this->current_url_path  = $pathinfo['path'];        
+        parse_str($pathinfo['query'], $this->current_url_params);
 
         $this->set_hooks();
 
@@ -412,12 +421,47 @@ class SOSPO_MU {
 
                 foreach( $endpoints as $endpoint ){
 
+                    $parsed_endpoint = parse_url($endpoint);
+
+                    // Check if there's a path ex /blog or /about-us
+                    if( !empty($parsed_endpoint['path']) ){
+                        
+                        // Compare the paths of current url and in the filter endpoint
+                        if( $parsed_endpoint['path'] == $this->current_url_path ){
+
+                            // Are there query params?
+                            if( !empty($parsed_endpoint['query']) ){
+                                
+                                // convert endpoint params to array
+                                parse_str($parsed_endpoint['query'],$endpoint_params);
+
+                                // check if the current url is missing any of the required params in filter endpoint
+                                $params_diff = array_diff_assoc($endpoint_params,$this->current_url_params );
+
+                                // if no missing parameters - fire the filter
+                                if( empty($params_diff) ){
+
+                                    $this->use_filter( $filter );
+                                    break;
+                                }
+
+                            // There's no query parameters in the endpoint and paths match so - fire filter
+                            } else {
+
+                                $this->use_filter( $filter );
+                                break;
+                            }
+
+                        }
+                    }
+
+                    /* Deprecated
                     if( fnmatch( $endpoint, $this->current_wp_relative_url, FNM_PATHNAME | FNM_CASEFOLD ) ){
 
                         $this->use_filter( $filter );
 
                         break;
-                    }
+                    }*/
 
                 }
 
