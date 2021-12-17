@@ -115,11 +115,20 @@ By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/suppo
 
 == Changelog ==
 
-= 1.2.0 = August 2021
+= 1.2.0 = December 2021
 * Feature: Admin Bar shows page load time
 * Feature: Block/Unlock plugins from admin bar menu
-* Filter List: Filters now have a test link to view page
-* Removed premium admin menu
+* Feature: Load Time in admin bar
+* Feature: Filters now have a test link to view page
+* Changes: Removed premium admin menu
+* Fix: Some filters were not getting blocked
+* Fix: Categories not showing in field
+* Fix: Filter type dropdown not saving state
+* Fix: Removed categories not saving
+* Fix: Endpoint field not showing automatically
+* Fix: Activation & Deactivation bug
+* Fix: Endpoint field not pasting relative URL consistently
+
 
 = 1.1.2 = August 2021
 * Filter Types: Removed Ajax Filter Type option

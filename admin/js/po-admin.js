@@ -462,13 +462,12 @@ jQuery( document ).ready( function($){
 
     // On the Edit Filter screen, we need to force to local domain, can't filter plugins for other domains
     $('body').on('input', '.additional_endpoint_wrapper input', function(ev){
-        
-        // console.log( "Event type: ", ev.type );
-        
-        let full_url = new URL( $(this).val(), po_object.home_url );
-        let relative = full_url.href.replace( full_url.origin, '' );
+                
+        var entered_val = $(this).val();
+        var edited_val  = '/'+entered_val.replace(po_object.home_url+'/','');
+        var edited_val  = edited_val.replace('//','/');
 
-        $(this).val( relative );
+        $(this).val( edited_val );
         
         $(this).parent().removeClass("error__empty_input");
     });
