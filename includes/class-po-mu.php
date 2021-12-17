@@ -423,6 +423,7 @@ class SOSPO_MU {
 
                     $parsed_endpoint = parse_url($endpoint);
 
+
                     // Check if there's a path ex /blog or /about-us
                     if( !empty($parsed_endpoint['path']) ){
                         
