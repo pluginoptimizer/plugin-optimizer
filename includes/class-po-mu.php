@@ -421,8 +421,17 @@ class SOSPO_MU {
 
                 foreach( $endpoints as $endpoint ){
 
-                    $parsed_endpoint = parse_url($endpoint);
+                    if( strpos($endpoint, '*') !== FALSE ){
 
+                        if( fnmatch( $endpoint, $this->current_wp_relative_url, FNM_PATHNAME | FNM_CASEFOLD ) ){
+
+                            $this->use_filter( $filter );
+
+                            break;
+                        }
+                    }
+
+                    $parsed_endpoint = parse_url($endpoint);
 
                     // Check if there's a path ex /blog or /about-us
                     if( !empty($parsed_endpoint['path']) ){
@@ -455,14 +464,6 @@ class SOSPO_MU {
 
                         }
                     }
-
-                    /* Deprecated
-                    if( fnmatch( $endpoint, $this->current_wp_relative_url, FNM_PATHNAME | FNM_CASEFOLD ) ){
-
-                        $this->use_filter( $filter );
-
-                        break;
-                    }*/
 
                 }
 

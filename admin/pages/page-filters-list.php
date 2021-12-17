@@ -126,9 +126,9 @@ if( $filters ){
         </div>
     </div>
 </div>
-
+<!-- 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 <?php $active_plugins = get_option( 'active_plugins' );
 
   $plugins = get_plugins();
@@ -139,11 +139,17 @@ if( $filters ){
 
 ?>
   <script>
-  $( function() {
+  jQuery(document).ready(function($){
+
     var availableTags = '<?php echo json_encode($available_plugins)?>';
     availableTags = JSON.parse(availableTags);
     $( ".search_filter" ).autocomplete({
       source: availableTags
     });
-  } );
+
+    /*$(window).on('load', function(){
+        window.dispatchEvent(new Event('resize'));
+        $('#adminmenuwrap').css('position','fixed')
+    });*/
+  })
   </script>
