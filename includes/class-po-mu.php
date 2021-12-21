@@ -201,6 +201,8 @@ class SOSPO_MU {
 
     function filter_active_plugins_option_value( $active_plugins ) {
 
+        /*
+        */
         if( ! empty( $this->all_plugins ) ){
             return $active_plugins;
         }
@@ -212,6 +214,17 @@ class SOSPO_MU {
         add_filter( 'option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
 
         $this->original_active_plugins  = $active_plugins;
+
+        if( in_array( "plugin-optimizer-premium/plugin-optimizer-premium.php", $this->original_active_plugins ) ){
+
+            $this->has_premium = true;
+        }
+
+        //if( in_array( "plugin-optimizer-agent/plugin-optimizer-agent.php", $this->original_active_plugins ) ){
+        if( is_plugin_active("plugin-optimizer-agent/plugin-optimizer-agent.php") ){
+
+            $this->has_agent = true;
+        }
 
         $active_plugins_on_menu_save = get_option( "active_plugins_on_menu_save" );
 
@@ -229,7 +242,24 @@ class SOSPO_MU {
 
         $this->blocked_plugins          = array_intersect( $this->original_active_plugins, $this->plugins_to_block );
 
-        return $this->filtered_active_plugins;
+
+        //return $this->filtered_active_plugins;
+        return $active_plugins;
+    }
+
+    function update_worklist_if_needed(){
+
+        if( $this->is_skipped === false && $this->is_being_filtered === false && ! $this->is_po_default_page ){ /* not doing anything */
+
+            if( ! is_admin() ){
+
+
+                // TODO we need to add endpoints to the Worklist here
+
+            }
+
+            // $this->write_log( ( is_admin() ? "Back end" : "Front end" ) . ": " . var_export( trim( $this->current_wp_relative_url ), true ), "update_worklist_if_needed-REQUEST_URI" );
+        }
     }
 
     function should_block_all( $url ) {
@@ -260,6 +290,30 @@ class SOSPO_MU {
         return false;
     }
 
+    function po_get_filters_exclude_premium(){
+        global $wpdb;
+        $main_query = "
+        SELECT 
+          `p`.`ID`,
+          `p`.`post_title`,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'endpoints' AND `post_id` = `p`.`ID`) as endpoints,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'filter_type' AND `post_id` = `p`.`ID`) as filter_type,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'dict_id' AND `post_id` = `p`.`ID`) as filter_id,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'plugins_to_block' AND `post_id` = `p`.`ID`) as plugins_to_block,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'belongs_to' AND `post_id` = `p`.`ID`) as belongsTo,
+          (SELECT `user_email` FROM {$wpdb->prefix}users as u WHERE `u`.`ID` = `p`.`post_author`) as author
+          FROM {$wpdb->prefix}posts as p 
+          JOIN {$wpdb->prefix}postmeta as pm
+           ON pm.post_id = p.ID
+          WHERE `p`.`post_type`='plgnoptmzr_filter' 
+          AND `p`.`post_status` = 'publish' 
+          AND `pm`.`meta_key` = 'premium_filter'
+          AND `pm`.`meta_value` != 'true'
+        ";
+        $results = $wpdb->get_results($main_query);
+        return $results;
+    }
+
     function po_get_filters(){
         global $wpdb;
         $main_query = "
@@ -273,8 +327,8 @@ class SOSPO_MU {
           (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'belongs_to' AND `post_id` = `p`.`ID`) as belongsTo,
           (SELECT `user_email` FROM {$wpdb->prefix}users as u WHERE `u`.`ID` = `p`.`post_author`) as author
           FROM {$wpdb->prefix}posts as p WHERE `post_type`='plgnoptmzr_filter' AND `post_status` = 'publish'";
-
-        return $wpdb->get_results($main_query);
+        $results = $wpdb->get_results($main_query);
+        return $results;
     }
 
     function get_plugins_to_block_for_current_url() {
@@ -301,8 +355,15 @@ class SOSPO_MU {
         if( wp_doing_ajax() && ! empty( $_POST["action"] ) ){
                         
             $block_plugins = array_diff( $this->original_active_plugins, $this->po_plugins );
-            
-            $filters = $this->po_get_filters();
+
+            if( $this->has_premium ){
+
+                $filters = $this->po_get_filters();
+
+            } else {
+
+                $filters = $this->po_get_filters_exclude_premium();
+            }
 
             foreach( $filters as $filter ){
 
@@ -390,7 +451,13 @@ class SOSPO_MU {
         }
 
         // --- Get plugins to block from all the filters
-        $filters = $this->po_get_filters();
+        if( $this->has_premium ){
+            $filters = $this->po_get_filters();
+
+        } else {
+
+            $filters = $this->po_get_filters_exclude_premium();
+        }
 
         foreach( $filters as $filter ){
 
@@ -434,13 +501,14 @@ class SOSPO_MU {
                     $parsed_endpoint = parse_url($endpoint);
 
                     // Check if there's a path ex /blog or /about-us
-                    if( !empty($parsed_endpoint['path']) ){
+                    if( !empty($parsed_endpoint['path']) && !empty($this->current_url_params)){
                         
                         // Compare the paths of current url and in the filter endpoint
                         if( $parsed_endpoint['path'] == $this->current_url_path ){
 
+
                             // Are there query params?
-                            if( !empty($parsed_endpoint['query']) ){
+                            if( isset($parsed_endpoint['query']) && !empty($parsed_endpoint['query']) ){
                                 
                                 // convert endpoint params to array
                                 parse_str($parsed_endpoint['query'],$endpoint_params);
@@ -487,21 +555,6 @@ class SOSPO_MU {
         $this->filters_in_use[ $filter->ID ] = $filter->post_title;
 
         return $this->plugins_to_block;
-    }
-
-    function update_worklist_if_needed(){
-
-        if( $this->is_skipped === false && $this->is_being_filtered === false && ! $this->is_po_default_page ){ /* not doing anything */
-
-            if( ! is_admin() ){
-
-
-                // TODO we need to add endpoints to the Worklist here
-
-            }
-
-            // $this->write_log( ( is_admin() ? "Back end" : "Front end" ) . ": " . var_export( trim( $this->current_wp_relative_url ), true ), "update_worklist_if_needed-REQUEST_URI" );
-        }
     }
 
     function is_editing_post_type( $url ){
