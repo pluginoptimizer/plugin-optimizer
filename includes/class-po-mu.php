@@ -37,6 +37,11 @@ class SOSPO_MU {
 
     public $has_premium             = false;
     public $has_agent               = false;
+    public $current_query_params    = [];
+
+    public $current_url_host  = '';
+    public $current_url_path  = '';
+    public $current_url_params = [];
 
     private function __construct() {
 
@@ -73,7 +78,6 @@ class SOSPO_MU {
             // PO Premium
             'PO_retrieve_filters',
             'PO_compile_filters',
-            
         ];
         $this->po_plugins = [
             "plugin-optimizer/plugin-optimizer.php",
@@ -106,8 +110,14 @@ class SOSPO_MU {
             return;
         }
 
-        $this->current_full_url         = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $this->current_full_url         = ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
         $this->current_wp_relative_url  = str_replace( site_url(), "", $this->current_full_url );
+
+        $pathinfo = parse_url($this->current_full_url);
+
+        $this->current_url_host  = $pathinfo['host'];
+        $this->current_url_path  = $pathinfo['path'];        
+        parse_str($pathinfo['query'], $this->current_url_params);
 
         $this->set_hooks();
 
@@ -191,6 +201,8 @@ class SOSPO_MU {
 
     function filter_active_plugins_option_value( $active_plugins ) {
 
+        /*
+        */
         if( ! empty( $this->all_plugins ) ){
             return $active_plugins;
         }
@@ -202,6 +214,17 @@ class SOSPO_MU {
         add_filter( 'option_active_plugins', [ $this, 'filter_active_plugins_option_value' ], 5 );
 
         $this->original_active_plugins  = $active_plugins;
+
+        if( in_array( "plugin-optimizer-premium/plugin-optimizer-premium.php", $this->original_active_plugins ) ){
+
+            $this->has_premium = true;
+        }
+
+        //if( in_array( "plugin-optimizer-agent/plugin-optimizer-agent.php", $this->original_active_plugins ) ){
+        if( is_plugin_active("plugin-optimizer-agent/plugin-optimizer-agent.php") ){
+
+            $this->has_agent = true;
+        }
 
         $active_plugins_on_menu_save = get_option( "active_plugins_on_menu_save" );
 
@@ -219,7 +242,24 @@ class SOSPO_MU {
 
         $this->blocked_plugins          = array_intersect( $this->original_active_plugins, $this->plugins_to_block );
 
-        return $this->filtered_active_plugins;
+
+        //return $this->filtered_active_plugins;
+        return $active_plugins;
+    }
+
+    function update_worklist_if_needed(){
+
+        if( $this->is_skipped === false && $this->is_being_filtered === false && ! $this->is_po_default_page ){ /* not doing anything */
+
+            if( ! is_admin() ){
+
+
+                // TODO we need to add endpoints to the Worklist here
+
+            }
+
+            // $this->write_log( ( is_admin() ? "Back end" : "Front end" ) . ": " . var_export( trim( $this->current_wp_relative_url ), true ), "update_worklist_if_needed-REQUEST_URI" );
+        }
     }
 
     function should_block_all( $url ) {
@@ -250,6 +290,47 @@ class SOSPO_MU {
         return false;
     }
 
+    function po_get_filters_exclude_premium(){
+        global $wpdb;
+        $main_query = "
+        SELECT 
+          `p`.`ID`,
+          `p`.`post_title`,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'endpoints' AND `post_id` = `p`.`ID`) as endpoints,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'filter_type' AND `post_id` = `p`.`ID`) as filter_type,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'dict_id' AND `post_id` = `p`.`ID`) as filter_id,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'plugins_to_block' AND `post_id` = `p`.`ID`) as plugins_to_block,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'belongs_to' AND `post_id` = `p`.`ID`) as belongsTo,
+          (SELECT `user_email` FROM {$wpdb->prefix}users as u WHERE `u`.`ID` = `p`.`post_author`) as author
+          FROM {$wpdb->prefix}posts as p 
+          JOIN {$wpdb->prefix}postmeta as pm
+           ON pm.post_id = p.ID
+          WHERE `p`.`post_type`='plgnoptmzr_filter' 
+          AND `p`.`post_status` = 'publish' 
+          AND `pm`.`meta_key` = 'premium_filter'
+          AND `pm`.`meta_value` != 'true'
+        ";
+        $results = $wpdb->get_results($main_query);
+        return $results;
+    }
+
+    function po_get_filters(){
+        global $wpdb;
+        $main_query = "
+        SELECT 
+          `p`.`ID`,
+          `p`.`post_title`,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'endpoints' AND `post_id` = `p`.`ID`) as endpoints,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'filter_type' AND `post_id` = `p`.`ID`) as filter_type,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'dict_id' AND `post_id` = `p`.`ID`) as filter_id,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'plugins_to_block' AND `post_id` = `p`.`ID`) as plugins_to_block,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'belongs_to' AND `post_id` = `p`.`ID`) as belongsTo,
+          (SELECT `user_email` FROM {$wpdb->prefix}users as u WHERE `u`.`ID` = `p`.`post_author`) as author
+          FROM {$wpdb->prefix}posts as p WHERE `post_type`='plgnoptmzr_filter' AND `post_status` = 'publish'";
+        $results = $wpdb->get_results($main_query);
+        return $results;
+    }
+
     function get_plugins_to_block_for_current_url() {
 
 
@@ -274,11 +355,15 @@ class SOSPO_MU {
         if( wp_doing_ajax() && ! empty( $_POST["action"] ) ){
                         
             $block_plugins = array_diff( $this->original_active_plugins, $this->po_plugins );
-            
-            $filters = get_posts([
-                'post_type'   => 'plgnoptmzr_filter',
-                'numberposts' => - 1,
-            ]);
+
+            if( $this->has_premium ){
+
+                $filters = $this->po_get_filters();
+
+            } else {
+
+                $filters = $this->po_get_filters_exclude_premium();
+            }
 
             foreach( $filters as $filter ){
 
@@ -289,6 +374,7 @@ class SOSPO_MU {
 
                 // Filter by URL
 
+                $endpoints = unserialize($filter->endpoints);
                 $endpoints = is_array( $filter->endpoints ) ? $filter->endpoints : [ $filter->endpoints ];
 
                 $protocol = isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
@@ -347,6 +433,7 @@ class SOSPO_MU {
             return [];
         }
 
+
         $editing_post_type = $this->is_editing_post_type( $this->current_wp_relative_url );
 
         // --- are we on any of the PO pages? yes, second boolean in the condition
@@ -364,15 +451,17 @@ class SOSPO_MU {
         }
 
         // --- Get plugins to block from all the filters
+        if( $this->has_premium ){
+            $filters = $this->po_get_filters();
 
-        $filters = get_posts([
-            'post_type'   => 'plgnoptmzr_filter',
-            'numberposts' => - 1,
-        ]);
+        } else {
+
+            $filters = $this->po_get_filters_exclude_premium();
+        }
 
         foreach( $filters as $filter ){
 
-            if( $filter->turned_off ){
+            if( !empty($filter->turned_off) && $filter->turned_off ){
 
                 continue;
             }
@@ -387,22 +476,61 @@ class SOSPO_MU {
             }
 
             // Filter by URL
+            $endpoints = unserialize($filter->endpoints);
+            $endpoints = is_array( $endpoints ) ? $endpoints : [ $endpoints ];
 
-            $endpoints = is_array( $filter->endpoints ) ? $filter->endpoints : [ $filter->endpoints ];
 
-            if( in_array( $this->current_wp_relative_url, $endpoints ) ){
+            if( in_array( urldecode($this->current_wp_relative_url), $endpoints ) ){
 
-                $this->use_filter( $filter );
+                $plugins_to_block = $this->use_filter( $filter );
 
             } else {
 
                 foreach( $endpoints as $endpoint ){
 
-                    if( fnmatch( $endpoint, $this->current_wp_relative_url, FNM_PATHNAME | FNM_CASEFOLD ) ){
+                    if( strpos($endpoint, '*') !== FALSE ){
 
-                        $this->use_filter( $filter );
+                        if( fnmatch( $endpoint, $this->current_wp_relative_url, FNM_PATHNAME | FNM_CASEFOLD ) ){
 
-                        break;
+                            $this->use_filter( $filter );
+
+                            break;
+                        }
+                    }
+
+                    $parsed_endpoint = parse_url($endpoint);
+
+                    // Check if there's a path ex /blog or /about-us
+                    if( !empty($parsed_endpoint['path']) && !empty($this->current_url_params)){
+                        
+                        // Compare the paths of current url and in the filter endpoint
+                        if( $parsed_endpoint['path'] == $this->current_url_path ){
+
+
+                            // Are there query params?
+                            if( isset($parsed_endpoint['query']) && !empty($parsed_endpoint['query']) ){
+                                
+                                // convert endpoint params to array
+                                parse_str($parsed_endpoint['query'],$endpoint_params);
+
+                                // check if the current url is missing any of the required params in filter endpoint
+                                $params_diff = array_diff_assoc($endpoint_params,$this->current_url_params );
+
+                                // if no missing parameters - fire the filter
+                                if( empty($params_diff) ){
+
+                                    $this->use_filter( $filter );
+                                    break;
+                                }
+
+                            // There's no query parameters in the endpoint and paths match so - fire filter
+                            } else {
+
+                                $this->use_filter( $filter );
+                                break;
+                            }
+
+                        }
                     }
 
                 }
@@ -418,28 +546,15 @@ class SOSPO_MU {
 
         $this->is_being_filtered = true;
 
+        $filter->plugins_to_block = unserialize($filter->plugins_to_block);
+
         $plugins_to_block = ! empty( $filter->plugins_to_block ) ? array_keys( $filter->plugins_to_block ) : [];
 
         $this->plugins_to_block = array_merge( $this->plugins_to_block, $plugins_to_block );
 
         $this->filters_in_use[ $filter->ID ] = $filter->post_title;
 
-        return $plugins_to_block;
-    }
-
-    function update_worklist_if_needed(){
-
-        if( $this->is_skipped === false && $this->is_being_filtered === false && ! $this->is_po_default_page ){ /* not doing anything */
-
-            if( ! is_admin() ){
-
-
-                // TODO we need to add endpoints to the Worklist here
-
-            }
-
-            // $this->write_log( ( is_admin() ? "Back end" : "Front end" ) . ": " . var_export( trim( $this->current_wp_relative_url ), true ), "update_worklist_if_needed-REQUEST_URI" );
-        }
+        return $this->plugins_to_block;
     }
 
     function is_editing_post_type( $url ){

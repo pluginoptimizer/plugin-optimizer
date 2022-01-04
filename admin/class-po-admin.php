@@ -6,7 +6,6 @@
  * @subpackage PluginOptimizer/admin
  * @author     Simple Online Systems <admin@simpleonlinesystems.com>
  */
-
 class SOSPO_Admin {
 
 	/**
@@ -24,7 +23,7 @@ class SOSPO_Admin {
 	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
-
+    private $po_total_time;
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -35,8 +34,7 @@ class SOSPO_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-        
-        $this->load_hooks();
+    $this->load_hooks();
 	}
 
 	/**
@@ -46,36 +44,80 @@ class SOSPO_Admin {
 	 */
 	function load_hooks() {
 
-		add_filter( 'admin_body_class',             [ $this, 'mark_admin_body_class'    ] );
+  		add_filter( 'admin_body_class',             [ $this, 'mark_admin_body_class'    ] );
 
-		add_action( 'admin_enqueue_scripts',        [ $this, 'enqueue_styles'           ] );
-		add_action( 'admin_enqueue_scripts',        [ $this, 'enqueue_scripts'          ] );
-        
-		add_action( 'init',                         [ $this, 'register_post_types'      ] );
-		add_action( 'init',                         [ $this, 'register_taxonomies'      ] );
-        
-		add_action( 'in_admin_header',              [ $this, 'disable_all_notice_nags'  ] );
-        
-		add_action( 'save_post_page',               [ $this, 'add_item_to_worklist'     ] );
-		add_action( 'save_post_post',               [ $this, 'add_item_to_worklist'     ] );
-		add_action( 'admin_bar_menu',               [ $this, 'add_plugin_in_admin_bar'  ], 100 );
+      add_action( 'admin_enqueue_scripts',        [ $this, 'enqueue_styles'           ] );
+      add_action( 'admin_enqueue_scripts',        [ $this, 'enqueue_scripts'          ] );
+          
+      add_action( 'init',                         [ $this, 'register_post_types'      ] );
+      add_action( 'init',                         [ $this, 'register_taxonomies'      ] );
+          
+      add_action( 'in_admin_header',              [ $this, 'disable_all_notice_nags'  ] );
+          
+      add_action( 'save_post_page',               [ $this, 'add_item_to_worklist'     ] );
+      add_action( 'save_post_post',               [ $this, 'add_item_to_worklist'     ] );
+      add_action( 'admin_bar_menu',               [ $this, 'add_plugin_in_admin_bar'  ], 100 );
 
-		add_action( 'upgrader_process_complete',    [ $this, 'do_after_plugin_update'   ], 10, 2 );
+      add_action( 'upgrader_process_complete',    [ $this, 'do_after_plugin_update'   ], 10, 2 );
 
-		add_filter( 'plugin_action_links',          [ $this, 'plugin_action_links'      ], 10, 2 );
+      add_filter( 'plugin_action_links',          [ $this, 'plugin_action_links'      ], 10, 2 );
 
-    add_action( 'init',                         [ $this, 'maybe_reset_po_admin_menu_list']);
-	}
-
-  function maybe_reset_po_admin_menu_list(){
-
-    if( isset($_GET['po_original_menu']) && $_GET['po_original_menu'] == 'get'){
-
-        update_option( "po_admin_get_menu", true );
-
+        add_action( 'wp_before_admin_bar_render',    [$this, 'get_total_time'           ] );
+        add_action( 'init',                         [ $this, 'maybe_reset_po_admin_menu_list']);
+        add_action( 'wp_loaded',                    [ $this, 'po_toggle_plugins_to_block'],101);
     }
-    
-  }
+
+    function po_toggle_plugins_to_block(){
+
+        if( !empty($_GET['toggle_plugin']) && !empty($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce']) ){
+
+          if( $_GET['toggle_plugin'] != 'plugin-optimizer/plugin-optimizer.php' ) {
+
+            if( !empty($_GET['mode']) ){
+
+              switch( $_GET['mode'] ){
+
+                case 'enable':
+
+                  foreach( sospo_mu_plugin()->filters_in_use as $filter_id => $filter_name ){
+                    $plugins_to_block = get_post_meta($filter_id, 'plugins_to_block', true);
+                    unset($plugins_to_block[$_GET['toggle_plugin']]);
+                    update_post_meta( $filter_id, 'plugins_to_block', $plugins_to_block );
+                  }
+                break;
+
+                case 'block':
+
+                  foreach( sospo_mu_plugin()->filters_in_use as $filter_id => $filter_name ){
+                    $plugins_to_block = get_post_meta($filter_id, 'plugins_to_block', true);
+                    $installed_plugins = get_plugins();
+                    $plugins_to_block[$_GET['toggle_plugin']] = $installed_plugins[$_GET['toggle_plugin']]['Name'];
+                    update_post_meta( $filter_id, 'plugins_to_block', $plugins_to_block );
+                  }
+                break;
+              }
+            }
+
+            if( !empty($_GET['redirect_to']) ){
+              wp_redirect( $_GET['redirect_to'], $status = 302 );exit;
+            }
+
+          } else {
+            
+            if( !empty($_GET['redirect_to']) ){
+              wp_redirect( $_GET['redirect_to'], $status = 302 );exit;
+            }
+          }
+
+        }
+        
+    }
+
+    function maybe_reset_po_admin_menu_list(){
+        if( isset($_GET['po_original_menu']) && $_GET['po_original_menu'] == 'get'){
+            update_option( "po_admin_get_menu", true );
+        }
+    }
 
 	function plugin_action_links(  $links, $file ){
         
@@ -94,23 +136,6 @@ class SOSPO_Admin {
 	function do_after_plugin_update(  $wp_upgrader_object, $options ){
         
         // https://developer.wordpress.org/reference/hooks/upgrader_process_complete/
-        
-        // sospo_mu_plugin()->write_log( $wp_upgrader_object,  "do_afet_plugin_update-wp_upgrader_object"  );
-        // sospo_mu_plugin()->write_log( $options,             "do_afet_plugin_update-options"             );
-        
-        // Array
-        // (
-            // [action] => update
-            // [type] => plugin
-            // [bulk] => 1
-            // [plugins] => Array
-                // (
-                    // [0] => wordpress-beta-tester/wp-beta-tester.php
-                // )
-        // )
-        
-        // ----
-        
         // check if we need to convert our post types from the old names
         
         global $wpdb;
@@ -151,7 +176,6 @@ class SOSPO_Admin {
         flush_rewrite_rules( false );// false = soft
         
 	}
-
     
 	function mark_admin_body_class( $classes ){
         
@@ -185,7 +209,6 @@ class SOSPO_Admin {
 	 * Register the stylesheets for the admin area.
 	 */
 	function enqueue_styles() {
-        
 		wp_enqueue_style( $this->plugin_name . '-public', plugin_dir_url( __FILE__ ) . 'css/po-admin-public.css', array(), $this->version, 'all' );
         
 		if ( stripos( $_SERVER["QUERY_STRING"], "plugin_optimizer" ) ) {
@@ -270,19 +293,19 @@ class SOSPO_Admin {
         }
         
         $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/simplebar.min.js' ));
-		wp_register_script( $this->plugin_name . '-simplebar', plugin_dir_url( __FILE__ ) . 'js/simplebar.min.js', array( 'jquery' ), $version, true );
-		wp_enqueue_script(  $this->plugin_name . '-simplebar' );
+    		wp_register_script( $this->plugin_name . '-simplebar', plugin_dir_url( __FILE__ ) . 'js/simplebar.min.js', array( 'jquery' ), $version, true );
+    		wp_enqueue_script(  $this->plugin_name . '-simplebar' );
         
         $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/selectable-ui.min.js' ));
-		wp_register_script( $this->plugin_name . '-selectable', plugin_dir_url( __FILE__ ) . 'js/selectable-ui.min.js', array( 'jquery' ), $version, true );
-		wp_enqueue_script(  $this->plugin_name . '-selectable' );
+    		wp_register_script( $this->plugin_name . '-selectable', plugin_dir_url( __FILE__ ) . 'js/selectable-ui.min.js', array( 'jquery' ), $version, true );
+    		wp_enqueue_script(  $this->plugin_name . '-selectable' );
         
         $version  = date("ymd-Gis", filemtime( plugin_dir_path( __FILE__ ) . 'js/po-admin.js' ));
-		wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/po-admin.js', array( 'jquery', $this->plugin_name . '-selectable' ), $version, true );
-		  $array['plugin_dir_url'] = plugin_dir_url(__FILE__);
-      $array['premium_installed'] = is_plugin_active( 'plugin-optimizer-premium/plugin-optimizer-premium.php' ) ? 'true' : 'false';
-    wp_localize_script( $this->plugin_name, 'po_object', $array );
-		wp_enqueue_script(  $this->plugin_name );
+		    wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/po-admin.js', array( 'jquery', $this->plugin_name . '-selectable' ), $version, true );
+    		  $array['plugin_dir_url'] = plugin_dir_url(__FILE__);
+          $array['premium_installed'] = is_plugin_active( 'plugin-optimizer-premium/plugin-optimizer-premium.php' ) ? 'true' : 'false';
+        wp_localize_script( $this->plugin_name, 'po_object', $array );
+		    wp_enqueue_script(  $this->plugin_name );
 
         // enqueue premium scripts
         if( function_exists("sospo_mu_plugin") && sospo_mu_plugin()->has_premium ){
@@ -307,11 +330,12 @@ class SOSPO_Admin {
 	function add_plugin_in_admin_bar( $wp_admin_bar ) {
         
         $current_url = sospo_mu_plugin()->current_full_url;
-        
+
+        $load_time = get_option('po_total_time');
         // Main top menu item
-		$wp_admin_bar->add_menu( array(
-			'id'    => 'plugin_optimizer',
-			'title' => '<span class="sos-icon"></span> Plugin Optimizer | Memory used: ' . $this->check_memory_usage() . ' Mb<span class="sos-speed"></span>',
+        $wp_admin_bar->add_menu( array(
+            'id'    => 'plugin_optimizer',
+            'title' => '<span class="sos-icon"></span> Plugin Optimizer | Load time: '.number_format($load_time,2,'.',',').'s | Memory used: ' . $this->check_memory_usage() . ' Mb</span>',
 			'href'  => esc_url( get_admin_url( null, 'admin.php?page=plugin_optimizer_settings' ) ),
 		) );
         
@@ -345,6 +369,7 @@ class SOSPO_Admin {
 				'parent' => 'plugin_optimizer_blocked_plugins',
 				'id'     => 'plugin_optimizer_blocked_plugin_' . $plugin_path,
 				'title'  => $plugin_name,
+        'href'   => wp_nonce_url( $current_url . ( strpos( $current_url, '?' ) !== false ? '&' : '?' ) . 'toggle_plugin='.$plugin_path.'&mode=enable&redirect_to='.$current_url )
 			) );
 		}
 
@@ -361,6 +386,7 @@ class SOSPO_Admin {
 				'parent' => 'plugin_optimizer_running_plugins',
 				'id'     => 'plugin_optimizer_running_plugin_' . $plugin_path,
 				'title'  => $plugin_name,
+        'href'   => $plugin_name == 'Plugin Optimizer' ? '' : wp_nonce_url( $current_url . ( strpos( $current_url, '?' ) !== false ? '&' : '?' ) . 'toggle_plugin='.$plugin_path.'&mode=block&redirect_to='.$current_url ),
 			) );
 		}
         
@@ -809,32 +835,6 @@ class SOSPO_Admin {
 
       $menu_items = array_unique($menu_items);
 
-      /**
-       * NOTE: Leave this here for future reference. This function can be improved.
-       * -----------------------------------------------------------------------------------
-          
-          global $wp_filter;
-          echo '<pre>'.print_r('----------------------------Example Menu Hook -----------------------', 1).'</pre>';
-          echo '<pre>'.print_r($menu_hook, 1).'</pre>';
-
-          echo '<pre>'.print_r('----------------------------Menu -----------------------', 1).'</pre>';
-          echo '<pre>'.print_r($menu, 1).'</pre>';
-
-          echo '<pre>'.print_r('----------------------------Submenu -----------------------', 1).'</pre>';
-          echo '<pre>'.print_r($submenu, 1).'</pre>';
-          
-          echo '<pre>'.print_r('----------------------------Sub Menu -----------------------', 1).'</pre>';
-          echo '<pre>'.print_r($submenu_items, 1).'</pre>';
-          
-          echo '<pre>'.print_r('----------------------------Finished Menu -----------------------', 1).'</pre>';
-          echo '<pre>'.print_r($menu_items, 1).'</pre>';
-         
-          echo '<pre>'.print_r('----------------------------Menu -----------------------', 1).'</pre>';
-          echo '<pre>'.print_r($menu, 1).'</pre>';
-          echo '<pre>'.print_r('----------------------------Submenu -----------------------', 1).'</pre>';
-          echo '<pre>'.print_r($submenu, 1).'</pre>';die;
-
-        */
       return $menu_items;
   }
 
@@ -858,5 +858,40 @@ class SOSPO_Admin {
       
   }
 
+  public function get_total_time(){
+
+    if ( 'cli' === php_sapi_name() ) {
+      # For the time being, let's not load QM when using the CLI because we've no persistent storage and no means of
+      # outputting collected data on the CLI. This will hopefully change in a future version of QM.
+      return;
+    }
+
+    if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
+      # Let's not load during cron events.
+      return;
+    }
+
+    if ( strpos($_SERVER['SCRIPT_NAME'], 'admin-ajax.php') !== FALSE ) {
+      # Let's not load during ajax requests.
+      return;
+    }
+
+    $this->po_total_time = microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'];
+    update_option( 'po_total_time', $this->po_total_time );
+  }
+
 }
 
+
+function rudr_display_status_label( $statuses ) {
+  global $post; // we need it to check current post status
+  global $wpdb;
+  
+  if($row = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}po_filtered_endpoints WHERE post_id = '{$post->ID}'")){
+    return array('PO Filtered');
+  }
+
+  return $statuses; // returning the array with default statuses
+}
+ 
+add_filter( 'display_post_states', 'rudr_display_status_label' );

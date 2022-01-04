@@ -4,7 +4,7 @@
  * Plugin Name:       Plugin Optimizer
  * Plugin URI:        https://pluginoptimizer.com
  * Description:       The Most Powerful Performance Plugin for WordPress is now available for FREE.
- * Version:           1.1.3
+ * Version:           1.2.1
  * Author:            Plugin Optimizer
  * Author URI:        https://pluginoptimizer.com/about/
  * License:           GPL-2.0+
@@ -111,7 +111,6 @@ add_action('plugins_loaded', 'appsero_init_tracker_plugin_optimizer');
  * The code that runs during plugin activation.
  */
 function activate_plugin_optimizer() {
-
   require_once plugin_dir_path( __FILE__ ) . 'includes/class-po-activator.php';
   SOSPO_Activator::activate();
 }
@@ -152,43 +151,6 @@ if( ! function_exists( 'write_log' ) ){
     }
 
 }
-
-
-function test_overview_page_hook( $tabs ){
-    
-    // sospo_mu_plugin()->write_log( $tabs, "test_overview_page_hook-tabs" );
-    
-    
-    $tabs[25] = [
-        "title"     => "Added by a hook",
-        "content"   => "And our content goes here"
-    ];
-    
-    ksort( $tabs );
-    
-    return $tabs;
-}
-// add_filter( "plgnoptmzr_overview_tabs", "test_overview_page_hook", 10, 1 );
-
-
-function test_post_state( $post_states, $post ){
-    
-    sospo_mu_plugin()->write_log( $post_states, "test_post_state-post_id: " . $post->ID . ", post_type: " . $post->post_type );
-    
-    if( $post->ID / 2 != ceil( $post->ID / 2 ) ){
-        
-        $post_states["test"] = "PO Optimized";
-    }
-    
-    return $post_states;
-}
-// add_filter( "display_post_states", "test_post_state", 10, 2 );
-
-function test_temp(){
-    
-   sospo_mu_plugin()->write_log( print_r( $GLOBALS['wp_scripts']->registered, true ), "test_temp-globals-wp_scripts" );
-}
-// add_action( "shutdown", "test_temp" );
 
 
 //http://stackoverflow.com/a/1597788/1287812
@@ -247,3 +209,15 @@ function custom_menu_order($menu_ord) {
        if (!$menu_ord) return true;
        return array('index.php', 'edit.php', 'edit-comments.php');
 }
+
+function po_update_db_alert(){
+    global $pagenow;
+
+
+    if ( !get_option( 'po_db_updated-v1.2' ) ) {
+         echo '<div class="notice notice-warning is-dismissible">
+             <p>It looks like you have a new version of <strong>Plugin Optimizer</strong> and your database needs to be updated in order to take advantage of the newest features. &nbsp;<button id="po_update_database_button" class="po_green_button">Update DB Now</button></p>
+         </div>';
+    }
+}
+add_action('admin_notices', 'po_update_db_alert');

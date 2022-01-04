@@ -18,9 +18,10 @@ class SOSPO_Activator {
 	 *
 	 */
 	public static function activate() {
+		error_log(print_r('fire',1) . "\r\n", 3, __DIR__ . '/logname.log');
 		copy( __DIR__ . '/class-po-mu.php', WPMU_PLUGIN_DIR . '/class-po-mu.php' );
 		self::add_elements_to_worklist();
-		self::create_table();
+		self::create_tables();
 		self::insert_posts();
 	}
 
@@ -83,26 +84,11 @@ class SOSPO_Activator {
 	 * Create db table
 	 *
 	 */
-	public static function create_table() {
-		global $wpdb;
+	public static function create_tables() {
 
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-
-		$table_name      = $wpdb->get_blog_prefix() . 'post_links';
-		$charset_collate = "DEFAULT CHARACTER SET {$wpdb->charset} COLLATE {$wpdb->collate}";
-
-		$sql = "CREATE TABLE {$table_name} (
-		    id  bigint(20) unsigned NOT NULL auto_increment,
-		    audit varchar(20) NOT NULL default '',
-		    name_post longtext NOT NULL default '',
-		    type_post longtext NOT NULL default '',
-		    permalinks_post longtext NOT NULL default '',
-		    PRIMARY KEY  (id),
-			KEY audit (audit)
-			)
-			{$charset_collate};";
-
-		dbDelta( $sql );
+		error_log(print_r('fire',1) . "\r\n", 3, __DIR__ . '/logname.log');
+		self::create_postlinks_table();
+		self::create_filtergroups_table();
 	}
 
 
@@ -141,4 +127,46 @@ class SOSPO_Activator {
 	}
 
 
+	public static function create_filtergroups_table(){
+
+		error_log(print_r('fire',1) . "\r\n", 3, __DIR__ . '/logname.log');
+		global $wpdb;
+
+		$table_name      = $wpdb->get_blog_prefix() . 'filters_group';
+		$charset_collate = "DEFAULT CHARACTER SET {$wpdb->charset} COLLATE {$wpdb->collate}";
+
+		$sql = "CREATE TABLE {$table_name} (
+		    id  bigint(20) unsigned NOT NULL auto_increment,
+		    filter_id varchar(20) NOT NULL default '',
+		    group_id longtext NOT NULL default '',
+		    PRIMARY KEY  (id)
+			)
+			{$charset_collate};";
+
+		dbDelta( $sql );
+	}
+
+	public static function create_postlinks_table(){
+
+		error_log(print_r('fire',1) . "\r\n", 3, __DIR__ . '/logname.log');
+		global $wpdb;
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+		$table_name      = $wpdb->get_blog_prefix() . 'post_links';
+		$charset_collate = "DEFAULT CHARACTER SET {$wpdb->charset} COLLATE {$wpdb->collate}";
+
+		$sql = "CREATE TABLE {$table_name} (
+		    id  bigint(20) unsigned NOT NULL auto_increment,
+		    audit varchar(20) NOT NULL default '',
+		    name_post longtext NOT NULL default '',
+		    type_post longtext NOT NULL default '',
+		    permalinks_post longtext NOT NULL default '',
+		    PRIMARY KEY  (id),
+			KEY audit (audit)
+			)
+			{$charset_collate};";
+
+		dbDelta( $sql );
+	}
 }

@@ -471,7 +471,6 @@ body.po_page_overview .hidden-info_overview .row > .col-6:last-of-type h4{
 
 .sos-wrap table {
     width: 100%;
-    text-align: center;
 }
 
 /*.sos-wrap table *:not(span):not(a) {
@@ -658,13 +657,12 @@ body.po_page_overview #overview_summary #licence_section.valid .license-input-fi
 
 
 #search_boxes > th{
-    padding-top: 15px;
-    padding-bottom: 15px;
 }
 
 input.search_filter{
     border: 1px solid #888;
     transition: all 300ms ease;
+    width: 80%;
 }
 input.search_filter:not(:placeholder-shown),
 /* input.search_filter:focus, */
@@ -857,11 +855,14 @@ input.search_filter:hover{
     font-size: 18px;
 }
 
+.list_of_plugins span {
+  padding: 10px;
+}
 .list_of_plugins{
+    padding: 5px 15px;
     position: relative;
 }
 .list_of_plugins.has_tooltip{
-    padding: 5px 15px;
     cursor: default;
 }
 .list_of_plugins.has_tooltip .tooltip_trigger{
@@ -1699,4 +1700,10 @@ input::placeholder{
 }
 .po_table.groups thead th:nth-child(4) {
   width: 150px;
+}
+
+option:disabled {
+    background-color: #ddd;
+    color: #6c6c6c;
+    font-style: italic;
 }
