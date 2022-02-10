@@ -58,8 +58,8 @@ class SOSPO_Admin_Helper {
         
         $tabs = [
             "Filters",
-            "Categories",
-            "Groups",
+            "Categories <span>PRO</span>",
+            "Groups <span>PRO</span>",
             // "Worklist",
             "Settings"
         ];

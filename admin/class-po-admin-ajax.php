@@ -36,11 +36,9 @@ class SOSPO_Ajax {
 		add_action( 'wp_ajax_po_turn_filter_on',                [ $this, 'po_turn_filter_on'                ] );
 		add_action( 'wp_ajax_po_turn_filter_off',               [ $this, 'po_turn_filter_off'               ] );
 		add_action( 'wp_ajax_po_mark_tab_complete',             [ $this, 'po_mark_tab_complete'             ] );
-		add_action( 'wp_ajax_po_save_option_alphabetize_menu',  [ $this, 'po_save_option_alphabetize_menu'  ] );
 		add_action( 'wp_ajax_po_turn_off_filter',               [ $this, 'po_turn_off_filter'               ] );
 		add_action( 'wp_ajax_po_save_original_menu',            [ $this, 'po_save_original_menu'            ] );
 		add_action( 'wp_ajax_po_get_post_types',                [ $this, 'po_get_post_types'                ] );
-		add_action( 'wp_ajax_po_scan_prospector',               [ $this, 'po_scan_prospector'               ] );
 		add_action( 'wp_ajax_po_save_columns_state',            [ $this, 'po_save_columns_state'            ] );
 		add_action( 'wp_ajax_po_duplicate_filter',              [ $this, 'po_duplicate_filter'              ] );
 		add_action( 'wp_ajax_po_update_database',               [ $this, 'po_update_database'               ] );
@@ -70,7 +68,21 @@ class SOSPO_Ajax {
         wp_send_json_error( [ "message" => $data->get_error_message() ] );
     }
     
-        
+    // If there's no ID, then we are creating a post
+    if( !isset( $data['ID'] ) ){
+
+      // query how many published plgnoptimzr_filter posts
+      $filter_count = $wpdb->get_var("
+        SELECT count(*) as `filters` FROM `{$wpdb->prefix}posts` 
+        WHERE `post_type` = 'plgnoptmzr_filter' 
+        AND `post_status` = 'publish' 
+      ");
+
+      if( intval($filter_count) >= 10 ){
+        wp_send_json_error( [ "message" => 'You have reached the limit of your free Plugin Optimizer filters. You can purchase our Premium plugin at <a href="https://pluginoptimizer.com">PluginOptimizer.com</a> to create more filters.' ] );
+      }
+    }
+
 		$post_data = array(
 			'post_title'  => $data["title"],
 			'post_type'   => 'plgnoptmzr_filter',
@@ -411,19 +423,6 @@ class SOSPO_Ajax {
       
   }
         
-	/**
-	 * From the Settings page
-	 */
-	function po_save_option_alphabetize_menu(){
-
-		$should  = $_POST["should_alphabetize"] === "true";
-
-		update_option("po_should_alphabetize_menu", $should );
-
-	  wp_send_json_success( [ "message" => "Option saved successfully." ] );
-	  
-	}
-    
   /**
    * From the Filters List page
    */
@@ -488,17 +487,6 @@ class SOSPO_Ajax {
       wp_send_json_success( [ "message" => "Post types fetched.", "post_types" => $post_types ] );
       
   }
-  
-	/**
-	* Sends a request to the Prospector node instance
-	*/
-	function po_scan_prospector(){
-	  
-		$count = sospo_dictionary()->get_prospector_count();
-
-		die( json_encode( [ "count" => $count ] ) );
-		  
-	}
   
 	/**
 	* Saves the current state of visible columns on the Filters List screen

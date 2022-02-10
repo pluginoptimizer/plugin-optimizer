@@ -48,17 +48,6 @@
 
             <div class="sos-content">
               
-              <?php if( !is_plugin_active( 'plugin-optimizer-premium/plugin-optimizer-premium.php' ) ):?>
-                <div id="scan-container">
-                    <div class="button-col">                      
-                      <button id="scan-now" class="po_green_button">Scan Now</button>
-                    </div>
-                    <div class="message-col">
-                      Scan now to see how many Premium filters we have that match your site.
-                    </div>
-                </div>
-              <?php endif;?>
-
                 <div id="overview_summary" class="bootcamp">
                 
                     <?php if( sospo_mu_plugin()->has_premium ){ ?>

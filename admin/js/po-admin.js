@@ -13,28 +13,6 @@ jQuery( document ).ready( function($){
         }
     });
 
-    // display the fresh number of Premium Filters the user could benefit from
-    $('#scan-now').on('click', function(){
-        $.ajax({
-            url: po_object.ajax_url,
-            type: 'GET',
-            dataType: 'json',
-            data: {
-                action: 'po_scan_prospector'
-            },
-            beforeSend: function(){
-                $('#scan-container .message-col .results').remove();
-                $('#scan-now').prop('disabled', true);
-            },
-            success: function( response ){
-                // console.log( "scan-now response:", response );
-                $('#scan-container .message-col').append('<div class="results"> <strong>Your site could benefit from <span>' + response.count + '</span> Premium Filters.</strong> </div>');
-            }, 
-            complete: function(){
-                $('#scan-now').prop('disabled', false);
-            }
-        })
-    });
     // Edit  screen - Hover a tooltip - Start
     $('#the-list').on('mouseenter', '.has_tooltip > .tooltip_trigger[data-tooltip-list]', function(){
         
