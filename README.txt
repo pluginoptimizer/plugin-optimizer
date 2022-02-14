@@ -3,7 +3,7 @@ Contributors: pluginoptimizer,simpleonlinesystems,andrija,jacobrossdev
 Tags: Plugin Optimizer, Speed Up, Optimization, Save Time, Page Speed, Performance
 Requires at least: 5.0
 Tested up to: 5.7
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -13,6 +13,10 @@ The Most Powerful Performance Plugin for WordPress is now available for FREE.
 == Description ==
 
 == Plugin Optimizer for WordPress ==
+
+**Categories and Groups have been moved to the Premium version of Plugin Optimizer**
+
+**Plugin Optimizer free version now allows you to create up to 10 active filters**
 
 Speed up WordPress by only loading the Plugins you need in each page.
 
@@ -86,6 +90,11 @@ Speed up the back-end development environment and speed up the front-end user ex
 **A:** Yes, there is a free version available in the WordPress repository [here](https://wordpress.org/plugins/plugin-optimizer/).
 
 
+**Q: How can I add more filters with the free version of Plugin Optimizer?**
+
+**A:** Plugin Optimizer free version allows you up to 10 active filters. In order to add more filters to your filters list you can turn one filter off to enable another.
+
+
 **Q: Are there any known issues?**
 
 **A:** There are some plugins that have admin pages with a hash (#) in the url that our filters will not match. We are working to capture these specific endpoints.
@@ -115,6 +124,10 @@ By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/suppo
 
 == Changelog ==
 
+= 1.3.0 = February 2022
+* Changes: Categories and Groups have been moved Premium
+* Changes: Free version allows up to 10 filters
+
 = 1.2.0 = December 2021
 * Feature: Admin Bar shows page load time
 * Feature: Block/Unlock plugins from admin bar menu
@@ -128,7 +141,6 @@ By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/suppo
 * Fix: Endpoint field not showing automatically
 * Fix: Activation & Deactivation bug
 * Fix: Endpoint field not pasting relative URL consistently
-
 
 = 1.1.2 = August 2021
 * Filter Types: Removed Ajax Filter Type option

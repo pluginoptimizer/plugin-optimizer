@@ -58,8 +58,8 @@ class SOSPO_Admin_Helper {
         
         $tabs = [
             "Filters",
-            "Categories",
-            "Groups",
+            "Categories <span>PRO</span>",
+            "Groups <span>PRO</span>",
             // "Worklist",
             "Settings"
         ];
@@ -522,142 +522,166 @@ EOF;
 	static function list_content__filters( $filters ) {
 
 		if( !empty($filters) ){
+
+            $published_count = 0;
+
+			foreach( $filters as $key => $filter ){
+
+            // Count how many published posts
+            if($filter->post_status == 'publish')
+                $published_count++;
+
+                     
+            $premium_filter   = (bool)get_post_meta( $filter->ID, 'premium_filter',   true );
+
+            $data_endpoints   = self::get_filter_endpoints( $filter->ID, true );
+            $data_type        = get_post_meta( $filter->ID, 'filter_type',      true );
+            $blocking_plugins = get_post_meta( $filter->ID, 'plugins_to_block', true );
+            // Note: publish/draft is the new turned active/off status respectively
+            //$turned_off       = get_post_meta( $filter->ID, 'turned_off',       true ); 
+            $belongs_to_value = get_post_meta( $filter->ID, 'belongs_to',       true );
+            $dictionary_id    = get_post_meta( $filter->ID, 'dict_id',          true );
+            $status           = get_post_meta( $filter->ID, 'status',           true );
+            $statusChanged    = get_post_meta( $filter->ID, 'statusChanged',    true );
             
-			foreach( $filters as $filter ){
+            if( ! empty( $belongs_to_value ) ){
                 
-        $premium_filter   = (bool)get_post_meta( $filter->ID, 'premium_filter',   true );
-
-        $data_endpoints   = self::get_filter_endpoints( $filter->ID, true );
-        $data_type        = get_post_meta( $filter->ID, 'filter_type',      true );
-        $blocking_plugins = get_post_meta( $filter->ID, 'plugins_to_block', true );
-        $turned_off       = get_post_meta( $filter->ID, 'turned_off',       true );
-        $belongs_to_value = get_post_meta( $filter->ID, 'belongs_to',       true );
-        $dictionary_id    = get_post_meta( $filter->ID, 'dict_id',          true );
-        $status           = get_post_meta( $filter->ID, 'status',           true );
-        $statusChanged    = get_post_meta( $filter->ID, 'statusChanged',    true );
-        
-        if( ! empty( $belongs_to_value ) ){
-            
-            $belongs_to       = $belongs_to_value === '_core' ? '<b>The Core</b>' : sospo_mu_plugin()->all_plugins[ $belongs_to_value ]["Name"];
-            
-        } else {
-            
-            $belongs_to       = "-";
-        }
-        
-        $is_premium       = $premium_filter;
-        
-
-        sort( $blocking_plugins );
-        
-        if( empty( $data_type ) || $data_type == "_endpoint" || $data_type == "none"){
-            $trigger_title  = is_array($data_endpoints) ? implode( PHP_EOL, $data_endpoints ) : '';
-            $trigger        = is_array($data_endpoints) ? implode( ',<br>', $data_endpoints ) : '';
-            $type           = "_endpoint";
-        } else {
-            $trigger_title  = "Editing post type: " . $data_type;
-            $trigger        = "Editing post type: <b>" . $data_type . "</b>";
-            $type           = $data_type;// TODO check if this needs to get removed
-            $type           = "_edit_screen";
-        }
-        
-        $categories = get_post_meta( $filter->ID, 'categories', true );
-        $categories = ! empty( $categories ) ? implode( ',<br>', $categories ) : "";
-        
-
-        $date = date("Ym",  strtotime( $filter->post_date ) );// 202109
-        
-        $turned_on_checked = $turned_off !== "1" ? ' checked="checked"' : '';
-        
-        $has_tooltip_class = "";
-        $tooltip_list      = "";
-        
-        if( count( $blocking_plugins ) > 0 ){
-            
-            $has_tooltip_class = "has_tooltip";
-            $tooltip_list      = 'class="tooltip_trigger" data-tooltip-list="' . htmlspecialchars( json_encode( $blocking_plugins ), ENT_QUOTES, 'UTF-8' ) . '"';
-        }
-        ?>
-        
-        <tr class="block_info" id="filter-<?php echo  $filter->ID; ?>" data-dictionary_id="<?php echo $dictionary_id; ?>" data-status="<?php echo $filter->post_status; ?>" data-date="<?php echo $date; ?>" data-type="<?php echo $type; ?>">
-            <td data-label="checkbox"><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID; ?>"><?php } ?></td>
-
-            <?php if( sospo_mu_plugin()->has_agent ){ ?>
-              <td data-label="delete">
-                <span class="dashicons dashicons-trash trashbutton"></span>
-              </td>
-            <?php } ?>
-
-            <?php if( sospo_mu_plugin()->has_agent ){ ?>
-              <td data-label="status"><?php 
-                if( !$statusChanged ){ $statusChanged = $filter->post_date; }
-                echo ucfirst($status) . "<br />" . date('F j, Y h:i:s A', strtotime($statusChanged)); ?>
-              </td>
-            <?php } ?>
-
-            <td data-label="title" class="align-left normal-text test">
+                $belongs_to       = $belongs_to_value === '_core' ? '<b>The Core</b>' : sospo_mu_plugin()->all_plugins[ $belongs_to_value ]["Name"];
                 
-                <!-- Filter Title -->
-                <span class="filter_title"><?php echo $filter->post_title; ?></span>
+            } else {
                 
-                <br/>
+                $belongs_to       = "-";
+            }
+            
+            $is_premium       = $premium_filter;
+            
 
-                <!-- Premium Label -->
-                <?php if( $is_premium ){  ?>
-                    <span class="filter_is_premium">Premium Filter</span>
+            sort( $blocking_plugins );
+            
+            if( empty( $data_type ) || $data_type == "_endpoint" || $data_type == "none"){
+                $trigger_title  = is_array($data_endpoints) ? implode( PHP_EOL, $data_endpoints ) : '';
+                $trigger        = is_array($data_endpoints) ? implode( ',<br>', $data_endpoints ) : '';
+                $type           = "_endpoint";
+            } else {
+                $trigger_title  = "Editing post type: " . $data_type;
+                $trigger        = "Editing post type: <b>" . $data_type . "</b>";
+                $type           = $data_type;// TODO check if this needs to get removed
+                $type           = "_edit_screen";
+            }
+            
+            $categories = get_post_meta( $filter->ID, 'categories', true );
+            $categories = ! empty( $categories ) ? implode( ',<br>', $categories ) : "";
+            
+
+            $date = date("Ym",  strtotime( $filter->post_date ) );// 202109
+            
+
+            // Here we are going to make sure that sneaky people are not trying to
+            // change the status of filters in the database in order to get more active filters.
+            // We will deactivate any published filters the exceed our 10 filter limit
+            $turned_on_checked = '';
+            if( $filter->post_status == 'publish' ){
+
+                if( $published_count <= 10 ){
+                    $turned_on_checked = $filter->post_status == "publish" ? ' checked="checked"' : '';
+                } else {
+                    wp_update_post([
+                        'ID' => $filter->ID,
+                        'post_status' => 'draft'
+                    ]);
+                    $filter->post_status = 'draft';
+                }
+            }
+            
+            $has_tooltip_class = "";
+            $tooltip_list      = "";
+            
+            if( count( $blocking_plugins ) > 0 ){
+                
+                $has_tooltip_class = "has_tooltip";
+                $tooltip_list      = 'class="tooltip_trigger" data-tooltip-list="' . htmlspecialchars( json_encode( $blocking_plugins ), ENT_QUOTES, 'UTF-8' ) . '"';
+            }
+            ?>
+            
+            <tr class="block_info" id="filter-<?php echo  $filter->ID; ?>" data-dictionary_id="<?php echo $dictionary_id; ?>" data-status="<?php echo $filter->post_status; ?>" data-date="<?php echo $date; ?>" data-type="<?php echo $type; ?>">
+                <td data-label="checkbox"><?php if( ! $is_premium || sospo_mu_plugin()->has_agent ){ ?><input type="checkbox" class="main_selector" id="<?php echo $filter->ID; ?>"><?php } ?></td>
+
+                <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                  <td data-label="delete">
+                    <span class="dashicons dashicons-trash trashbutton"></span>
+                  </td>
                 <?php } ?>
 
-                <!-- PENDING APPROVED BUTTONS -->
-                <?php if( sospo_mu_plugin()->has_agent  && ($status && $status != 'approved') ): ?>
-
-                  <a class="inline-approval-button" 
-                    data-filter_id="<?php echo get_post_meta( $filter->ID, 'dict_id', true); ?>" 
-                    style="cursor: pointer; font-size: 12px; text-transform: uppercase; margin-top: 3px;"> Approve</a>
-
-                <?php elseif( sospo_mu_plugin()->has_agent  && ($status && $status != 'pending') ):?>
-
-                  <a class="inline-pending-button" 
-                    data-filter_id="<?php echo get_post_meta( $filter->ID, 'dict_id', true); ?>" 
-                    style="cursor: pointer; font-size: 12px; text-transform: uppercase; margin-top: 3px;"> Make Pending</a>
-
-                <?php endif; ?>
-
-                <!-- Edit Button -->
-                <?php if( ! $is_premium || sospo_mu_plugin()->has_agent){ ?>
-                    <!-- Duplicate Filter -->
-                    <a class="duplicate" style="cursor: pointer;">Duplicate</a>
-                    <a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ); ?>">Edit</a>
+                <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                  <td data-label="status"><?php 
+                    if( !$statusChanged ){ $statusChanged = $filter->post_date; }
+                    echo ucfirst($status) . "<br />" . date('F j, Y h:i:s A', strtotime($statusChanged)); ?>
+                  </td>
                 <?php } ?>
-                
-            </td>
-            <td data-label="categories" class="align-left normal-text"><?php echo $categories; ?></td>
-            <td data-label="triggers" class="align-left normal-text endpoint-column" title="<?php echo $trigger_title; ?>"><?php echo $trigger; ?></td>
-            <?php if( sospo_mu_plugin()->has_agent ){ ?>
-              <td data-label="belongs_to" class="align-left normal-text"><?php echo $belongs_to; ?></td>
-            <?php } ?>
-            <td data-label="plugins_tooltip" class="list_of_plugins <?php echo $has_tooltip_class; ?>">
-                <span <?php echo $tooltip_list; ?>><?php echo count( $blocking_plugins ) ?></span>
-            </td>
-            <?php if( sospo_mu_plugin()->has_agent ){ ?>
-              <td data-label="created" class="normal-text"><?php  echo date( "m/d/Y", strtotime( $filter->post_date     ) );?></td>
-              <td data-label="modified" class="normal-text"><?php echo date( "m/d/Y", strtotime( $filter->post_modified ) ); ?></td>
-            <?php } ?>
-            <td class="toggle_filter">
-                <label>
-                    <span class="switch">
-                        <input class="turn_off_filter" data-id="<?php echo $filter->ID; ?>" type="checkbox"<?php echo $turned_on_checked; ?>/>
-                        <span class="slider round"></span>
-                    </span>
-                </label>
-            </td>
-        </tr>
-			  <?php
-			}
 
-    } else { ?>
-      <tr data-status="publish">
-          <td colspan="6" style="padding: 8px; font-size: 1.1em">No filters found</td>
-      </tr>
+                <td data-label="title" class="align-left normal-text test">
+                    
+                    <!-- Filter Title -->
+                    <span class="filter_title"><?php echo $filter->post_title; ?></span>
+                    
+                    <br/>
+
+                    <!-- Premium Label -->
+                    <?php if( $is_premium ){  ?>
+                        <span class="filter_is_premium">Premium Filter</span>
+                    <?php } ?>
+
+                    <!-- PENDING APPROVED BUTTONS -->
+                    <?php if( sospo_mu_plugin()->has_agent  && ($status && $status != 'approved') ): ?>
+
+                      <a class="inline-approval-button" 
+                        data-filter_id="<?php echo get_post_meta( $filter->ID, 'dict_id', true); ?>" 
+                        style="cursor: pointer; font-size: 12px; text-transform: uppercase; margin-top: 3px;"> Approve</a>
+
+                    <?php elseif( sospo_mu_plugin()->has_agent  && ($status && $status != 'pending') ):?>
+
+                      <a class="inline-pending-button" 
+                        data-filter_id="<?php echo get_post_meta( $filter->ID, 'dict_id', true); ?>" 
+                        style="cursor: pointer; font-size: 12px; text-transform: uppercase; margin-top: 3px;"> Make Pending</a>
+
+                    <?php endif; ?>
+
+                    <!-- Edit Button -->
+                    <?php if( ! $is_premium || sospo_mu_plugin()->has_agent){ ?>
+                        <!-- Duplicate Filter -->
+                        <a class="duplicate" style="cursor: pointer;">Duplicate</a>
+                        <a class="edit_item" href="<?php echo admin_url('admin.php?page=plugin_optimizer_add_filters&filter_id=' . $filter->ID ); ?>">Edit</a>
+                    <?php } ?>
+                    
+                </td>
+                <td data-label="categories" class="align-left normal-text"><?php echo $categories; ?></td>
+                <td data-label="triggers" class="align-left normal-text endpoint-column" title="<?php echo $trigger_title; ?>"><?php echo $trigger; ?></td>
+                <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                  <td data-label="belongs_to" class="align-left normal-text"><?php echo $belongs_to; ?></td>
+                <?php } ?>
+                <td data-label="plugins_tooltip" class="list_of_plugins <?php echo $has_tooltip_class; ?>">
+                    <span <?php echo $tooltip_list; ?>><?php echo count( $blocking_plugins ) ?></span>
+                </td>
+                <?php if( sospo_mu_plugin()->has_agent ){ ?>
+                  <td data-label="created" class="normal-text"><?php  echo date( "m/d/Y", strtotime( $filter->post_date     ) );?></td>
+                  <td data-label="modified" class="normal-text"><?php echo date( "m/d/Y", strtotime( $filter->post_modified ) ); ?></td>
+                <?php } ?>
+                <td class="toggle_filter">
+                    <label>
+                        <span class="switch">
+                            <input class="turn_off_filter" data-id="<?php echo $filter->ID; ?>" type="checkbox"<?php echo $turned_on_checked; ?>/>
+                            <span class="slider round"></span>
+                        </span>
+                    </label>
+                </td>
+            </tr>
+    			  <?php
+    			}
+
+        } else { ?>
+          <tr data-status="publish">
+              <td colspan="6" style="padding: 8px; font-size: 1.1em">No filters found</td>
+          </tr>
 		  <?php
 		}
 

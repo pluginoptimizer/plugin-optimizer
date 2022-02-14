@@ -2,7 +2,7 @@
 
 $filter_query = array(
   'post_type'   => 'plgnoptmzr_filter',
-  'post_status' => [ 'publish', 'trash' ],
+  'post_status' => [ 'publish', 'trash','draft' ],
   'numberposts' => - 1,
 );
 

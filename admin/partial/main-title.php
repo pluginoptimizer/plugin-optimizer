@@ -5,5 +5,8 @@
 </div>
 
 <div id="main_tab_navigation" class="wrap-tabs">
-    $tabs_html
+    <div id="window_filters" class="tabs">Filters</div>
+    <div id="window_categories" class="tabs">Categories <span>PRO</span></div>
+    <div id="window_groups" class="tabs">Groups <span>PRO</span></div>
+    <div id="window_settings" class="tabs">Settings</div>
 </div>
