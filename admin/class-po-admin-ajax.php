@@ -79,7 +79,7 @@ class SOSPO_Ajax {
       ");
 
       if( intval($filter_count) >= 10 ){
-        wp_send_json_error( [ "message" => 'You have reached the limit of your free Plugin Optimizer filters. You can purchase our Premium plugin at <a href="https://pluginoptimizer.com">PluginOptimizer.com</a> to create more filters.' ] );
+        wp_send_json_error( [ "message" => 'You have reached the limit of your free Plugin Optimizer filters. You can purchase our Premium plugin at PluginOptimizer.com to create more filters.' ] );
       }
     }
 
@@ -172,126 +172,6 @@ class SOSPO_Ajax {
   }
 
   /**
-   * Create/Update Group
-   */
-  function po_save_group() {
-      
-    if( empty( $_POST['data'] ) ){              wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
-    
-    parse_str( $_POST['data'], $array);
-    
-    if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
-        
-    $data = SOSPO_Admin_Helper::format__save_group_data( $array['SOSPO_filter_data'] );
-    
-    // sospo_mu_plugin()->write_log( $_POST, "po_save_group-_POST" );
-    // sospo_mu_plugin()->write_log( $data,  "po_save_group-data"  );
-    
-    if( is_wp_error( $data ) ){
-        
-        wp_send_json_error( [ "message" => $data->get_error_message() ] );
-    }
-        
-        $post_data = array(
-            'post_title'  => $data["title"],
-            'post_type'   => 'plgnoptmzr_group',
-            'post_status' => 'publish',
-            'post_author' => 1,// TODO get_current_user_id() with localize_script in enqueue function
-        );
-    
-    if( ! empty( $data["ID"] ) ){
-        $post_data["ID"] = $data["ID"];
-    }
-
-        $post_id = wp_insert_post( $post_data, true );
-
-        if ( is_wp_error( $post_id ) ) {
-            wp_send_json_error( [ "message" => $post_id->get_error_message() ] );
-        }
-
-    foreach( $data["meta"] as $meta_key => $meta_value ){
-        
-        update_post_meta( $post_id, $meta_key, $meta_value );
-    }
-          
-      wp_send_json_success( [ "message" => "All good, the group is saved.", "id" => $post_id, ] );
-
-  }
-
-	/**
-	 * Create/Update Category
-	 */
-	function po_save_category() {
-        
-	    if( empty( $_POST['data'] ) ){              wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
-	    
-	    parse_str( $_POST['data'], $array);
-	    
-	    if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
-	        
-	    $data = SOSPO_Admin_Helper::format__save_category_data( $array['SOSPO_filter_data'] );
-	    
-	    // sospo_mu_plugin()->write_log( $_POST, "po_save_category-_POST" );
-	    // sospo_mu_plugin()->write_log( $data,  "po_save_category-data"  );
-	    
-	    if( is_wp_error( $data ) ){
-	        
-	        wp_send_json_error( [ "message" => $data->get_error_message() ] );
-	    }
-	        
-	    if( empty( $data["ID"] ) ){
-	        
-	        $category = wp_create_term( $data["name"], "plgnoptmzr_categories" );
-	        
-	        if( is_wp_error( $category ) ){
-	            wp_send_json_error( [ "message" => "An error occured: " . $category->get_error_message() ] );
-	        }
-	        
-	        $term_id = $category["term_id"];
-	        
-	    } else {
-	        
-	        $term_id = $data["ID"];
-	        unset( $data["ID"] );
-	    }
-	    
-	    $category = wp_update_term( $term_id, "plgnoptmzr_categories", $data );
-	    
-	    if( is_wp_error( $category ) ){
-	        wp_send_json_error( [ "message" => "An error occured: " . $category->get_error_message() ] );
-	    }
-        
-		wp_send_json_success( [ "message" => "All good, the category is saved.", "id" => $category["term_id"], ] );
-
-  }
-
-	/**
-	 * Create new category
-	 */
-	function po_create_category(){
-	        
-	    // sospo_mu_plugin()->write_log( $_POST, "po_create_category-_POST" );
-	    
-	    if( empty( $_POST['category_name'] ) ){
-	        wp_send_json_error( [ "message" => "Category name is a required field!" ] );
-	    }
-	    
-	    $category_name = sanitize_textarea_field( $_POST['category_name'] );
-	    
-	    if( term_exists( $category_name, "plgnoptmzr_categories" ) ){
-	        wp_send_json_error( [ "message" => "A category with that name already exists!" ] );
-	    }
-	    
-	    $data = wp_create_term( $category_name, "plgnoptmzr_categories" );
-	    
-	    if( is_wp_error( $data ) ){
-	        wp_send_json_error( [ "message" => "An error occured: " . $data->get_error_message() ] );
-	    }
-	    
-	    wp_send_json_success( [ "category_id" => $data['term_id'] ] );
-	}
-
-  /**
    * Delete elements
    */
   function po_delete_elements() {
@@ -363,6 +243,10 @@ class SOSPO_Ajax {
       $name_post_type = sanitize_textarea_field( $_POST['name_post_type'] );
       $id_elements    = array_map( 'intval', $_POST['id_elements'] );
 
+      if( (count($id_elements) + $active_filter_count) > 10 ){        
+        wp_send_json_error( [ "message" => 'Unable to activate the selected filters. You may only have 10 active filters at one time.' ] );
+      }
+
       $posts = get_posts( array(
           'post_type'   => $name_post_type,
           'include'     => $id_elements,
@@ -390,7 +274,10 @@ class SOSPO_Ajax {
       ) );
 
 		foreach ( $posts as $post ) {
-			update_post_meta( $post->ID, "turned_off", true );
+			wp_update_post([
+        'ID' => $post->ID,
+        'post_status' => 'draft'
+      ]);
 		}
         
 		wp_send_json_success( [ "message" => count( $posts) . " filters are turned off." ] );
@@ -431,9 +318,32 @@ class SOSPO_Ajax {
     $turned_off  = $_POST["turned_off"] === "true";
     $post_id     = intval( $_POST["post_id"] );
     
+    if( $turned_off ){      
+      $my_post = array(
+        'ID'           => $post_id,
+        'post_status'   => 'draft'
+      );
+    } else {
+
+      global $wpdb;
+      $count = $wpdb->get_var("SELECT count(*) as count FROM `{$wpdb->prefix}posts` WHERE `post_type`= 'plgnoptmzr_filter' AND `post_status` = 'publish'");
+
+      if( $count < 10 ){          
+        $my_post = array(
+          'ID'           => $post_id,
+          'post_status'   => 'publish'
+        );
+      } else {
+         wp_send_json_error( [ "message" => 'Only 10 active filters are allowed. You may turn off one filter in order to enable another within 10 active filters.' ] );
+      }
+    }
+ 
+    // Update the post into the database
+    wp_update_post( $my_post );
+
     update_post_meta( $post_id, "turned_off", $turned_off );
       
-      wp_send_json_success( [ "message" => "Filter turned " . ( $turned_off ? "off" : "on" ) . " successfully." ] );
+    wp_send_json_success( [ "message" => "Filter turned " . ( $turned_off ? "off" : "on" ) . " successfully." ] );
       
   }
     

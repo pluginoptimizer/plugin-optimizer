@@ -820,36 +820,38 @@ jQuery( document ).ready( function($){
                 type    : 'POST',
                 data    : data,
                 success : function (response) {
-                    
-                    // reset the filters
-                    $('#bulk_actions select').val('default');
-                    $('#bulk_actions button:not(#btn_apply)').click();
-                    // TODO reset the latest filters
-                    
-                    
-                    $('#check_all').prop('checked', false);
-                    
-                    let publish     = ( data.action == 'po_publish_elements' );
-                    let trash       = ( data.action == 'po_delete_elements' && data.type_elements == 'all' );
-                    let remove      = ( data.action == 'po_delete_elements' && data.type_elements == 'trash' );
-                    let turned_on   = ( data.action == 'po_turn_filter_on' );
-                    let turned_off  = ( data.action == 'po_turn_filter_off' );
+                    if( response.success ){
+
+                        // reset the filters
+                        $('#bulk_actions select').val('default');
+                        $('#bulk_actions button:not(#btn_apply)').click();
+                        // TODO reset the latest filters
                         
-                    $.each( selected_ids, function( index, id ){
                         
-                        $('input#' + id ).parents('.block_info').children('td:first-of-type').children('input:checked').prop('checked', false );
+                        $('#check_all').prop('checked', false);
                         
-                        if( publish || trash ){
-                            $('input#' + id ).parents('.block_info').attr("data-status", ( publish ? "publish" : "trash" ) );
-                        } else if( remove ){
-                            $('input#' + id ).parents('.block_info').remove();
-                        } else if( turned_on ){
-                            $('input#' + id ).parents('.block_info').find('input.turn_off_filter').prop('checked', true );
-                        } else if( turned_off ){
-                            $('input#' + id ).parents('.block_info').find('input.turn_off_filter').prop('checked', false );
-                        }
-                        
-                    });
+                        let publish     = ( data.action == 'po_publish_elements' );
+                        let trash       = ( data.action == 'po_delete_elements' && data.type_elements == 'all' );
+                        let remove      = ( data.action == 'po_delete_elements' && data.type_elements == 'trash' );
+                        let turned_on   = ( data.action == 'po_turn_filter_on' );
+                        let turned_off  = ( data.action == 'po_turn_filter_off' );
+                            
+                        $.each( selected_ids, function( index, id ){
+                            
+                            $('input#' + id ).parents('.block_info').children('td:first-of-type').children('input:checked').prop('checked', false );
+                            
+                            if( publish || trash ){
+                                $('input#' + id ).parents('.block_info').attr("data-status", ( publish ? "publish" : "trash" ) );
+                            } else if( remove ){
+                                $('input#' + id ).parents('.block_info').remove();
+                            } else if( turned_on ){
+                                $('input#' + id ).parents('.block_info').find('input.turn_off_filter').prop('checked', true );
+                            } else if( turned_off ){
+                                $('input#' + id ).parents('.block_info').find('input.turn_off_filter').prop('checked', false );
+                            }
+                            
+                        });
+                    }
                     
                     alert( response.data.message );
                     
@@ -981,6 +983,7 @@ jQuery( document ).ready( function($){
     // Filters List screen: turn filter on/off
     $('body').on('change', '#the-list .turn_off_filter', function(){
         
+        let el = $(this);
         let turned_off = ! $(this).prop('checked');
         let post_id    = $(this).data('id');
         
@@ -990,6 +993,12 @@ jQuery( document ).ready( function($){
         $.post( po_object.ajax_url, { action  : 'po_turn_off_filter', turned_off : turned_off, post_id : post_id }, function( response ) {
             // console.log( "po_save_option_alphabetize_menu: ", response );
             
+            if( !turned_off && !response.success){
+
+                el.prop('checked',false);
+                alert(response.data.message);
+            }
+
             if( response.data.message ){
                 
                 

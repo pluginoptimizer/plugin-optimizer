@@ -653,6 +653,9 @@ body.po_page_overview #overview_summary #licence_section.valid .license-input-fi
 #the-list.filter_on__status_trash > :not([data-status="trash"]){
     display: none;
 }
+#the-list.filter_on__status_publish > [data-status="draft"]{
+    display:  table-row;
+}
 
 
 

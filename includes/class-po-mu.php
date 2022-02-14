@@ -356,14 +356,8 @@ class SOSPO_MU {
                         
             $block_plugins = array_diff( $this->original_active_plugins, $this->po_plugins );
 
-            if( $this->has_premium ){
-
-                $filters = $this->po_get_filters();
-
-            } else {
-
-                $filters = $this->po_get_filters_exclude_premium();
-            }
+            
+            $filters = $this->po_get_filters();
 
             foreach( $filters as $filter ){
 
@@ -451,13 +445,8 @@ class SOSPO_MU {
         }
 
         // --- Get plugins to block from all the filters
-        if( $this->has_premium ){
-            $filters = $this->po_get_filters();
-
-        } else {
-
-            $filters = $this->po_get_filters_exclude_premium();
-        }
+        
+        $filters = $this->po_get_filters();
 
         foreach( $filters as $filter ){
 
