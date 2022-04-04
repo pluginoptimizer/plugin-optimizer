@@ -242,6 +242,13 @@ class SOSPO_MU {
 
         $this->blocked_plugins          = array_intersect( $this->original_active_plugins, $this->plugins_to_block );
 
+        foreach ( $this->blocked_plugins as $blockedplugin ) {
+            $key = array_search( $blockedplugin, $active_plugins );
+            if ( false !== $key ) {
+                unset( $active_plugins[ $key ] );
+            }
+        }
+
 
         //return $this->filtered_active_plugins;
         return $active_plugins;
