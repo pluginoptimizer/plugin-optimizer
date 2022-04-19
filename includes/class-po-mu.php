@@ -249,7 +249,6 @@ class SOSPO_MU {
             }
         }
 
-
         //return $this->filtered_active_plugins;
         return $active_plugins;
     }
@@ -437,6 +436,7 @@ class SOSPO_MU {
 
         $editing_post_type = $this->is_editing_post_type( $this->current_wp_relative_url );
 
+
         // --- are we on any of the PO pages? yes, second boolean in the condition
         if(
             strpos( $this->current_wp_relative_url, "wp-admin/admin.php?page=plugin_optimizer") !== false ||
@@ -469,6 +469,20 @@ class SOSPO_MU {
                 $this->use_filter( $filter );
 
                 continue;
+            }
+
+            if( $filter->filter_type !== '_endpoint' ){
+
+                $slug = str_replace('/', '', $this->current_wp_relative_url);
+                global $wpdb;
+                $post_type = $wpdb->get_var("SELECT `post_type` FROM `{$wpdb->prefix}posts` WHERE `post_name` = '{$slug}'");
+
+                if( $filter->filter_type == $post_type ){
+                    
+                    $this->use_filter($filter);
+                    
+                    continue;
+                }
             }
 
             // Filter by URL
