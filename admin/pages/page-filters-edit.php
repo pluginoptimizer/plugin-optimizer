@@ -241,7 +241,7 @@ if( sospo_mu_plugin()->has_agent ){
                         </div>
                      </div>
                      <div id="post_type_options" style="margin-top:5px; <?php echo $filter_type != '_endpoint' ? '' : 'display: none;'; ?> ">
-                        <input type="checkbox" name="SOSPO_filter_data[frontend]" value="yes" id="frontend_check" <?php echo $frontend == 'yes' ? 'checked="checked"' : ''; ?>> Use only for customer facing pages
+                        <input type="checkbox" name="SOSPO_filter_data[frontend]" value="yes" id="frontend_check" <?php echo $frontend == 'true' ? 'checked="checked"' : ''; ?>> Use only for customer facing pages
                      </div>
                   </div>
                   <?php if( sospo_mu_plugin()->has_agent ){ ?>
