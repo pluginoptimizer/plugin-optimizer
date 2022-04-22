@@ -331,6 +331,7 @@ class SOSPO_MU {
           (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'dict_id' AND `post_id` = `p`.`ID`) as filter_id,
           (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'plugins_to_block' AND `post_id` = `p`.`ID`) as plugins_to_block,
           (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'belongs_to' AND `post_id` = `p`.`ID`) as belongsTo,
+          (SELECT `meta_value` FROM {$wpdb->prefix}postmeta WHERE `meta_key` = 'frontend' AND `post_id` = `p`.`ID`) as frontend,
           (SELECT `user_email` FROM {$wpdb->prefix}users as u WHERE `u`.`ID` = `p`.`post_author`) as author
           FROM {$wpdb->prefix}posts as p WHERE `post_type`='plgnoptmzr_filter' AND `post_status` = 'publish'";
         $results = $wpdb->get_results($main_query);
@@ -470,8 +471,8 @@ class SOSPO_MU {
 
                 continue;
             }
-
-            if( $filter->filter_type !== '_endpoint' ){
+            
+            if( $filter->filter_type !== '_endpoint' && $filter->frontend == 'true' ){
 
                 $slug = str_replace('/', '', $this->current_wp_relative_url);
                 global $wpdb;

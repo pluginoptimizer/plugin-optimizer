@@ -4,7 +4,7 @@
  * Plugin Name:       Plugin Optimizer
  * Plugin URI:        https://pluginoptimizer.com
  * Description:       The Most Powerful Performance Plugin for WordPress is now available for FREE.
- * Version:           1.3.1
+ * Version:           1.3.3
  * Author:            Plugin Optimizer
  * Author URI:        https://pluginoptimizer.com/about/
  * License:           GPL-2.0+

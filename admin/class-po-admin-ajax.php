@@ -51,7 +51,7 @@ class SOSPO_Ajax {
   function po_save_filter() {
 
     global $wpdb;
-        
+
     if( empty( $_POST['data'] ) ){              wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
     
     parse_str( $_POST['data'], $array);
@@ -59,7 +59,6 @@ class SOSPO_Ajax {
     if( empty( $array['SOSPO_filter_data'] ) ){ wp_send_json_error( [ "message" => "The data never reached the server!" ] ); }
     
     $data = SOSPO_Admin_Helper::format__save_filter_data( $array['SOSPO_filter_data'] );
-    
     // sospo_mu_plugin()->write_log( $_POST, "po_save_filter-_POST" );
     // sospo_mu_plugin()->write_log( $data,  "po_save_filter-data"  );
     
@@ -165,6 +164,18 @@ class SOSPO_Ajax {
     foreach( $data["meta"] as $meta_key => $meta_value ){
         
         update_post_meta( $post_id, $meta_key, $meta_value );
+    }
+
+    
+    if( isset($data['meta']['frontend']) ){
+      if( empty($data['meta']['frontend']) ){
+        $frontend = 'false';
+      } else {
+        $frontend = 'true';
+      }
+
+      update_post_meta( $post_id, 'frontend', $frontend );
+
     }
 
     wp_send_json_success( [ "message" => "All good, the filter is saved.", "id" => $post_id, ] );
