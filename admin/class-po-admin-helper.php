@@ -924,6 +924,7 @@ EOF;
                 "groups_used"       => ! empty( $data["groups"] )           ? $data["groups"]           : [],
                 "categories"        => ! empty( $data["categories"] )       ? $data["categories"]       : [],
                 "belongs_to"        => ! empty( $data["belongs_to"] )       ? $data["belongs_to"]       : "",
+                "frontend"          => ! empty( $data["frontend"] )         ? $data["frontend"]         : "",
             ],
         ];
         

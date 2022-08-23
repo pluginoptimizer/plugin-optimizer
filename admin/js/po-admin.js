@@ -268,16 +268,29 @@ jQuery( document ).ready( function($){
         
         if( type == "_endpoint" || type == '_ajax'){
             $('#edit_filter #endpoints_wrapper').slideDown();
+            $('#post_type_options').hide();
         } else {
             $('#edit_filter #endpoints_wrapper').slideUp();
+            $('#post_type_options').show();
         }
     }).change();
     
     // Edit Filter screen - Save filter
-    $('#edit_filter').on('click', '#save_filter', function(){
+    $('#edit_filter').on('click', '#save_filter', function(e){
         
         let filter_data = $('#edit_filter').find('select, textarea, input').serialize();
         
+
+        if( $('#frontend_check').prop('checked')){
+            let re = confirm("You have checked the 'Customer Facing Only' checkbox. This filter will work across all customer facing pages that use the post type "+$('#set_filter_type').val()+'. Review your filters to make sure you don\'t have unintended conficts.');
+            if( !re ){
+                return;
+            }
+            filter_data += '&frontend=true';
+        } else {
+            filter_data += '&frontend=false';
+        }
+
         $.post( po_object.ajax_url, { action  : 'po_save_filter', data : filter_data }, function( response ) {
             // console.log( "po_save_filter: ", response );
 

@@ -50,6 +50,7 @@ if( $post ){
     $plugins_to_block   = get_post_meta( $post->ID, "plugins_to_block", true );
     $groups_to_block    = get_post_meta( $post->ID, "groups_used", true );
     $post_categories    = get_post_meta( $post->ID, "categories", true );
+    $frontend           = get_post_meta( $post->ID, "frontend", true);
     $endpoints          = SOSPO_Admin_Helper::get_filter_endpoints( $post->ID );
 
     /**
@@ -238,6 +239,9 @@ if( sospo_mu_plugin()->has_agent ){
                               </select>
                            </span>
                         </div>
+                     </div>
+                     <div id="post_type_options" style="margin-top:5px; <?php echo $filter_type != '_endpoint' ? '' : 'display: none;'; ?> ">
+                        <input type="checkbox" name="SOSPO_filter_data[frontend]" value="yes" id="frontend_check" <?php echo $frontend == 'true' ? 'checked="checked"' : ''; ?>> Use only for customer facing pages
                      </div>
                   </div>
                   <?php if( sospo_mu_plugin()->has_agent ){ ?>
