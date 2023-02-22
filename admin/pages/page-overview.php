@@ -86,14 +86,13 @@
                                 <?php } else { ?>
                                     
                                     <div>Please activate your license.</div>
-                                    <p>You could benefit from <?php echo $available_count; ?> premium filters available for your site.</p>
                                     
                                 <?php } ?>
                             
                             <?php } else { ?>
                                 
                                 <div>Get Premium!</div>
-                                <p style="padding-bottom: 10px">Get hand-crafted Plugin Optmizer settings that are tailored to your Wordpress configuration.</p>
+                                <p style="padding-bottom: 10px">Get unlimited Plugin Optmizer settings for you to tailor to your Wordpress configuration.</p>
                                 <p><a id="go-premium" href="https://pluginoptimizer.com/" class="po_secondary_button">Go Premium</a></p>
                                 
                             <?php } ?>

@@ -64,10 +64,6 @@ class SOSPO_Admin_Helper {
             "Settings"
         ];
 
-        if( is_plugin_active('plugin-optimizer-premium/plugin-optimizer-premium.php') ){
-          $tabs[] = 'Premium';
-        }
-        
         $tabs_html = '';
         
         foreach( $tabs as $tab_name ){
@@ -184,12 +180,6 @@ class SOSPO_Admin_Helper {
                   $mainTitleHTML .= 'You are running the free version ';
                   $mainTitleHTML .= '<a href="https://pluginoptimizer.com/" target="_blank">' . '<button id="filters_list__go_premium" class="po_green_button">' . "Go Premium!" . '</button>' . '</a>';
                   
-                  $prospector_count = sospo_dictionary()->get_prospector_count();
-                  
-                  if( ! empty( $prospector_count ) ){
-                      
-                      $mainTitleHTML .= ' You could benefit from <b>' . $prospector_count . '</b> Premium Filters';
-                  }
                 }
             }
             
