@@ -2,8 +2,8 @@
 Contributors: pluginoptimizer,simpleonlinesystems,andrija,jacobrossdev
 Tags: Plugin Optimizer, Speed Up, Optimization, Save Time, Page Speed, Performance
 Requires at least: 5.0
-Tested up to: 5.7
-Stable tag: 1.3.6
+Tested up to: 6.1.1
+Stable tag: 1.3.7
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -123,7 +123,10 @@ By Form: [https://pluginoptimizer.com/support](https://pluginoptimizer.com/suppo
 7. settings.jpg
 
 == Changelog ==
-= 1.3.6 = August 2022
+= 1.3.7 = February 2023
+* Fix: Bug Fixes
+
+= 1.3.6 = February 2023
 * Change: Remove Prospector features
 
 = 1.3.5 = August 2022

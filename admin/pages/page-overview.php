@@ -4,38 +4,6 @@
     delete_option( 'po-just-activated' );
   }
 
-  $available_count = get_option('po_available_filters');
-
-  if(!$available_count){
-
-      $endpoints = array();
-      $all_plugins = get_plugins();
-      $all_plugins = array('plugins'=>array_keys($all_plugins));
-
-
-      // the option only exists if have already retrieved filters from server
-      if( $po_filter_retrieval = get_option( 'po_admin_menu_list') ){
-          $all_plugins = array_merge(array('endpoints' => $po_filter_retrieval['endpoints']), $all_plugins);
-      }
-
-      $ch = curl_init();
-      $json = json_encode($all_plugins);
-
-      curl_setopt($ch, CURLOPT_URL,  PROSPECTOR_URL.'api/v1/count');
-      curl_setopt($ch, CURLOPT_POST, 1);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-      curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',                    
-            'Content-Length: ' . strlen($json)
-      ]);
-
-      $server_output = curl_exec($ch);
-      $server_output = json_decode( $server_output, $assoc_array = false );
-      update_option('po_available_filters', $server_output->data->count);
-      $available_count = $server_output->data->count;
-  }
-
 ?>
 <div class="wrap container">
     <div class="wrap sos-wrap">

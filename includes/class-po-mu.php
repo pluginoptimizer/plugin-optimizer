@@ -116,8 +116,10 @@ class SOSPO_MU {
         $pathinfo = parse_url($this->current_full_url);
 
         $this->current_url_host  = $pathinfo['host'];
-        $this->current_url_path  = $pathinfo['path'];        
-        parse_str($pathinfo['query'], $this->current_url_params);
+        $this->current_url_path  = $pathinfo['path'];    
+        if( !empty($pathinfo['query']) ) {
+            parse_str($pathinfo['query'], $this->current_url_params);
+        }
 
         $this->set_hooks();
 
